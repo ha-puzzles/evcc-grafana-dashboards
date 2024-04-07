@@ -1,3 +1,5 @@
+Wie diese Dashboards zu importieren sind, siehe [hier](../README.md).
+
 # PV Today
 
 Real-time Statistiken des aktuellen Tages für Desktops oder Tablets.
@@ -95,3 +97,9 @@ Finanzielle Statistiken zur Amortisation der Anlage. Sollte noch kein ganzes Jah
 > Dieses Dashboard benötigt monatliche aggregierte Daten. Siehe [scripts](../scripts/) für das Aggregierungsskript.
 
 ![alt text](img/finanz.png)
+
+
+## Was anzupassen ist
+
+- Dashboard Settings / Variables
+  - Default Werte für Deine Situation anpassen: Anschaffungspreis, Strompreis,...
