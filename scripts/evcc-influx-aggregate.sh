@@ -35,7 +35,7 @@ logError() {
 }
 
 logInfo() {
-    echo "[INFO] $1"
+    echo "[INFO]  $1"
 }
 
 logDebug() {
@@ -214,7 +214,7 @@ aggregateMonth() {
     ayear=$1
     amonth=$2
 
-    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`:    Aggregating monthly metrics."
+    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`: Aggregating monthly metrics."
 
     writeMonthlyEnergies "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
@@ -253,8 +253,9 @@ elif [ "$AGGREGATE_MONTH_YEAR" -ne 0 ]; then
     aggregateMonth $AGGREGATE_MONTH_YEAR $AGGREGATE_MONTH_MONTH
 elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     year=`date -d yesterday +%Y`
-    month=`date -d yesterday +%m`
-    day=`date -d yesterday +%d`
+    # Converting to a base 10 number, stripping of a leading 0
+    month=$(( 10#`date -d yesterday +%m`))
+    day=$(( 10#`date -d yesterday +%d`))
     if isLeapYear $year; then
         logDebug "The year $year is a leap year. February has 29 days."
         DAYS_OF_MONTH[2]=29
@@ -263,8 +264,9 @@ elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     aggregateMonth $year $month
 elif [ "$AGGREGATE_TODAY" == "true" ]; then
     year=`date +%Y`
-    month=`date +%m`
-    day=`date +%d`
+    # Converting to a base 10 number, stripping of a leading 0
+    month=$(( 10#`date +%m`))
+    day=$(( 10#`date +%d`))
     if isLeapYear $year; then
         logDebug "The year $year is a leap year. February has 29 days."
         DAYS_OF_MONTH[2]=29
