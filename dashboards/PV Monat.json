@@ -267,7 +267,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from garageDailyEnergy WHERE $timeFilter",
+            "query": "SELECT sum(\"value\") /1000 from loadpoint1DailyEnergy WHERE $timeFilter",
             "rawQuery": true,
             "refId": "garageEnergie",
             "resultFormat": "time_series",
@@ -310,7 +310,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from stellplatzDailyEnergy WHERE $timeFilter",
+            "query": "SELECT sum(\"value\") /1000 from loadpoint2DailyEnergy WHERE $timeFilter",
             "rawQuery": true,
             "refId": "stellplatzEnergie",
             "resultFormat": "time_series",
@@ -1367,7 +1367,7 @@
             "uid": "${DS_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT value * (-1) FROM garageDailyEnergy WHERE $timeFilter ",
+          "query": "SELECT value * (-1) FROM loadpoint1DailyEnergy WHERE $timeFilter ",
           "rawQuery": true,
           "refId": "garage",
           "resultFormat": "time_series"
@@ -1379,7 +1379,7 @@
             "uid": "${DS_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT value * (-1) FROM stellplatzDailyEnergy WHERE $timeFilter ",
+          "query": "SELECT value * (-1) FROM loadpoint2DailyEnergy WHERE $timeFilter ",
           "rawQuery": true,
           "refId": "stellplatz",
           "resultFormat": "time_series"
@@ -2226,6 +2226,6 @@
   "timezone": "utc",
   "title": "PV Monat",
   "uid": "4iQda7igz",
-  "version": 128,
+  "version": 129,
   "weekStart": ""
 }
