@@ -6,6 +6,7 @@
 INFLUXDB="evcc" # Name of the Influx DB, where you write the EVCC data into
 INFLUX_USER="" # Your user name. Empty, if no user is required.
 INFLUX_PASSWORD="none" # can be anything except an empty string in case no password is set
+HOME_BATTERY="true" # set to false in case your home does not use a battery
 DEBUG="false" # set to true to generate debug output
 
 #arguments
@@ -174,8 +175,13 @@ aggregateDay() {
     writeDailyEnergies "all" "value" "chargePower" "stellplatzDailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = 'Stellplatz') AND value < 20000"
     writeDailyEnergies "positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-    writeDailyEnergies "positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-    writeDailyEnergies "negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
+
+    if [ "$HOME_BATTERY" == "true" ]; then
+        writeDailyEnergies "positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
+        writeDailyEnergies "negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
+    else
+        logDebug "Home battery aggregation is disabled"
+    fi
 }
 
 writeMonthlyEnergies () {
@@ -223,8 +229,13 @@ aggregateMonth() {
     writeMonthlyEnergies "value" "stellplatzDailyEnergy" "stellplatzMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
-    writeMonthlyEnergies "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
-    writeMonthlyEnergies "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
+
+    if [ "$HOME_BATTERY" == "true" ]; then
+        writeMonthlyEnergies "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
+        writeMonthlyEnergies "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
+    else
+        logDebug "Home battery aggregation is disabled"
+    fi
 }
 
 ###############################################################################
