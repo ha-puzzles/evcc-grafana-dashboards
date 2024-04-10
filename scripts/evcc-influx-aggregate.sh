@@ -6,6 +6,7 @@
 INFLUXDB="evcc" # Name of the Influx DB, where you write the EVCC data into
 INFLUX_USER="" # Your user name. Empty, if no user is required.
 INFLUX_PASSWORD="none" # can be anything except an empty string in case no password is set
+DEBUG="false" # set to true to generate debug output
 
 #arguments
 AGGREGATE_YEAR=0
@@ -14,6 +15,7 @@ AGGREGATE_TODAY=false
 AGGREGATE_MONTH_YEAR=0
 AGGREGATE_MONTH_MONTH=0
 
+# Maps of number of days per month. February leap year is updated later
 declare -A DAYS_OF_MONTH
 DAYS_OF_MONTH[1]=31
 DAYS_OF_MONTH[2]=28
@@ -28,6 +30,20 @@ DAYS_OF_MONTH[10]=31
 DAYS_OF_MONTH[11]=30
 DAYS_OF_MONTH[12]=31
 
+logError() {
+    echo "[ERROR] $1"
+}
+
+logInfo() {
+    echo "[INFO] $1"
+}
+
+logDebug() {
+    if [ "$DEBUG" == "true" ]; then
+        echo "[DEBUG] $1"
+    fi
+}
+
 parseArguments() {
     if [ "$#" -eq 0 ]; then
         printUsage
@@ -39,7 +55,7 @@ parseArguments() {
             exit 1
         fi
         AGGREGATE_YEAR=$2
-        echo "Aggregating year $AGGREGATE_YEAR"
+        logDebug "Aggregating year $AGGREGATE_YEAR"
         return 0
     fi
     if [ "$1" == '--month' ]; then
@@ -49,17 +65,17 @@ parseArguments() {
         fi
         AGGREGATE_MONTH_YEAR=$2
         AGGREGATE_MONTH_MONTH=$3
-        echo "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
+        logDebug "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
         return 0
     fi
     if [ "$1" == '--yesterday' ]; then
         AGGREGATE_YESTERDAY=true
-        echo "Aggregating yesterday"
+        logDebug "Aggregating yesterday"
         return 0
     fi
     if [ "$1" == '--today' ]; then
         AGGREGATE_TODAY=true
-        echo "Aggregating today"
+        logDebug "Aggregating today"
         return 0
     fi
     printUsage
@@ -94,7 +110,6 @@ isMeasurementExisting() {
     return influx -database $INFLUXDB -execute 'show measurements' | grep -q $databaseName
 }
 
-# STDOUT: last line of query result
 writeDailyEnergies() {
     mode=$1 # all | positives | negatives
     field=$2
@@ -113,32 +128,35 @@ writeDailyEnergies() {
     query=""
     case $mode in
         all)
-            # echo "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"$field\") / 3600 FROM $powerMeasurement WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere GROUP BY time(1d) fill(none)"
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $powerMeasurement into ${energyMeasurement}"
+            query="SELECT integral(\"$field\") / 3600 FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere GROUP BY time(1d) fill(none)"
             ;;
         positives)
-            # echo "${fYear}-${fMonth}-${fDay}: Aggregating energy of positive values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM "$powerMeasurement" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(none)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(null)"
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of positive values from $powerMeasurement into ${energyMeasurement}"
+            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(none)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(null)"
             ;;
         negatives)
-            # echo "${fYear}-${fMonth}-${fDay}: Aggregating energy of negative values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM "$powerMeasurement" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(none)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(null)"
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of negative values from $powerMeasurement into ${energyMeasurement}"
+            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(none)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(null)"
             ;;
         *)
-            echo "ERROR: Unknown mode"
+            logError "Unknown query mode: '$mode'."
             exit 1
             ;;
     esac
+    logDebug "Query: $query"
 
     queryResult=`influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
+    logDebug "Query result (last row): $queryResult"
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
         timestampNano=`date -d "$timestamp" +%s%9N`
         energy=`echo "$queryResult" | cut -d " " -f 2`
         insertStatement="INSERT ${energyMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestampNano}"
+        logDebug "Insert statement: $insertStatement"
         influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
     else
-        echo "INFO: Query for daily aggregation of measurement $powerMeasurement did not return any results."
+        logInfo "Query for daily aggregation of measurement $powerMeasurement did not return any results."
     fi
 }
 
@@ -147,7 +165,7 @@ aggregateDay() {
     amonth=$2
     aday=$3
 
-    echo "`printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $day`: Aggregating daily metrics."
+    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $day`: Aggregating daily metrics."
 
     writeDailyEnergies "all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
@@ -173,18 +191,22 @@ writeMonthlyEnergies () {
     printf -v fMonth "%02d" $month
     printf -v fDays "%02d" $numDays
 
-    # echo "${fYear}-${fMonth}: Creating monthly aggregation from $dailyEnergyMeasurement into ${monthlyEnergyMeasurement}"
+    logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailyEnergyMeasurement into ${monthlyEnergyMeasurement}"
+    logDebug "Month has $numDays days."
     query="SELECT sum(\"$field\") FROM $dailyEnergyMeasurement WHERE time >= '${fYear}-${fMonth}-01T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDays}T23:59:59Z'"
-    #echo $query
+    logDebug "Query: $query"
+
     queryResult=`influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
+    logDebug "Query result (last row): $queryResult"
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
         timestampNano=`date -d "$timestamp" +%s%9N`
         energy=`echo "$queryResult" | cut -d " " -f 2`
         insertStatement="INSERT ${monthlyEnergyMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestampNano}"
+        logDebug "Insert statement: $insertStatement"
         influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
     else
-        echo "INFO: Query for monthly aggregation of measurement $dailyEnergyMeasurement did not return any results."
+        logInfo "Query for monthly aggregation of measurement $dailyEnergyMeasurement did not return any results."
     fi    
 }
 
@@ -192,7 +214,7 @@ aggregateMonth() {
     ayear=$1
     amonth=$2
 
-    echo "`printf "%04d" $ayear`-`printf "%02d" $amonth`:    Aggregating monthly metrics."
+    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`:    Aggregating monthly metrics."
 
     writeMonthlyEnergies "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
@@ -210,12 +232,13 @@ aggregateMonth() {
 ###############################################################################
 parseArguments $@
 
-if isLeapYear $AGGREGATE_YEAR; then
-    DAYS_OF_MONTH[2]=29
-fi
+
 
 if [ "$AGGREGATE_YEAR" -ne 0 ]; then
-
+    if isLeapYear $AGGREGATE_YEAR; then
+        logDebug "The year $AGGREGATE_YEAR is a leap year. February has 29 days."
+        DAYS_OF_MONTH[2]=29
+    fi
     for month in {1..12}; do
         for (( day=1; day<=${DAYS_OF_MONTH[$month]}; day++ )); do
             aggregateDay $AGGREGATE_YEAR $month $day
@@ -223,17 +246,29 @@ if [ "$AGGREGATE_YEAR" -ne 0 ]; then
         aggregateMonth $AGGREGATE_YEAR $month
     done
 elif [ "$AGGREGATE_MONTH_YEAR" -ne 0 ]; then
+    if isLeapYear $AGGREGATE_MONTH_YEAR; then
+        logDebug "The year $AGGREGATE_MONTH_YEAR is a leap year. February has 29 days."
+        DAYS_OF_MONTH[2]=29
+    fi
     aggregateMonth $AGGREGATE_MONTH_YEAR $AGGREGATE_MONTH_MONTH
 elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     year=`date -d yesterday +%Y`
     month=`date -d yesterday +%m`
     day=`date -d yesterday +%d`
+    if isLeapYear $year; then
+        logDebug "The year $year is a leap year. February has 29 days."
+        DAYS_OF_MONTH[2]=29
+    fi
     aggregateDay $year $month $day
     aggregateMonth $year $month
 elif [ "$AGGREGATE_TODAY" == "true" ]; then
     year=`date +%Y`
     month=`date +%m`
     day=`date +%d`
+    if isLeapYear $year; then
+        logDebug "The year $year is a leap year. February has 29 days."
+        DAYS_OF_MONTH[2]=29
+    fi
     aggregateDay $year $month $day
     aggregateMonth $year $month
 fi
