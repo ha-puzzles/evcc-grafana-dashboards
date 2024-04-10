@@ -8,6 +8,9 @@ INFLUX_USER="" # Your user name. Empty, if no user is required.
 INFLUX_PASSWORD="none" # can be anything except an empty string in case no password is set
 HOME_BATTERY="true" # set to false in case your home does not use a battery
 DEBUG="false" # set to true to generate debug output
+LOADPOINT_1_TITLE="Garage" # title of loadpoint 1 as defined in evcc.yaml
+LOADPOINT_2_ENABLED=true # set to false in case you have just one loadpoint
+LOADPOINT_2_TITLE="Stellplatz" # title of loadpoint 2 as defined in evcc.yaml
 
 #arguments
 AGGREGATE_YEAR=0
@@ -15,6 +18,9 @@ AGGREGATE_YESTERDAY=false
 AGGREGATE_TODAY=false
 AGGREGATE_MONTH_YEAR=0
 AGGREGATE_MONTH_MONTH=0
+AGGREGATE_DAY_YEAR=0
+AGGREGATE_DAY_MONTH=0
+AGGREGATE_DAY_DAY=0
 
 # Maps of number of days per month. February leap year is updated later
 declare -A DAYS_OF_MONTH
@@ -69,6 +75,17 @@ parseArguments() {
         logDebug "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
         return 0
     fi
+    if [ "$1" == '--day' ]; then
+        if [ "$#" -ne 4 ]; then
+            printUsage
+            exit 1
+        fi
+        AGGREGATE_DAY_YEAR=$2
+        AGGREGATE_DAY_MONTH=$3
+        AGGREGATE_DAY_DAY=$4
+        logDebug "Aggregating day ${AGGREGATE_DAY_YEAR}-${AGGREGATE_DAY_MONTH}-${AGGREGATE_DAY_DAY}"
+        return 0
+    fi
     if [ "$1" == '--yesterday' ]; then
         AGGREGATE_YESTERDAY=true
         logDebug "Aggregating yesterday"
@@ -84,7 +101,7 @@ parseArguments() {
 }
 
 printUsage() {
-    echo "`basename $0` [--year <year> | --month <year> <month> | --yesterday | --today]"
+    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --yesterday | --today]"
 }
 
 isLeapYear() {
@@ -157,7 +174,7 @@ writeDailyEnergies() {
         logDebug "Insert statement: $insertStatement"
         influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
     else
-        logInfo "Query for daily aggregation of measurement $powerMeasurement did not return any results."
+        logInfo "There is no data from $powerMeasurement for $energyMeasurement. This may be fine, if no data had been collected for this day and this measurement."
     fi
 }
 
@@ -166,13 +183,18 @@ aggregateDay() {
     amonth=$2
     aday=$3
 
-    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $day`: Aggregating daily metrics."
+    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`: Aggregating daily metrics."
 
     writeDailyEnergies "all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "all" "value" "chargePower" "carDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-    writeDailyEnergies "all" "value" "chargePower" "garageDailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = 'Garage') AND value < 20000"
-    writeDailyEnergies "all" "value" "chargePower" "stellplatzDailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = 'Stellplatz') AND value < 20000"
+    writeDailyEnergies "all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < 20000"
+
+    if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
+        writeDailyEnergies "all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < 20000"
+    else
+        logDebug "Loadpoint 2 is disabled."
+    fi
     writeDailyEnergies "positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < 20000"
 
@@ -180,7 +202,7 @@ aggregateDay() {
         writeDailyEnergies "positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
         writeDailyEnergies "negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     else
-        logDebug "Home battery aggregation is disabled"
+        logDebug "Home battery aggregation is disabled."
     fi
 }
 
@@ -212,7 +234,7 @@ writeMonthlyEnergies () {
         logDebug "Insert statement: $insertStatement"
         influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
     else
-        logInfo "Query for monthly aggregation of measurement $dailyEnergyMeasurement did not return any results."
+        logInfo "There is no data from $dailyEnergyMeasurement for $monthlyEnergyMeasurement. This may be fine, if no data had been collected for this month and this measurement."
     fi    
 }
 
@@ -225,8 +247,12 @@ aggregateMonth() {
     writeMonthlyEnergies "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "carDailyEnergy" "carMonthlyEnergy" $ayear $amonth
-    writeMonthlyEnergies "value" "garageDailyEnergy" "garageMonthlyEnergy" $ayear $amonth 
-    writeMonthlyEnergies "value" "stellplatzDailyEnergy" "stellplatzMonthlyEnergy" $ayear $amonth
+    writeMonthlyEnergies "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
+        if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
+    writeMonthlyEnergies "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
+    else
+        logDebug "Loadpoint 2 is disabled."
+    fi
     writeMonthlyEnergies "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
 
@@ -261,7 +287,17 @@ elif [ "$AGGREGATE_MONTH_YEAR" -ne 0 ]; then
         logDebug "The year $AGGREGATE_MONTH_YEAR is a leap year. February has 29 days."
         DAYS_OF_MONTH[2]=29
     fi
+    for (( day=1; day<=${DAYS_OF_MONTH[$AGGREGATE_MONTH_MONTH]}; day++ )); do
+        aggregateDay $AGGREGATE_MONTH_YEAR $AGGREGATE_MONTH_MONTH $day
+    done
     aggregateMonth $AGGREGATE_MONTH_YEAR $AGGREGATE_MONTH_MONTH
+elif [ "$AGGREGATE_DAY_YEAR" -ne 0 ]; then
+    if isLeapYear $AGGREGATE_DAY_YEAR; then
+        logDebug "The year $AGGREGATE_DAY_YEAR is a leap year. February has 29 days."
+        DAYS_OF_MONTH[2]=29
+    fi
+    aggregateDay $AGGREGATE_DAY_YEAR $AGGREGATE_DAY_MONTH $AGGREGATE_DAY_DAY
+    aggregateMonth $AGGREGATE_DAY_YEAR $AGGREGATE_DAY_MONTH
 elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     year=`date -d yesterday +%Y`
     # Converting to a base 10 number, stripping of a leading 0
