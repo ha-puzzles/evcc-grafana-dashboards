@@ -7,13 +7,6 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
-    },
-    {
-      "name": "DS_EXPRESSION",
-      "label": "Expression",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "__expr__"
     }
   ],
   "__elements": {
@@ -460,6 +453,288 @@
         "type": "timeseries"
       }
     },
+    "edgpezcp0j474c": {
+      "name": "Kennzahlen Gauges Live",
+      "uid": "edgpezcp0j474c",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "semi-dark-green",
+              "mode": "thresholds"
+            },
+            "decimals": 1,
+            "links": [],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "kWh"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Autarkie"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Eigenverbrauch"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "percentunit"
+                },
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "purple",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "minVizHeight": 200,
+          "minVizWidth": 200,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto",
+          "text": {
+            "titleSize": 12,
+            "valueSize": 16
+          }
+        },
+        "pluginVersion": "10.4.1",
+        "targets": [
+          {
+            "alias": "PV",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "1h"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "measurement": "pvPower",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT integral(\"value\") /3600 FROM \"pvPower\" WHERE $timeFilter AND value < 20000  GROUP BY time(1d) fill(none)",
+            "rawQuery": true,
+            "refId": "energyPV",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "hide": true,
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)",
+            "rawQuery": true,
+            "refId": "Netzbezug",
+            "resultFormat": "time_series"
+          },
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "hide": true,
+            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)",
+            "rawQuery": true,
+            "refId": "Einspeisung",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Haus",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT integral(\"value\") /3600 FROM \"homePower\" WHERE $timeFilter AND value < 20000  GROUP BY time(1d) fill(none)",
+            "rawQuery": true,
+            "refId": "energieHaus",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Garage",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT integral(\"value\")  / 3600 FROM \"chargePower\" WHERE $timeFilter GROUP BY time(1d) fill(none)",
+            "rawQuery": true,
+            "refId": "energieAuto",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "1 - $Netzbezug/($energieHaus + $energieAuto)",
+            "hide": false,
+            "refId": "Autarkie",
+            "type": "math"
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "($energyPV - $Einspeisung) / $energyPV",
+            "hide": false,
+            "refId": "Eigenverbrauch",
+            "type": "math"
+          }
+        ],
+        "title": "Kennzahlen",
+        "transparent": true,
+        "type": "gauge"
+      }
+    },
     "f930b616-80c3-4485-98ee-0205a64c8260": {
       "name": "Speicher/Haus Gauge",
       "uid": "f930b616-80c3-4485-98ee-0205a64c8260",
@@ -656,188 +931,6 @@
               ]
             ],
             "tags": []
-          }
-        ],
-        "transparent": true,
-        "type": "gauge"
-      }
-    },
-    "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac": {
-      "name": "Ladepunkte Gauge",
-      "uid": "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac",
-      "kind": 1,
-      "model": {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_INFLUXDB}"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "neutral": 0
-            },
-            "decimals": 2,
-            "links": [
-              {
-                "title": "EVCC",
-                "url": "http://home:7070/#/"
-              }
-            ],
-            "mappings": [],
-            "max": 0,
-            "min": -11,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "kW"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Garage"
-              },
-              "properties": [
-                {
-                  "id": "thresholds",
-                  "value": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "orange",
-                        "value": null
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Stellplatz"
-              },
-              "properties": [
-                {
-                  "id": "thresholds",
-                  "value": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "dark-orange",
-                        "value": null
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "options": {
-          "minVizHeight": 200,
-          "minVizWidth": 200,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true,
-          "sizing": "auto",
-          "text": {
-            "titleSize": 12,
-            "valueSize": 16
-          }
-        },
-        "pluginVersion": "10.2.3",
-        "targets": [
-          {
-            "alias": "Garage",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "groupBy": [],
-            "hide": false,
-            "measurement": "chargePower",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "refId": "Garage",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [
-                    "*(-1)/1000"
-                  ],
-                  "type": "math"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "loadpoint::tag",
-                "operator": "=",
-                "value": "Garage"
-              }
-            ]
-          },
-          {
-            "alias": "Stellplatz",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "groupBy": [],
-            "hide": false,
-            "measurement": "chargePower",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "refId": "Stellplatz",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [
-                    "*(-1)/1000"
-                  ],
-                  "type": "math"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "loadpoint::tag",
-                "operator": "=",
-                "value": "Stellplatz"
-              }
-            ]
           }
         ],
         "transparent": true,
@@ -1470,7 +1563,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(none)) WHERE $timeFilter GROUP BY time(1d) fill(null)",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series",
@@ -1513,7 +1606,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /-3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(none)) WHERE $timeFilter GROUP BY time(1d) fill(null)",
+            "query": "SELECT integral(\"subquery\") /-3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)",
             "rawQuery": true,
             "refId": "Einspeisung",
             "resultFormat": "time_series",
@@ -1556,7 +1649,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(none)) WHERE $timeFilter GROUP BY time(1d) fill(null)",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)",
             "rawQuery": true,
             "refId": "Entladen",
             "resultFormat": "time_series",
@@ -1599,7 +1692,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /-3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(none)) WHERE $timeFilter GROUP BY time(1d) fill(null)",
+            "query": "SELECT integral(\"subquery\") /-3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)",
             "rawQuery": true,
             "refId": "Laden",
             "resultFormat": "time_series",
@@ -1706,7 +1799,7 @@
             "tags": []
           },
           {
-            "alias": "Volvo",
+            "alias": "Hyundai",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -1751,6 +1844,188 @@
         ],
         "transparent": true,
         "type": "bargauge"
+      }
+    },
+    "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac": {
+      "name": "Ladepunkte Gauge",
+      "uid": "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "neutral": 0
+            },
+            "decimals": 2,
+            "links": [
+              {
+                "title": "EVCC",
+                "url": "http://home:7070/#/"
+              }
+            ],
+            "mappings": [],
+            "max": 0,
+            "min": -11,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "kW"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Garage"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "orange",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Stellplatz"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "dark-orange",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "minVizHeight": 200,
+          "minVizWidth": 200,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto",
+          "text": {
+            "titleSize": 12,
+            "valueSize": 16
+          }
+        },
+        "pluginVersion": "10.2.3",
+        "targets": [
+          {
+            "alias": "Garage",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [],
+            "hide": false,
+            "measurement": "chargePower",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "Garage",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [
+                    "*(-1)/1000"
+                  ],
+                  "type": "math"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "loadpoint::tag",
+                "operator": "=",
+                "value": "Garage"
+              }
+            ]
+          },
+          {
+            "alias": "Stellplatz",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [],
+            "hide": false,
+            "measurement": "chargePower",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "Stellplatz",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [
+                    "*(-1)/1000"
+                  ],
+                  "type": "math"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "loadpoint::tag",
+                "operator": "=",
+                "value": "Stellplatz"
+              }
+            ]
+          }
+        ],
+        "transparent": true,
+        "type": "gauge"
       }
     },
     "Blh9JqRRk": {
@@ -2473,17 +2748,6 @@
   },
   "__requires": [
     {
-      "type": "datasource",
-      "id": "__expr__",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
@@ -2627,286 +2891,17 @@
       }
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_INFLUXDB}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "semi-dark-green",
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "kWh"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Autarkie"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "green",
-                      "value": null
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Eigenverbrauch"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percentunit"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "purple",
-                      "value": null
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        ]
-      },
       "gridPos": {
-        "h": 10,
+        "h": 6,
         "w": 4,
         "x": 20,
         "y": 0
       },
-      "id": 58,
-      "options": {
-        "minVizHeight": 200,
-        "minVizWidth": 200,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true,
-        "sizing": "auto",
-        "text": {
-          "titleSize": 12,
-          "valueSize": 16
-        }
-      },
-      "pluginVersion": "10.4.1",
-      "targets": [
-        {
-          "alias": "PV",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1h"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT integral(\"value\") /3600 FROM \"pvPower\" WHERE $timeFilter AND value < 20000  GROUP BY time(1d) fill(none)",
-          "rawQuery": true,
-          "refId": "energyPV",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "hide": true,
-          "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(none)) WHERE $timeFilter GROUP BY time(1d) fill(null)",
-          "rawQuery": true,
-          "refId": "Netzbezug",
-          "resultFormat": "time_series"
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "hide": true,
-          "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(none)) WHERE $timeFilter GROUP BY time(1d) fill(null)",
-          "rawQuery": true,
-          "refId": "Einspeisung",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "Haus",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT integral(\"value\") /3600 FROM \"homePower\" WHERE $timeFilter AND value < 20000  GROUP BY time(1d) fill(none)",
-          "rawQuery": true,
-          "refId": "energieHaus",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Garage",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT integral(\"value\")  / 3600 FROM \"chargePower\" WHERE $timeFilter GROUP BY time(1d) fill(none)",
-          "rawQuery": true,
-          "refId": "energieAuto",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "1 - $Netzbezug/($energieHaus + $energieAuto)",
-          "hide": false,
-          "refId": "Autarkie",
-          "type": "math"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "($energyPV - $Einspeisung) / $energyPV",
-          "hide": false,
-          "refId": "Eigenverbrauch",
-          "type": "math"
-        }
-      ],
-      "title": "Kennzahlen",
-      "transparent": true,
-      "type": "gauge"
+      "id": 64,
+      "libraryPanel": {
+        "uid": "edgpezcp0j474c",
+        "name": "Kennzahlen Gauges Live"
+      }
     },
     {
       "gridPos": {
@@ -2919,6 +2914,32 @@
       "libraryPanel": {
         "uid": "f930b616-80c3-4485-98ee-0205a64c8260",
         "name": "Speicher/Haus Gauge"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 20,
+        "y": 6
+      },
+      "id": 51,
+      "libraryPanel": {
+        "uid": "a46718d5-2383-4dba-b828-5941581b208e",
+        "name": "Kennzahlen Verlauf"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 12,
+        "w": 4,
+        "x": 20,
+        "y": 9
+      },
+      "id": 40,
+      "libraryPanel": {
+        "uid": "d-V6JqRgz",
+        "name": "Energie"
       }
     },
     {
@@ -2936,38 +2957,12 @@
     },
     {
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 20,
-        "y": 10
-      },
-      "id": 51,
-      "libraryPanel": {
-        "uid": "a46718d5-2383-4dba-b828-5941581b208e",
-        "name": "Kennzahlen Verlauf"
-      }
-    },
-    {
-      "gridPos": {
-        "h": 8,
-        "w": 4,
-        "x": 20,
-        "y": 13
-      },
-      "id": 40,
-      "libraryPanel": {
-        "uid": "d-V6JqRgz",
-        "name": "Energie"
-      }
-    },
-    {
-      "gridPos": {
         "h": 6,
         "w": 6,
         "x": 0,
         "y": 15
       },
-      "id": 4,
+      "id": 66,
       "libraryPanel": {
         "uid": "Blh9JqRRk",
         "name": "Batterieverlauf"
@@ -3004,6 +2999,6 @@
   "timezone": "",
   "title": "PV Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 107,
+  "version": 111,
   "weekStart": ""
 }
