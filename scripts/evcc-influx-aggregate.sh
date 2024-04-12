@@ -151,11 +151,11 @@ writeDailyEnergies() {
             ;;
         positives)
             logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of positive values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(none)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(null)"
+            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(0)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(0)"
             ;;
         negatives)
             logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of negative values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(none)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(null)"
+            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(0)"
             ;;
         *)
             logError "Unknown query mode: '$mode'."
