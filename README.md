@@ -21,7 +21,7 @@ Ich habe versucht alle notwendigen Anpassungen unter ['dashboards'](dashboards/R
 Folgende Grundvoraussetzungen müssen erfüllt sein:
 
 - EVCC: https://evcc.io/
-- Influx DB: https://www.influxdata.com/
+- Influx DB v1.8 (InfluxDB 2.x wird derzeit nicht unterstützt): https://www.influxdata.com/
 - Grafana: https://grafana.com/
 - Grundlegende Linux Kenntnisse oder die Bereitschaft sich diese anzueignen.
 - Die Möglichkeit ein Bash Shell Script regelmäßig per Crontab ausführen zu können.
@@ -32,8 +32,7 @@ Folgende Grundvoraussetzungen müssen erfüllt sein:
 
 Hier nur die groben Schritte, da sie je nach Plattform stark variieren:
 
-1. Influx DB installieren. Ich nutze die InfluxDB noch in der Version 1.8.
-2. Influx DB so konfigurieren, dass sie InfluxQL benutzt.
+1. Influx DB 1.8.x installieren.
 3. EVCC konfigurieren, dass Daten in die Influx geschrieben werden: https://docs.evcc.io/docs/reference/configuration/influx/
 4. Grafana installieren
 
