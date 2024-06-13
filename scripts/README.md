@@ -30,9 +30,11 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
    Das wird nun etwas dauern.
 7. Mit Hilfe von `crontab -e` folgende regelmäßige Aufrufe konfigurieren:
    ```
-   5 0 * * * /home/cschlipf/bin/evcc-influx-aggregate.sh --yesterday
-   0 * * * * /home/cschlipf/bin/evcc-influx-aggregate.sh --today
+   5 0 * * * <PATH_TO_SCRIPT>/evcc-influx-aggregate.sh --yesterday >> /var/log/evcc-grafana-dashboards.log 2>&1
+   0 * * * * <PATH_TO_SCRIPT>/evcc-influx-aggregate.sh --today >> /var/log/evcc-grafana-dashboards.log 2>&1
    ```
-   Damit wird dann jede Nacht der gestrige Tage aggregiert, sowie jede volle Stunde einmal der aktuelle Tag.
+   Hierbei `<PATH_TO_SCRIPT>` durch den Pfad ersetzen, wo das Script gespeichert wurde.
+
+   Damit wird dann jede Nacht der gestrige Tage aggregiert, sowie jede volle Stunde einmal der aktuelle Tag. Die Ausgaben werden in der Datei `/var/log/evcc-grafana-dashboards.log` geloggt.
 
 
