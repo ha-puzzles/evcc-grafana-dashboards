@@ -122,12 +122,6 @@ isLeapYear() {
     return 0
 }
 
-isMeasurementExisting() {
-    databaseName=$1
-    
-    return influx -database $INFLUXDB -execute 'show measurements' | grep -q $databaseName
-}
-
 writeDailyEnergies() {
     mode=$1 # all | positives | negatives
     field=$2
