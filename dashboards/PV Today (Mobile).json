@@ -302,7 +302,7 @@
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "red",
+                        "color": "purple",
                         "value": null
                       }
                     ]
@@ -331,7 +331,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "10.2.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "alias": "Speicher",
@@ -454,7 +454,7 @@
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "orange",
+                        "color": "light-orange",
                         "value": null
                       }
                     ]
@@ -503,7 +503,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "10.2.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "alias": "Garage",
@@ -640,30 +640,6 @@
               },
               "properties": [
                 {
-                  "id": "thresholds",
-                  "value": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": null
-                      },
-                      {
-                        "color": "orange",
-                        "value": 30
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 50
-                      },
-                      {
-                        "color": "green",
-                        "value": 80
-                      }
-                    ]
-                  }
-                },
-                {
                   "id": "color",
                   "value": {
                     "fixedColor": "blue",
@@ -679,41 +655,24 @@
               },
               "properties": [
                 {
-                  "id": "thresholds",
+                  "id": "color",
                   "value": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "red",
-                        "value": null
-                      },
-                      {
-                        "color": "orange",
-                        "value": 30
-                      },
-                      {
-                        "color": "yellow",
-                        "value": 50
-                      },
-                      {
-                        "color": "green",
-                        "value": 70
-                      },
-                      {
-                        "color": "orange",
-                        "value": 80
-                      },
-                      {
-                        "color": "red",
-                        "value": 98
-                      }
-                    ]
+                    "fixedColor": "dark-orange",
+                    "mode": "fixed"
                   }
-                },
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Ioniq 5"
+              },
+              "properties": [
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -743,7 +702,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "10.2.3",
+        "pluginVersion": "11.0.0",
         "targets": [
           {
             "alias": "Speicher",
@@ -781,7 +740,7 @@
                 },
                 {
                   "params": [],
-                  "type": "mean"
+                  "type": "last"
                 }
               ]
             ],
@@ -823,7 +782,7 @@
                 },
                 {
                   "params": [],
-                  "type": "mean"
+                  "type": "last"
                 }
               ]
             ],
@@ -832,6 +791,54 @@
                 "key": "vehicle::tag",
                 "operator": "=",
                 "value": "Tesla"
+              }
+            ]
+          },
+          {
+            "alias": "Ioniq 5",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "10s"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "previous"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "vehicleSoc",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "refId": "A",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "last"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "vehicle::tag",
+                "operator": "=",
+                "value": "Ioniq 5"
               }
             ]
           }
@@ -867,7 +874,7 @@
               "axisWidth": 50,
               "barAlignment": 0,
               "drawStyle": "line",
-              "fillOpacity": 10,
+              "fillOpacity": 25,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -935,7 +942,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "red",
+                    "fixedColor": "purple",
                     "mode": "fixed"
                   }
                 }
@@ -965,7 +972,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -1019,15 +1026,89 @@
         },
         "targets": [
           {
+            "alias": "PV",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT last(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < 20000) AND $timeFilter GROUP BY time(1m) fill(none)",
+            "rawQuery": true,
+            "refId": "PV Leistung",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
             "alias": "Netz",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") FROM \"gridPower\" WHERE $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Netzleistung",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Speicher",
@@ -1035,23 +1116,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") FROM \"batteryPower\" WHERE $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Batterieleistung",
-            "resultFormat": "time_series"
-          },
-          {
-            "alias": "PV",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "hide": false,
-            "query": "SELECT last(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < 20000) AND $timeFilter GROUP BY time(1m) fill(none)",
-            "rawQuery": true,
-            "refId": "PV Leistung",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Haus",
@@ -1059,11 +1159,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < 20000) AND $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Hausverbrauch",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Garage",
@@ -1071,11 +1202,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") * (-1) FROM \"chargePower\" WHERE(\"loadpoint\"::tag = 'Garage') AND $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Laden Garage",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Stellplatz",
@@ -1083,11 +1245,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") * (-1) FROM \"chargePower\" WHERE(\"loadpoint\"::tag = 'Stellplatz') AND $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Laden Stellplatz",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           }
         ],
         "type": "timeseries"
@@ -1117,6 +1310,7 @@
               "axisPlacement": "left",
               "axisWidth": 50,
               "barAlignment": 0,
+              "barWidthFactor": 0.6,
               "drawStyle": "line",
               "fillOpacity": 80,
               "gradientMode": "none",
@@ -1191,7 +1385,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "red",
+                    "fixedColor": "purple",
                     "mode": "fixed"
                   }
                 }
@@ -1663,7 +1857,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
                 }
@@ -1672,17 +1866,13 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "battery_level"
+                "options": "Ioniq 5"
               },
               "properties": [
                 {
-                  "id": "displayName",
-                  "value": "Tesla (tm)"
-                },
-                {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -1702,6 +1892,7 @@
             "showLegend": true
           },
           "tooltip": {
+            "maxHeight": 600,
             "mode": "multi",
             "sort": "none"
           }
@@ -1779,7 +1970,7 @@
             "tags": []
           },
           {
-            "alias": "Hyundai",
+            "alias": "Ioniq 5",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -1789,7 +1980,7 @@
             "measurement": "vehicleSoc",
             "orderByTime": "ASC",
             "policy": "autogen",
-            "query": "SELECT max(\"value\") FROM \"vehicleSoc\" WHERE (\"vehicle\"::tag = 'Hyundai') AND $timeFilter GROUP BY time(5m) fill(none)",
+            "query": "SELECT last(\"value\") FROM \"vehicleSoc\" WHERE (\"vehicle\"::tag = 'Ioniq 5') AND $timeFilter GROUP BY time(5m) fill(none)",
             "rawQuery": true,
             "refId": "Hyundai",
             "resultFormat": "time_series",
@@ -2194,6 +2385,36 @@
                   }
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "netzbezug"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                },
+                {
+                  "id": "max"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "energieHaus"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                },
+                {
+                  "id": "max"
+                }
+              ]
             }
           ]
         },
@@ -2205,6 +2426,7 @@
             "showLegend": false
           },
           "tooltip": {
+            "maxHeight": 600,
             "mode": "multi",
             "sort": "none"
           }
@@ -2234,7 +2456,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
             "rawQuery": true,
             "refId": "netzbezug",
             "resultFormat": "time_series",
@@ -2339,6 +2561,7 @@
             "tags": []
           },
           {
+            "alias": "energieHaus",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -2455,7 +2678,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
+            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(1m) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
             "rawQuery": true,
             "refId": "eingespeist",
             "resultFormat": "time_series",
@@ -2560,7 +2783,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "red",
+                    "fixedColor": "purple",
                     "mode": "fixed"
                   }
                 }
@@ -2575,7 +2798,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
                 }
@@ -2614,13 +2837,13 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Stellplatz"
+                "options": "Ioniq 5"
               },
               "properties": [
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "dark-orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -2650,7 +2873,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "10.4.1",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "alias": "PV",
@@ -2954,7 +3177,7 @@
             "tags": []
           },
           {
-            "alias": "Hyundai",
+            "alias": "Ioniq 5",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -2976,7 +3199,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"value\")  / 3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag = 'Hyundai')  AND $timeFilter GROUP BY time(1d) fill(0)",
+            "query": "SELECT integral(\"value\")  / 3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag = 'Ioniq 5')  AND $timeFilter GROUP BY time(1d) fill(0)",
             "rawQuery": true,
             "refId": "energyHyundai",
             "resultFormat": "time_series",
@@ -3007,7 +3230,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.4.1"
+      "version": "11.2.0"
     },
     {
       "type": "datasource",
@@ -3202,7 +3425,7 @@
     },
     {
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 24,
         "x": 0,
         "y": 38
@@ -3219,7 +3442,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 46
       },
       "id": 35,
       "panels": [],
@@ -3231,7 +3454,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 47
       },
       "id": 65,
       "libraryPanel": {
@@ -3244,7 +3467,7 @@
         "h": 3,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 52
       },
       "id": 57,
       "libraryPanel": {
@@ -3257,7 +3480,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 55
       },
       "id": 18,
       "libraryPanel": {
@@ -3289,6 +3512,6 @@
   "timezone": "",
   "title": "PV Today (Mobile)",
   "uid": "MRHnynkRz",
-  "version": 51,
+  "version": 52,
   "weekStart": ""
 }

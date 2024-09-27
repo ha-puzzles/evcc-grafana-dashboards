@@ -85,7 +85,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "red",
+                    "fixedColor": "purple",
                     "mode": "fixed"
                   }
                 }
@@ -100,7 +100,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -144,7 +144,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "10.4.1",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -767,6 +767,7 @@
           "graphMode": "none",
           "justifyMode": "auto",
           "orientation": "horizontal",
+          "percentChangeColorMode": "standard",
           "reduceOptions": {
             "calcs": [
               "mean"
@@ -781,7 +782,7 @@
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "10.4.1",
+        "pluginVersion": "11.1.0",
         "targets": [
           {
             "alias": "Speicher laden",
@@ -936,7 +937,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.4.1"
+      "version": "11.2.0"
     },
     {
       "type": "panel",
@@ -1052,7 +1053,7 @@
   "panels": [
     {
       "gridPos": {
-        "h": 13,
+        "h": 12,
         "w": 4,
         "x": 0,
         "y": 0
@@ -1083,6 +1084,7 @@
             "axisPlacement": "auto",
             "axisWidth": 80,
             "barAlignment": 1,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 100,
             "gradientMode": "none",
@@ -1094,7 +1096,7 @@
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -1134,7 +1136,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "red",
+                  "fixedColor": "purple",
                   "mode": "fixed"
                 }
               }
@@ -1149,7 +1151,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "orange",
+                  "fixedColor": "light-orange",
                   "mode": "fixed"
                 }
               }
@@ -1215,7 +1217,7 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 12,
         "w": 20,
         "x": 4,
         "y": 0
@@ -1229,6 +1231,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "single",
           "sort": "none"
         }
@@ -1499,10 +1502,10 @@
     },
     {
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 4,
         "x": 0,
-        "y": 13
+        "y": 12
       },
       "id": 44,
       "libraryPanel": {
@@ -1530,6 +1533,7 @@
             "axisPlacement": "auto",
             "axisWidth": 80,
             "barAlignment": 1,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 20,
             "gradientMode": "none",
@@ -1541,7 +1545,7 @@
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 10,
+            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -1588,10 +1592,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 7,
         "w": 20,
         "x": 4,
-        "y": 13
+        "y": 12
       },
       "id": 25,
       "options": {
@@ -1602,6 +1606,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "desc"
         }
@@ -1868,7 +1873,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 115
+                "value": 120
               }
             ]
           },
@@ -1904,7 +1909,7 @@
         "h": 11,
         "w": 8,
         "x": 0,
-        "y": 21
+        "y": 19
       },
       "id": 32,
       "options": {
@@ -1925,7 +1930,7 @@
           }
         ]
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.2.0",
       "targets": [
         {
           "alias": "PV Energie",
@@ -2044,7 +2049,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 115
+                "value": 120
               }
             ]
           },
@@ -2080,7 +2085,7 @@
         "h": 11,
         "w": 8,
         "x": 8,
-        "y": 21
+        "y": 19
       },
       "id": 35,
       "options": {
@@ -2101,7 +2106,7 @@
           }
         ]
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.2.0",
       "targets": [
         {
           "alias": "Einspeisung",
@@ -2218,7 +2223,7 @@
               },
               {
                 "id": "custom.width",
-                "value": 115
+                "value": 120
               }
             ]
           },
@@ -2254,7 +2259,7 @@
         "h": 11,
         "w": 8,
         "x": 16,
-        "y": 21
+        "y": 19
       },
       "id": 33,
       "options": {
@@ -2275,7 +2280,7 @@
           }
         ]
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.2.0",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -2406,7 +2411,7 @@
         "h": 9,
         "w": 4,
         "x": 0,
-        "y": 32
+        "y": 30
       },
       "id": 3,
       "options": {
@@ -2414,6 +2419,7 @@
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "mean"
@@ -2428,7 +2434,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.2.0",
       "targets": [
         {
           "alias": "Erzeugt/Tag",
@@ -2522,6 +2528,7 @@
             "axisPlacement": "auto",
             "axisWidth": 79,
             "barAlignment": 1,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 100,
             "gradientMode": "none",
@@ -2603,7 +2610,7 @@
         "h": 9,
         "w": 20,
         "x": 4,
-        "y": 32
+        "y": 30
       },
       "id": 2,
       "options": {
@@ -2614,6 +2621,7 @@
           "showLegend": true
         },
         "tooltip": {
+          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
         }
@@ -2693,10 +2701,10 @@
     },
     {
       "gridPos": {
-        "h": 9,
+        "h": 8,
         "w": 4,
         "x": 0,
-        "y": 41
+        "y": 39
       },
       "id": 37,
       "libraryPanel": {
@@ -2738,7 +2746,7 @@
         "h": 9,
         "w": 10,
         "x": 4,
-        "y": 41
+        "y": 39
       },
       "heatmap": {},
       "hideZeroBuckets": false,
@@ -2798,7 +2806,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.2.0",
       "reverseYBuckets": false,
       "targets": [
         {
@@ -2900,7 +2908,7 @@
         "h": 9,
         "w": 10,
         "x": 14,
-        "y": 41
+        "y": 39
       },
       "heatmap": {},
       "hideZeroBuckets": false,
@@ -2962,7 +2970,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "10.4.1",
+      "pluginVersion": "11.2.0",
       "reverseYBuckets": false,
       "targets": [
         {
@@ -3029,6 +3037,298 @@
       },
       "yBucketBound": "auto",
       "yBucketSize": 6
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 30,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Speicher laden"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Speicher entladen"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 4,
+        "y": 48
+      },
+      "id": 50,
+      "maxDataPoints": 50000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "alias": "Speicher laden",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "laden",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Speicher entladen",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "entladen",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Speicherladung/Monat",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 1,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 49,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Speicher Effizienz"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 10,
+        "x": 14,
+        "y": 48
+      },
+      "id": 49,
+      "maxDataPoints": 50000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.1.0",
+      "targets": [
+        {
+          "alias": "Speicher laden",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": true,
+          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "laden",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Speicher entladen",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "hide": true,
+          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter",
+          "rawQuery": true,
+          "refId": "entladen",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$entladen/$laden",
+          "hide": false,
+          "refId": "Speicher Effizienz",
+          "type": "math"
+        }
+      ],
+      "title": "Speichereffizienz/Monat",
+      "type": "timeseries"
     }
   ],
   "refresh": "",
@@ -3048,6 +3348,6 @@
   "timezone": "",
   "title": "PV Jahr",
   "uid": "Bdgi-xggk",
-  "version": 106,
+  "version": 129,
   "weekStart": ""
 }
