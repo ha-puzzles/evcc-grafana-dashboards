@@ -3,14 +3,16 @@
 # Aggregate date into daily chunks
 
 #consts
-INFLUXDB="evcc" # Name of the Influx DB, where you write the EVCC data into
-INFLUX_USER="" # Your user name. Empty, if no user is required.
-INFLUX_PASSWORD="none" # can be anything except an empty string in case no password is set
-HOME_BATTERY="true" # set to false in case your home does not use a battery
-DEBUG="false" # set to true to generate debug output
-LOADPOINT_1_TITLE="Garage" # title of loadpoint 1 as defined in evcc.yaml
-LOADPOINT_2_ENABLED=true # set to false in case you have just one loadpoint
-LOADPOINT_2_TITLE="Stellplatz" # title of loadpoint 2 as defined in evcc.yaml
+INFLUXDB="evcc" # Name of the Influx DB, where you write the EVCC data into.
+INFLUX_USER="" # Your user name. Empty, if no user is required. Default: ""
+INFLUX_PASSWORD="none" # can be anything except an empty string in case no password is set.  Default: "none"
+INFLUX_HOST="localhost" # If the script is run remotely, enter the host name of the remote host. Default: "localhost"
+INFLUX_PORT=8086 # The port to connect to influx. Default: 8086
+HOME_BATTERY="true" # Set to false in case your home does not use a battery.
+DEBUG="false" # Set to true to generate debug output.
+LOADPOINT_1_TITLE="Garage" # Title of loadpoint 1 as defined in evcc.yaml
+LOADPOINT_2_ENABLED=true # Set to false in case you have just one loadpoint
+LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
 
 #arguments
 AGGREGATE_YEAR=0
@@ -158,7 +160,7 @@ writeDailyEnergies() {
     esac
     logDebug "Query: $query"
 
-    queryResult=`influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
+    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
     logDebug "Query result (last row): $queryResult"
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
@@ -166,7 +168,7 @@ writeDailyEnergies() {
         energy=`echo "$queryResult" | cut -d " " -f 2`
         insertStatement="INSERT ${energyMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestampNano}"
         logDebug "Insert statement: $insertStatement"
-        influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
+        influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
     else
         logInfo "There is no data from $powerMeasurement for $energyMeasurement. This may be fine, if no data had been collected for this day and this measurement."
     fi
@@ -218,7 +220,7 @@ writeMonthlyEnergies () {
     query="SELECT sum(\"$field\") FROM $dailyEnergyMeasurement WHERE time >= '${fYear}-${fMonth}-01T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDays}T23:59:59Z'"
     logDebug "Query: $query"
 
-    queryResult=`influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
+    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
     logDebug "Query result (last row): $queryResult"
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
@@ -226,7 +228,7 @@ writeMonthlyEnergies () {
         energy=`echo "$queryResult" | cut -d " " -f 2`
         insertStatement="INSERT ${monthlyEnergyMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestampNano}"
         logDebug "Insert statement: $insertStatement"
-        influx -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
+        influx  -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
     else
         logInfo "There is no data from $dailyEnergyMeasurement for $monthlyEnergyMeasurement. This may be fine, if no data had been collected for this month and this measurement."
     fi    
