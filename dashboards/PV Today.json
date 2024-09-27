@@ -227,7 +227,7 @@
               "axisWidth": 50,
               "barAlignment": 0,
               "drawStyle": "line",
-              "fillOpacity": 10,
+              "fillOpacity": 25,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -295,7 +295,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "red",
+                    "fixedColor": "purple",
                     "mode": "fixed"
                   }
                 }
@@ -325,7 +325,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -379,15 +379,89 @@
         },
         "targets": [
           {
+            "alias": "PV",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT last(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < 20000) AND $timeFilter GROUP BY time(1m) fill(none)",
+            "rawQuery": true,
+            "refId": "PV Leistung",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
             "alias": "Netz",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") FROM \"gridPower\" WHERE $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Netzleistung",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Speicher",
@@ -395,23 +469,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") FROM \"batteryPower\" WHERE $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Batterieleistung",
-            "resultFormat": "time_series"
-          },
-          {
-            "alias": "PV",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "hide": false,
-            "query": "SELECT last(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < 20000) AND $timeFilter GROUP BY time(1m) fill(none)",
-            "rawQuery": true,
-            "refId": "PV Leistung",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Haus",
@@ -419,11 +512,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < 20000) AND $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Hausverbrauch",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Garage",
@@ -431,11 +555,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") * (-1) FROM \"chargePower\" WHERE(\"loadpoint\"::tag = 'Garage') AND $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Laden Garage",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Stellplatz",
@@ -443,11 +598,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT last(\"value\") * (-1) FROM \"chargePower\" WHERE(\"loadpoint\"::tag = 'Stellplatz') AND $timeFilter GROUP BY time(1m) fill(none)",
             "rawQuery": true,
             "refId": "Laden Stellplatz",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           }
         ],
         "type": "timeseries"
@@ -837,7 +1023,7 @@
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "red",
+                        "color": "purple",
                         "value": null
                       }
                     ]
@@ -866,7 +1052,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "10.2.3",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "alias": "Speicher",
@@ -1039,6 +1225,36 @@
                   }
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "netzbezug"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                },
+                {
+                  "id": "max"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "energieHaus"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                },
+                {
+                  "id": "max"
+                }
+              ]
             }
           ]
         },
@@ -1050,6 +1266,7 @@
             "showLegend": false
           },
           "tooltip": {
+            "maxHeight": 600,
             "mode": "multi",
             "sort": "none"
           }
@@ -1079,7 +1296,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
             "rawQuery": true,
             "refId": "netzbezug",
             "resultFormat": "time_series",
@@ -1184,6 +1401,7 @@
             "tags": []
           },
           {
+            "alias": "energieHaus",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -1300,7 +1518,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
+            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(1m) fill(0)) WHERE $timeFilter GROUP BY time(15m) fill(0)",
             "rawQuery": true,
             "refId": "eingespeist",
             "resultFormat": "time_series",
@@ -1333,6 +1551,188 @@
         ],
         "transparent": true,
         "type": "timeseries"
+      }
+    },
+    "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac": {
+      "name": "Ladepunkte Gauge",
+      "uid": "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_INFLUXDB}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "neutral": 0
+            },
+            "decimals": 2,
+            "links": [
+              {
+                "title": "EVCC",
+                "url": "http://home:7070/#/"
+              }
+            ],
+            "mappings": [],
+            "max": 0,
+            "min": -11,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "kW"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Garage"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "light-orange",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Stellplatz"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "dark-orange",
+                        "value": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "minVizHeight": 200,
+          "minVizWidth": 200,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto",
+          "text": {
+            "titleSize": 12,
+            "valueSize": 16
+          }
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "alias": "Garage",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [],
+            "hide": false,
+            "measurement": "chargePower",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "Garage",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [
+                    "*(-1)/1000"
+                  ],
+                  "type": "math"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "loadpoint::tag",
+                "operator": "=",
+                "value": "Garage"
+              }
+            ]
+          },
+          {
+            "alias": "Stellplatz",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [],
+            "hide": false,
+            "measurement": "chargePower",
+            "orderByTime": "ASC",
+            "policy": "autogen",
+            "refId": "Stellplatz",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [
+                    "*(-1)/1000"
+                  ],
+                  "type": "math"
+                }
+              ]
+            ],
+            "tags": [
+              {
+                "key": "loadpoint::tag",
+                "operator": "=",
+                "value": "Stellplatz"
+              }
+            ]
+          }
+        ],
+        "transparent": true,
+        "type": "gauge"
       }
     },
     "d-V6JqRgz": {
@@ -1405,7 +1805,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "red",
+                    "fixedColor": "purple",
                     "mode": "fixed"
                   }
                 }
@@ -1420,7 +1820,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
                 }
@@ -1459,13 +1859,13 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Stellplatz"
+                "options": "Ioniq 5"
               },
               "properties": [
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "dark-orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -1495,7 +1895,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "10.4.1",
+        "pluginVersion": "10.4.2",
         "targets": [
           {
             "alias": "PV",
@@ -1799,7 +2199,7 @@
             "tags": []
           },
           {
-            "alias": "Hyundai",
+            "alias": "Ioniq 5",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -1821,7 +2221,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"value\")  / 3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag = 'Hyundai')  AND $timeFilter GROUP BY time(1d) fill(0)",
+            "query": "SELECT integral(\"value\")  / 3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag = 'Ioniq 5')  AND $timeFilter GROUP BY time(1d) fill(0)",
             "rawQuery": true,
             "refId": "energyHyundai",
             "resultFormat": "time_series",
@@ -1844,188 +2244,6 @@
         ],
         "transparent": true,
         "type": "bargauge"
-      }
-    },
-    "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac": {
-      "name": "Ladepunkte Gauge",
-      "uid": "fad84f15-41e1-4f01-9ad1-f8c3a02bfaac",
-      "kind": 1,
-      "model": {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_INFLUXDB}"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "custom": {
-              "neutral": 0
-            },
-            "decimals": 2,
-            "links": [
-              {
-                "title": "EVCC",
-                "url": "http://home:7070/#/"
-              }
-            ],
-            "mappings": [],
-            "max": 0,
-            "min": -11,
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                }
-              ]
-            },
-            "unit": "kW"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Garage"
-              },
-              "properties": [
-                {
-                  "id": "thresholds",
-                  "value": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "orange",
-                        "value": null
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Stellplatz"
-              },
-              "properties": [
-                {
-                  "id": "thresholds",
-                  "value": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "dark-orange",
-                        "value": null
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "options": {
-          "minVizHeight": 200,
-          "minVizWidth": 200,
-          "orientation": "auto",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showThresholdLabels": false,
-          "showThresholdMarkers": true,
-          "sizing": "auto",
-          "text": {
-            "titleSize": 12,
-            "valueSize": 16
-          }
-        },
-        "pluginVersion": "10.2.3",
-        "targets": [
-          {
-            "alias": "Garage",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "groupBy": [],
-            "hide": false,
-            "measurement": "chargePower",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "refId": "Garage",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [
-                    "*(-1)/1000"
-                  ],
-                  "type": "math"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "loadpoint::tag",
-                "operator": "=",
-                "value": "Garage"
-              }
-            ]
-          },
-          {
-            "alias": "Stellplatz",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "groupBy": [],
-            "hide": false,
-            "measurement": "chargePower",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "refId": "Stellplatz",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [
-                    "*(-1)/1000"
-                  ],
-                  "type": "math"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "loadpoint::tag",
-                "operator": "=",
-                "value": "Stellplatz"
-              }
-            ]
-          }
-        ],
-        "transparent": true,
-        "type": "gauge"
       }
     },
     "Blh9JqRRk": {
@@ -2124,7 +2342,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
                 }
@@ -2133,17 +2351,13 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "battery_level"
+                "options": "Ioniq 5"
               },
               "properties": [
                 {
-                  "id": "displayName",
-                  "value": "Tesla (tm)"
-                },
-                {
                   "id": "color",
                   "value": {
-                    "fixedColor": "orange",
+                    "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
                 }
@@ -2163,6 +2377,7 @@
             "showLegend": true
           },
           "tooltip": {
+            "maxHeight": 600,
             "mode": "multi",
             "sort": "none"
           }
@@ -2240,7 +2455,7 @@
             "tags": []
           },
           {
-            "alias": "Hyundai",
+            "alias": "Ioniq 5",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -2250,7 +2465,7 @@
             "measurement": "vehicleSoc",
             "orderByTime": "ASC",
             "policy": "autogen",
-            "query": "SELECT max(\"value\") FROM \"vehicleSoc\" WHERE (\"vehicle\"::tag = 'Hyundai') AND $timeFilter GROUP BY time(5m) fill(none)",
+            "query": "SELECT last(\"value\") FROM \"vehicleSoc\" WHERE (\"vehicle\"::tag = 'Ioniq 5') AND $timeFilter GROUP BY time(5m) fill(none)",
             "rawQuery": true,
             "refId": "Hyundai",
             "resultFormat": "time_series",
@@ -2295,6 +2510,7 @@
               "axisPlacement": "left",
               "axisWidth": 50,
               "barAlignment": 0,
+              "barWidthFactor": 0.6,
               "drawStyle": "line",
               "fillOpacity": 80,
               "gradientMode": "none",
@@ -2369,7 +2585,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "red",
+                    "fixedColor": "purple",
                     "mode": "fixed"
                   }
                 }
@@ -2751,7 +2967,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.4.1"
+      "version": "11.2.0"
     },
     {
       "type": "datasource",
@@ -2867,7 +3083,7 @@
     {
       "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 5,
         "x": 0,
         "y": 0
       },
@@ -2879,9 +3095,9 @@
     },
     {
       "gridPos": {
-        "h": 18,
-        "w": 14,
-        "x": 6,
+        "h": 20,
+        "w": 16,
+        "x": 5,
         "y": 0
       },
       "id": 2,
@@ -2892,9 +3108,9 @@
     },
     {
       "gridPos": {
-        "h": 6,
-        "w": 4,
-        "x": 20,
+        "h": 9,
+        "w": 3,
+        "x": 21,
         "y": 0
       },
       "id": 64,
@@ -2906,7 +3122,7 @@
     {
       "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 5,
         "x": 0,
         "y": 5
       },
@@ -2919,9 +3135,9 @@
     {
       "gridPos": {
         "h": 3,
-        "w": 4,
-        "x": 20,
-        "y": 6
+        "w": 3,
+        "x": 21,
+        "y": 9
       },
       "id": 51,
       "libraryPanel": {
@@ -2931,21 +3147,8 @@
     },
     {
       "gridPos": {
-        "h": 12,
-        "w": 4,
-        "x": 20,
-        "y": 9
-      },
-      "id": 40,
-      "libraryPanel": {
-        "uid": "d-V6JqRgz",
-        "name": "Energie"
-      }
-    },
-    {
-      "gridPos": {
         "h": 5,
-        "w": 6,
+        "w": 5,
         "x": 0,
         "y": 10
       },
@@ -2957,8 +3160,21 @@
     },
     {
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 11,
+        "w": 3,
+        "x": 21,
+        "y": 12
+      },
+      "id": 40,
+      "libraryPanel": {
+        "uid": "d-V6JqRgz",
+        "name": "Energie"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 5,
         "x": 0,
         "y": 15
       },
@@ -2971,9 +3187,9 @@
     {
       "gridPos": {
         "h": 3,
-        "w": 14,
-        "x": 6,
-        "y": 18
+        "w": 16,
+        "x": 5,
+        "y": 20
       },
       "id": 45,
       "libraryPanel": {
@@ -2999,6 +3215,6 @@
   "timezone": "",
   "title": "PV Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 111,
+  "version": 118,
   "weekStart": ""
 }
