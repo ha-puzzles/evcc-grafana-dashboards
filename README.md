@@ -52,6 +52,7 @@ Hier nur die groben Schritte, da sie je nach Plattform stark variieren:
 
 5. Daten Aggregation Script wie [unter 'scripts beschrieben](./scripts/README.md) anpassen und installieren (ohne dieses werden die Dashboards für Monat, Jahr und Finanz nicht laufen).
 
+
 ## Upgrade
 
 Falls schon eine ältere Version installiert worden ist, hier die Schritte um die neuere Version zu installieren.
@@ -73,8 +74,6 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
 8. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
 
 
-
-
 ## FAQ
 
 ### Wird es Support für Influx 2 geben?
@@ -83,8 +82,14 @@ Leider nur partiell. Wer Influx 2 mit FluxQL nutzt kann die Today Dashboards nut
 
 ### Wie führe ich das Aggregation Script unter HAOS aus?
 
-Gute Frage. Leider ist mir derzeit keine Möglichkeit bekannt unter HAOS Scripte auszuführen. Eine bessere Möglichkeit als ein Shell Script wäre die Nutzung von Continuous Queries. Leider stoße ich hier an andere Grenzen, da InfluxQL Funktionen wie $TODAY fehlen um die entsprechenden Queries formulieren zu können. Die einzige Möglichkeit, die ich hier sehe ist das Shell Script auf einem externen Linux System zu konfigurieren, dass sich remote mit der Influx DB auf dem HAOS System verbindet.
+Gute Frage. Leider ist mir derzeit keine Möglichkeit bekannt unter HAOS Shell Scripte direkt auszuführen. Wer eine Möglichkeit findet bitte Bescheid geben. 
 
-## Danke
+Was ich evaluiert habe ist die Nutzung von Continuous Queries innerhalb von Influx. Leider stoße ich hier an andere Grenzen, da InfluxQL Funktionen wie $TODAY fehlen um die entsprechenden Queries formulieren zu können. 
+
+Die einzige Möglichkeit, die ich hier sehe ist das Shell Script auf einem externen Linux System zu konfigurieren, das sich remote mit der Influx DB auf dem HAOS System verbindet. Siehe die [Dokumentation des Aggregations Scriptes](./scripts/README.md) wie man es so konfiguriert, dass man es auf einem externen Linux System laufen lassen kann.
+
+
+
+# Danke
 
 Herzlichen Dank an alle, die im Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussions/4213) im EVCC Repository aktiv mitgeholfen haben. Ohne Eure Hilfe wäre das hier entweder nichts geworden oder hätte deutlich länger gedauert.
