@@ -244,8 +244,8 @@ aggregateMonth() {
     writeMonthlyEnergies "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "carDailyEnergy" "carMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
-        if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-    writeMonthlyEnergies "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
+    if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
+        writeMonthlyEnergies "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
     else
         logDebug "Loadpoint 2 is disabled."
     fi
