@@ -71,6 +71,9 @@ Monatliche Statistiken.
 
 Jährliche Statistiken.
 
+> [!NOTE]
+> Dieses Dashboard benötigt monatliche und tägliche aggregierte Daten. Siehe [scripts](../scripts/) für das Aggregierungsskript.
+
 ![Jahr Screenshot](img/jahr.png)
 
 
@@ -85,21 +88,27 @@ Jährliche Statistiken.
   - In den Queries, der Alias, wie ihr die Loadpoints angezeigt haben möchtet
     - Dann die neuen Namen in den Overrides aktualisieren ("Fields with name")
 
+
+# PV All-time
+
+*(Ehemals: PV-Finanz Dashboard)*
+
+Statistiken über den gesamten erfassten  Datenzeitraum bestehend aus zwei Teilen:
+
+- Energiestatistiken wie ein Jahr-zu-Jahr Vergleich der monatlichen Erträge.
+- Finanzielle Statistiken zur Amortisation der Anlage. Sollte noch kein ganzes Jahr in der Datenbank vorhanden sein, wird anhand der aktuellen Daten eine Prognose für ein ganzes Jahr erstellt. Diese Prognose ist linear und natürlich sehr stark von der Jahreszeit der vorhanden Daten beeinflusst.
+
+
 > [!NOTE]
 > Dieses Dashboard benötigt monatliche aggregierte Daten. Siehe [scripts](../scripts/) für das Aggregierungsskript.
 
-
-# PV Finanz
-
-Finanzielle Statistiken zur Amortisation der Anlage. Sollte noch kein ganzes Jahr in der Datenbank vorhanden sein, wird anhand der aktuellen Daten eine Prognose für ein ganzes Jahr erstellt. Diese Prognose ist linear und natürlich sehr stark von der Jahreszeit der vorhanden Daten beeinflusst.
-
-> [!NOTE]
-> Dieses Dashboard benötigt monatliche aggregierte Daten. Siehe [scripts](../scripts/) für das Aggregierungsskript.
-
-![alt text](img/finanz.png)
+![Jahr Screenshot](img/all-time.png)
 
 
 ## Was anzupassen ist
 
 - Dashboard Settings / Variables
   - Default Werte für Deine Situation anpassen: Anschaffungspreis, Strompreis,...
+- Dashboard Zeitraum, wenn ein weiteres Jahr dazu kommt.
+- Monatlicher Ertag
+  - Overrides für Jahr Display Label, wenn ein neues Jahr dazukommt solange grafana/grafana#87332 noch nicht gefixt ist.
