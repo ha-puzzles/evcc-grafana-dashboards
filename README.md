@@ -16,13 +16,15 @@ Ich habe versucht alle notwendigen Anpassungen unter ['dashboards'](dashboards/R
 
 ## Installation
 
+Installationsschritte für eine **frische, neue Installation**. Sollte in der Grafana Instanz schon eine ältere Version meines Dashboards installiert sein, bitte unten unter [Upgrade](#upgrade) weitermachen.
+
 ### Grundvoraussetzungen
 
 Folgende Grundvoraussetzungen müssen erfüllt sein:
 
 - EVCC: https://evcc.io/
 - Influx DB v1.8 (InfluxDB 2.x wird nicht unterstützt, siehe FAQ): https://www.influxdata.com/
-- Grafana: https://grafana.com/
+- Grafana: https://grafana.com/ (aktuell getestete Version: 11.2.0)
 - Grundlegende Linux Kenntnisse oder die Bereitschaft sich diese anzueignen.
 - Die Möglichkeit ein Bash Shell Script regelmäßig per Crontab ausführen zu können (HAOS Benutzer, siehe FAQ)
 - Bereitschaft sich etwas in Grafana einzuarbeiten.
@@ -43,12 +45,34 @@ Hier nur die groben Schritte, da sie je nach Plattform stark variieren:
 
 2. Dashboard [JSON Dateien](./dashboards) von diesem GitHub herunterladen.
 
-3. JSON Dateien mittels 'Import' in Grafana importieren.
+3. JSON Dateien mittels 'New/Import' in Grafana importieren.
 ![Import](./img/import.png)
 
 4. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
 
 5. Daten Aggregation Script wie [unter 'scripts beschrieben](./scripts/README.md) anpassen und installieren (ohne dieses werden die Dashboards für Monat, Jahr und Finanz nicht laufen).
+
+## Upgrade
+
+Falls schon eine ältere Version installiert worden ist, hier die Schritte um die neuere Version zu installieren.
+
+> [!WARNING]
+> Eigene Anpassungen an meinen Dashboards gehen bei diesem Prozess leider verloren und die Dashboards müssen erneut angepasst werden. Der Upgrade Prozess ist daher leider nicht so einfach, wie ich es mir wünschen würde.
+
+1. Ein Backup der aktuellen Grafana Datenbank erstellen für den Fall der Fälle.
+   1. Grafana stoppen: `sudo systemctl stop grafana-server`
+   2. Ein Backup der Grafana Datenbank in /tmp erstellen: `cp -rv /usr/lib/grafana /tmp`
+   3. Grafana starten: `sudo systemctl start grafana-server`
+2. Grafana im Browser öffnen und im Menü auf 'Dashboards' clicken.
+3. Den Ordner PV löschen, falls ihr hier keine eigenen Dashboards abgelegt habt. Ansonsten die einzelnen Dashboards, die ihr von mir bekommen habt, löschen.
+   ![PV Ordner löschen](./img/delete-pv-folder.png)
+4. Auf 'Dashboards/Library Panels' gehen. Dort alle Library Panels löschen, die von mir kommen.
+5. Dashboard [JSON Dateien](./dashboards) von diesem GitHub herunterladen.
+6. Zurück auf 'Dashboards' gehen.
+7. JSON Dateien mittels 'New/Import' in Grafana importieren.
+8. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
+
+
 
 
 ## FAQ
