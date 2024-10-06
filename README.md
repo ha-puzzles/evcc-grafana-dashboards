@@ -35,9 +35,17 @@ Folgende Grundvoraussetzungen müssen erfüllt sein:
 Hier nur die groben Schritte, da sie je nach Plattform stark variieren:
 
 1. EVCC installieren und konfigurieren: https://docs.evcc.io/docs/installation
-1. Influx DB 1.8.x installieren: https://docs.influxdata.com/influxdb/v1/introduction/install/
-2. EVCC konfigurieren, dass Daten in die Influx geschrieben werden: https://docs.evcc.io/docs/reference/configuration/influx/
-3. Grafana installieren: https://grafana.com/docs/grafana/latest/setup-grafana/installation/
+2. Influx DB 1.8.x installieren: https://docs.influxdata.com/influxdb/v1/introduction/install/
+3. Datenbank für EVCC anlegen. Auf der Kommandozeile den Influx client mit dem Kommando `influx` ausführen. Dann folgende Kommandos eingeben:
+   ```
+   create database evcc
+   use evcc
+   create user grafana with password '' with all privileges
+   grant all privileges on evcc to grafana
+   ```
+   Damit legen wir eine Datenbank mit dem Namen 'evcc' an und fügen dieser Datenbank einen User namens 'grafana' hinzu, der ohne Passwort vollen Zugriff hat. Dies ist natürlich nicht das sicherste Setup und es wird zumindest empfohlen dem User 'grafana' ein Passwort zu geben.
+5. EVCC konfigurieren, dass Daten in die Influx geschrieben werden: https://docs.evcc.io/docs/reference/configuration/influx/
+6. Grafana installieren: https://grafana.com/docs/grafana/latest/setup-grafana/installation/
 
 Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussions/4213) im EVCC Repository kann sehr hilfreich sein.
 
