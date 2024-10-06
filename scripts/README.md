@@ -50,4 +50,11 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
 
    Damit wird dann jede Nacht der gestrige Tage aggregiert, sowie jede volle Stunde einmal der aktuelle Tag. Die Ausgaben werden in der Datei `/var/log/evcc-grafana-dashboards.log` geloggt.
 
+9. Anlegen und Setzen der permissions des Log Files:
+   ```bash
+   sudo touch /var/log/evcc-grafana-dashboards.log
+   sudo chown <USERNAME> /var/log/evcc-grafana-dashboards.log
+   ```
+   Dabei ist `<USERNAME>` durch den Loginnamen des Benutzers zu ersetzen unter dem in Schritt 8 der Befehl `crontab -e` ausgeführt wurde.
+
 
