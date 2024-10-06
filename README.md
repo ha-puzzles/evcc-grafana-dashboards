@@ -34,9 +34,12 @@ Folgende Grundvoraussetzungen müssen erfüllt sein:
 
 Hier nur die groben Schritte, da sie je nach Plattform stark variieren:
 
-1. Influx DB 1.8.x installieren.
-3. EVCC konfigurieren, dass Daten in die Influx geschrieben werden: https://docs.evcc.io/docs/reference/configuration/influx/
-4. Grafana installieren
+1. EVCC installieren und konfigurieren: https://docs.evcc.io/docs/installation
+1. Influx DB 1.8.x installieren: https://docs.influxdata.com/influxdb/v1/introduction/install/
+2. EVCC konfigurieren, dass Daten in die Influx geschrieben werden: https://docs.evcc.io/docs/reference/configuration/influx/
+3. Grafana installieren: https://grafana.com/docs/grafana/latest/setup-grafana/installation/
+
+Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussions/4213) im EVCC Repository kann sehr hilfreich sein.
 
 ### Installation der Dashboards in Grafana
 
