@@ -40,17 +40,30 @@ Hier nur die groben Schritte, da sie je nach Plattform stark variieren:
 
 ### Installation der Dashboards in Grafana
 
-1. Data Source für Influx DB anlegen:
-![Data Source anlegen](./img/create-datasource.png)
+1. Data Source unter 'Connections /  Data Sources' anlegen. 
+   1. Oben rechts auf '+ Add new data source' clicken.
+   2. 'InfluxDB' auswählen.
+   3. Daten wie im Bild unten eintragen. 'URL', 'Database', 'User' und 'Passwort' müssen natürlich passend auf die eigene DB angepasst werden.
+      ![Data Source anlegen](./img/create-datasource.png)
+   4. Auf 'Save & test' clicken.
 
-2. Dashboard [JSON Dateien](./dashboards) von diesem GitHub herunterladen.
+2. Dashboards über den Grafana.com Community Store installieren:
+   1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
+      ![Import dashboard](./img/import.png)
+   2. Unter "Find and import dashboards..." folgende Dashboards mit folgenden IDs importieren:
+      | Dashboard                | ID        |
+      | ------------------------ | --------- |
+      | EVCC: PV All-time:       | **22024** |
+      | EVCC: PV Jahr:           | **22025** |
+      | EVCC: PV Monat:          | **22026** |
+      | EVCC: PV Today (Mobile): | **22027** |
+      | EVCC: PV Today:          | **22028** |
 
-3. JSON Dateien mittels 'New/Import' in Grafana importieren.
-![Import](./img/import.png)
+      Bei jedem Import jeweils die oben angelegte InfluxDB Data Source auswählen.
 
-4. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
+3. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
 
-5. Daten Aggregation Script wie [unter 'scripts beschrieben](./scripts/README.md) anpassen und installieren (ohne dieses werden die Dashboards für Monat, Jahr und Finanz nicht laufen).
+4. Daten Aggregation Script wie [unter 'scripts beschrieben](./scripts/README.md) anpassen und installieren (ohne dieses werden die Dashboards für Monat, Jahr und Finanz nicht laufen).
 
 
 ## Upgrade
@@ -65,12 +78,22 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
    2. Ein Backup der Grafana Datenbank in /tmp erstellen: `cp -rv /usr/lib/grafana /tmp`
    3. Grafana starten: `sudo systemctl start grafana-server`
 2. Grafana im Browser öffnen und im Menü auf 'Dashboards' clicken.
-3. Den Ordner PV löschen, falls ihr hier keine eigenen Dashboards abgelegt habt. Ansonsten die einzelnen Dashboards, die ihr von mir bekommen habt, löschen.
-   ![PV Ordner löschen](./img/delete-pv-folder.png)
+3. Alle EVCC PV Dashboards löschen.
+   ![PV Ordner löschen](./img/delete-dashboards.png)
 4. Auf 'Dashboards/Library Panels' gehen. Dort alle Library Panels löschen, die von mir kommen.
-5. Dashboard [JSON Dateien](./dashboards) von diesem GitHub herunterladen.
-6. Zurück auf 'Dashboards' gehen.
-7. JSON Dateien mittels 'New/Import' in Grafana importieren.
+2. Dashboards über den Grafana.com Community Store installieren:
+   1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
+      ![Import dashboard](./img/import.png)
+   2. Unter "Find and import dashboards..." folgende Dashboards mit folgenden IDs importieren:
+      | Dashboard                | ID        |
+      | ------------------------ | --------- |
+      | EVCC: PV All-time:       | **22024** |
+      | EVCC: PV Jahr:           | **22025** |
+      | EVCC: PV Monat:          | **22026** |
+      | EVCC: PV Today (Mobile): | **22027** |
+      | EVCC: PV Today:          | **22028** |
+
+      Bei jedem Import jeweils die oben angelegte InfluxDB Data Source auswählen.
 8. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
 
 
@@ -78,7 +101,9 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
 
 ### Wird es Support für Influx 2 geben?
 
-Leider nur partiell. Wer Influx 2 mit FluxQL nutzt kann die Today Dashboards nutzen. Alle Dashboards, die aggregierte Daten brauchen werden allerdings nicht unterstützt, da ich derzeit keine Möglichkeit sehe mit dem Influx 2 CLI direkte Queries auszuführen (siehe #14). Eine Unterstützung der Query Language Flux bedeutet einen kompletten Rewrite. Diesen werde ich aber nicht machen, da Influx 2 mit Flux eine Einbahnstraße geworden ist. Siehe auch: [The Plan for InfluxDB 3.0 Open Source](https://www.influxdata.com/blog/the-plan-for-influxdb-3-0-open-source/)
+Leider nur sehr eingeschränkt und daher nicht zu empfehlen. 
+
+Wer Influx 2 mit FluxQL nutzt kann die Today Dashboards nutzen. Alle Dashboards, die aggregierte Daten brauchen werden allerdings nicht unterstützt, da ich derzeit keine Möglichkeit sehe mit dem Influx 2 CLI direkte Queries auszuführen (siehe #14). Eine Unterstützung der Query Language Flux bedeutet einen kompletten Rewrite. Diesen Rewrite plane ich allerdings nicht zu machen, da Influx 2 mit Flux eine Einbahnstraße geworden ist. Siehe auch: [The Plan for InfluxDB 3.0 Open Source](https://www.influxdata.com/blog/the-plan-for-influxdb-3-0-open-source/)
 
 ### Wie führe ich das Aggregation Script unter HAOS aus?
 
