@@ -42,6 +42,7 @@ Hier nur die groben Schritte, da sie je nach Plattform stark variieren:
    use evcc
    create user grafana with password '' with all privileges
    grant all privileges on evcc to grafana
+   exit
    ```
    Damit legen wir eine Datenbank mit dem Namen 'evcc' an und fügen dieser Datenbank einen User namens 'grafana' hinzu, der ohne Passwort vollen Zugriff hat. Dies ist natürlich nicht das sicherste Setup und es wird zumindest empfohlen dem User 'grafana' ein Passwort zu geben.
 5. EVCC konfigurieren, dass Daten in die Influx geschrieben werden: https://docs.evcc.io/docs/reference/configuration/influx/
