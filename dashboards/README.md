@@ -29,6 +29,9 @@ Real-time Statistiken des aktuellen Tages für Desktops oder Tablets.
   - Name der Fahrzeuge in den Queries, so wie der Titel, der in EVCC konfiguriert wurde.
     - Dann die neuen Namen in den Overrides aktualisieren ("Fields with name")
   - In den Queries habe ich die Werte auf kleiner als 20 kW beschränkt um falsche Werte herauszufiltern. Falls Eure Leistungen hin und wieder 20kW überschreiten, müsst ihr diese Einschränkung in den Queries erhöhen.
+- Gegebenfalls Zeitzone, wenn das System sich nicht in der Zeitzone "Europe/Berlin" befindet.
+  - In den Queries muss die Zeitzone ('tz' parameter) angepasst werden. Gültige Werte für die Zeitzone finden man in [dieser Liste auf Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) in the Spalte 'TZ Identifier'.
+  - Die Zeitzone des Dashboards. Dazu in Grafana auf den Zeitselektor klicken und dort unten die Zeitzone anpassen. Dann das Dashboard abspeichern.
 
 
 # PV Today (mobile)
@@ -42,6 +45,8 @@ Real-time Statistiken des aktuellen Tages, optimiert für mobile Geräte.
 - Dashboard Settings / Links
   - Link auf EVCC
   - Link auf die Seite Eures Wechselrichterportals
+- Gegebenfalls Zeitzone, wenn das System sich nicht in der Zeitzone "Europe/Berlin" befindet.
+  - Die Zeitzone des Dashboards. Dazu in Grafana auf den Zeitselektor klicken und dort unten die Zeitzone anpassen. Dann das Dashboard abspeichern.
 
 Die restlichen Statistiken wurden bereits mit der Desktop Ansicht oben angepasst, da das mobile Dashboard dieselben Library Panels benutzt
 
@@ -65,6 +70,9 @@ Monatliche Statistiken.
   - Namen der Loadpoints in den Queries, so wie ihr sie in EVCC konfiguriert habt.
   - In den Queries, der Alias, wie ihr die Loadpoints angezeigt haben möchtet
     - Dann die neuen Namen in den Overrides aktualisieren ("Fields with name")
+- Gegebenfalls Zeitzone, wenn das System sich nicht in der Zeitzone "Europe/Berlin" befindet.
+  - In den Queries muss die Zeitzone ('tz' parameter) angepasst werden. Gültige Werte für die Zeitzone finden man in [dieser Liste auf Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) in the Spalte 'TZ Identifier'.
+  - Die Zeitzone des Dashboards. Dazu in Grafana auf den Zeitselektor klicken und dort unten die Zeitzone anpassen. Dann das Dashboard abspeichern.
 
 
 # PV Jahr
@@ -87,6 +95,9 @@ Jährliche Statistiken.
   - Namen der Loadpoints in den Queries, so wie ihr sie in EVCC konfiguriert habt.
   - In den Queries, der Alias, wie ihr die Loadpoints angezeigt haben möchtet
     - Dann die neuen Namen in den Overrides aktualisieren ("Fields with name")
+- Gegebenfalls Zeitzone, wenn das System sich nicht in der Zeitzone "Europe/Berlin" befindet.
+  - In den Queries muss die Zeitzone ('tz' parameter) angepasst werden. Gültige Werte für die Zeitzone finden man in [dieser Liste auf Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) in the Spalte 'TZ Identifier'.
+  - Die Zeitzone des Dashboards. Dazu in Grafana auf den Zeitselektor klicken und dort unten die Zeitzone anpassen. Dann das Dashboard abspeichern.
 
 
 # PV All-time
@@ -112,3 +123,6 @@ Statistiken über den gesamten erfassten  Datenzeitraum bestehend aus zwei Teile
 - Dashboard Zeitraum, wenn ein weiteres Jahr dazu kommt.
 - Monatlicher Ertag
   - Overrides für Jahr Display Label, wenn ein neues Jahr dazukommt solange grafana/grafana#87332 noch nicht gefixt ist.
+- Gegebenfalls Zeitzone, wenn das System sich nicht in der Zeitzone "Europe/Berlin" befindet.
+  - In den Queries muss die Zeitzone ('tz' parameter) angepasst werden. Gültige Werte für die Zeitzone finden man in [dieser Liste auf Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) in the Spalte 'TZ Identifier'.
+  - Die Zeitzone des Dashboards. Dazu in Grafana auf den Zeitselektor klicken und dort unten die Zeitzone anpassen. Dann das Dashboard abspeichern.

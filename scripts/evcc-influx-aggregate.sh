@@ -13,6 +13,7 @@ DEBUG="false" # Set to true to generate debug output.
 LOADPOINT_1_TITLE="Garage" # Title of loadpoint 1 as defined in evcc.yaml
 LOADPOINT_2_ENABLED=true # Set to false in case you have just one loadpoint
 LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
+TIMEZONE="Europe/Berlin" #Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 
 #arguments
 AGGREGATE_YEAR=0
@@ -23,6 +24,7 @@ AGGREGATE_MONTH_MONTH=0
 AGGREGATE_DAY_YEAR=0
 AGGREGATE_DAY_MONTH=0
 AGGREGATE_DAY_DAY=0
+DELETE_AGGREGATIONS=false
 
 # Maps of number of days per month. February leap year is updated later
 declare -A DAYS_OF_MONTH
@@ -40,16 +42,20 @@ DAYS_OF_MONTH[11]=30
 DAYS_OF_MONTH[12]=31
 
 logError() {
-    echo "[ERROR] $1"
+    echo "[ERROR]   $1"
+}
+
+logWarning() {
+    echo "[WARNING] $1"
 }
 
 logInfo() {
-    echo "[INFO]  $1"
+    echo "[INFO]    $1"
 }
 
 logDebug() {
     if [ "$DEBUG" == "true" ]; then
-        echo "[DEBUG] $1"
+        echo "[DEBUG]   $1"
     fi
 }
 
@@ -98,12 +104,17 @@ parseArguments() {
         logDebug "Aggregating today"
         return 0
     fi
+    if [ "$1" == '--delete-aggregations' ]; then
+        DELETE_AGGREGATIONS=true
+        logDebug "Deleting aggregations."
+        return 0
+    fi
     printUsage
     exit 1
 }
 
 printUsage() {
-    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --yesterday | --today]"
+    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --yesterday | --today | --delete-aggregations]"
 }
 
 isLeapYear() {
@@ -138,20 +149,28 @@ writeDailyEnergies() {
     printf -v fMonth "%02d" $month
     printf -v fDay "%02d" $day
 
+    # Convert time to UTC for local timezone
+    fromTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T00:00:00`" -u +%FT%R:00Z)
+    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T23:59:59`" -u +%FT%R:00Z)
+    timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
 
     query=""
     case $mode in
         all)
             logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"$field\") / 3600 FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere GROUP BY time(1d) fill(none)"
+            query="SELECT integral(\"$field\") / 3600 FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
             ;;
         positives)
             logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of positive values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(0)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(0)"
+            # query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
+            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
+            
             ;;
         negatives)
             logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of negative values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE time >= '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDay}T23:59:59Z' $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE time > '${fYear}-${fMonth}-${fDay}T00:00:00Z' AND time < '${fYear}-${fMonth}-${fDay}T23:59:59Z' GROUP BY time(1d) fill(0)"
+            # query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
+            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
+            
             ;;
         *)
             logError "Unknown query mode: '$mode'."
@@ -215,9 +234,14 @@ writeMonthlyEnergies () {
     printf -v fMonth "%02d" $month
     printf -v fDays "%02d" $numDays
 
+    # Convert time to UTC for local timezone
+    fromTime=$(date -d "`date -d ${fYear}-${fMonth}-01T00:00:00`" -u +%FT%R:00Z)
+    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDays}T23:59:59`" -u +%FT%R:00Z)
+    timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
+
     logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailyEnergyMeasurement into ${monthlyEnergyMeasurement}"
     logDebug "Month has $numDays days."
-    query="SELECT sum(\"$field\") FROM $dailyEnergyMeasurement WHERE time >= '${fYear}-${fMonth}-01T00:00:00Z' AND time <= '${fYear}-${fMonth}-${fDays}T23:59:59Z'"
+    query="SELECT sum(\"$field\") FROM $dailyEnergyMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
     logDebug "Query: $query"
 
     queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
@@ -257,6 +281,47 @@ aggregateMonth() {
         writeMonthlyEnergies "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
     else
         logDebug "Home battery aggregation is disabled"
+    fi
+}
+
+dropMeasurement() {
+    measurement=$1
+    logInfo "Deleting measurement $measurement"
+    dropStatement="DROP MEASUREMENT ${measurement}"
+    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$dropStatement"
+}
+
+dropAggregations() {
+    logWarning "You are about to delete all aggregated measurements. You will lose all historical measurements for the times, where realtime data is no longer available."
+    logWarning "Are you sure you want to delete all aggregated data? Type 'YES' to continue."
+    read confirmation
+    if [ "$confirmation" == "YES" ]; then
+        logInfo "Deleting all aggregated measurements in 3 seconds."
+        sleep 1
+        logInfo "Deleting all aggregated measurements in 2 seconds."
+        sleep 1
+        logInfo "Deleting all aggregated measurements in 1 seconds."
+        sleep 1
+        dropMeasurement "pvDailyEnergy"
+        dropMeasurement "homeDailyEnergy"
+        dropMeasurement "carDailyEnergy"
+        dropMeasurement "loadpoint1DailyEnergy"
+        dropMeasurement "loadpoint2DailyEnergy"
+        dropMeasurement "gridDailyEnergy"
+        dropMeasurement "feedInDailyEnergy"
+        dropMeasurement "dischargeDailyEnergy"
+        dropMeasurement "chargeDailyEnergy"
+        dropMeasurement "pvMonthlyEnergy"
+        dropMeasurement "homeMonthlyEnergy"
+        dropMeasurement "carMonthlyEnergy"
+        dropMeasurement "loadpoint1MonthlyEnergy"
+        dropMeasurement "loadpoint2MonthlyEnergy"
+        dropMeasurement "gridMonthlyEnergy"
+        dropMeasurement "feedInMonthlyEnergy"
+        dropMeasurement "dischargeMonthlyEnergy"
+        dropMeasurement "chargeMonthlyEnergy"
+    else
+        logInfo "Deletion of aggregated measurements aborted."
     fi
 }
 
@@ -316,6 +381,8 @@ elif [ "$AGGREGATE_TODAY" == "true" ]; then
     fi
     aggregateDay $year $month $day
     aggregateMonth $year $month
+elif [ "$DELETE_AGGREGATIONS" == "true" ]; then
+    dropAggregations
 fi
 
 ### END
