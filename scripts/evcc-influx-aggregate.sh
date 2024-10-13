@@ -198,7 +198,7 @@ aggregateDay() {
     amonth=$2
     aday=$3
 
-    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`: Aggregating daily metrics."
+    logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
 
     writeDailyEnergies "all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
@@ -262,7 +262,7 @@ aggregateMonth() {
     ayear=$1
     amonth=$2
 
-    logInfo "`printf "%04d" $ayear`-`printf "%02d" $amonth`: Aggregating monthly metrics."
+    logInfo "`printf "Aggregating monthly metrics for %04d" $ayear`-`printf "%02d" $amonth`"
 
     writeMonthlyEnergies "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
@@ -330,7 +330,9 @@ dropAggregations() {
 ###############################################################################
 parseArguments $@
 
-
+if [ "$DELETE_AGGREGATIONS" != "true" ]; then
+    logInfo "[`date '+%F %T'`] Starting aggregation..."
+fi
 
 if [ "$AGGREGATE_YEAR" -ne 0 ]; then
     if isLeapYear $AGGREGATE_YEAR; then
