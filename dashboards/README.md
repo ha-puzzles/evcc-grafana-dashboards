@@ -14,13 +14,13 @@ Real-time Statistiken des aktuellen Tages für Desktops oder Tablets.
   - Namen der Loadpoints in den Queries, so wie ihr sie in EVCC konfiguriert habt.
   - In den Queries, der Alias, wie ihr die Loadpoints angezeigt haben möchtet
     - Dann die neuen Namen in den Overrides aktualisieren ("Fields with name")
-- Batterie- und Speicherverlauf
-  - Name der Fahrzeuge in den Queries, so wie der Titel, der in EVCC konfiguriert wurde.
-    - Dann die neuen Namen in den Overrides aktualisieren ("Fields with name")
 - Verbrauchsverlauf
   - In den Queries habe ich die Werte auf kleiner als 20 kW beschränkt um falsche Werte herauszufiltern. Falls Eure Leistungen hin und wieder 20kW überschreiten, müsst ihr diese Einschränkung in den Queries erhöhen.
 - Energieverteilung
   - In den Queries habe ich die Werte auf kleiner als 20 kW beschränkt um falsche Werte herauszufiltern. Falls Eure Leistungen hin und wieder 20kW überschreiten, müsst ihr diese Einschränkung in den Queries erhöhen.
+- Batterie- und Speicherverlauf
+  - Name der Fahrzeuge in den Queries, so wie der Titel, der in EVCC konfiguriert wurde.
+    - Dann die neuen Namen in den Overrides aktualisieren ("Fields with name")
 - Kennzahlen
   - In den Queries habe ich die Werte auf kleiner als 20 kW beschränkt um falsche Werte herauszufiltern. Falls Eure Leistungen hin und wieder 20kW überschreiten, müsst ihr diese Einschränkung in den Queries erhöhen.
 - Kennzahlenverlauf
