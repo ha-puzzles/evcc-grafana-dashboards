@@ -202,7 +202,6 @@ aggregateDay() {
 
     writeDailyEnergies "all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-    writeDailyEnergies "all" "value" "chargePower" "carDailyEnergy" $ayear $amonth $aday "AND value < 20000"
     writeDailyEnergies "all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < 20000"
 
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
@@ -266,7 +265,6 @@ aggregateMonth() {
 
     writeMonthlyEnergies "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
-    writeMonthlyEnergies "value" "carDailyEnergy" "carMonthlyEnergy" $ayear $amonth
     writeMonthlyEnergies "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
         writeMonthlyEnergies "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
@@ -304,7 +302,6 @@ dropAggregations() {
         sleep 1
         dropMeasurement "pvDailyEnergy"
         dropMeasurement "homeDailyEnergy"
-        dropMeasurement "carDailyEnergy"
         dropMeasurement "loadpoint1DailyEnergy"
         dropMeasurement "loadpoint2DailyEnergy"
         dropMeasurement "gridDailyEnergy"
@@ -313,7 +310,6 @@ dropAggregations() {
         dropMeasurement "chargeDailyEnergy"
         dropMeasurement "pvMonthlyEnergy"
         dropMeasurement "homeMonthlyEnergy"
-        dropMeasurement "carMonthlyEnergy"
         dropMeasurement "loadpoint1MonthlyEnergy"
         dropMeasurement "loadpoint2MonthlyEnergy"
         dropMeasurement "gridMonthlyEnergy"
