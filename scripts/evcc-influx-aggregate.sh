@@ -151,7 +151,7 @@ writeDailyEnergies() {
 
     # Convert time to UTC for local timezone
     fromTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T00:00:00 +%FT%R%Z`" -u +%FT%R:00Z)
-    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T23:59:59 +%FT%R%Z`" -u +%FT%R:00Z)
+    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T23:59:59 +%FT%R%Z`" -u +%FT%R:59Z)
     timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
 
     query=""
@@ -235,7 +235,7 @@ writeMonthlyEnergies () {
 
     # Convert time to UTC for local timezone
     fromTime=$(date -d "`date -d ${fYear}-${fMonth}-01T00:00:00 +%FT%R%Z`" -u +%FT%R:00Z)
-    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDays}T23:59:59 +%FT%R%Z`" -u +%FT%R:00Z)
+    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDays}T23:59:59 +%FT%R%Z`" -u +%FT%R:59Z)
     timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
 
     logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailyEnergyMeasurement into ${monthlyEnergyMeasurement}"
