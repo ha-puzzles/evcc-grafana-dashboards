@@ -400,6 +400,10 @@
                       }
                     ]
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Autarkie"
                 }
               ]
             },
@@ -424,6 +428,10 @@
                       }
                     ]
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Eigenverbrauch"
                 }
               ]
             }
@@ -448,7 +456,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "11.2.2",
+        "pluginVersion": "11.3.1",
         "targets": [
           {
             "alias": "PV",
@@ -474,7 +482,7 @@
             "measurement": "pvPower",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from pvDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from pvDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
             "rawQuery": true,
             "refId": "energyPV",
             "resultFormat": "time_series",
@@ -500,7 +508,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": true,
-            "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from gridDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series"
@@ -511,7 +519,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": true,
-            "query": "SELECT sum(\"value\") /1000 from feedInDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from feedInDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
             "rawQuery": true,
             "refId": "Einspeisung",
             "resultFormat": "time_series"
@@ -539,7 +547,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from homeDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\")  from homeDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
             "rawQuery": true,
             "refId": "energieHaus",
             "resultFormat": "time_series",
@@ -560,7 +568,7 @@
             "tags": []
           },
           {
-            "alias": "Garage",
+            "alias": "Loadpoint1",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -582,9 +590,52 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from carDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from loadpoint1DailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
             "rawQuery": true,
-            "refId": "energieAuto",
+            "refId": "energieLP1",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Loadpoint2",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(\"value\") from loadpoint2DailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "rawQuery": true,
+            "refId": "energieLP2",
             "resultFormat": "time_series",
             "select": [
               [
@@ -608,7 +659,7 @@
               "type": "__expr__",
               "uid": "__expr__"
             },
-            "expression": "1 - $Netzbezug/($energieHaus + $energieAuto)",
+            "expression": "1 - $Netzbezug/($energieHaus + $energieLP1 + $energieLP2)",
             "hide": false,
             "refId": "Autarkie",
             "type": "math"
@@ -647,7 +698,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.2.2"
+      "version": "11.4.0"
     },
     {
       "type": "datasource",
@@ -710,9 +761,9 @@
       "url": ""
     }
   ],
-  "liveNow": false,
   "panels": [
     {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -720,6 +771,7 @@
         "y": 0
       },
       "id": 10,
+      "panels": [],
       "title": "Statistiken",
       "type": "row"
     },
@@ -825,6 +877,18 @@
                 "value": "Monat"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2025"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2025"
+              }
+            ]
           }
         ]
       },
@@ -836,7 +900,7 @@
       },
       "id": 11,
       "options": {
-        "barRadius": 0,
+        "barRadius": 0.2,
         "barWidth": 0.97,
         "fullHighlight": false,
         "groupWidth": 0.7,
@@ -859,7 +923,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "",
@@ -913,8 +977,7 @@
             "fields": {},
             "sort": [
               {
-                "desc": false,
-                "field": "year"
+                "field": "month"
               }
             ]
           }
@@ -925,7 +988,8 @@
             "fields": {},
             "sort": [
               {
-                "field": "month"
+                "desc": true,
+                "field": "year"
               }
             ]
           }
@@ -967,12 +1031,230 @@
       }
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-green",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2024"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2024"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2023"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2023"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "month\\year"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "string"
+              },
+              {
+                "id": "displayName",
+                "value": "Monat"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 16,
+        "x": 4,
+        "y": 12
+      },
+      "id": 14,
+      "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "colorByField": "value",
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "maxHeight": 600,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT year, month, value FROM \"homeMonthlyEnergy\"  tz('Europe/Berlin')",
+          "rawQuery": true,
+          "refId": "pvEnergy",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Monatlicher Hausverbrauch/Jahr",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "year"
+              }
+            ]
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "month"
+              }
+            ]
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "year",
+                "value",
+                "month"
+              ]
+            }
+          }
+        },
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "year",
+            "rowField": "month",
+            "valueField": "value"
+          }
+        }
+      ],
+      "type": "barchart"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 18
       },
       "id": 9,
       "panels": [],
@@ -1020,7 +1302,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "dashed"
             }
           },
           "decimals": 2,
@@ -1029,8 +1311,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "text",
                 "value": null
+              },
+              {
+                "color": "text",
+                "value": 0
               }
             ]
           },
@@ -1127,7 +1413,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 19
       },
       "id": 5,
       "maxDataPoints": 500000,
@@ -1143,7 +1429,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.1.4",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "30 Tage Hausverbrauch",
@@ -1189,7 +1475,7 @@
           "tags": []
         },
         {
-          "alias": "30 Tage Autoverbrauch",
+          "alias": "",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
@@ -1211,9 +1497,52 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"carMonthlyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT last(\"value\") FROM \"loadpoint1MonthlyEnergy\" WHERE $timeFilter GROUP BY time(1d) fill(0) tz('Europe/Berlin') ",
           "rawQuery": true,
-          "refId": "ladeverbrauch30Tage",
+          "refId": "lp130Tage",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"value\") FROM \"loadpoint2MonthlyEnergy\" WHERE $timeFilter GROUP BY time(1d) fill(0) tz('Europe/Berlin') ",
+          "rawQuery": true,
+          "refId": "lp230Tage",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1236,7 +1565,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$hausverbrauch30Tage+$ladeverbrauch30Tage",
+          "expression": "$hausverbrauch30Tage+$lp130Tage+$lp230Tage",
           "hide": true,
           "refId": "verbrauchGesamt",
           "type": "math"
@@ -1388,8 +1717,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           },
@@ -1525,8 +1853,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "orange",
@@ -1605,7 +1932,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 32
       },
       "id": 2,
       "options": {
@@ -1629,7 +1956,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.2",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -1675,7 +2002,7 @@
           "tags": []
         },
         {
-          "alias": "Ladeverbrauch",
+          "alias": "",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
@@ -1697,9 +2024,52 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\") from carMonthlyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT sum(\"value\") from loadpoint1MonthlyEnergy WHERE $timeFilter tz('Europe/Berlin')",
           "rawQuery": true,
-          "refId": "ladeverbrauchGesamt",
+          "refId": "lp1Gesamt",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"value\") from loadpoint2MonthlyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+          "rawQuery": true,
+          "refId": "lp2Gesamt",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1722,7 +2092,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$hausverbrauchGesamt+$ladeverbrauchGesamt",
+          "expression": "$hausverbrauchGesamt+$lp1Gesamt+$lp2Gesamt",
           "hide": true,
           "refId": "verbrauchGesamt",
           "type": "math"
@@ -1904,8 +2274,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           },
@@ -2082,7 +2451,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 32
       },
       "id": 6,
       "maxDataPoints": 500000,
@@ -2107,7 +2476,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.2",
+      "pluginVersion": "11.3.1",
       "targets": [
         {
           "alias": "",
@@ -2261,8 +2630,7 @@
     }
   ],
   "refresh": "",
-  "revision": 1,
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "PV"
   ],
@@ -2270,15 +2638,12 @@
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "24884",
           "value": "24884"
         },
         "description": "Anschaffungspreis der PV Anlage",
-        "hide": 0,
         "includeAll": false,
         "label": "PV Gesamtinvestitionskosten",
-        "multi": false,
         "name": "pvAnschaffungspreis",
         "options": [
           {
@@ -2288,20 +2653,15 @@
           }
         ],
         "query": "24884",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "5500",
           "value": "5500"
         },
-        "hide": 0,
         "includeAll": false,
         "label": "Investitionskosten Speicher",
-        "multi": false,
         "name": "speicherPreis",
         "options": [
           {
@@ -2311,21 +2671,16 @@
           }
         ],
         "query": "5500",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "0.28",
           "value": "0.28"
         },
         "description": "Preis in € pro kWh Strom",
-        "hide": 0,
         "includeAll": false,
         "label": "Strompreis",
-        "multi": false,
         "name": "stromPreis",
         "options": [
           {
@@ -2340,21 +2695,16 @@
           }
         ],
         "query": "0.28, 0.32",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "0.082",
           "value": "0.082"
         },
         "description": "Einspeisevergütung in € pro kWh",
-        "hide": 0,
         "includeAll": false,
         "label": "Einspeisevergütung",
-        "multi": false,
         "name": "einspeiseVerguetung",
         "options": [
           {
@@ -2364,21 +2714,16 @@
           }
         ],
         "query": "0.082",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "100",
           "value": "100"
         },
         "description": "Jährliche Kosten: Versicherung + andere",
-        "hide": 0,
         "includeAll": false,
         "label": "Jährliche Kosten",
-        "multi": false,
         "name": "jaehrlicheKosten",
         "options": [
           {
@@ -2388,20 +2733,15 @@
           }
         ],
         "query": "100",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "9500",
           "value": "9500"
         },
-        "hide": 0,
         "includeAll": false,
         "label": "Speicherkapazität/Wh",
-        "multi": false,
         "name": "speicherkapazitaet",
         "options": [
           {
@@ -2411,20 +2751,15 @@
           }
         ],
         "query": "9500",
-        "queryValue": "9500",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "18",
           "value": "18"
         },
-        "hide": 0,
         "includeAll": false,
         "label": "Elektro Verbrauch kWh/100km",
-        "multi": false,
         "name": "eVerbrauch",
         "options": [
           {
@@ -2434,20 +2769,15 @@
           }
         ],
         "query": "18",
-        "queryValue": "17",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "6",
           "value": "6"
         },
-        "hide": 0,
         "includeAll": false,
         "label": "Verbrenner Verbrauch l/100km",
-        "multi": false,
         "name": "vVerbrauch",
         "options": [
           {
@@ -2457,20 +2787,15 @@
           }
         ],
         "query": "6",
-        "queryValue": "5.5",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "current": {
-          "selected": false,
           "text": "1.70",
           "value": "1.70"
         },
-        "hide": 0,
         "includeAll": false,
         "label": "Spritpreis/Liter",
-        "multi": false,
         "name": "spritKosten",
         "options": [
           {
@@ -2480,8 +2805,6 @@
           }
         ],
         "query": "1.70",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       }
     ]
@@ -2494,6 +2817,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 147,
+  "version": 160,
   "weekStart": ""
 }
