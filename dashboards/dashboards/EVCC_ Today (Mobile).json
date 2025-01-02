@@ -3187,19 +3187,19 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "vehicle1"
+                "options": "guestVehicle"
               },
               "properties": [
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "light-red",
+                    "fixedColor": "text",
                     "mode": "fixed"
                   }
                 },
                 {
                   "id": "displayName",
-                  "value": "$vehicle1Name"
+                  "value": "Gastfahrzeug"
                 }
               ]
             }
@@ -3559,6 +3559,49 @@
             "query": "SELECT integral(\"value\")  / -3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag = '$vehicle2Name') AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
             "rawQuery": true,
             "refId": "vehicle2",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "guestVehicle",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT integral(\"value\")  / -3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag = '') AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "guestVehicle",
             "resultFormat": "time_series",
             "select": [
               [
