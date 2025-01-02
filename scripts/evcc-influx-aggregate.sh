@@ -150,8 +150,8 @@ writeDailyEnergies() {
     printf -v fDay "%02d" $day
 
     # Convert time to UTC for local timezone
-    fromTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T00:00:00 +%FT%R%Z`" -u +%FT%R:00Z)
-    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T23:59:59 +%FT%R%Z`" -u +%FT%R:59Z)
+    fromTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T00:00:00 +%FT%T%Z`" -u +%FT%TZ)
+    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T23:59:59 +%FT%T%Z`" -u +%FT%TZ)
     timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
 
     query=""
@@ -234,8 +234,8 @@ writeMonthlyEnergies () {
     printf -v fDays "%02d" $numDays
 
     # Convert time to UTC for local timezone
-    fromTime=$(date -d "`date -d ${fYear}-${fMonth}-01T00:00:00 +%FT%R%Z`" -u +%FT%R:00Z)
-    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDays}T23:59:59 +%FT%R%Z`" -u +%FT%R:59Z)
+    fromTime=$(date -d "`date -d ${fYear}-${fMonth}-01T00:00:00 +%FT%T%Z`" -u +%FT%TZ)
+    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDays}T23:59:59 +%FT%T%Z`" -u +%FT%TZ)
     timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
 
     logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailyEnergyMeasurement into ${monthlyEnergyMeasurement}"
