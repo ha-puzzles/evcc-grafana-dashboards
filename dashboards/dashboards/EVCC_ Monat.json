@@ -1097,30 +1097,6 @@
       "tooltip": "",
       "type": "dashboards",
       "url": ""
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "EVCC",
-      "tooltip": "",
-      "type": "link",
-      "url": "http://home:7070/"
-    },
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "Solarman",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://globalhome.solarmanpv.com/plant/infos/data"
     }
   ],
   "panels": [
@@ -2417,6 +2393,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 158,
+  "version": 159,
   "weekStart": ""
 }
