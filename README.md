@@ -52,14 +52,22 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
 
 ### Installation der Dashboards in Grafana
 
-1. Data Source unter 'Connections /  Data Sources' anlegen. 
+
+1. Daten Aggregations Script wie [unter 'scripts beschrieben](./scripts/README.md) anpassen und installieren (ohne dieses werden die Dashboards für Monat, Jahr und Finanz nicht laufen).
+
+2. Data Sources unter 'Connections /  Data Sources' anlegen. 
    1. Oben rechts auf '+ Add new data source' clicken.
    2. 'InfluxDB' auswählen.
    3. Daten wie im Bild unten eintragen. 'URL', 'Database', 'User' und 'Passwort' müssen natürlich passend auf die eigene DB angepasst werden.
       ![Data Source anlegen](./img/create-datasource.png)
    4. Auf 'Save & test' clicken.
+   5. Eine weitere Data Source für die Aggregations DB hinzufügen.
+   6. Wieder Influx auswählen.
+   7. Dieselben Daten, wie oben eintragen, aber
+      - Name: 'EVCC Aggregations'
+      - Database: 'evcc_aggr'
 
-2. Dashboards über den Grafana.com Community Store installieren:
+3. Dashboards über den Grafana.com Community Store installieren:
    1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
       ![Import dashboard](./img/import.png)
    2. Unter "Find and import dashboards..." folgende Dashboards mit folgenden IDs importieren:
@@ -73,9 +81,7 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
 
       Bei jedem Import jeweils die oben angelegte InfluxDB Data Source auswählen.
 
-3. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
-
-4. Daten Aggregation Script wie [unter 'scripts beschrieben](./scripts/README.md) anpassen und installieren (ohne dieses werden die Dashboards für Monat, Jahr und Finanz nicht laufen).
+4. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
 
 
 ## Upgrade
