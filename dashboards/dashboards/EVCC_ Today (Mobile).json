@@ -3665,7 +3665,7 @@
   "links": [
     {
       "asDropdown": false,
-      "icon": "external link",
+      "icon": "dashboard",
       "includeVars": false,
       "keepTime": false,
       "tags": [],
@@ -3677,7 +3677,7 @@
     },
     {
       "asDropdown": false,
-      "icon": "external link",
+      "icon": "dashboard",
       "includeVars": false,
       "keepTime": false,
       "tags": [],
@@ -3689,7 +3689,7 @@
     },
     {
       "asDropdown": false,
-      "icon": "external link",
+      "icon": "dashboard",
       "includeVars": false,
       "keepTime": false,
       "tags": [],
@@ -4088,6 +4088,6 @@
   "timezone": "",
   "title": "EVCC: Today (Mobile)",
   "uid": "MRHnynkRz",
-  "version": 79,
+  "version": 80,
   "weekStart": ""
 }

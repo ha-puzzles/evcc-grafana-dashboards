@@ -2718,7 +2718,7 @@
   "links": [
     {
       "asDropdown": false,
-      "icon": "bolt",
+      "icon": "dashboard",
       "includeVars": false,
       "keepTime": false,
       "tags": [],
@@ -2730,7 +2730,7 @@
     },
     {
       "asDropdown": false,
-      "icon": "bolt",
+      "icon": "dashboard",
       "includeVars": false,
       "keepTime": false,
       "tags": [],
@@ -2742,7 +2742,7 @@
     },
     {
       "asDropdown": false,
-      "icon": "bolt",
+      "icon": "dashboard",
       "includeVars": false,
       "keepTime": false,
       "tags": [],
@@ -2768,7 +2768,7 @@
     },
     {
       "asDropdown": false,
-      "icon": "external link",
+      "icon": "bolt",
       "includeVars": false,
       "keepTime": false,
       "tags": [],
@@ -3504,6 +3504,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 157,
+  "version": 158,
   "weekStart": ""
 }
