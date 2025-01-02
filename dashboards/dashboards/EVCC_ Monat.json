@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_EVCC_INFLUXDB",
-      "label": "EVCC InfluxDB",
+      "name": "DS_EVCC_AGGREGRATIONS",
+      "label": "EVCC Aggregrations",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -14,6 +14,14 @@
       "description": "",
       "type": "datasource",
       "pluginId": "__expr__"
+    },
+    {
+      "name": "DS_EVCC_INFLUXDB",
+      "label": "EVCC InfluxDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
     }
   ],
   "__elements": {
@@ -24,7 +32,7 @@
       "model": {
         "datasource": {
           "type": "influxdb",
-          "uid": "${DS_EVCC_INFLUXDB}"
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
         },
         "description": "",
         "fieldConfig": {
@@ -164,7 +172,7 @@
             "alias": "Netzbezug",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "hide": false,
             "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter  tz('$timezone')",
@@ -176,7 +184,7 @@
             "alias": "PV",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -219,7 +227,7 @@
             "alias": "Haus",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -262,7 +270,7 @@
             "alias": "loadpoint1",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -305,7 +313,7 @@
             "alias": "loadpoint2",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -348,7 +356,7 @@
             "alias": "Eingespeist",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "hide": false,
             "query": "SELECT sum(\"value\") /1000 from feedInDailyEnergy WHERE $timeFilter tz('$timezone')",
@@ -369,7 +377,7 @@
       "model": {
         "datasource": {
           "type": "influxdb",
-          "uid": "${DS_EVCC_INFLUXDB}"
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
         },
         "description": "",
         "fieldConfig": {
@@ -476,7 +484,7 @@
             "alias": "PV",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -519,7 +527,7 @@
           {
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "hide": true,
             "query": "SELECT sum(\"value\") from gridDailyEnergy WHERE $timeFilter tz('$timezone')",
@@ -530,7 +538,7 @@
           {
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "hide": true,
             "query": "SELECT sum(\"value\") from feedInDailyEnergy WHERE $timeFilter tz('$timezone')",
@@ -542,7 +550,7 @@
             "alias": "Haus",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -585,7 +593,7 @@
             "alias": "Loadpoint1",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -628,7 +636,7 @@
             "alias": "Loadpoint2",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "groupBy": [
               {
@@ -701,8 +709,8 @@
       "kind": 1,
       "model": {
         "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_EVCC_INFLUXDB}"
+          "type": "datasource",
+          "uid": "-- Mixed --"
         },
         "description": "",
         "fieldConfig": {
@@ -852,7 +860,7 @@
             "alias": "Speicher laden",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "hide": false,
             "query": "SELECT sum(\"value\") from chargeDailyEnergy WHERE $timeFilter tz('$timezone')",
@@ -864,7 +872,7 @@
             "alias": "Speicher entladen",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
             "hide": false,
             "query": "SELECT sum(\"value\") from dischargeDailyEnergy WHERE $timeFilter tz('$timezone')",
@@ -1116,7 +1124,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1306,7 +1314,7 @@
           "alias": "PV",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -1349,7 +1357,7 @@
           "alias": "Zugekauft",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -1392,7 +1400,7 @@
           "alias": "Haus",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "hide": false,
           "query": "SELECT value * (-1) FROM homeDailyEnergy WHERE $timeFilter  tz('$timezone')",
@@ -1404,7 +1412,7 @@
           "alias": "loadpoint1",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "hide": false,
           "query": "SELECT value * (-1) FROM loadpoint1DailyEnergy WHERE $timeFilter  tz('$timezone')",
@@ -1416,7 +1424,7 @@
           "alias": "loadpoint2",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "hide": false,
           "query": "SELECT value * (-1) FROM loadpoint2DailyEnergy WHERE $timeFilter  tz('$timezone')",
@@ -1428,7 +1436,7 @@
           "alias": "Eingespeist",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -1474,7 +1482,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1527,7 +1535,7 @@
           "alias": "PV",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -1735,7 +1743,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1865,7 +1873,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "hide": true,
           "query": "SELECT value FROM gridDailyEnergy WHERE $timeFilter tz('$timezone')",
@@ -1876,7 +1884,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -1918,7 +1926,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -1960,7 +1968,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -2012,7 +2020,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -2054,7 +2062,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "hide": true,
           "query": "SELECT value FROM feedInDailyEnergy WHERE $timeFilter tz('$timezone')",
@@ -2393,6 +2401,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 159,
+  "version": 160,
   "weekStart": ""
 }

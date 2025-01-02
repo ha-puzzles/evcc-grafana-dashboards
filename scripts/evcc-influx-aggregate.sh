@@ -3,9 +3,12 @@
 # Aggregate date into daily chunks
 
 #consts
-INFLUXDB="evcc" # Name of the Influx DB, where you write the EVCC data into.
-INFLUX_USER="" # Your user name. Empty, if no user is required. Default: ""
-INFLUX_PASSWORD="none" # can be anything except an empty string in case no password is set.  Default: "none"
+INFLUX_EVCC_DB="evcc" # Name of the Influx DB, where you write the EVCC data into.
+INFLUX_EVCC_USER="" # User name of the EVCC DB. Empty, if no user is required. Default: ""
+INFLUX_EVCC_PASSWORD="none" # Password of the EVCC DB user. Can be anything except an empty string in case no password is set.  Default: "none"
+INFLUX_AGGR_DB="evcc_aggr" # Name of the Influx DB, where you write the aggregations into.
+INFLUX_AGGR_USER="" # User name of the aggregation DB. Empty, if no user is required. Default: ""
+INFLUX_AGGR_PASSWORD="none" # Password of the aggreation DB user. Can be anything except an empty string in case no password is set.  Default: "none"
 INFLUX_HOST="localhost" # If the script is run remotely, enter the host name of the remote host. Default: "localhost"
 INFLUX_PORT=8086 # The port to connect to influx. Default: 8086
 HOME_BATTERY="true" # Set to false in case your home does not use a battery.
@@ -14,7 +17,7 @@ LOADPOINT_1_TITLE="Garage" # Title of loadpoint 1 as defined in evcc.yaml
 LOADPOINT_2_ENABLED=true # Set to false in case you have just one loadpoint
 LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
 TIMEZONE="Europe/Berlin" # Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-PEAK_POWER_LIMIT=25000 # Limit in W to sanitize unrealistic peaks
+PEAK_POWER_LIMIT=25000 # Limit in W to filter out unrealistic peaks
 
 #arguments
 AGGREGATE_YEAR=0
@@ -180,7 +183,7 @@ writeDailyEnergies() {
     esac
     logDebug "Query: $query"
 
-    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
+    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
     logDebug "Query result (last row): $queryResult"
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
@@ -188,7 +191,7 @@ writeDailyEnergies() {
         energy=`echo "$queryResult" | cut -d " " -f 2`
         insertStatement="INSERT ${energyMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestampNano}"
         logDebug "Insert statement: $insertStatement"
-        influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
+        influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
     else
         logInfo "There is no data from $powerMeasurement for $energyMeasurement. This may be fine, if no data had been collected for this day and this measurement."
     fi
@@ -244,7 +247,7 @@ writeMonthlyEnergies () {
     query="SELECT sum(\"$field\") FROM $dailyEnergyMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
     logDebug "Query: $query"
 
-    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
+    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
     logDebug "Query result (last row): $queryResult"
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
@@ -252,7 +255,7 @@ writeMonthlyEnergies () {
         energy=`echo "$queryResult" | cut -d " " -f 2`
         insertStatement="INSERT ${monthlyEnergyMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestampNano}"
         logDebug "Insert statement: $insertStatement"
-        influx  -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$insertStatement"
+        influx  -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
     else
         logInfo "There is no data from $dailyEnergyMeasurement for $monthlyEnergyMeasurement. This may be fine, if no data had been collected for this month and this measurement."
     fi    
@@ -287,7 +290,7 @@ dropMeasurement() {
     measurement=$1
     logInfo "Deleting measurement $measurement"
     dropStatement="DROP MEASUREMENT ${measurement}"
-    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUXDB -username "$INFLUX_USER" -password "$INFLUX_PASSWORD" -execute "$dropStatement"
+    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$dropStatement"
 }
 
 dropAggregations() {
