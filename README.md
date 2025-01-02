@@ -65,7 +65,7 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
    6. Wieder Influx auswählen.
    7. Dieselben Daten, wie oben eintragen, aber
       - Name: 'EVCC Aggregations'
-      - Database: 'evcc_aggr'
+      - Database: 'evcc_aggr' (oder dieselbe DB wie oben, wenn keine getrennte DB gewünscht ist)
 
 3. Dashboards über den Grafana.com Community Store installieren:
    1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
