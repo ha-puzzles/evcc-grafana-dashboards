@@ -13,7 +13,8 @@ DEBUG="false" # Set to true to generate debug output.
 LOADPOINT_1_TITLE="Garage" # Title of loadpoint 1 as defined in evcc.yaml
 LOADPOINT_2_ENABLED=true # Set to false in case you have just one loadpoint
 LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
-TIMEZONE="Europe/Berlin" #Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+TIMEZONE="Europe/Berlin" # Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+PEAK_POWER_LIMIT=25000 # Limit in W to sanitize unrealistic peaks
 
 #arguments
 AGGREGATE_YEAR=0
@@ -200,21 +201,21 @@ aggregateDay() {
 
     logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
 
-    writeDailyEnergies "all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-    writeDailyEnergies "all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-    writeDailyEnergies "all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < 20000"
+    writeDailyEnergies "all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyEnergies "all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyEnergies "all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT"
 
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-        writeDailyEnergies "all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < 20000"
+        writeDailyEnergies "all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT"
     else
         logDebug "Loadpoint 2 is disabled."
     fi
-    writeDailyEnergies "positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-    writeDailyEnergies "negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < 20000"
+    writeDailyEnergies "positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyEnergies "negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
 
     if [ "$HOME_BATTERY" == "true" ]; then
-        writeDailyEnergies "positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
-        writeDailyEnergies "negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < 20000"
+        writeDailyEnergies "positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+        writeDailyEnergies "negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
     else
         logDebug "Home battery aggregation is disabled."
     fi

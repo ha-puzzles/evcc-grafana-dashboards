@@ -94,7 +94,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Garage"
+                "options": "loadpoint1"
               },
               "properties": [
                 {
@@ -103,13 +103,17 @@
                     "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "$loadpoint1Name"
                 }
               ]
             },
             {
               "matcher": {
                 "id": "byName",
-                "options": "Stellplatz"
+                "options": "loadpoint2"
               },
               "properties": [
                 {
@@ -118,6 +122,10 @@
                     "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "$loadpoint2Name"
                 }
               ]
             }
@@ -125,6 +133,12 @@
         },
         "options": {
           "displayMode": "basic",
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
           "maxVizHeight": 300,
           "minVizHeight": 10,
           "minVizWidth": 0,
@@ -144,7 +158,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "11.2.2",
+        "pluginVersion": "11.4.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -153,7 +167,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": false,
-            "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter  tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter  tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series"
@@ -181,7 +195,7 @@
             "measurement": "pvPower",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from pvDailyEnergy WHERE $timeFilter  tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") /1000 from pvDailyEnergy WHERE $timeFilter  tz('$timezone')",
             "rawQuery": true,
             "refId": "pvEnergy",
             "resultFormat": "time_series",
@@ -224,7 +238,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from homeDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") /1000 from homeDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "consumedEnergy",
             "resultFormat": "time_series",
@@ -245,7 +259,7 @@
             "tags": []
           },
           {
-            "alias": "Garage",
+            "alias": "loadpoint1",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -267,9 +281,9 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpoint1DailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") /1000 from loadpoint1DailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
-            "refId": "garageEnergie",
+            "refId": "loadpoint1Energie",
             "resultFormat": "time_series",
             "select": [
               [
@@ -288,7 +302,7 @@
             "tags": []
           },
           {
-            "alias": "Stellplatz",
+            "alias": "loadpoint2",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -310,9 +324,9 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpoint2DailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") /1000 from loadpoint2DailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
-            "refId": "stellplatzEnergie",
+            "refId": "loadpoint2Energie",
             "resultFormat": "time_series",
             "select": [
               [
@@ -337,7 +351,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": false,
-            "query": "SELECT sum(\"value\") /1000 from feedInDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") /1000 from feedInDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "Einspeisung",
             "resultFormat": "time_series"
@@ -400,6 +414,10 @@
                       }
                     ]
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Autarkie"
                 }
               ]
             },
@@ -424,6 +442,10 @@
                       }
                     ]
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Eigenverbrauch"
                 }
               ]
             }
@@ -448,7 +470,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "11.2.2",
+        "pluginVersion": "11.4.0",
         "targets": [
           {
             "alias": "PV",
@@ -474,7 +496,7 @@
             "measurement": "pvPower",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from pvDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from pvDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "energyPV",
             "resultFormat": "time_series",
@@ -500,7 +522,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": true,
-            "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from gridDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series"
@@ -511,7 +533,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": true,
-            "query": "SELECT sum(\"value\") /1000 from feedInDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from feedInDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "Einspeisung",
             "resultFormat": "time_series"
@@ -539,7 +561,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from homeDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\")  from homeDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "energieHaus",
             "resultFormat": "time_series",
@@ -560,7 +582,7 @@
             "tags": []
           },
           {
-            "alias": "Garage",
+            "alias": "Loadpoint1",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -582,9 +604,52 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from carDailyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from loadpoint1DailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
-            "refId": "energieAuto",
+            "refId": "energieLP1",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Loadpoint2",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(\"value\") from loadpoint2DailyEnergy WHERE $timeFilter tz('$timezone')",
+            "rawQuery": true,
+            "refId": "energieLP2",
             "resultFormat": "time_series",
             "select": [
               [
@@ -608,7 +673,7 @@
               "type": "__expr__",
               "uid": "__expr__"
             },
-            "expression": "1 - $Netzbezug/($energieHaus + $energieAuto)",
+            "expression": "1 - $Netzbezug/($energieHaus + $energieLP1 + $energieLP2)",
             "hide": false,
             "refId": "Autarkie",
             "type": "math"
@@ -760,7 +825,6 @@
             }
           ]
         },
-        "interval": null,
         "maxDataPoints": 50000,
         "options": {
           "colorMode": "value",
@@ -782,7 +846,7 @@
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "11.2.2",
+        "pluginVersion": "11.4.0",
         "targets": [
           {
             "alias": "Speicher laden",
@@ -791,7 +855,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": false,
-            "query": "SELECT sum(\"value\") from chargeDailyEnergy WHERE $timeFilter  tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from chargeDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "laden",
             "resultFormat": "time_series"
@@ -803,7 +867,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": false,
-            "query": "SELECT sum(\"value\") from dischargeDailyEnergy WHERE $timeFilter  tz('Europe/Berlin')",
+            "query": "SELECT sum(\"value\") from dischargeDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "entladen",
             "resultFormat": "time_series"
@@ -843,7 +907,7 @@
             "measurement": "batterySoc",
             "orderByTime": "ASC",
             "policy": "autogen",
-            "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND $timeFilter GROUP BY time(1d) fill(null)  tz('Europe/Berlin')",
+            "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
             "rawQuery": true,
             "refId": "avgMaxSoc",
             "resultFormat": "time_series",
@@ -893,7 +957,7 @@
             "measurement": "batterySoc",
             "orderByTime": "ASC",
             "policy": "autogen",
-            "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND (\"value\"::field > 0) AND $timeFilter GROUP BY time(1d) fill(none)  tz('Europe/Berlin')",
+            "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND (\"value\"::field > 0) AND $timeFilter GROUP BY time(1d) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "avgMinSoc",
             "resultFormat": "time_series",
@@ -920,7 +984,6 @@
             ]
           }
         ],
-        "timeFrom": null,
         "title": "Speicher",
         "transparent": true,
         "type": "stat"
@@ -937,7 +1000,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.2.2"
+      "version": "11.4.0"
     },
     {
       "type": "panel",
@@ -992,7 +1055,6 @@
       }
     ]
   },
-  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -1049,7 +1111,6 @@
       "url": ""
     }
   ],
-  "liveNow": false,
   "panels": [
     {
       "gridPos": {
@@ -1086,7 +1147,7 @@
             "barAlignment": 1,
             "barWidthFactor": 0.6,
             "drawStyle": "bars",
-            "fillOpacity": 100,
+            "fillOpacity": 35,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1107,7 +1168,7 @@
               "mode": "normal"
             },
             "thresholdsStyle": {
-              "mode": "off"
+              "mode": "dashed"
             }
           },
           "mappings": [],
@@ -1119,7 +1180,7 @@
                 "value": null
               },
               {
-                "color": "green",
+                "color": "text",
                 "value": 0
               }
             ]
@@ -1236,7 +1297,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Erzeugt von PV",
@@ -1535,7 +1596,7 @@
             "barAlignment": 1,
             "barWidthFactor": 0.6,
             "drawStyle": "bars",
-            "fillOpacity": 20,
+            "fillOpacity": 35,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1586,6 +1647,10 @@
                   "fixedColor": "purple",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Eigenverbrauch"
               }
             ]
           }
@@ -1611,7 +1676,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "8.5.15",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -1635,7 +1700,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"gridMonthlyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"gridMonthlyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "zugekaufteEnergie",
           "resultFormat": "time_series",
@@ -1677,9 +1742,9 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"carMonthlyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"loadpoint1MonthlyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "energieAuto",
+          "refId": "energieLP1",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1719,7 +1784,49 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"homeMonthlyEnergy\" WHERE $timeFilter  tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"loadpoint2MonthlyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "energieLP2",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM \"homeMonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
           "rawQuery": true,
           "refId": "energieHaus",
           "resultFormat": "time_series",
@@ -1744,7 +1851,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "1-$zugekaufteEnergie/($energieAuto+$energieHaus)",
+          "expression": "1-$zugekaufteEnergie/($energieLP1+$energieLP2+$energieHaus)",
           "hide": false,
           "refId": "Autarkie",
           "type": "math"
@@ -1771,7 +1878,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"pvMonthlyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"pvMonthlyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "energiePV",
           "resultFormat": "time_series",
@@ -1797,7 +1904,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": true,
-          "query": "SELECT value FROM \"feedInMonthlyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"feedInMonthlyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "eingespeisteEnergie",
           "resultFormat": "time_series"
@@ -1930,7 +2037,7 @@
           }
         ]
       },
-      "pluginVersion": "11.2.2",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "PV Energie",
@@ -1955,7 +2062,7 @@
           "measurement": "pvPower",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"pvDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"pvDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2106,7 +2213,7 @@
           }
         ]
       },
-      "pluginVersion": "11.2.2",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Einspeisung",
@@ -2131,7 +2238,7 @@
           "measurement": "gridPower",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"feedInDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"feedInDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2280,7 +2387,7 @@
           }
         ]
       },
-      "pluginVersion": "11.2.2",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -2305,7 +2412,7 @@
           "measurement": "homePower",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT value FROM \"homeDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"homeDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2360,7 +2467,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": null
               },
               {
                 "color": "#EAB839",
@@ -2393,7 +2501,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Verbraucht/Tag"
+              "options": "verbraucht"
             },
             "properties": [
               {
@@ -2402,6 +2510,10 @@
                   "fixedColor": "red",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Verbraucht/Tag"
               }
             ]
           }
@@ -2434,7 +2546,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.2.2",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Erzeugt/Tag",
@@ -2459,9 +2571,9 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM \"pvDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT value FROM \"pvDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "pvEnergie",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2485,11 +2597,138 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
-          "query": "SELECT value FROM \"homeDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM \"homeDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series"
+          "refId": "hausEnergie",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Verbraucht/Tag",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM \"loadpoint1DailyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "lp1Energie",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Verbraucht/Tag",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM \"loadpoint2DailyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "lp2Energie",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$hausEnergie+$lp1Energie+$lp2Energie",
+          "hide": false,
+          "refId": "verbraucht",
+          "type": "math"
         },
         {
           "alias": "Zugekauft/Tag",
@@ -2497,11 +2736,42 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "query": "SELECT value FROM \"gridDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM \"gridDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series"
+          "refId": "netzEnergie",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
         }
       ],
       "title": "Tägliche Energie Ø",
@@ -2559,7 +2829,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-green"
+                "color": "semi-dark-green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2592,7 +2863,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Verbraucht"
+              "options": "verbraucht"
             },
             "properties": [
               {
@@ -2601,6 +2872,10 @@
                   "fixedColor": "red",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Verbraucht"
               }
             ]
           }
@@ -2626,7 +2901,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "9.4.7",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Erzeugt",
@@ -2651,9 +2926,9 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"pvDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT \"value\" FROM \"pvDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "A",
+          "refId": "erzeugt",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2672,16 +2947,143 @@
           "tags": []
         },
         {
-          "alias": "Verbraucht",
+          "alias": "",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
-          "query": "SELECT \"value\" FROM \"homeDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"homeDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series"
+          "refId": "hausEnergie",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"loadpoint1DailyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "lp1Energie",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"loadpoint2DailyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "lp2Energie",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$hausEnergie+$lp1Energie+$lp2Energie",
+          "hide": false,
+          "refId": "verbraucht",
+          "type": "math"
         },
         {
           "alias": "Zugekauft",
@@ -2689,11 +3091,42 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "query": "SELECT \"value\" FROM \"gridDailyEnergy\" WHERE $timeFilter tz('Europe/Berlin')",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"gridDailyEnergy\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series"
+          "refId": "zugekauft",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
         }
       ],
       "title": "Energie/Tag",
@@ -2713,16 +3146,6 @@
       }
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#B877D9",
-        "colorScale": "linear",
-        "colorScheme": "interpolateGreens",
-        "exponent": 0.5,
-        "min": 0,
-        "mode": "opacity"
-      },
-      "dataFormat": "timeseries",
       "datasource": {
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
@@ -2748,13 +3171,7 @@
         "x": 4,
         "y": 39
       },
-      "heatmap": {},
-      "hideZeroBuckets": false,
-      "highlightCards": true,
       "id": 6,
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": true,
         "calculation": {
@@ -2771,7 +3188,7 @@
         "cellValues": {},
         "color": {
           "exponent": 0.5,
-          "fill": "light-blue",
+          "fill": "blue",
           "min": 0,
           "mode": "opacity",
           "reverse": false,
@@ -2786,7 +3203,7 @@
           "le": 1e-9
         },
         "legend": {
-          "show": true
+          "show": false
         },
         "rowsFrame": {
           "layout": "auto"
@@ -2806,8 +3223,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.2.2",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Maximaler Batterie SOC/Tag",
@@ -2832,7 +3248,7 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE $timeFilter GROUP BY time(1d) fill(null) tz('Europe/Berlin')",
+          "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2854,37 +3270,9 @@
         }
       ],
       "title": "Speicher: Maximalwerte",
-      "tooltip": {
-        "show": true,
-        "showHistogram": false
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "xBucketNumber": 12,
-      "xBucketSize": "",
-      "yAxis": {
-        "format": "short",
-        "logBase": 1,
-        "max": "100",
-        "min": "0",
-        "show": true
-      },
-      "yBucketBound": "auto",
-      "yBucketSize": 6
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#CA95E5",
-        "colorScale": "linear",
-        "colorScheme": "interpolateReds",
-        "exponent": 0.5,
-        "min": 0,
-        "mode": "opacity"
-      },
-      "dataFormat": "timeseries",
       "datasource": {
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
@@ -2910,13 +3298,7 @@
         "x": 14,
         "y": 39
       },
-      "heatmap": {},
-      "hideZeroBuckets": false,
-      "highlightCards": true,
       "id": 4,
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": true,
         "calculation": {
@@ -2935,7 +3317,7 @@
         },
         "color": {
           "exponent": 0.5,
-          "fill": "dark-blue",
+          "fill": "blue",
           "min": 2,
           "mode": "opacity",
           "reverse": false,
@@ -2950,7 +3332,7 @@
           "le": 1e-9
         },
         "legend": {
-          "show": true
+          "show": false
         },
         "rowsFrame": {
           "layout": "auto"
@@ -2970,8 +3352,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.2.2",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Maximaler Batterie SOC/Tag",
@@ -2996,7 +3377,7 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE $timeFilter AND value  > 0 GROUP BY time(1d) fill(null) tz('Europe/Berlin')",
+          "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE $timeFilter AND value  > 0 GROUP BY time(1d) fill(null) tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3018,25 +3399,7 @@
         }
       ],
       "title": "Speicher: Minimalwerte",
-      "tooltip": {
-        "show": true,
-        "showHistogram": false
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "xBucketNumber": 12,
-      "xBucketSize": "",
-      "yAxis": {
-        "format": "short",
-        "logBase": 1,
-        "max": "100",
-        "min": "0",
-        "show": true
-      },
-      "yBucketBound": "auto",
-      "yBucketSize": 6
+      "type": "heatmap"
     },
     {
       "datasource": {
@@ -3061,7 +3424,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 30,
+            "fillOpacity": 35,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3137,7 +3500,7 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 10,
         "x": 4,
         "y": 48
@@ -3156,7 +3519,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.1.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3165,7 +3528,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "laden",
           "resultFormat": "time_series"
@@ -3177,7 +3540,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "entladen",
           "resultFormat": "time_series"
@@ -3209,7 +3572,7 @@
             "barAlignment": 1,
             "barWidthFactor": 0.6,
             "drawStyle": "bars",
-            "fillOpacity": 49,
+            "fillOpacity": 35,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3271,7 +3634,7 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 10,
         "x": 14,
         "y": 48
@@ -3290,7 +3653,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.1.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3299,7 +3662,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": true,
-          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "laden",
           "resultFormat": "time_series"
@@ -3311,7 +3674,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": true,
-          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter tz('Europe/Berlin')",
+          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "entladen",
           "resultFormat": "time_series"
@@ -3332,13 +3695,67 @@
     }
   ],
   "refresh": "",
-  "revision": 1,
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [
     "PV"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "Garage",
+          "value": "Garage"
+        },
+        "description": "Name des ersten Loadpoints, wie in EVCC definiert.",
+        "hide": 2,
+        "name": "loadpoint1Name",
+        "options": [
+          {
+            "selected": true,
+            "text": "Garage",
+            "value": "Garage"
+          }
+        ],
+        "query": "Garage",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "Stellplatz",
+          "value": "Stellplatz"
+        },
+        "description": "Name des zweiten Loadpoints, wie in EVCC definiert.",
+        "hide": 2,
+        "name": "loadpoint2Name",
+        "options": [
+          {
+            "selected": true,
+            "text": "Stellplatz",
+            "value": "Stellplatz"
+          }
+        ],
+        "query": "Stellplatz",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "Europe/Berlin",
+          "value": "Europe/Berlin"
+        },
+        "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
+        "hide": 2,
+        "name": "timezone",
+        "options": [
+          {
+            "selected": true,
+            "text": "Europe/Berlin",
+            "value": "Europe/Berlin"
+          }
+        ],
+        "query": "Europe/Berlin",
+        "type": "custom"
+      }
+    ]
   },
   "time": {
     "from": "now/y",
@@ -3348,6 +3765,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 135,
+  "version": 153,
   "weekStart": ""
 }
