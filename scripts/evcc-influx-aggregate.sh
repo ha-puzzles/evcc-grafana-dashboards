@@ -247,7 +247,7 @@ writeMonthlyEnergies () {
     query="SELECT sum(\"$field\") FROM $dailyEnergyMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
     logDebug "Query: $query"
 
-    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
+    queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
     logDebug "Query result (last row): $queryResult"
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
