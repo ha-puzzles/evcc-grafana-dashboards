@@ -22,6 +22,13 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
+    },
+    {
+      "name": "VAR_INSTALLEDWATTPEAK",
+      "type": "constant",
+      "label": "installedWattPeak",
+      "value": "9840",
+      "description": ""
     }
   ],
   "__elements": {
@@ -709,8 +716,8 @@
       "kind": 1,
       "model": {
         "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
+          "type": "influxdb",
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
         },
         "description": "",
         "fieldConfig": {
@@ -895,101 +902,25 @@
             "alias": "Max SOC Ø",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
-            "groupBy": [
-              {
-                "params": [
-                  "1d"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
             "hide": false,
-            "measurement": "batterySoc",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
+            "query": "SELECT \"value\" FROM \"batteryMaxSoc\" WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "avgMaxSoc",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "max"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "value::field",
-                "operator": "<",
-                "value": "101"
-              }
-            ]
+            "resultFormat": "time_series"
           },
           {
             "alias": "Min SOC Ø",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
-            "groupBy": [
-              {
-                "params": [
-                  "1d"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
             "hide": false,
-            "measurement": "batterySoc",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND (\"value\"::field > 0) AND $timeFilter GROUP BY time(1d) fill(none) tz('$timezone')",
+            "query": "SELECT \"value\" FROM \"batteryMinSoc\" WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "avgMinSoc",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "min"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "value::field",
-                "operator": "<",
-                "value": "101"
-              }
-            ]
+            "resultFormat": "time_series"
           }
         ],
         "title": "Speicher",
@@ -1580,7 +1511,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$pvEnergy/9840",
+          "expression": "$pvEnergy/$installedWattPeak",
           "hide": false,
           "refId": "PV Energie/kWp",
           "type": "math"
@@ -2100,7 +2031,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
       "description": "",
       "fieldConfig": {
@@ -2223,7 +2154,7 @@
           "alias": "Speicher max",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -2243,7 +2174,7 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE $timeFilter and value <= 100 GROUP BY time(1d) fill(none)  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"batteryMaxSoc\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "soc_max",
           "resultFormat": "time_series",
@@ -2267,7 +2198,7 @@
           "alias": "Speicher min",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -2287,7 +2218,7 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE $timeFilter and value <= 100 and value > 0 GROUP BY time(1d) fill(none)  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"batteryMinSoc\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "soc_min",
           "resultFormat": "time_series",
@@ -2390,6 +2321,26 @@
         ],
         "query": "20000",
         "type": "custom"
+      },
+      {
+        "description": "Installierte Kapazität in Wp",
+        "hide": 2,
+        "name": "installedWattPeak",
+        "query": "${VAR_INSTALLEDWATTPEAK}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_INSTALLEDWATTPEAK}",
+          "text": "${VAR_INSTALLEDWATTPEAK}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_INSTALLEDWATTPEAK}",
+            "text": "${VAR_INSTALLEDWATTPEAK}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -2401,6 +2352,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 160,
+  "version": 163,
   "weekStart": ""
 }

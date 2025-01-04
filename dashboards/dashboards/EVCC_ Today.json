@@ -467,7 +467,7 @@
           "type": "influxdb",
           "uid": "${DS_EVCC_INFLUXDB}"
         },
-        "description": "",
+        "description": "Grün: Prioritisierunggrenze für Autoladung\nRot: Tiefentladegrenze des Hausspeichers",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -712,6 +712,7 @@
             "tags": []
           }
         ],
+        "title": "Batterien",
         "transparent": true,
         "type": "timeseries"
       }
@@ -1706,6 +1707,25 @@
                   "value": "Gastfahrzeug"
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "vehicle1"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "light-red",
+                    "mode": "shades"
+                  }
+                },
+                {
+                  "id": "displayName",
+                  "value": "$vehicle1Name"
+                }
+              ]
             }
           ]
         },
@@ -2103,7 +2123,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"value\")  / -3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag = '') AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
+            "query": "SELECT \"guest_energy\" FROM (SELECT integral(\"value\") / -3600000 AS \"guest_energy\"  FROM \"chargePower\" WHERE (\"vehicle\"::tag = '') AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')) WHERE \"guest_energy\" <= -0.1",
             "rawQuery": true,
             "refId": "guestVehicle",
             "resultFormat": "time_series",
@@ -3547,6 +3567,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 158,
+  "version": 159,
   "weekStart": ""
 }
