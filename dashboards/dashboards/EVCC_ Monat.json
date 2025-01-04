@@ -785,7 +785,7 @@
               "uid": "fe8sr664fohz4a"
             },
             "hide": false,
-            "query": "SELECT \"value\" FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "query": "SELECT \"value\" * 100 FROM \"tariffGridDailyMean\" WHERE $timeFilter",
             "rawQuery": true,
             "refId": "avgPrice",
             "resultFormat": "time_series"
@@ -928,7 +928,7 @@
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
             },
-            "query": "SELECT \"value\" FROM \"tariffGridDailyMax\" WHERE $timeFilter",
+            "query": "SELECT \"value\" * 100 FROM \"tariffGridDailyMax\" WHERE $timeFilter",
             "rawQuery": true,
             "refId": "maxPrice",
             "resultFormat": "time_series"
@@ -940,7 +940,7 @@
               "uid": "fe8sr664fohz4a"
             },
             "hide": false,
-            "query": "SELECT \"value\" FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "query": "SELECT \"value\" * 100 FROM \"tariffGridDailyMean\" WHERE $timeFilter",
             "rawQuery": true,
             "refId": "avgPrice",
             "resultFormat": "time_series"
@@ -952,7 +952,7 @@
               "uid": "fe8sr664fohz4a"
             },
             "hide": false,
-            "query": "SELECT \"value\" FROM \"tariffGridDailyMin\" WHERE $timeFilter",
+            "query": "SELECT \"value\" * 100 FROM \"tariffGridDailyMin\" WHERE $timeFilter",
             "rawQuery": true,
             "refId": "A",
             "resultFormat": "time_series"
