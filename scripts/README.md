@@ -41,10 +41,10 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
      ```
    3. Überprüfen ob man sich zur Influx verbinden kann: `influx -host [Influx DB host name] -port 8086 -database [Database name]`
    4. Hostname und Port des remote Influxsystems anpassen:
-     ```bash
-     INFLUX_HOST="localhost" # If the script is run remotely, enter the host name of the remote host. Default: "localhost"
-     INFLUX_PORT=8086 # The port to connect to influx. Default: 8086
-     ```
+      ```bash
+      INFLUX_HOST="localhost" # If the script is run remotely, enter the host name of the remote host. Default: "localhost"
+      INFLUX_PORT=8086 # The port to connect to influx. Default: 8086
+      ```
 
 4. Falls kein Heimspeicher vorhanden ist, kann dessen Aggregation deaktiviert werden:
    ```bash
@@ -65,6 +65,17 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
    Gültige Werte für die Zeitzone finden man in [dieser Liste auf Wikipedia](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) in the Spalte 'TZ Identifier'.
 
    Bitte beachten, dass die System-Zeitzone des Systems, auf dem dieses Script ausgeführt wird, auf dieselbe Zeitzone konfiguriert sein muss.
+
+7. Beim Auslesen können je nach Wechselrichter unrealistischer Ausreißer vorkommen. Diese können mit der Variable
+   ```bash
+   PEAK_POWER_LIMIT=40000 # Limit in W to filter out unrealistic peaks
+   ```
+   ausgefiltert werden. Bei einer höheren Wechselrichterleistung oder höheren Verbrauchsleistungen im Haus muss dieser Wert angepasst werden.
+
+8. Wenn ein dynamischer Stromtarif genutzt wird, und die Preise für das monatliche und jährliche Dashboard angezeigt werden sollen muss folgendes auf `true` gesetzt werden:
+   ```bash
+   DYNAMIC_TARIFF="true" # Set to true to collect tariff history.
+   ```
 
 6. `chmod +x evcc-influx-aggregate.sh`
 
