@@ -695,6 +695,258 @@
         "type": "gauge"
       }
     },
+    "ae8zw9y346bk0f": {
+      "name": "EVCC: Dynamischer Strompreis: Täglicher Durchschnitt",
+      "uid": "ae8zw9y346bk0f",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ct/kWh"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Durchschnitt"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "text",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "alias": "Durchschnitt",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "hide": false,
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "avgPrice",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Durchschnittlicher Strompreis",
+        "transparent": true,
+        "type": "stat"
+      }
+    },
+    "ae8zwbjv24kqof": {
+      "name": "EVCC: Dynamischer Strompreis: Täglich",
+      "uid": "ae8zwbjv24kqof",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ct/kWh"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Max"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Durchschnitt"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Min"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "alias": "Max",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMax\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "maxPrice",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Durchschnitt",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "hide": false,
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "avgPrice",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Min",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "hide": false,
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMin\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Dynamischer Strompreis",
+        "type": "timeseries"
+      }
+    },
     "b8787739-953e-4188-9507-0cc12b6ed91b": {
       "name": "EVCC: Speicher Effizenz",
       "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
@@ -1487,7 +1739,7 @@
     },
     {
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 4,
         "x": 0,
         "y": 12
@@ -1581,7 +1833,7 @@
         ]
       },
       "gridPos": {
-        "h": 7,
+        "h": 6,
         "w": 20,
         "x": 4,
         "y": 12
@@ -1848,530 +2100,30 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "semi-dark-green",
-            "mode": "fixed"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false,
-            "minWidth": 100
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watth"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "time: DD. MMM YYYY"
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PV Energie"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "watth"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
       "gridPos": {
-        "h": 11,
-        "w": 8,
+        "h": 8,
+        "w": 4,
         "x": 0,
-        "y": 19
+        "y": 18
       },
-      "id": 32,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "PV Energie"
-          }
-        ]
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "alias": "PV Energie",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"pvDailyEnergy\" WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "integral"
-              },
-              {
-                "params": [
-                  " / 3600"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "value::field",
-              "operator": "<",
-              "value": "10000"
-            }
-          ]
-        }
-      ],
-      "title": "Ertragsreichste Tage",
-      "transparent": true,
-      "type": "table"
+      "id": 53,
+      "libraryPanel": {
+        "uid": "ae8zw9y346bk0f",
+        "name": "EVCC: Dynamischer Strompreis: Täglicher Durchschnitt"
+      }
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "yellow",
-            "mode": "fixed"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watth"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "time: DD. MMM YYYY"
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Einspeisung"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "watth"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
       "gridPos": {
-        "h": 11,
-        "w": 8,
-        "x": 8,
-        "y": 19
+        "h": 8,
+        "w": 20,
+        "x": 4,
+        "y": 18
       },
-      "id": 35,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Einspeisung"
-          }
-        ]
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "alias": "Einspeisung",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "gridPower",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"feedInDailyEnergy\" WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "integral"
-              },
-              {
-                "params": [
-                  " / -3600"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "value::field",
-              "operator": "<",
-              "value": "0"
-            }
-          ]
-        }
-      ],
-      "title": "Höchste Einspeisungen",
-      "transparent": true,
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watth"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "time: DD. MMM YYYY"
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Hausverbrauch"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "watth"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 8,
-        "x": 16,
-        "y": 19
-      },
-      "id": 33,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Hausverbrauch"
-          }
-        ]
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "alias": "Hausverbrauch",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "homePower",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"homeDailyEnergy\" WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "integral"
-              },
-              {
-                "params": [
-                  " / 3600"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "value::field",
-              "operator": "<",
-              "value": "10000"
-            }
-          ]
-        }
-      ],
-      "title": "Höchste Hausverbräuche",
-      "transparent": true,
-      "type": "table"
+      "id": 54,
+      "libraryPanel": {
+        "uid": "ae8zwbjv24kqof",
+        "name": "EVCC: Dynamischer Strompreis: Täglich"
+      }
     },
     {
       "datasource": {
@@ -2447,7 +2199,7 @@
         "h": 9,
         "w": 4,
         "x": 0,
-        "y": 30
+        "y": 26
       },
       "id": 3,
       "options": {
@@ -2809,7 +2561,7 @@
         "h": 9,
         "w": 20,
         "x": 4,
-        "y": 30
+        "y": 26
       },
       "id": 2,
       "options": {
@@ -3057,11 +2809,534 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "semi-dark-green",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false,
+            "minWidth": 100
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time: DD. MMM YYYY"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "PV Today",
+                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PV Energie"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "watth"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 0,
+        "y": 35
+      },
+      "id": 32,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "PV Energie"
+          }
+        ]
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "alias": "PV Energie",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT value FROM \"pvDailyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "integral"
+              },
+              {
+                "params": [
+                  " / 3600"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "value::field",
+              "operator": "<",
+              "value": "10000"
+            }
+          ]
+        }
+      ],
+      "title": "Ertragsreichste Tage",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "yellow",
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time: DD. MMM YYYY"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "PV Today",
+                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Einspeisung"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "watth"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 8,
+        "y": 35
+      },
+      "id": 35,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Einspeisung"
+          }
+        ]
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "alias": "Einspeisung",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "gridPower",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT value FROM \"feedInDailyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "integral"
+              },
+              {
+                "params": [
+                  " / -3600"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "value::field",
+              "operator": "<",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "title": "Höchste Einspeisungen",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "time: DD. MMM YYYY"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "PV Today",
+                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                  }
+                ]
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hausverbrauch"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "watth"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "basic",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 35
+      },
+      "id": 33,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Hausverbrauch"
+          }
+        ]
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "alias": "Hausverbrauch",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "homePower",
+          "orderByTime": "ASC",
+          "policy": "autogen",
+          "query": "SELECT value FROM \"homeDailyEnergy\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "integral"
+              },
+              {
+                "params": [
+                  " / 3600"
+                ],
+                "type": "math"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "value::field",
+              "operator": "<",
+              "value": "10000"
+            }
+          ]
+        }
+      ],
+      "title": "Höchste Hausverbräuche",
+      "transparent": true,
+      "type": "table"
+    },
+    {
       "gridPos": {
         "h": 8,
         "w": 4,
         "x": 0,
-        "y": 39
+        "y": 46
       },
       "id": 37,
       "libraryPanel": {
@@ -3093,7 +3368,7 @@
         "h": 9,
         "w": 10,
         "x": 4,
-        "y": 39
+        "y": 46
       },
       "id": 6,
       "options": {
@@ -3220,7 +3495,7 @@
         "h": 9,
         "w": 10,
         "x": 14,
-        "y": 39
+        "y": 46
       },
       "id": 51,
       "options": {
@@ -3425,7 +3700,7 @@
         "h": 10,
         "w": 10,
         "x": 4,
-        "y": 48
+        "y": 55
       },
       "id": 50,
       "maxDataPoints": 50000,
@@ -3559,7 +3834,7 @@
         "h": 10,
         "w": 10,
         "x": 14,
-        "y": 48
+        "y": 55
       },
       "id": 49,
       "maxDataPoints": 50000,
@@ -3687,6 +3962,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 162,
+  "version": 166,
   "weekStart": ""
 }

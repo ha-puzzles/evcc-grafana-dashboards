@@ -710,6 +710,258 @@
         "type": "gauge"
       }
     },
+    "ae8zw9y346bk0f": {
+      "name": "EVCC: Dynamischer Strompreis: Täglicher Durchschnitt",
+      "uid": "ae8zw9y346bk0f",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ct/kWh"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Durchschnitt"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "text",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "mean"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "alias": "Durchschnitt",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "hide": false,
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "avgPrice",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Durchschnittlicher Strompreis",
+        "transparent": true,
+        "type": "stat"
+      }
+    },
+    "ae8zwbjv24kqof": {
+      "name": "EVCC: Dynamischer Strompreis: Täglich",
+      "uid": "ae8zwbjv24kqof",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "barWidthFactor": 0.6,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ct/kWh"
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Max"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Durchschnitt"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "yellow",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Min"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "alias": "Max",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMax\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "maxPrice",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Durchschnitt",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "hide": false,
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "avgPrice",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Min",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "hide": false,
+            "query": "SELECT \"value\" FROM \"tariffGridDailyMin\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Dynamischer Strompreis",
+        "type": "timeseries"
+      }
+    },
     "b8787739-953e-4188-9507-0cc12b6ed91b": {
       "name": "EVCC: Speicher Effizenz",
       "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
@@ -1437,7 +1689,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 4,
         "x": 0,
         "y": 11
@@ -1591,7 +1843,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 20,
         "x": 4,
         "y": 11
@@ -1663,7 +1915,7 @@
         "h": 7,
         "w": 4,
         "x": 0,
-        "y": 17
+        "y": 18
       },
       "id": 24,
       "libraryPanel": {
@@ -1784,7 +2036,7 @@
         "h": 7,
         "w": 20,
         "x": 4,
-        "y": 17
+        "y": 18
       },
       "id": 6,
       "options": {
@@ -2020,7 +2272,33 @@
         "h": 7,
         "w": 4,
         "x": 0,
-        "y": 24
+        "y": 25
+      },
+      "id": 27,
+      "libraryPanel": {
+        "uid": "ae8zw9y346bk0f",
+        "name": "EVCC: Dynamischer Strompreis: Täglicher Durchschnitt"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 20,
+        "x": 4,
+        "y": 25
+      },
+      "id": 26,
+      "libraryPanel": {
+        "uid": "ae8zwbjv24kqof",
+        "name": "EVCC: Dynamischer Strompreis: Täglich"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 0,
+        "y": 32
       },
       "id": 16,
       "libraryPanel": {
@@ -2086,8 +2364,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2133,7 +2410,7 @@
         "h": 7,
         "w": 20,
         "x": 4,
-        "y": 24
+        "y": 32
       },
       "id": 11,
       "options": {
@@ -2352,6 +2629,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 163,
+  "version": 168,
   "weekStart": ""
 }

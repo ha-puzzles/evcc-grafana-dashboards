@@ -479,7 +479,7 @@
               "axisColorMode": "text",
               "axisGridShow": true,
               "axisLabel": "",
-              "axisPlacement": "hidden",
+              "axisPlacement": "left",
               "axisWidth": 50,
               "barAlignment": 0,
               "barWidthFactor": 0.6,
@@ -591,6 +591,18 @@
                 {
                   "id": "displayName",
                   "value": "$vehicle1Name"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byType",
+                "options": "time"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
                 }
               ]
             }
@@ -717,6 +729,170 @@
         "type": "timeseries"
       }
     },
+    "ae8zrcafrfl6ob": {
+      "name": "EVCC: Dynamischer Strompreis",
+      "uid": "ae8zrcafrfl6ob",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_INFLUXDB}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisGridShow": true,
+              "axisLabel": "",
+              "axisPlacement": "left",
+              "axisSoftMax": 42,
+              "axisSoftMin": 20,
+              "axisWidth": 50,
+              "barAlignment": 1,
+              "barWidthFactor": 0.8,
+              "drawStyle": "bars",
+              "fillOpacity": 80,
+              "gradientMode": "scheme",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepBefore",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byType",
+                "options": "time"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Netzbezug"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                },
+                {
+                  "id": "custom.drawStyle",
+                  "value": "bars"
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 50
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#818181",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.lineWidth",
+                  "value": 0
+                },
+                {
+                  "id": "custom.axisSoftMin",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.4.0",
+        "targets": [
+          {
+            "alias": "Preis",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "query": "SELECT \"value\" * 100 FROM \"tariffGrid\" WHERE $timeFilter tz('$timezone')",
+            "rawQuery": true,
+            "refId": "Tarif",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Netzbezug",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "hide": false,
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "Netzbezug",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Dynamischer Strompreis (ct/kWh)",
+        "transparent": true,
+        "type": "timeseries"
+      }
+    },
     "edgpezcp0j474c": {
       "name": "EVCC: Kennzahlen Gauges Live",
       "uid": "edgpezcp0j474c",
@@ -806,8 +982,8 @@
           ]
         },
         "options": {
-          "minVizHeight": 200,
-          "minVizWidth": 200,
+          "minVizHeight": 75,
+          "minVizWidth": 75,
           "orientation": "auto",
           "reduceOptions": {
             "calcs": [
@@ -820,8 +996,7 @@
           "showThresholdMarkers": true,
           "sizing": "auto",
           "text": {
-            "titleSize": 12,
-            "valueSize": 16
+            "titleSize": 12
           }
         },
         "pluginVersion": "11.4.0",
@@ -1132,10 +1307,10 @@
               "axisCenteredZero": false,
               "axisColorMode": "text",
               "axisLabel": "",
-              "axisPlacement": "hidden",
+              "axisPlacement": "left",
               "axisSoftMax": 1,
               "axisSoftMin": 0,
-              "axisWidth": 80,
+              "axisWidth": 50,
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
@@ -1242,6 +1417,18 @@
                 },
                 {
                   "id": "max"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byType",
+                "options": "time"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
                 }
               ]
             }
@@ -2410,6 +2597,18 @@
                   }
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byType",
+                "options": "time"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
+                }
+              ]
             }
           ]
         },
@@ -3124,7 +3323,7 @@
         ]
       },
       "gridPos": {
-        "h": 24,
+        "h": 26,
         "w": 3,
         "x": 0,
         "y": 0
@@ -3311,8 +3510,8 @@
     },
     {
       "gridPos": {
-        "h": 21,
-        "w": 17,
+        "h": 23,
+        "w": 16,
         "x": 3,
         "y": 0
       },
@@ -3325,8 +3524,8 @@
     {
       "gridPos": {
         "h": 6,
-        "w": 4,
-        "x": 20,
+        "w": 5,
+        "x": 19,
         "y": 0
       },
       "id": 66,
@@ -3338,9 +3537,22 @@
     {
       "gridPos": {
         "h": 5,
-        "w": 4,
-        "x": 20,
+        "w": 5,
+        "x": 19,
         "y": 6
+      },
+      "id": 73,
+      "libraryPanel": {
+        "uid": "ae8zrcafrfl6ob",
+        "name": "EVCC: Dynamischer Strompreis"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 11
       },
       "id": 64,
       "libraryPanel": {
@@ -3351,9 +3563,9 @@
     {
       "gridPos": {
         "h": 3,
-        "w": 4,
-        "x": 20,
-        "y": 11
+        "w": 5,
+        "x": 19,
+        "y": 15
       },
       "id": 51,
       "libraryPanel": {
@@ -3363,10 +3575,10 @@
     },
     {
       "gridPos": {
-        "h": 10,
-        "w": 4,
-        "x": 20,
-        "y": 14
+        "h": 8,
+        "w": 5,
+        "x": 19,
+        "y": 18
       },
       "id": 40,
       "libraryPanel": {
@@ -3377,9 +3589,9 @@
     {
       "gridPos": {
         "h": 3,
-        "w": 17,
+        "w": 16,
         "x": 3,
-        "y": 21
+        "y": 23
       },
       "id": 45,
       "libraryPanel": {
@@ -3567,6 +3779,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 159,
+  "version": 164,
   "weekStart": ""
 }
