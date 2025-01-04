@@ -139,11 +139,11 @@ isLeapYear() {
     return 0
 }
 
-writeDailyEnergies() {
-    mode=$1 # all | positives | negatives
+writeDailyAggregations() {
+    mode=$1 # integral-all | integral-positives | integral-negatives | max | min
     field=$2
-    powerMeasurement=$3
-    energyMeasurement=$4
+    sourceMeasurement=$3
+    targetMeasurement=$4
     year=$5
     month=$6
     day=$7
@@ -160,21 +160,25 @@ writeDailyEnergies() {
 
     query=""
     case $mode in
-        all)
-            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $powerMeasurement into ${energyMeasurement}"
-            query="SELECT integral(\"$field\") / 3600 FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
+        integral-all)
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $sourceMeasurement into ${targetMeasurement}"
+            query="SELECT integral(\"$field\") / 3600 FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
             ;;
-        positives)
-            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of positive values from $powerMeasurement into ${energyMeasurement}"
-            # query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
-            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
-            
+        integral-positives)
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of positive values from $sourceMeasurement into ${targetMeasurement}"
+            query="SELECT integral(\"subquery\") / 3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" >=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
             ;;
-        negatives)
-            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of negative values from $powerMeasurement into ${energyMeasurement}"
-            # query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
-            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$powerMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
-            
+        integral-negatives)
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of negative values from $sourceMeasurement into ${targetMeasurement}"
+            query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
+            ;;
+        min)
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $sourceMeasurement into ${targetMeasurement}"
+            query="SELECT min(\"$field\") FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
+            ;;
+        max)
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $sourceMeasurement into ${targetMeasurement}"
+            query="SELECT max(\"$field\") FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
             ;;
         *)
             logError "Unknown query mode: '$mode'."
@@ -189,11 +193,11 @@ writeDailyEnergies() {
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
         timestampNano=`date -d "$timestamp" +%s%9N`
         energy=`echo "$queryResult" | cut -d " " -f 2`
-        insertStatement="INSERT ${energyMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestampNano}"
+        insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestampNano}"
         logDebug "Insert statement: $insertStatement"
         influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
     else
-        logInfo "There is no data from $powerMeasurement for $energyMeasurement. This may be fine, if no data had been collected for this day and this measurement."
+        logInfo "There is no data from $sourceMeasurement for $targetMeasurement. This may be fine, if no data had been collected for this day and this measurement."
     fi
 }
 
@@ -204,30 +208,32 @@ aggregateDay() {
 
     logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
 
-    writeDailyEnergies "all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyEnergies "all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyEnergies "all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT"
 
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-        writeDailyEnergies "all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT"
+        writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT"
     else
         logDebug "Loadpoint 2 is disabled."
     fi
-    writeDailyEnergies "positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyEnergies "negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
 
     if [ "$HOME_BATTERY" == "true" ]; then
-        writeDailyEnergies "positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-        writeDailyEnergies "negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+        writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+        writeDailyAggregations "integral-negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+        writeDailyAggregations "min" "value" "batterySoc" "batteryMinSoc" $ayear $amonth $aday "AND value < 101 AND value > 0"
+        writeDailyAggregations "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101"
     else
         logDebug "Home battery aggregation is disabled."
     fi
 }
 
-writeMonthlyEnergies () {
+writeMonthlyAggregations () {
     field=$1
-    dailyEnergyMeasurement=$2
-    monthlyEnergyMeasurement=$3
+    dailytargetMeasurement=$2
+    monthlytargetMeasurement=$3
     year=$4
     month=$5
 
@@ -242,9 +248,9 @@ writeMonthlyEnergies () {
     toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDays}T23:59:59 +%FT%T%Z`" -u +%FT%TZ)
     timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
 
-    logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailyEnergyMeasurement into ${monthlyEnergyMeasurement}"
+    logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailytargetMeasurement into ${monthlytargetMeasurement}"
     logDebug "Month has $numDays days."
-    query="SELECT sum(\"$field\") FROM $dailyEnergyMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
+    query="SELECT sum(\"$field\") FROM $dailytargetMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
     logDebug "Query: $query"
 
     queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
@@ -253,11 +259,11 @@ writeMonthlyEnergies () {
         timestamp=`echo "$queryResult" | cut -d " " -f 1`
         timestampNano=`date -d "$timestamp" +%s%9N`
         energy=`echo "$queryResult" | cut -d " " -f 2`
-        insertStatement="INSERT ${monthlyEnergyMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestampNano}"
+        insertStatement="INSERT ${monthlytargetMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestampNano}"
         logDebug "Insert statement: $insertStatement"
         influx  -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
     else
-        logInfo "There is no data from $dailyEnergyMeasurement for $monthlyEnergyMeasurement. This may be fine, if no data had been collected for this month and this measurement."
+        logInfo "There is no data from $dailytargetMeasurement for $monthlytargetMeasurement. This may be fine, if no data had been collected for this month and this measurement."
     fi    
 }
 
@@ -267,20 +273,20 @@ aggregateMonth() {
 
     logInfo "`printf "Aggregating monthly metrics for %04d" $ayear`-`printf "%02d" $amonth`"
 
-    writeMonthlyEnergies "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
-    writeMonthlyEnergies "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
-    writeMonthlyEnergies "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
+    writeMonthlyAggregations "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-        writeMonthlyEnergies "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
     else
         logDebug "Loadpoint 2 is disabled."
     fi
-    writeMonthlyEnergies "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
-    writeMonthlyEnergies "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
 
     if [ "$HOME_BATTERY" == "true" ]; then
-        writeMonthlyEnergies "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
-        writeMonthlyEnergies "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
     else
         logDebug "Home battery aggregation is disabled"
     fi

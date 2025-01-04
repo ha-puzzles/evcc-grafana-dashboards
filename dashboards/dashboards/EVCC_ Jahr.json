@@ -14,14 +14,6 @@
       "description": "",
       "type": "datasource",
       "pluginId": "__expr__"
-    },
-    {
-      "name": "DS_EVCC_INFLUXDB",
-      "label": "EVCC InfluxDB",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
     }
   ],
   "__elements": {
@@ -709,8 +701,8 @@
       "kind": 1,
       "model": {
         "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
+          "type": "influxdb",
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
         },
         "description": "",
         "fieldConfig": {
@@ -895,101 +887,25 @@
             "alias": "Max SOC Ø",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
-            "groupBy": [
-              {
-                "params": [
-                  "1d"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
             "hide": false,
-            "measurement": "batterySoc",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
+            "query": "SELECT \"value\" FROM \"batteryMaxSoc\" WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "avgMaxSoc",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "max"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "value::field",
-                "operator": "<",
-                "value": "101"
-              }
-            ]
+            "resultFormat": "time_series"
           },
           {
             "alias": "Min SOC Ø",
             "datasource": {
               "type": "influxdb",
-              "uid": "L-nZgczgk"
+              "uid": "fe8sr664fohz4a"
             },
-            "groupBy": [
-              {
-                "params": [
-                  "1d"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
             "hide": false,
-            "measurement": "batterySoc",
-            "orderByTime": "ASC",
-            "policy": "autogen",
-            "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE (\"value\"::field < 101) AND (\"value\"::field > 0) AND $timeFilter GROUP BY time(1d) fill(none) tz('$timezone')",
+            "query": "SELECT \"value\" FROM \"batteryMinSoc\" WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "avgMinSoc",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "min"
-                }
-              ]
-            ],
-            "tags": [
-              {
-                "key": "value::field",
-                "operator": "<",
-                "value": "101"
-              }
-            ]
+            "resultFormat": "time_series"
           }
         ],
         "title": "Speicher",
@@ -3156,7 +3072,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3237,7 +3153,7 @@
           "alias": "Maximaler Batterie SOC/Tag",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -3256,7 +3172,7 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"batteryMaxSoc\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3283,7 +3199,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3306,7 +3222,7 @@
         "x": 14,
         "y": 39
       },
-      "id": 4,
+      "id": 51,
       "options": {
         "calculate": true,
         "calculation": {
@@ -3320,13 +3236,11 @@
           }
         },
         "cellGap": 2,
-        "cellValues": {
-          "unit": "none"
-        },
+        "cellValues": {},
         "color": {
           "exponent": 0.5,
           "fill": "blue",
-          "min": 2,
+          "min": 0,
           "mode": "opacity",
           "reverse": false,
           "scale": "exponential",
@@ -3355,7 +3269,7 @@
           "axisPlacement": "left",
           "axisWidth": 80,
           "max": "100",
-          "min": "0",
+          "min": 0,
           "reverse": false,
           "unit": "percent"
         }
@@ -3363,10 +3277,10 @@
       "pluginVersion": "11.4.0",
       "targets": [
         {
-          "alias": "Maximaler Batterie SOC/Tag",
+          "alias": "Minimaler Batterie SOC/Tag",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "groupBy": [
             {
@@ -3385,7 +3299,7 @@
           "measurement": "batterySoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT min(\"value\") FROM \"batterySoc\" WHERE $timeFilter AND value  > 0 GROUP BY time(1d) fill(null) tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"batteryMinSoc\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -3399,7 +3313,7 @@
               },
               {
                 "params": [],
-                "type": "min"
+                "type": "max"
               }
             ]
           ],
@@ -3773,6 +3687,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 157,
+  "version": 162,
   "weekStart": ""
 }
