@@ -17,7 +17,8 @@ LOADPOINT_1_TITLE="Garage" # Title of loadpoint 1 as defined in evcc.yaml
 LOADPOINT_2_ENABLED=true # Set to false in case you have just one loadpoint
 LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
 TIMEZONE="Europe/Berlin" # Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-PEAK_POWER_LIMIT=25000 # Limit in W to filter out unrealistic peaks
+PEAK_POWER_LIMIT=40000 # Limit in W to filter out unrealistic peaks
+DYNAMIC_TARIFF="true" # Set to true to collect tariff history.
 
 #arguments
 AGGREGATE_YEAR=0
@@ -140,7 +141,7 @@ isLeapYear() {
 }
 
 writeDailyAggregations() {
-    mode=$1 # integral-all | integral-positives | integral-negatives | max | min
+    mode=$1 # integral-all | integral-positives | integral-negatives | max | min | mean
     field=$2
     sourceMeasurement=$3
     targetMeasurement=$4
@@ -173,12 +174,16 @@ writeDailyAggregations() {
             query="SELECT integral(\"subquery\") / -3600 FROM (SELECT mean(\"$field\") AS \"subquery\" FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere AND \"$field\" <=0 GROUP BY time(10s) fill(0)) WHERE ${timeCondition} GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
             ;;
         min)
-            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $sourceMeasurement into ${targetMeasurement}"
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating minimums from $sourceMeasurement into ${targetMeasurement}"
             query="SELECT min(\"$field\") FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
             ;;
         max)
-            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $sourceMeasurement into ${targetMeasurement}"
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating maximums from $sourceMeasurement into ${targetMeasurement}"
             query="SELECT max(\"$field\") FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
+            ;;
+        mean)
+            logDebug "${fYear}-${fMonth}-${fDay}: Aggregating averages from $sourceMeasurement into ${targetMeasurement}"
+            query="SELECT mean(\"$field\") FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
             ;;
         *)
             logError "Unknown query mode: '$mode'."
@@ -227,6 +232,14 @@ aggregateDay() {
         writeDailyAggregations "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101"
     else
         logDebug "Home battery aggregation is disabled."
+    fi
+
+    if [ "$DYNAMIC_TARIFF" == "true" ]; then
+        writeDailyAggregations "min" "value" "tariffGrid" "tariffGridDailyMin" $ayear $amonth $aday ""
+        writeDailyAggregations "max" "value" "tariffGrid" "tariffGridDailyMax" $ayear $amonth $aday ""
+        writeDailyAggregations "mean" "value" "tariffGrid" "tariffGridDailyMean" $ayear $amonth $aday ""
+    else
+        logDebug "Dynamic tariff aggregation is disabled."
     fi
 }
 
