@@ -58,6 +58,13 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
    LOADPOINT_2_TITLE="Stellplatz" # title of loadpoint 2 as defined in evcc.yaml
    ```
 
+6. Die Titel der Fahrzeuge anpassen, wie sie in der evcc.yaml angegeben worden sind. Ein zweites Fahrzeug kann hier auch deaktiviert werden.
+   ```bash
+   VEHICLE_1_TITLE="Ioniq 5" # Title of vehicle 1 as defined in evcc.yaml
+   VEHICLE_2_ENABLED=true # Set to false in case you have just one vehicle
+   VEHICLE_2_TITLE="Tesla" # Title of vehicle 2 as defined in evcc.yaml
+   ```
+
 6. Gegebenfalls muss die Zeitzone angepasst werden.
    ```bash
    TIMEZONE="Europe/Berlin" #Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List

@@ -16,6 +16,9 @@ DEBUG="false" # Set to true to generate debug output.
 LOADPOINT_1_TITLE="Garage" # Title of loadpoint 1 as defined in evcc.yaml
 LOADPOINT_2_ENABLED=true # Set to false in case you have just one loadpoint
 LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
+VEHICLE_1_TITLE="Ioniq 5" # Title of vehicle 1 as defined in evcc.yaml
+VEHICLE_2_ENABLED=true # Set to false in case you have just one vehicle
+VEHICLE_2_TITLE="Tesla" # Title of vehicle 2 as defined in evcc.yaml
 TIMEZONE="Europe/Berlin" # Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 PEAK_POWER_LIMIT=40000 # Limit in W to filter out unrealistic peaks
 DYNAMIC_TARIFF="true" # Set to true to collect tariff history.
@@ -215,15 +218,22 @@ aggregateDay() {
 
     writeDailyAggregations "integral-all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
     writeDailyAggregations "integral-all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
 
+    writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT"
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
         writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT"
     else
         logDebug "Loadpoint 2 is disabled."
     fi
-    writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+
+    writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle1Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}')"
+    if [ "$VEHICLE_2_ENABLED" == "true" ]; then
+        writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle2Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}')"
+    else
+        logDebug "Vehicle 2 is disabled."
+    fi
 
     if [ "$HOME_BATTERY" == "true" ]; then
         writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
@@ -244,11 +254,12 @@ aggregateDay() {
 }
 
 writeMonthlyAggregations () {
-    field=$1
-    dailytargetMeasurement=$2
-    monthlytargetMeasurement=$3
-    year=$4
-    month=$5
+    aggregation=$1
+    field=$2
+    dailytargetMeasurement=$3
+    monthlytargetMeasurement=$4
+    year=$5
+    month=$6
 
     numDays=${DAYS_OF_MONTH[$month]}
 
@@ -263,7 +274,7 @@ writeMonthlyAggregations () {
 
     logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailytargetMeasurement into ${monthlytargetMeasurement}"
     logDebug "Month has $numDays days."
-    query="SELECT sum(\"$field\") FROM $dailytargetMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
+    query="SELECT $aggregation(\"$field\") FROM $dailytargetMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
     logDebug "Query: $query"
 
     queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
@@ -286,20 +297,28 @@ aggregateMonth() {
 
     logInfo "`printf "Aggregating monthly metrics for %04d" $ayear`-`printf "%02d" $amonth`"
 
-    writeMonthlyAggregations "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
-    writeMonthlyAggregations "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
-    writeMonthlyAggregations "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
+    writeMonthlyAggregations "sum" "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
+
+    writeMonthlyAggregations "sum" "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-        writeMonthlyAggregations "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "sum" "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
     else
         logDebug "Loadpoint 2 is disabled."
     fi
-    writeMonthlyAggregations "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
-    writeMonthlyAggregations "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
+    
+    writeMonthlyAggregations "spread" "value" "vehicle1Odometer" "vehicle1DrivenKm" $ayear $amonth 
+    if [ "$VEHICLE_2_ENABLED" == "true" ]; then
+        writeMonthlyAggregations "spread" "value" "vehicle2Odometer" "vehicle2DrivenKm" $ayear $amonth 
+    else
+        logDebug "Vehicle 2 is disabled."
+    fi
 
     if [ "$HOME_BATTERY" == "true" ]; then
-        writeMonthlyAggregations "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
-        writeMonthlyAggregations "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "sum" "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "sum" "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
     else
         logDebug "Home battery aggregation is disabled"
     fi
