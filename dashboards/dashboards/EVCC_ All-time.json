@@ -14,6 +14,28 @@
       "description": "",
       "type": "datasource",
       "pluginId": "__expr__"
+    },
+    {
+      "name": "DS_EVCC_INFLUXDB",
+      "label": "EVCC InfluxDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "VAR_VEHICLE1NAME",
+      "type": "constant",
+      "label": "vehicle1Name",
+      "value": "Ioniq 5",
+      "description": ""
+    },
+    {
+      "name": "VAR_VEHICLE2NAME",
+      "type": "constant",
+      "label": "vehicle2Name",
+      "value": "Tesla",
+      "description": ""
     }
   ],
   "__elements": {
@@ -908,7 +930,7 @@
       },
       "gridPos": {
         "h": 11,
-        "w": 16,
+        "w": 20,
         "x": 4,
         "y": 1
       },
@@ -1035,8 +1057,8 @@
       "gridPos": {
         "h": 11,
         "w": 4,
-        "x": 20,
-        "y": 1
+        "x": 0,
+        "y": 12
       },
       "id": 13,
       "libraryPanel": {
@@ -1150,7 +1172,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 16,
+        "w": 20,
         "x": 4,
         "y": 12
       },
@@ -1380,7 +1402,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 16,
+        "w": 20,
         "x": 4,
         "y": 18
       },
@@ -1610,7 +1632,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 16,
+        "w": 20,
         "x": 4,
         "y": 24
       },
@@ -1797,7 +1819,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               },
               {
                 "color": "text",
@@ -2202,7 +2225,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               }
             ]
           },
@@ -2338,7 +2362,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "orange",
@@ -2414,7 +2439,7 @@
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 12,
         "x": 0,
         "y": 44
@@ -2759,7 +2784,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               }
             ]
           },
@@ -2933,7 +2959,7 @@
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 7,
         "w": 12,
         "x": 12,
         "y": 44
@@ -3112,6 +3138,846 @@
       ],
       "title": "Speicher Amortisation",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "Werte sind grobe Schätzungen anhand Durchschnittswerte.\n\nBerücksichtigt nicht den hier eingestellten Strompreis, sondern die Werte, die aktuellen Preise die EVCC ermittelt.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "€"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "drivenKm"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "displayName",
+                "value": "Gefahrene Kilometer"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "electricDriveCost"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Fahrtkosten $vehicle1Name mit PV"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "iceDriveCost"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Fahrtkosten Verbrenner"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "savings"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Eingesparte Fahrtkosten ggü Verbrenner"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "electricDriveCostNoPV"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Fahrtkosten $vehicle1Name ohne PV"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "savingsElectricPv"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Eingesparte Fahrtkosten dank PV"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "savingsEffectivePrice.last"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "displayName",
+                "value": "Effektiver Ladepreis/kwh"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Solaranteil"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 51
+      },
+      "id": 21,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": true,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle1Odometer\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "odometer",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "min"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "odometer",
+          "hide": true,
+          "reducer": "min",
+          "refId": "startKm",
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "odometer",
+          "hide": true,
+          "reducer": "max",
+          "refId": "endKm",
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$endKm - $startKm",
+          "hide": false,
+          "refId": "drivenKm",
+          "type": "math"
+        },
+        {
+          "alias": "Solaranteil",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "savingsSelfConsumptionPercent",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "solarPercent",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "savingsEffectivePrice",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "chargePrice",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$drivenKm / 100 * $vehicle1Verbrauch * $stromPreis",
+          "hide": false,
+          "refId": "electricDriveCostNoPV",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$drivenKm / 100 * $vehicle1Verbrauch * $chargePrice",
+          "hide": false,
+          "refId": "electricDriveCost",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$electricDriveCostNoPV - $electricDriveCost",
+          "hide": false,
+          "refId": "savingsElectricPv",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$drivenKm / 100 * $vVerbrauch * $spritKosten",
+          "hide": false,
+          "refId": "iceDriveCost",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$iceDriveCost - $electricDriveCost",
+          "hide": false,
+          "refId": "savings",
+          "type": "math"
+        }
+      ],
+      "title": "Fahrtkosten $vehicle1Name",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "Werte sind grobe Schätzungen anhand Durchschnittswerte.\n\nBerücksichtigt nicht den hier eingestellten Strompreis, sondern die Werte, die aktuellen Preise die EVCC ermittelt.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "€"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "drivenKm"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "displayName",
+                "value": "Gefahrene Kilometer"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "electricDriveCost"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Fahrtkosten  $vehicle2Name mit PV"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "iceDriveCost"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Fahrtkosten Verbrenner"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "savings"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Eingesparte Fahrtkosten ggü Verbrenner"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "electricDriveCostNoPV"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Fahrtkosten $vehicle2Name ohne PV"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "savingsElectricPv"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Eingesparte Fahrtkosten dank PV"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "savingsEffectivePrice.last"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "displayName",
+                "value": "Effektiver Ladepreis/kwh"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Solaranteil"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 51
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": true,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle2Odometer\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "odometer",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "min"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "odometer",
+          "hide": true,
+          "reducer": "min",
+          "refId": "startKm",
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "odometer",
+          "hide": true,
+          "reducer": "max",
+          "refId": "endKm",
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$endKm - $startKm",
+          "hide": false,
+          "refId": "drivenKm",
+          "type": "math"
+        },
+        {
+          "alias": "Solaranteil",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "savingsSelfConsumptionPercent",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "solarPercent",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [],
+          "hide": false,
+          "measurement": "savingsEffectivePrice",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "chargePrice",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$drivenKm / 100 * $vehicle2Verbrauch * $stromPreis",
+          "hide": false,
+          "refId": "electricDriveCostNoPV",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$drivenKm / 100 * $vehicle2Verbrauch * $chargePrice",
+          "hide": false,
+          "refId": "electricDriveCost",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$electricDriveCostNoPV - $electricDriveCost",
+          "hide": false,
+          "refId": "savingsElectricPv",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$drivenKm / 100 * $vVerbrauch * $spritKosten",
+          "hide": false,
+          "refId": "iceDriveCost",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$iceDriveCost - $electricDriveCost",
+          "hide": false,
+          "refId": "savings",
+          "type": "math"
+        }
+      ],
+      "title": "Fahrtkosten $vehicle2Name",
+      "type": "stat"
     }
   ],
   "refresh": "",
@@ -3240,78 +4106,6 @@
       },
       {
         "current": {
-          "text": "18",
-          "value": "18"
-        },
-        "includeAll": false,
-        "label": "Elektro Verbrauch kWh/100km",
-        "name": "eVerbrauch",
-        "options": [
-          {
-            "selected": true,
-            "text": "18",
-            "value": "18"
-          }
-        ],
-        "query": "18",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "6",
-          "value": "6"
-        },
-        "includeAll": false,
-        "label": "Verbrenner Verbrauch l/100km",
-        "name": "vVerbrauch",
-        "options": [
-          {
-            "selected": true,
-            "text": "6",
-            "value": "6"
-          }
-        ],
-        "query": "6",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "1.70",
-          "value": "1.70"
-        },
-        "includeAll": false,
-        "label": "Spritpreis/Liter",
-        "name": "spritKosten",
-        "options": [
-          {
-            "selected": true,
-            "text": "1.70",
-            "value": "1.70"
-          }
-        ],
-        "query": "1.70",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "Europe/Berlin",
-          "value": "Europe/Berlin"
-        },
-        "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
-        "hide": 2,
-        "name": "timezone",
-        "options": [
-          {
-            "selected": true,
-            "text": "Europe/Berlin",
-            "value": "Europe/Berlin"
-          }
-        ],
-        "query": "Europe/Berlin",
-        "type": "custom"
-      },
-      {
-        "current": {
           "text": "Garage",
           "value": "Garage"
         },
@@ -3345,6 +4139,138 @@
         ],
         "query": "Stellplatz",
         "type": "custom"
+      },
+      {
+        "description": "Title des ersten Fahrzeuges, wie in der evcc.yaml definiert.",
+        "hide": 2,
+        "name": "vehicle1Name",
+        "query": "${VAR_VEHICLE1NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLE1NAME}",
+          "text": "${VAR_VEHICLE1NAME}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VEHICLE1NAME}",
+            "text": "${VAR_VEHICLE1NAME}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "current": {
+          "text": "20",
+          "value": "20"
+        },
+        "description": "Geschätzter durchschnittlicher Verbrauch des ersten Fahrzeuges",
+        "includeAll": false,
+        "label": "Fahrzeug 1 Verbrauch kWh/100km",
+        "name": "vehicle1Verbrauch",
+        "options": [
+          {
+            "selected": true,
+            "text": "20",
+            "value": "20"
+          }
+        ],
+        "query": "20",
+        "type": "custom"
+      },
+      {
+        "description": "Title des zweiten Fahrzeuges, wie in der evcc.yaml definiert.",
+        "hide": 2,
+        "name": "vehicle2Name",
+        "query": "${VAR_VEHICLE2NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLE2NAME}",
+          "text": "${VAR_VEHICLE2NAME}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VEHICLE2NAME}",
+            "text": "${VAR_VEHICLE2NAME}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "current": {
+          "text": "17",
+          "value": "17"
+        },
+        "description": "Geschätzter durchschnittlicher Verbrauch des zweiten Fahrzeuges",
+        "includeAll": false,
+        "label": "Fahrzeug 2 Verbrauch kWh/100km",
+        "name": "vehicle2Verbrauch",
+        "options": [
+          {
+            "selected": true,
+            "text": "17",
+            "value": "17"
+          }
+        ],
+        "query": "17",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "6",
+          "value": "6"
+        },
+        "includeAll": false,
+        "label": "Verbrenner Verbrauch l/100km",
+        "name": "vVerbrauch",
+        "options": [
+          {
+            "selected": true,
+            "text": "6",
+            "value": "6"
+          }
+        ],
+        "query": "6",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "1.75",
+          "value": "1.75"
+        },
+        "includeAll": false,
+        "label": "Spritpreis/Liter",
+        "name": "spritKosten",
+        "options": [
+          {
+            "selected": true,
+            "text": "1.75",
+            "value": "1.75"
+          }
+        ],
+        "query": "1.75",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "Europe/Berlin",
+          "value": "Europe/Berlin"
+        },
+        "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
+        "hide": 2,
+        "name": "timezone",
+        "options": [
+          {
+            "selected": true,
+            "text": "Europe/Berlin",
+            "value": "Europe/Berlin"
+          }
+        ],
+        "query": "Europe/Berlin",
+        "type": "custom"
       }
     ]
   },
@@ -3356,6 +4282,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 169,
+  "version": 179,
   "weekStart": ""
 }
