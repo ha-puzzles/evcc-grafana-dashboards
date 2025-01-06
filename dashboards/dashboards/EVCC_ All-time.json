@@ -1055,7 +1055,7 @@
     },
     {
       "gridPos": {
-        "h": 11,
+        "h": 18,
         "w": 4,
         "x": 0,
         "y": 12
@@ -3456,9 +3456,11 @@
           },
           "groupBy": [],
           "hide": false,
-          "measurement": "savingsSelfConsumptionPercent",
+          "measurement": "sessionSolarPercentage",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"sessionSolarPercentage\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "solarPercent",
           "resultFormat": "time_series",
           "select": [
@@ -3471,22 +3473,25 @@
               },
               {
                 "params": [],
-                "type": "last"
+                "type": "mean"
               }
             ]
           ],
           "tags": []
         },
         {
+          "alias": "Effektiver, durchschnittlicher Preis",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [],
           "hide": false,
-          "measurement": "savingsEffectivePrice",
+          "measurement": "sessionPricePerKWh",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"sessionPricePerKWh\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "chargePrice",
           "resultFormat": "time_series",
           "select": [
@@ -3499,7 +3504,7 @@
               },
               {
                 "params": [],
-                "type": "last"
+                "type": "mean"
               }
             ]
           ],
@@ -3879,6 +3884,8 @@
           "measurement": "savingsSelfConsumptionPercent",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"sessionSolarPercentage\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "solarPercent",
           "resultFormat": "time_series",
           "select": [
@@ -3898,6 +3905,7 @@
           "tags": []
         },
         {
+          "alias": "Effektiver, durchschnittlicher Preis",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
@@ -3907,6 +3915,8 @@
           "measurement": "savingsEffectivePrice",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT mean(\"value\") FROM \"sessionPricePerKWh\" WHERE $timeFilter",
+          "rawQuery": true,
           "refId": "chargePrice",
           "resultFormat": "time_series",
           "select": [
@@ -4282,6 +4292,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 179,
+  "version": 184,
   "weekStart": ""
 }
