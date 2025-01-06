@@ -56,3 +56,5 @@ Jedes Dashboard hat eigene Parameter. Da es leider keine globalen Variablen in G
 Gehe in die Einstellungen des Dashboards und dort auf den Tab 'Variables'. Klicke nun auf jede Variable und passe die Werte an. Du findest dort jeweils Beschreibungen, die den Parameter erklären.
 
 ![Variablen Screenshot](img/variables.png)
+
+In einigen Panels werden die Bereiche für Min und Max angepasst werden müssen.
