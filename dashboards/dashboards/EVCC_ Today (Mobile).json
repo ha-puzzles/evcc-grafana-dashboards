@@ -1975,7 +1975,7 @@
           "type": "influxdb",
           "uid": "${DS_EVCC_INFLUXDB}"
         },
-        "description": "Grün: Prioritisierunggrenze für Autoladung\nRot: Tiefentladegrenze des Hausspeichers",
+        "description": "Grün: Prioritisierunggrenze für Autoladung\n\nRot: Tiefentladegrenze des Hausspeichers",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -2378,7 +2378,7 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
-            "query": "SELECT \"value\" * 100 FROM \"tariffGrid\" WHERE $timeFilter tz('$timezone')",
+            "query": "SELECT last(\"value\") * 100 FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
             "rawQuery": true,
             "refId": "Tarif",
             "resultFormat": "time_series"
@@ -3517,7 +3517,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('Europe/Berlin')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series",
@@ -4276,6 +4276,7 @@
           "value": "20000"
         },
         "description": "Grenze der maximalen Leistung in W, über diese Werte als Ausreißer ignoriert werden",
+        "hide": 2,
         "name": "peakPowerLimit",
         "options": [
           {
@@ -4363,6 +4364,6 @@
   "timezone": "",
   "title": "EVCC: Today (Mobile)",
   "uid": "MRHnynkRz",
-  "version": 89,
+  "version": 90,
   "weekStart": ""
 }

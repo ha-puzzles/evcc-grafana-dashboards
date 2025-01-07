@@ -1096,7 +1096,7 @@
           "colorMode": "value",
           "graphMode": "none",
           "justifyMode": "auto",
-          "orientation": "horizontal",
+          "orientation": "auto",
           "percentChangeColorMode": "standard",
           "reduceOptions": {
             "calcs": [
@@ -1107,7 +1107,8 @@
           },
           "showPercentChange": false,
           "text": {
-            "titleSize": 12
+            "titleSize": 12,
+            "valueSize": 20
           },
           "textMode": "auto",
           "wideLayout": true
@@ -1226,7 +1227,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Kilometerstand $vehicle1Name"
+                  "value": "$vehicle1Name: Kilometerstand"
                 }
               ]
             },
@@ -1245,7 +1246,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Kilometerstand $vehicle2Name"
+                  "value": "$vehicle2Name: Kilometerstand"
                 }
               ]
             },
@@ -1257,7 +1258,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Gefahrene Strecke $vehicle1Name"
+                  "value": "$vehicle1Name: Gefahrene Strecke"
                 },
                 {
                   "id": "color",
@@ -1276,7 +1277,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Gefahrene Strecke $vehicle2Name"
+                  "value": "$vehicle2Name: Gefahrene Strecke"
                 },
                 {
                   "id": "color",
@@ -1324,6 +1325,90 @@
                   }
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Tesla: Geladene Energie"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "kWh"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "dark-red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "vehicle2Consumption"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "kWh/100km"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "dark-red",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "displayName",
+                  "value": "$vehicle2Name: Verbrauch"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Ioniq 5: Geladene Energie"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "kWh"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "light-red",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "vehicle1Consumption"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "kWh/100km"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "light-red",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "displayName",
+                  "value": "$vehicle1Name: Verbrauch"
+                }
+              ]
             }
           ]
         },
@@ -1331,7 +1416,7 @@
           "colorMode": "value",
           "graphMode": "none",
           "justifyMode": "auto",
-          "orientation": "horizontal",
+          "orientation": "auto",
           "percentChangeColorMode": "standard",
           "reduceOptions": {
             "calcs": [
@@ -1341,6 +1426,10 @@
             "values": false
           },
           "showPercentChange": false,
+          "text": {
+            "titleSize": 12,
+            "valueSize": 20
+          },
           "textMode": "auto",
           "wideLayout": true
         },
@@ -1425,6 +1514,60 @@
             "type": "math"
           },
           {
+            "alias": "$vehicle1Name: Geladene Energie",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(\"value\")/1000 FROM \"vehicle1MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+            "rawQuery": true,
+            "refId": "vehicle1ChargedEnergy",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "$vehicle1ChargedEnergy/($vehicle1DrivenKm/100)",
+            "hide": false,
+            "refId": "vehicle1Consumption",
+            "type": "math"
+          },
+          {
             "alias": "vehicle2Odometer",
             "datasource": {
               "type": "influxdb",
@@ -1504,16 +1647,101 @@
             "type": "math"
           },
           {
+            "alias": "$vehicle2Name: Geladene Energie",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(\"value\")/1000 FROM \"vehicle2MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+            "rawQuery": true,
+            "refId": "vehicle2ChargedEnergy",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "$vehicle2ChargedEnergy/($vehicle2DrivenKm/100)",
+            "hide": false,
+            "refId": "vehicle2Consumption",
+            "type": "math"
+          },
+          {
             "alias": "Solaranteil",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT mean(\"value\") FROM \"sessionSolarPercentage\" WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "solarPercent",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           },
           {
             "alias": "Effektiver Ladepreis",
@@ -1521,11 +1749,42 @@
               "type": "influxdb",
               "uid": "L-nZgczgk"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT mean(\"value\")*100 FROM \"sessionPricePerKWh\" WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
             "refId": "effectiveChargingPrice",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
           }
         ],
         "title": "Fahrzeuge",
@@ -1568,12 +1827,6 @@
       "type": "panel",
       "id": "stat",
       "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
       "version": ""
     },
     {
@@ -2153,7 +2406,7 @@
           "tags": []
         }
       ],
-      "title": "Energie/Monat",
+      "title": "Energie",
       "type": "timeseries"
     },
     {
@@ -2515,7 +2768,7 @@
           "type": "math"
         }
       ],
-      "title": "Kennzahlen/Monat",
+      "title": "Kennzahlen",
       "type": "timeseries"
     },
     {
@@ -2636,7 +2889,8 @@
         },
         "showPercentChange": false,
         "text": {
-          "titleSize": 12
+          "titleSize": 12,
+          "valueSize": 20
         },
         "textMode": "auto",
         "wideLayout": true
@@ -3228,537 +3482,24 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "semi-dark-green",
-            "mode": "fixed"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false,
-            "minWidth": 100
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watth"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "time: DD. MMM YYYY"
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PV Energie"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "watth"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
+      "collapsed": false,
       "gridPos": {
-        "h": 11,
-        "w": 8,
+        "h": 1,
+        "w": 24,
         "x": 0,
         "y": 36
       },
-      "id": 32,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "PV Energie"
-          }
-        ]
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "alias": "PV Energie",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"pvDailyEnergy\" WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "integral"
-              },
-              {
-                "params": [
-                  " / 3600"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "value::field",
-              "operator": "<",
-              "value": "10000"
-            }
-          ]
-        }
-      ],
-      "title": "Ertragsreichste Tage",
-      "transparent": true,
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "yellow",
-            "mode": "fixed"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watth"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "time: DD. MMM YYYY"
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Einspeisung"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "watth"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 8,
-        "x": 8,
-        "y": 36
-      },
-      "id": 35,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Einspeisung"
-          }
-        ]
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "alias": "Einspeisung",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "gridPower",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"feedInDailyEnergy\" WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "integral"
-              },
-              {
-                "params": [
-                  " / -3600"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "value::field",
-              "operator": "<",
-              "value": "0"
-            }
-          ]
-        }
-      ],
-      "title": "Höchste Einspeisungen",
-      "transparent": true,
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watth"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "time: DD. MMM YYYY"
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Hausverbrauch"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "watth"
-              },
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "mode": "basic",
-                  "type": "gauge"
-                }
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 8,
-        "x": 16,
-        "y": 36
-      },
-      "id": 33,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Hausverbrauch"
-          }
-        ]
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "alias": "Hausverbrauch",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "homePower",
-          "orderByTime": "ASC",
-          "policy": "autogen",
-          "query": "SELECT value FROM \"homeDailyEnergy\" WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "integral"
-              },
-              {
-                "params": [
-                  " / 3600"
-                ],
-                "type": "math"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "value::field",
-              "operator": "<",
-              "value": "10000"
-            }
-          ]
-        }
-      ],
-      "title": "Höchste Hausverbräuche",
-      "transparent": true,
-      "type": "table"
+      "id": 62,
+      "panels": [],
+      "title": "Speicher",
+      "type": "row"
     },
     {
       "gridPos": {
         "h": 8,
         "w": 4,
         "x": 0,
-        "y": 47
+        "y": 37
       },
       "id": 37,
       "libraryPanel": {
@@ -3790,7 +3531,7 @@
         "h": 9,
         "w": 10,
         "x": 4,
-        "y": 47
+        "y": 37
       },
       "id": 6,
       "options": {
@@ -3917,7 +3658,7 @@
         "h": 9,
         "w": 10,
         "x": 14,
-        "y": 47
+        "y": 37
       },
       "id": 51,
       "options": {
@@ -4075,8 +3816,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4123,7 +3863,7 @@
         "h": 10,
         "w": 10,
         "x": 4,
-        "y": 56
+        "y": 46
       },
       "id": 50,
       "maxDataPoints": 50000,
@@ -4166,7 +3906,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Speicherladung/Monat",
+      "title": "Speicherladung",
       "type": "timeseries"
     },
     {
@@ -4221,8 +3961,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4258,7 +3997,7 @@
         "h": 10,
         "w": 10,
         "x": 14,
-        "y": 56
+        "y": 46
       },
       "id": 49,
       "maxDataPoints": 50000,
@@ -4311,7 +4050,7 @@
           "type": "math"
         }
       ],
-      "title": "Speichereffizienz/Monat",
+      "title": "Speichereffizienz",
       "type": "timeseries"
     },
     {
@@ -4320,7 +4059,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 56
       },
       "id": 56,
       "panels": [],
@@ -4329,10 +4068,10 @@
     },
     {
       "gridPos": {
-        "h": 8,
+        "h": 24,
         "w": 4,
         "x": 0,
-        "y": 67
+        "y": 57
       },
       "id": 59,
       "libraryPanel": {
@@ -4345,6 +4084,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
+      "description": "Die Kilometer werden nur bei eingestecktem Fahrzeug erfasst. Wird ein Fahrzeug selten eingesteckt, können hier Kilometer fehlen.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -4356,7 +4096,8 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 80,
+            "axisWidth": 79,
+            "fillOpacity": 35,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -4376,8 +4117,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4432,11 +4172,11 @@
         "h": 8,
         "w": 20,
         "x": 4,
-        "y": 67
+        "y": 57
       },
       "id": 58,
       "options": {
-        "barRadius": 0,
+        "barRadius": 0.2,
         "barWidth": 0.97,
         "fullHighlight": false,
         "groupWidth": 0.7,
@@ -4565,6 +4305,536 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
+            "axisWidth": 79,
+            "fillOpacity": 35,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle1"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle1Name"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle2"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle2Name"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 20,
+        "x": 4,
+        "y": 65
+      },
+      "id": 60,
+      "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "Time",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "alias": "vehicle1",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle1MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle1",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "vehicle2",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle2MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle2",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Monatlich geladene Energie",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "Die Werte sind ungenau. Externe Ladungen werden nicht berücksichtigt und die erfassten Kilometer hängen davon ab, wie oft ein Fahrzeug angesteckt wird.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 79,
+            "fillOpacity": 35,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle1Consumption"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle1Name"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle2Consumption"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle2Name"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 20,
+        "x": 4,
+        "y": 73
+      },
+      "id": 61,
+      "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "xField": "Time",
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.4.0",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle1MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle1Energy",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle1DrivenKm\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle1Km",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "($vehicle1Energy/1000)/($vehicle1Km/100)",
+          "hide": false,
+          "refId": "vehicle1Consumption",
+          "type": "math"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle2MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle2Energy",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle2DrivenKm\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle2Km",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "($vehicle2Energy/1000)/($vehicle2Km/100)",
+          "hide": false,
+          "refId": "vehicle2Consumption",
+          "type": "math"
+        }
+      ],
+      "title": "Verbrauch (kWh/100km)",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 79,
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
@@ -4597,8 +4867,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4653,7 +4922,7 @@
         "h": 11,
         "w": 20,
         "x": 4,
-        "y": 75
+        "y": 81
       },
       "id": 57,
       "options": {
@@ -4873,6 +5142,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 175,
+  "version": 190,
   "weekStart": ""
 }
