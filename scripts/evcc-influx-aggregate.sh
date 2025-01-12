@@ -166,7 +166,7 @@ writeDailyAggregations() {
     case $mode in
         integral-all)
             logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of all values from $sourceMeasurement into ${targetMeasurement}"
-            query="SELECT integral(\"$field\") / 3600 FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(none) tz('$TIMEZONE')"
+            query="SELECT integral(\"$field\") / 3600 FROM \"$sourceMeasurement\" WHERE ${timeCondition} $additionalWhere GROUP BY time(1d) fill(0) tz('$TIMEZONE')"
             ;;
         integral-positives)
             logDebug "${fYear}-${fMonth}-${fDay}: Aggregating energy of positive values from $sourceMeasurement into ${targetMeasurement}"
@@ -229,8 +229,10 @@ aggregateDay() {
     fi
 
     writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle1Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}')"
+    writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle1DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}') AND value < $PEAK_POWER_LIMIT" # Workaround: Integral does not work for vehicle as there are too few data points
     if [ "$VEHICLE_2_ENABLED" == "true" ]; then
         writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle2Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}')"
+        writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle2DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}') AND value < $PEAK_POWER_LIMIT" # Workaround: Integral does not work for vehicle as there are too few data points
     else
         logDebug "Vehicle 2 is disabled."
     fi
@@ -310,8 +312,10 @@ aggregateMonth() {
     fi
     
     writeMonthlyAggregations "spread" "value" "vehicle1Odometer" "vehicle1DrivenKm" $ayear $amonth 
+    writeMonthlyAggregations "sum" "value" "vehicle1DailyEnergy" "vehicle1MonthlyEnergy" $ayear $amonth 
     if [ "$VEHICLE_2_ENABLED" == "true" ]; then
         writeMonthlyAggregations "spread" "value" "vehicle2Odometer" "vehicle2DrivenKm" $ayear $amonth 
+        writeMonthlyAggregations "sum" "value" "vehicle2DailyEnergy" "vehicle2MonthlyEnergy" $ayear $amonth 
     else
         logDebug "Vehicle 2 is disabled."
     fi
@@ -358,6 +362,19 @@ dropAggregations() {
         dropMeasurement "feedInMonthlyEnergy"
         dropMeasurement "dischargeMonthlyEnergy"
         dropMeasurement "chargeMonthlyEnergy"
+        dropMeasurement "batteryMaxSoc"
+        dropMeasurement "batteryMinSoc"
+        dropMeasurement "tariffGridDailyMax"
+        dropMeasurement "tariffGridDailyMean"
+        dropMeasurement "tariffGridDailyMin"
+        dropMeasurement "vehicle1DailyEnergy"
+        dropMeasurement "vehicle1DrivenKm"
+        dropMeasurement "vehicle1MonthlyEnergy"
+        dropMeasurement "vehicle1Odometer"
+        dropMeasurement "vehicle2DailyEnergy"
+        dropMeasurement "vehicle2DrivenKm"
+        dropMeasurement "vehicle2MonthlyEnergy"
+        dropMeasurement "vehicle2Odometer"
     else
         logInfo "Deletion of aggregated measurements aborted."
     fi
