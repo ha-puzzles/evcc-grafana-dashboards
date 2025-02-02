@@ -470,12 +470,7 @@
               "neutral": 0
             },
             "decimals": 2,
-            "links": [
-              {
-                "title": "EVCC",
-                "url": "$evccUrl"
-              }
-            ],
+            "links": [],
             "mappings": [],
             "max": 11,
             "min": -11,
@@ -520,6 +515,15 @@
                 {
                   "id": "displayName",
                   "value": "$loadpoint1Name"
+                },
+                {
+                  "id": "links",
+                  "value": [
+                    {
+                      "title": "EVCC: $loadpoint1Name",
+                      "url": "$evccUrl?lp=1"
+                    }
+                  ]
                 }
               ]
             },
@@ -552,6 +556,15 @@
                 {
                   "id": "displayName",
                   "value": "$loadpoint2Name"
+                },
+                {
+                  "id": "links",
+                  "value": [
+                    {
+                      "title": "EVCC: $loadpoint2Name",
+                      "url": "$evccUrl?lp=2"
+                    }
+                  ]
                 }
               ]
             }
@@ -576,7 +589,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.0",
         "targets": [
           {
             "alias": "loadpoint1",
@@ -2038,7 +2051,7 @@
                 },
                 {
                   "color": "red",
-                  "value": 10
+                  "value": 20
                 },
                 {
                   "color": "green",
@@ -3889,7 +3902,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.4.0"
+      "version": "11.5.0"
     },
     {
       "type": "datasource",
