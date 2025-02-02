@@ -98,7 +98,7 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
 2. Grafana im Browser öffnen und im Menü auf 'Dashboards' clicken.
 3. Alle EVCC PV Dashboards löschen.
    ![PV Ordner löschen](./img/delete-dashboards.png)
-4. Auf 'Dashboards/Library Panels' gehen. Dort alle Library Panels löschen, die von mir kommen.
+4. Auf 'Dashboards/Library Panels' gehen. **Dort alle Library Panels löschen, die von mir kommen.** Wird dies nicht gemacht, führt dies zu teilweise inkonsistenten Dashboards.
 2. Dashboards über den Grafana.com Community Store installieren:
    1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
       ![Import dashboard](./img/import.png)
