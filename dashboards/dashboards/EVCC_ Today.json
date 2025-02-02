@@ -530,7 +530,7 @@
                 },
                 {
                   "color": "red",
-                  "value": 10
+                  "value": 20
                 },
                 {
                   "color": "green",
@@ -2942,7 +2942,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.4.0"
+      "version": "11.5.0"
     },
     {
       "type": "datasource",
@@ -3260,8 +3260,8 @@
                 "id": "links",
                 "value": [
                   {
-                    "title": "EVCC",
-                    "url": "$evccUrl"
+                    "title": "EVCC: $loadpoint1Name",
+                    "url": "$evccUrl?lp=1"
                   }
                 ]
               },
@@ -3309,8 +3309,8 @@
                 "id": "links",
                 "value": [
                   {
-                    "title": "EVCC",
-                    "url": "$evccUrl"
+                    "title": "EVCC: $loadpoint2Name",
+                    "url": "$evccUrl?lp=2"
                   }
                 ]
               },
@@ -3348,7 +3348,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.0",
       "targets": [
         {
           "alias": "PV",
@@ -3779,6 +3779,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 164,
+  "version": 166,
   "weekStart": ""
 }
