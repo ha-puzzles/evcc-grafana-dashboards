@@ -24,7 +24,7 @@ Folgende Grundvoraussetzungen müssen erfüllt sein:
 
 - EVCC: https://evcc.io/
 - Influx DB v1.8 (InfluxDB 2.x wird nicht unterstützt, siehe FAQ): https://www.influxdata.com/
-- Grafana: https://grafana.com/ (aktuell getestete Version: 11.2.0)
+- Grafana: https://grafana.com/ (aktuell getestete Version: 11.5.0)
 - Grundlegende Linux Kenntnisse oder die Bereitschaft sich diese anzueignen.
 - Die Möglichkeit ein Bash Shell Script regelmäßig per Crontab ausführen zu können (HAOS Benutzer, siehe FAQ)
 - Bereitschaft sich etwas in Grafana einzuarbeiten.
