@@ -19,7 +19,7 @@ LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
 VEHICLE_1_TITLE="Ioniq 5" # Title of vehicle 1 as defined in evcc.yaml
 VEHICLE_2_ENABLED=true # Set to false in case you have just one vehicle
 VEHICLE_2_TITLE="Tesla" # Title of vehicle 2 as defined in evcc.yaml
-TIMEZONE="Europe/Berlin" # Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+TIMEZONE="`cat /etc/timezone`" # Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 PEAK_POWER_LIMIT=40000 # Limit in W to filter out unrealistic peaks
 DYNAMIC_TARIFF="true" # Set to true to collect tariff history.
 
@@ -152,6 +152,7 @@ writeDailyAggregations() {
     month=$6
     day=$7
     additionalWhere=$8
+    defaultZero=$9
 
     printf -v fYear "%04d" $year
     printf -v fMonth "%02d" $month
@@ -197,15 +198,17 @@ writeDailyAggregations() {
 
     queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
     logDebug "Query result (last row): $queryResult"
+    timestamp=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T00:00:00 +%FT%T%Z`" -u +%s%9N)
+    energy=0
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
-        timestamp=`echo "$queryResult" | cut -d " " -f 1`
-        timestampNano=`date -d "$timestamp" +%s%9N`
         energy=`echo "$queryResult" | cut -d " " -f 2`
-        insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestampNano}"
+    else
+        logInfo "There is no data from $sourceMeasurement for $targetMeasurement."
+    fi
+    if [ "$energy" != "0" ] || [ "$defaultZero" == "true" ]; then
+        insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestamp}"
         logDebug "Insert statement: $insertStatement"
         influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
-    else
-        logInfo "There is no data from $sourceMeasurement for $targetMeasurement. This may be fine, if no data had been collected for this day and this measurement."
     fi
 }
 
@@ -216,40 +219,40 @@ aggregateDay() {
 
     logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
 
-    writeDailyAggregations "integral-all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyAggregations "integral-all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-    writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-all" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    writeDailyAggregations "integral-all" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
 
-    writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT"
+    writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT" "true"
     if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-        writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT"
+        writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT" "true"
     else
         logDebug "Loadpoint 2 is disabled."
     fi
 
-    writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle1Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}')"
-    writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle1DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}') AND value < $PEAK_POWER_LIMIT" # Workaround: Integral does not work for vehicle as there are too few data points
+    writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle1Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}')" "false"
+    writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle1DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}') AND value < $PEAK_POWER_LIMIT" "true" # Workaround: Integral does not work for vehicle as there are too few data points
     if [ "$VEHICLE_2_ENABLED" == "true" ]; then
-        writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle2Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}')"
-        writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle2DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}') AND value < $PEAK_POWER_LIMIT" # Workaround: Integral does not work for vehicle as there are too few data points
+        writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle2Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}')" "false"
+        writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle2DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}') AND value < $PEAK_POWER_LIMIT" "true" # Workaround: Integral does not work for vehicle as there are too few data points
     else
         logDebug "Vehicle 2 is disabled."
     fi
 
     if [ "$HOME_BATTERY" == "true" ]; then
-        writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-        writeDailyAggregations "integral-negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT"
-        writeDailyAggregations "min" "value" "batterySoc" "batteryMinSoc" $ayear $amonth $aday "AND value < 101 AND value > 0"
-        writeDailyAggregations "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101"
+        writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+        writeDailyAggregations "integral-negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+        writeDailyAggregations "min" "value" "batterySoc" "batteryMinSoc" $ayear $amonth $aday "AND value < 101 AND value > 0" "false"
+        writeDailyAggregations "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101" "false"
     else
         logDebug "Home battery aggregation is disabled."
     fi
 
     if [ "$DYNAMIC_TARIFF" == "true" ]; then
-        writeDailyAggregations "min" "value" "tariffGrid" "tariffGridDailyMin" $ayear $amonth $aday ""
-        writeDailyAggregations "max" "value" "tariffGrid" "tariffGridDailyMax" $ayear $amonth $aday ""
-        writeDailyAggregations "mean" "value" "tariffGrid" "tariffGridDailyMean" $ayear $amonth $aday ""
+        writeDailyAggregations "min" "value" "tariffGrid" "tariffGridDailyMin" $ayear $amonth $aday "" "false"
+        writeDailyAggregations "max" "value" "tariffGrid" "tariffGridDailyMax" $ayear $amonth $aday "" "false"
+        writeDailyAggregations "mean" "value" "tariffGrid" "tariffGridDailyMean" $ayear $amonth $aday "" "false"
     else
         logDebug "Dynamic tariff aggregation is disabled."
     fi
@@ -281,16 +284,16 @@ writeMonthlyAggregations () {
 
     queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
     logDebug "Query result (last row): $queryResult"
+    timestamp=$(date -d "`date -d ${fYear}-${fMonth}-01T00:00:00 +%FT%T%Z`" -u +%s%9N)
+    energy=0
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
-        timestamp=`echo "$queryResult" | cut -d " " -f 1`
-        timestampNano=`date -d "$timestamp" +%s%9N`
         energy=`echo "$queryResult" | cut -d " " -f 2`
-        insertStatement="INSERT ${monthlytargetMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestampNano}"
-        logDebug "Insert statement: $insertStatement"
-        influx  -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
     else
-        logInfo "There is no data from $dailytargetMeasurement for $monthlytargetMeasurement. This may be fine, if no data had been collected for this month and this measurement."
+        logInfo "There is no data from $dailytargetMeasurement for $monthlytargetMeasurement. Writing 0 as data point for this month."
     fi    
+    insertStatement="INSERT ${monthlytargetMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestamp}"
+    logDebug "Insert statement: $insertStatement"
+    influx  -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
 }
 
 aggregateMonth() {
@@ -385,6 +388,13 @@ dropAggregations() {
 ###############################################################################
 parseArguments $@
 
+# Check if timezone is set
+if [ "$TIMEZONE" == "" ]; then
+    logError "Timezone is not set. Please set the script variable TIMEZONE to your timezone."
+    exit 1
+fi
+
+# Start aggregation
 if [ "$DELETE_AGGREGATIONS" != "true" ]; then
     logInfo "[`date '+%F %T'`] Starting aggregation..."
 fi
