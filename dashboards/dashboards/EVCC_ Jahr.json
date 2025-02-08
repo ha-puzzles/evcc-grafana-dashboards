@@ -156,7 +156,7 @@
           "maxVizHeight": 300,
           "minVizHeight": 10,
           "minVizWidth": 0,
-          "namePlacement": "auto",
+          "namePlacement": "top",
           "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
@@ -172,7 +172,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -1176,494 +1176,6 @@
           }
         ],
         "title": "Speicher",
-        "transparent": true,
-        "type": "stat"
-      }
-    },
-    "ce97h17hsbi0wc": {
-      "name": "EVCC: Fahrzeugstatistik",
-      "uid": "ce97h17hsbi0wc",
-      "kind": 1,
-      "model": {
-        "datasource": {
-          "type": "datasource",
-          "uid": "-- Mixed --"
-        },
-        "description": "Verbrauch braucht erst einige Monate bis er aussagekräftig ist.  Fremdladungen werden ignoriert und verfälschen das Ergebnis.",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "thresholds"
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            },
-            "unit": "km"
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "vehicle1Odometer"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "light-red",
-                    "mode": "fixed"
-                  }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$vehicle1Name: Kilometerstand"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "vehicle2Odometer"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "dark-red",
-                    "mode": "fixed"
-                  }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$vehicle2Name: Kilometerstand"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "vehicle1DrivenKm vehicle1Odometer"
-              },
-              "properties": [
-                {
-                  "id": "displayName",
-                  "value": "$vehicle1Name: Gefahrene Strecke"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "light-red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "vehicle2DrivenKm vehicle2Odometer"
-              },
-              "properties": [
-                {
-                  "id": "displayName",
-                  "value": "$vehicle2Name: Gefahrene Strecke"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "dark-red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Tesla: Geladene Energie"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "kWh"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "dark-red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "vehicle2Consumption"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "kWh/100km"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "dark-red",
-                    "mode": "fixed"
-                  }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$vehicle2Name: Verbrauch"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Ioniq 5: Geladene Energie"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "kWh"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "light-red",
-                    "mode": "fixed"
-                  }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "vehicle1Consumption"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "kWh/100km"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "light-red",
-                    "mode": "fixed"
-                  }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$vehicle1Name: Verbrauch"
-                }
-              ]
-            }
-          ]
-        },
-        "options": {
-          "colorMode": "value",
-          "graphMode": "none",
-          "justifyMode": "auto",
-          "orientation": "auto",
-          "percentChangeColorMode": "standard",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
-          },
-          "showPercentChange": false,
-          "text": {
-            "titleSize": 12,
-            "valueSize": 20
-          },
-          "textMode": "auto",
-          "wideLayout": true
-        },
-        "pluginVersion": "11.4.0",
-        "targets": [
-          {
-            "alias": "vehicle1Odometer",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "30d"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "previous"
-                ],
-                "type": "fill"
-              }
-            ],
-            "measurement": "vehicle1Odometer",
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT \"value\" FROM \"vehicle1Odometer\" WHERE $timeFilter  tz('$timezone')",
-            "rawQuery": true,
-            "refId": "vehicle1Odometer",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "spread"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "vehicle1Odometer",
-            "hide": true,
-            "reducer": "max",
-            "refId": "endKm1",
-            "type": "reduce"
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "vehicle1Odometer",
-            "hide": true,
-            "reducer": "min",
-            "refId": "startKm1",
-            "type": "reduce"
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "$endKm1-$startKm1",
-            "hide": false,
-            "refId": "vehicle1DrivenKm",
-            "type": "math"
-          },
-          {
-            "alias": "$vehicle1Name: Geladene Energie",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT sum(\"value\")/1000 FROM \"vehicle1MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
-            "rawQuery": true,
-            "refId": "vehicle1ChargedEnergy",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "$vehicle1ChargedEnergy/($vehicle1DrivenKm/100)",
-            "hide": false,
-            "refId": "vehicle1Consumption",
-            "type": "math"
-          },
-          {
-            "alias": "vehicle2Odometer",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "30d"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "previous"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "measurement": "vehicle1Odometer",
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT \"value\" FROM \"vehicle2Odometer\" WHERE $timeFilter  tz('$timezone')",
-            "rawQuery": true,
-            "refId": "vehicle2Odometer",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "spread"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "vehicle2Odometer",
-            "hide": true,
-            "reducer": "max",
-            "refId": "endKm2",
-            "type": "reduce"
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "vehicle2Odometer",
-            "hide": true,
-            "reducer": "min",
-            "refId": "startKm2",
-            "type": "reduce"
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "$endKm2-$startKm2",
-            "hide": false,
-            "refId": "vehicle2DrivenKm",
-            "type": "math"
-          },
-          {
-            "alias": "$vehicle2Name: Geladene Energie",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT sum(\"value\")/1000 FROM \"vehicle2MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
-            "rawQuery": true,
-            "refId": "vehicle2ChargedEnergy",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "$vehicle2ChargedEnergy/($vehicle2DrivenKm/100)",
-            "hide": false,
-            "refId": "vehicle2Consumption",
-            "type": "math"
-          }
-        ],
-        "title": "Fahrzeuge",
         "transparent": true,
         "type": "stat"
       }
@@ -3945,6 +3457,195 @@
       "type": "row"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "Verbrauch braucht erst einige Monate bis er aussagekräftig ist.  Fremdladungen werden ignoriert und verfälschen das Ergebnis.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "km"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle1Odometer"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle1Name: Kilometerstand"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle2Odometer"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle2Name: Kilometerstand"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle1DrivenKm vehicle1Odometer"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "$vehicle1Name: Gefahrene Strecke"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle2DrivenKm vehicle2Odometer"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "$vehicle2Name: Gefahrene Strecke"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tesla: Geladene Energie"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kWh"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle2Consumption"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kWh/100km"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle2Name: Verbrauch"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ioniq 5: Geladene Energie"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kWh"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicle1Consumption"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kWh/100km"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "$vehicle1Name: Verbrauch"
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 24,
         "w": 4,
@@ -3952,10 +3653,302 @@
         "y": 57
       },
       "id": 59,
-      "libraryPanel": {
-        "uid": "ce97h17hsbi0wc",
-        "name": "EVCC: Fahrzeugstatistik"
-      }
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.0",
+      "targets": [
+        {
+          "alias": "vehicle1Odometer",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle1Odometer\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle1Odometer",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$vehicle1Name: Geladene Energie",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"value\")/1000 FROM \"vehicle1MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle1ChargedEnergy",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "vehicle2Odometer",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "30d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "vehicle1Odometer",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"value\" FROM \"vehicle2Odometer\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle2Odometer",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "spread"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$vehicle2Name: Geladene Energie",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"value\")/1000 FROM \"vehicle2MonthlyEnergy\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "vehicle2ChargedEnergy",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "vehicle1Odometer",
+          "hide": true,
+          "reducer": "max",
+          "refId": "endKm1",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "vehicle1Odometer",
+          "hide": true,
+          "reducer": "min",
+          "refId": "startKm1",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$endKm1-$startKm1",
+          "hide": false,
+          "refId": "vehicle1DrivenKm",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$vehicle1ChargedEnergy/($vehicle1DrivenKm/100)",
+          "hide": false,
+          "refId": "vehicle1Consumption",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "vehicle2Odometer",
+          "hide": true,
+          "reducer": "max",
+          "refId": "endKm2",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "vehicle2Odometer",
+          "hide": true,
+          "reducer": "min",
+          "refId": "startKm2",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$endKm2-$startKm2",
+          "hide": false,
+          "refId": "vehicle2DrivenKm",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$vehicle2ChargedEnergy/($vehicle2DrivenKm/100)",
+          "hide": false,
+          "refId": "vehicle2Consumption",
+          "type": "math"
+        }
+      ],
+      "title": "Fahrzeuge",
+      "transparent": true,
+      "type": "stat"
     },
     {
       "datasource": {
@@ -4807,13 +4800,13 @@
     ]
   },
   "time": {
-    "from": "now-1y/y",
-    "to": "now-1y/y"
+    "from": "now/y",
+    "to": "now/y"
   },
   "timepicker": {},
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 192,
+  "version": 193,
   "weekStart": ""
 }
