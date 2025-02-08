@@ -16,6 +16,27 @@
       "pluginId": "__expr__"
     },
     {
+      "name": "VAR_TIMEZONE",
+      "type": "constant",
+      "label": "Zeitzone",
+      "value": "Europe/Berlin",
+      "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINT1NAME",
+      "type": "constant",
+      "label": "Name des ersten Loadpoints",
+      "value": "Garage",
+      "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINT2NAME",
+      "type": "constant",
+      "label": "Name des zweiten Loadpoints",
+      "value": "Stellplatz",
+      "description": ""
+    },
+    {
       "name": "VAR_VEHICLE1NAME",
       "type": "constant",
       "label": "vehicle1Name",
@@ -1197,7 +1218,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.0"
+      "version": "11.5.1"
     },
     {
       "type": "panel",
@@ -1534,7 +1555,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "",
@@ -1914,7 +1935,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -2285,7 +2306,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Erzeugt/Tag",
@@ -2641,7 +2662,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Erzeugt",
@@ -3207,8 +3228,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3340,8 +3360,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3472,8 +3491,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3988,8 +4006,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4199,8 +4216,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4412,8 +4428,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4704,58 +4719,67 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Garage",
-          "value": "Garage"
-        },
-        "description": "Name des ersten Loadpoints, wie in EVCC definiert.",
-        "hide": 2,
-        "name": "loadpoint1Name",
-        "options": [
-          {
-            "selected": true,
-            "text": "Garage",
-            "value": "Garage"
-          }
-        ],
-        "query": "Garage",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "Stellplatz",
-          "value": "Stellplatz"
-        },
-        "description": "Name des zweiten Loadpoints, wie in EVCC definiert.",
-        "hide": 2,
-        "name": "loadpoint2Name",
-        "options": [
-          {
-            "selected": true,
-            "text": "Stellplatz",
-            "value": "Stellplatz"
-          }
-        ],
-        "query": "Stellplatz",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "Europe/Berlin",
-          "value": "Europe/Berlin"
-        },
         "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
+        "label": "Zeitzone",
         "name": "timezone",
+        "query": "${VAR_TIMEZONE}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_TIMEZONE}",
+          "text": "${VAR_TIMEZONE}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Europe/Berlin",
-            "value": "Europe/Berlin"
+            "value": "${VAR_TIMEZONE}",
+            "text": "${VAR_TIMEZONE}",
+            "selected": false
           }
-        ],
-        "query": "Europe/Berlin",
-        "type": "custom"
+        ]
+      },
+      {
+        "description": "Name des ersten Loadpoints, wie in EVCC definiert.",
+        "hide": 2,
+        "label": "Name des ersten Loadpoints",
+        "name": "loadpoint1Name",
+        "query": "${VAR_LOADPOINT1NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINT1NAME}",
+          "text": "${VAR_LOADPOINT1NAME}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINT1NAME}",
+            "text": "${VAR_LOADPOINT1NAME}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "description": "Name des zweiten Loadpoints, wie in EVCC definiert.",
+        "hide": 2,
+        "label": "Name des zweiten Loadpoints",
+        "name": "loadpoint2Name",
+        "query": "${VAR_LOADPOINT2NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINT2NAME}",
+          "text": "${VAR_LOADPOINT2NAME}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINT2NAME}",
+            "text": "${VAR_LOADPOINT2NAME}",
+            "selected": false
+          }
+        ]
       },
       {
         "description": "Name des ersten Fahrzeuges wie in EVCC definiert",
@@ -4807,6 +4831,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 193,
+  "version": 194,
   "weekStart": ""
 }

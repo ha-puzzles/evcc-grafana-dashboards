@@ -81,7 +81,13 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
 
       Bei jedem Import jeweils die oben angelegte InfluxDB Data Source auswählen.
 
-4. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
+4. Die Werte des Dashboards anpassen:
+   1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt.
+   2. Weitere konstante Parameter des Dashboards anpassen. Siehe auch [unter 'dashboards'](./dashboards/README.md). 
+   
+   Der Screenshot zeigt den Import des Monatsdashboard. Die abgefragten Werte unterscheiden sich von Dashboard zu Dashboard.
+
+   ![Import des dashboards](./img/import2.png)
 
 
 ## Upgrade
@@ -97,8 +103,11 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
    3. Grafana starten: `sudo systemctl start grafana-server`
 2. Grafana im Browser öffnen und im Menü auf 'Dashboards' clicken.
 3. Alle EVCC PV Dashboards löschen.
-   ![PV Ordner löschen](./img/delete-dashboards.png)
-4. Auf 'Dashboards/Library Panels' gehen. **Dort alle Library Panels löschen, die von mir kommen.** Wird dies nicht gemacht, führt dies zu teilweise inkonsistenten Dashboards.
+
+   ![PV Dashboards löschen](./img/delete-dashboards.png)
+4. Auf 'Dashboards/Library Panels' gehen. **Dort alle Library Panels löschen, die von mir kommen.** Wird dies nicht gemacht, führt dies zu teilweise inkonsistenten Dashboards, welche das neue Dashboard mit alten Library Panels vermischen.
+   
+   ![PV Library Panels löschen](./img/delete-library-panels.png)
 2. Dashboards über den Grafana.com Community Store installieren:
    1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
       ![Import dashboard](./img/import.png)
@@ -112,7 +121,7 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
       | EVCC: PV Today:          | **22028** |
 
       Bei jedem Import jeweils die oben angelegte InfluxDB Data Source auswählen.
-8. Dashboards wie [unter 'dashboards' beschrieben](./dashboards/README.md) anpassen.
+8. Die Werte der Dashboards wie oben beschreiben anpassen.
 
 
 ## FAQ
@@ -125,7 +134,7 @@ Wer Influx 2 mit FluxQL nutzt kann die Today Dashboards nutzen. Alle Dashboards,
 
 ### Wie führe ich das Aggregation Script unter HAOS aus?
 
-Gute Frage. Leider ist mir derzeit keine Möglichkeit bekannt unter HAOS Shell Scripte direkt auszuführen. Wer eine Möglichkeit findet bitte Bescheid geben. 
+Gute Frage. Leider ist mir derzeit keine Möglichkeit bekannt unter HAOS (oder ähnlichen Systemen ohne direkten Zugriff auf das System) Shell Scripte direkt auszuführen. Wer eine Möglichkeit findet bitte Bescheid geben. 
 
 Was ich evaluiert habe ist die Nutzung von Continuous Queries innerhalb von Influx. Leider stoße ich hier an andere Grenzen, da InfluxQL Funktionen wie $TODAY fehlen um die entsprechenden Queries formulieren zu können. 
 
