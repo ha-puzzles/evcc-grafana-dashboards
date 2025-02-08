@@ -7,6 +7,69 @@
       "type": "datasource",
       "pluginId": "influxdb",
       "pluginName": "InfluxDB"
+    },
+    {
+      "name": "VAR_LOADPOINT1NAME",
+      "type": "constant",
+      "label": "Name, 1. Loadpoint",
+      "value": "Garage",
+      "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINT2NAME",
+      "type": "constant",
+      "label": "Name, 2. Loadpoint",
+      "value": "Stellplatz",
+      "description": ""
+    },
+    {
+      "name": "VAR_VEHICLE1NAME",
+      "type": "constant",
+      "label": "Name, 1. Fahrzeug",
+      "value": "Ioniq 5",
+      "description": ""
+    },
+    {
+      "name": "VAR_VEHICLE2NAME",
+      "type": "constant",
+      "label": "Name, 2. Fahrzeug",
+      "value": "Tesla",
+      "description": ""
+    },
+    {
+      "name": "VAR_TIMEZONE",
+      "type": "constant",
+      "label": "Zeitzone",
+      "value": "Europe/Berlin",
+      "description": ""
+    },
+    {
+      "name": "VAR_PEAKPOWERLIMIT",
+      "type": "constant",
+      "label": "Filter für maximale Leistung / W",
+      "value": "25000",
+      "description": ""
+    },
+    {
+      "name": "VAR_EVCCURL",
+      "type": "constant",
+      "label": "EVCC URL",
+      "value": "http://home:7070/#/",
+      "description": ""
+    },
+    {
+      "name": "VAR_INVERTERPORTALTITLE",
+      "type": "constant",
+      "label": "Name, Wechselrichterportal",
+      "value": "Solarman",
+      "description": ""
+    },
+    {
+      "name": "VAR_INVERTERPORTALURL",
+      "type": "constant",
+      "label": "URL, Wechselrichterportal",
+      "value": "https://globalhome.solarmanpv.com/plant/infos/data",
+      "description": ""
     }
   ],
   "__elements": {
@@ -618,12 +681,13 @@
             "showLegend": true
           },
           "tooltip": {
+            "hideZeros": false,
             "maxHeight": 600,
             "mode": "multi",
             "sort": "none"
           }
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.0",
         "targets": [
           {
             "alias": "Speicher",
@@ -2942,7 +3006,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.0"
+      "version": "11.5.1"
     },
     {
       "type": "datasource",
@@ -3348,7 +3412,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "PV",
@@ -3608,166 +3672,193 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Garage",
-          "value": "Garage"
-        },
         "description": "Name des ersten Loadpoints, wie in EVCC definiert.",
         "hide": 2,
+        "label": "Name, 1. Loadpoint",
         "name": "loadpoint1Name",
+        "query": "${VAR_LOADPOINT1NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINT1NAME}",
+          "text": "${VAR_LOADPOINT1NAME}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Garage",
-            "value": "Garage"
+            "value": "${VAR_LOADPOINT1NAME}",
+            "text": "${VAR_LOADPOINT1NAME}",
+            "selected": false
           }
-        ],
-        "query": "Garage",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "Stellplatz",
-          "value": "Stellplatz"
-        },
         "description": "Name des zweiten Loadpoints, wie in EVCC definiert.",
         "hide": 2,
+        "label": "Name, 2. Loadpoint",
         "name": "loadpoint2Name",
+        "query": "${VAR_LOADPOINT2NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINT2NAME}",
+          "text": "${VAR_LOADPOINT2NAME}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Stellplatz",
-            "value": "Stellplatz"
+            "value": "${VAR_LOADPOINT2NAME}",
+            "text": "${VAR_LOADPOINT2NAME}",
+            "selected": false
           }
-        ],
-        "query": "Stellplatz",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "Ioniq 5",
-          "value": "Ioniq 5"
-        },
         "description": "Name des ersten Fahrzeuges, wie in EVCC definiert.",
         "hide": 2,
+        "label": "Name, 1. Fahrzeug",
         "name": "vehicle1Name",
+        "query": "${VAR_VEHICLE1NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLE1NAME}",
+          "text": "${VAR_VEHICLE1NAME}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Ioniq 5",
-            "value": "Ioniq 5"
+            "value": "${VAR_VEHICLE1NAME}",
+            "text": "${VAR_VEHICLE1NAME}",
+            "selected": false
           }
-        ],
-        "query": "Ioniq 5",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "Tesla",
-          "value": "Tesla"
-        },
         "description": "Name des zweiten Fahrzeuges, wie in EVCC definiert.",
         "hide": 2,
+        "label": "Name, 2. Fahrzeug",
         "name": "vehicle2Name",
+        "query": "${VAR_VEHICLE2NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLE2NAME}",
+          "text": "${VAR_VEHICLE2NAME}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Tesla",
-            "value": "Tesla"
+            "value": "${VAR_VEHICLE2NAME}",
+            "text": "${VAR_VEHICLE2NAME}",
+            "selected": false
           }
-        ],
-        "query": "Tesla",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "Europe/Berlin",
-          "value": "Europe/Berlin"
-        },
         "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
+        "label": "Zeitzone",
         "name": "timezone",
+        "query": "${VAR_TIMEZONE}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_TIMEZONE}",
+          "text": "${VAR_TIMEZONE}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Europe/Berlin",
-            "value": "Europe/Berlin"
+            "value": "${VAR_TIMEZONE}",
+            "text": "${VAR_TIMEZONE}",
+            "selected": false
           }
-        ],
-        "query": "Europe/Berlin",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "20000",
-          "value": "20000"
-        },
-        "description": "Grenze der maximalen Leistung in W, über diese Werte als Ausreißer ignoriert werden",
+        "description": "Grenze der maximalen Leistung in W, über diese hinaus Leistungswerte als Ausreißer ignoriert werden.",
         "hide": 2,
+        "label": "Filter für maximale Leistung / W",
         "name": "peakPowerLimit",
+        "query": "${VAR_PEAKPOWERLIMIT}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_PEAKPOWERLIMIT}",
+          "text": "${VAR_PEAKPOWERLIMIT}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "20000",
-            "value": "20000"
+            "value": "${VAR_PEAKPOWERLIMIT}",
+            "text": "${VAR_PEAKPOWERLIMIT}",
+            "selected": false
           }
-        ],
-        "query": "20000",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "http://home:7070/#/",
-          "value": "http://home:7070/#/"
-        },
-        "description": "URL to the EVCC UI",
+        "description": "URL unter der EVCC geöffnet wird.",
         "hide": 2,
+        "label": "EVCC URL",
         "name": "evccUrl",
+        "query": "${VAR_EVCCURL}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_EVCCURL}",
+          "text": "${VAR_EVCCURL}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "http://home:7070/#/",
-            "value": "http://home:7070/#/"
+            "value": "${VAR_EVCCURL}",
+            "text": "${VAR_EVCCURL}",
+            "selected": false
           }
-        ],
-        "query": "http://home:7070/#/",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "Solarman",
-          "value": "Solarman"
-        },
-        "description": "Title of your inverter's management portal",
+        "description": "Name des Wechselrichterportals für den Link auf das Portal.",
         "hide": 2,
+        "label": "Name, Wechselrichterportal",
         "name": "inverterPortalTitle",
+        "query": "${VAR_INVERTERPORTALTITLE}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_INVERTERPORTALTITLE}",
+          "text": "${VAR_INVERTERPORTALTITLE}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Solarman",
-            "value": "Solarman"
+            "value": "${VAR_INVERTERPORTALTITLE}",
+            "text": "${VAR_INVERTERPORTALTITLE}",
+            "selected": false
           }
-        ],
-        "query": "Solarman",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "https://globalhome.solarmanpv.com/plant/infos/data",
-          "value": "https://globalhome.solarmanpv.com/plant/infos/data"
-        },
-        "description": "URL to your inverter's management UI",
+        "description": "URL unter der das Wechselrichterportal geöffnet wird.",
         "hide": 2,
+        "label": "URL, Wechselrichterportal",
         "name": "inverterPortalUrl",
+        "query": "${VAR_INVERTERPORTALURL}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_INVERTERPORTALURL}",
+          "text": "${VAR_INVERTERPORTALURL}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "https://globalhome.solarmanpv.com/plant/infos/data",
-            "value": "https://globalhome.solarmanpv.com/plant/infos/data"
+            "value": "${VAR_INVERTERPORTALURL}",
+            "text": "${VAR_INVERTERPORTALURL}",
+            "selected": false
           }
-        ],
-        "query": "https://globalhome.solarmanpv.com/plant/infos/data",
-        "type": "custom"
+        ]
       }
     ]
   },
@@ -3779,6 +3870,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 166,
+  "version": 167,
   "weekStart": ""
 }

@@ -24,24 +24,38 @@
       "pluginName": "InfluxDB"
     },
     {
+      "name": "VAR_LOADPOINT1NAME",
+      "type": "constant",
+      "label": "Name, 1. Loadpoint",
+      "value": "Garage",
+      "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINT2NAME",
+      "type": "constant",
+      "label": "Name, 2. Loadpoint",
+      "value": "Stellplatz",
+      "description": ""
+    },
+    {
+      "name": "VAR_TIMEZONE",
+      "type": "constant",
+      "label": "Zeitzone",
+      "value": "Europe/Berlin",
+      "description": ""
+    },
+    {
+      "name": "VAR_PEAKPOWERLIMIT",
+      "type": "constant",
+      "label": "Filter für maximale Leistung / W",
+      "value": "25000",
+      "description": ""
+    },
+    {
       "name": "VAR_INSTALLEDWATTPEAK",
       "type": "constant",
-      "label": "installedWattPeak",
+      "label": "Installierte Kapazität in Wp",
       "value": "9840",
-      "description": ""
-    },
-    {
-      "name": "VAR_VEHICLE1NAME",
-      "type": "constant",
-      "label": "vehicle1Name",
-      "value": "Ioniq 5",
-      "description": ""
-    },
-    {
-      "name": "VAR_VEHICLE2NAME",
-      "type": "constant",
-      "label": "vehicle2Name",
-      "value": "Tesla",
       "description": ""
     }
   ],
@@ -171,7 +185,7 @@
           "maxVizHeight": 300,
           "minVizHeight": 10,
           "minVizWidth": 0,
-          "namePlacement": "auto",
+          "namePlacement": "top",
           "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
@@ -187,7 +201,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -899,7 +913,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "yellow",
+                    "fixedColor": "text",
                     "mode": "fixed"
                   }
                 }
@@ -1206,7 +1220,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.4.0"
+      "version": "11.5.1"
     },
     {
       "type": "datasource",
@@ -1502,11 +1516,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "PV",
@@ -1731,7 +1746,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "PV",
@@ -1876,11 +1891,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Maximale PV Leistung",
@@ -2066,11 +2082,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -2383,7 +2400,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2440,11 +2458,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "multi",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Speicher max",
@@ -2547,80 +2566,93 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Garage",
-          "value": "Garage"
-        },
         "description": "Name des ersten Loadpoints, wie in EVCC definiert.",
         "hide": 2,
+        "label": "Name, 1. Loadpoint",
         "name": "loadpoint1Name",
+        "query": "${VAR_LOADPOINT1NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINT1NAME}",
+          "text": "${VAR_LOADPOINT1NAME}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Garage",
-            "value": "Garage"
+            "value": "${VAR_LOADPOINT1NAME}",
+            "text": "${VAR_LOADPOINT1NAME}",
+            "selected": false
           }
-        ],
-        "query": "Garage",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "Stellplatz",
-          "value": "Stellplatz"
-        },
         "description": "Name des zweiten Loadpoints, wie in EVCC definiert.",
         "hide": 2,
+        "label": "Name, 2. Loadpoint",
         "name": "loadpoint2Name",
+        "query": "${VAR_LOADPOINT2NAME}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINT2NAME}",
+          "text": "${VAR_LOADPOINT2NAME}",
+          "selected": false
+        },
         "options": [
           {
-            "selected": true,
-            "text": "Stellplatz",
-            "value": "Stellplatz"
+            "value": "${VAR_LOADPOINT2NAME}",
+            "text": "${VAR_LOADPOINT2NAME}",
+            "selected": false
           }
-        ],
-        "query": "Stellplatz",
-        "type": "custom"
+        ]
       },
       {
-        "current": {
-          "text": "Europe/Berlin",
-          "value": "Europe/Berlin"
-        },
         "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
+        "label": "Zeitzone",
         "name": "timezone",
-        "options": [
-          {
-            "selected": true,
-            "text": "Europe/Berlin",
-            "value": "Europe/Berlin"
-          }
-        ],
-        "query": "Europe/Berlin",
-        "type": "custom"
-      },
-      {
+        "query": "${VAR_TIMEZONE}",
+        "skipUrlSync": true,
+        "type": "constant",
         "current": {
-          "text": "20000",
-          "value": "20000"
+          "value": "${VAR_TIMEZONE}",
+          "text": "${VAR_TIMEZONE}",
+          "selected": false
         },
-        "description": "Grenze der maximalen Leistung in W, über diese Werte als Ausreißer ignoriert werden",
-        "hide": 2,
-        "name": "peakPowerLimit",
         "options": [
           {
-            "selected": true,
-            "text": "20000",
-            "value": "20000"
+            "value": "${VAR_TIMEZONE}",
+            "text": "${VAR_TIMEZONE}",
+            "selected": false
           }
-        ],
-        "query": "20000",
-        "type": "custom"
+        ]
       },
       {
-        "description": "Installierte Kapazität in Wp",
+        "description": "Grenze der maximalen Leistung in W, über diese hinaus Leistungswerte als Ausreißer ignoriert werden.",
         "hide": 2,
+        "label": "Filter für maximale Leistung / W",
+        "name": "peakPowerLimit",
+        "query": "${VAR_PEAKPOWERLIMIT}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_PEAKPOWERLIMIT}",
+          "text": "${VAR_PEAKPOWERLIMIT}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_PEAKPOWERLIMIT}",
+            "text": "${VAR_PEAKPOWERLIMIT}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "description": "Installierte Kapazität der Solarpanele in Wp",
+        "hide": 2,
+        "label": "Installierte Kapazität in Wp",
         "name": "installedWattPeak",
         "query": "${VAR_INSTALLEDWATTPEAK}",
         "skipUrlSync": true,
@@ -2637,46 +2669,6 @@
             "selected": false
           }
         ]
-      },
-      {
-        "description": "Fahrzeugname des ersten Fahrzeuges wie in EVCC definiert.",
-        "hide": 2,
-        "name": "vehicle1Name",
-        "query": "${VAR_VEHICLE1NAME}",
-        "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_VEHICLE1NAME}",
-          "text": "${VAR_VEHICLE1NAME}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_VEHICLE1NAME}",
-            "text": "${VAR_VEHICLE1NAME}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "description": "Fahrzeugname des zweiten Fahrzeuges wie in EVCC definiert.",
-        "hide": 2,
-        "name": "vehicle2Name",
-        "query": "${VAR_VEHICLE2NAME}",
-        "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_VEHICLE2NAME}",
-          "text": "${VAR_VEHICLE2NAME}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_VEHICLE2NAME}",
-            "text": "${VAR_VEHICLE2NAME}",
-            "selected": false
-          }
-        ]
       }
     ]
   },
@@ -2688,6 +2680,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 175,
+  "version": 179,
   "weekStart": ""
 }

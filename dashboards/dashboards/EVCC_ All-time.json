@@ -26,15 +26,22 @@
     {
       "name": "VAR_VEHICLE1NAME",
       "type": "constant",
-      "label": "vehicle1Name",
+      "label": "Name, 1. Fahrzeug",
       "value": "Ioniq 5",
       "description": ""
     },
     {
       "name": "VAR_VEHICLE2NAME",
       "type": "constant",
-      "label": "vehicle2Name",
+      "label": "Name, 2. Fahrzeug",
       "value": "Tesla",
+      "description": ""
+    },
+    {
+      "name": "VAR_SPEICHERKAPAZITAET",
+      "type": "constant",
+      "label": "Hausspeicherkapazität / Wh",
+      "value": "9500",
       "description": ""
     }
   ],
@@ -164,7 +171,7 @@
           "maxVizHeight": 300,
           "minVizHeight": 10,
           "minVizWidth": 0,
-          "namePlacement": "auto",
+          "namePlacement": "top",
           "orientation": "horizontal",
           "reduceOptions": {
             "calcs": [
@@ -180,7 +187,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -734,7 +741,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.0"
+      "version": "11.5.1"
     },
     {
       "type": "datasource",
@@ -927,7 +934,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -1141,7 +1148,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "",
@@ -1345,7 +1352,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -1560,7 +1567,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "",
@@ -1751,7 +1758,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -1966,7 +1973,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "",
@@ -2157,7 +2164,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -2372,7 +2379,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "",
@@ -2580,7 +2587,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "PV Energie",
@@ -2756,7 +2763,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Einspeisung",
@@ -2930,7 +2937,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -3055,8 +3062,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               },
               {
                 "color": "text",
@@ -3462,8 +3468,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           },
@@ -3599,8 +3604,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "orange",
@@ -4021,8 +4025,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           },
@@ -4393,8 +4396,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4479,8 +4481,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red",
-                      "value": null
+                      "color": "red"
                     },
                     {
                       "color": "green",
@@ -4526,8 +4527,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red",
-                      "value": null
+                      "color": "red"
                     },
                     {
                       "color": "green",
@@ -4818,8 +4818,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4904,8 +4903,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red",
-                      "value": null
+                      "color": "red"
                     },
                     {
                       "color": "green",
@@ -4951,8 +4949,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red",
-                      "value": null
+                      "color": "red"
                     },
                     {
                       "color": "green",
@@ -5334,62 +5331,9 @@
         "type": "custom"
       },
       {
-        "current": {
-          "text": "9500",
-          "value": "9500"
-        },
-        "includeAll": false,
-        "label": "Speicherkapazität/Wh",
-        "name": "speicherkapazitaet",
-        "options": [
-          {
-            "selected": true,
-            "text": "9500",
-            "value": "9500"
-          }
-        ],
-        "query": "9500",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "Garage",
-          "value": "Garage"
-        },
-        "description": "Name des ersten Loadpoints, wie in EVCC definiert.",
-        "hide": 2,
-        "name": "loadpoint1Name",
-        "options": [
-          {
-            "selected": true,
-            "text": "Garage",
-            "value": "Garage"
-          }
-        ],
-        "query": "Garage",
-        "type": "custom"
-      },
-      {
-        "current": {
-          "text": "Stellplatz",
-          "value": "Stellplatz"
-        },
-        "description": "Name des zweiten Loadpoints, wie in EVCC definiert.",
-        "hide": 2,
-        "name": "loadpoint2Name",
-        "options": [
-          {
-            "selected": true,
-            "text": "Stellplatz",
-            "value": "Stellplatz"
-          }
-        ],
-        "query": "Stellplatz",
-        "type": "custom"
-      },
-      {
         "description": "Title des ersten Fahrzeuges, wie in der evcc.yaml definiert.",
         "hide": 2,
+        "label": "Name, 1. Fahrzeug",
         "name": "vehicle1Name",
         "query": "${VAR_VEHICLE1NAME}",
         "skipUrlSync": true,
@@ -5414,7 +5358,7 @@
         },
         "description": "Geschätzter durchschnittlicher Verbrauch des ersten Fahrzeuges",
         "includeAll": false,
-        "label": "Fahrzeug 1 Verbrauch kWh/100km",
+        "label": "Fahrzeug 1: Verbrauch in kWh/100km",
         "name": "vehicle1Verbrauch",
         "options": [
           {
@@ -5429,6 +5373,7 @@
       {
         "description": "Title des zweiten Fahrzeuges, wie in der evcc.yaml definiert.",
         "hide": 2,
+        "label": "Name, 2. Fahrzeug",
         "name": "vehicle2Name",
         "query": "${VAR_VEHICLE2NAME}",
         "skipUrlSync": true,
@@ -5453,7 +5398,7 @@
         },
         "description": "Geschätzter durchschnittlicher Verbrauch des zweiten Fahrzeuges",
         "includeAll": false,
-        "label": "Fahrzeug 2 Verbrauch kWh/100km",
+        "label": "Fahrzeug 2: Verbrauch in kWh/100km",
         "name": "vehicle2Verbrauch",
         "options": [
           {
@@ -5518,6 +5463,27 @@
         ],
         "query": "Europe/Berlin",
         "type": "custom"
+      },
+      {
+        "description": "Kapazität in Wh des Hausspeichers",
+        "hide": 2,
+        "label": "Hausspeicherkapazität / Wh",
+        "name": "speicherkapazitaet",
+        "query": "${VAR_SPEICHERKAPAZITAET}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_SPEICHERKAPAZITAET}",
+          "text": "${VAR_SPEICHERKAPAZITAET}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_SPEICHERKAPAZITAET}",
+            "text": "${VAR_SPEICHERKAPAZITAET}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -5529,6 +5495,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 195,
+  "version": 197,
   "weekStart": ""
 }
