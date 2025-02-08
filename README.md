@@ -79,8 +79,6 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
       | EVCC: PV Today (Mobile): | **22027** |
       | EVCC: PV Today:          | **22028** |
 
-      Bei jedem Import jeweils die oben angelegte InfluxDB Data Source auswählen.
-
 4. Die Werte des Dashboards anpassen:
    1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt.
    2. Weitere konstante Parameter des Dashboards anpassen. Siehe auch [unter 'dashboards'](./dashboards/README.md). 
@@ -95,7 +93,7 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
 Falls schon eine ältere Version installiert worden ist, hier die Schritte um die neuere Version zu installieren.
 
 > [!WARNING]
-> Eigene Anpassungen an meinen Dashboards gehen bei diesem Prozess leider verloren und die Dashboards müssen erneut angepasst werden. Der Upgrade Prozess ist daher leider nicht so einfach, wie ich es mir wünschen würde.
+> Eigene Anpassungen an meinen Dashboards gehen bei diesem Prozess leider verloren und die Dashboards müssen erneut angepasst werden. Der Upgrade Prozess ist leider nicht so einfach, wie ich es mir wünschen würde.
 
 1. Ein Backup der aktuellen Grafana Datenbank erstellen für den Fall der Fälle.
    1. Grafana stoppen: `sudo systemctl stop grafana-server`
@@ -120,7 +118,6 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
       | EVCC: PV Today (Mobile): | **22027** |
       | EVCC: PV Today:          | **22028** |
 
-      Bei jedem Import jeweils die oben angelegte InfluxDB Data Source auswählen.
 8. Die Werte der Dashboards wie oben beschreiben anpassen.
 
 
