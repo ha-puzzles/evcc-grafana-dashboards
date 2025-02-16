@@ -2997,7 +2997,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Maximaler Batterie SOC/Tag",
@@ -3124,7 +3124,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Minimaler Batterie SOC/Tag",
@@ -3228,7 +3228,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3292,7 +3293,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3360,7 +3361,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3422,7 +3424,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3491,7 +3493,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3692,7 +3695,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "vehicle1Odometer",
@@ -3779,6 +3782,54 @@
             ]
           ],
           "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "vehicle1Odometer",
+          "hide": true,
+          "reducer": "min",
+          "refId": "startKm1",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "vehicle1Odometer",
+          "hide": true,
+          "reducer": "max",
+          "refId": "endKm1",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$endKm1-$startKm1",
+          "hide": false,
+          "refId": "vehicle1DrivenKm",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$vehicle1ChargedEnergy/($vehicle1DrivenKm/100)",
+          "hide": false,
+          "refId": "vehicle1Consumption",
+          "type": "math"
         },
         {
           "alias": "vehicle2Odometer",
@@ -3872,48 +3923,14 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "vehicle1Odometer",
-          "hide": true,
-          "reducer": "max",
-          "refId": "endKm1",
-          "settings": {
-            "mode": "dropNN"
-          },
-          "type": "reduce"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "vehicle1Odometer",
+          "expression": "vehicle2Odometer",
           "hide": true,
           "reducer": "min",
-          "refId": "startKm1",
+          "refId": "startKm2",
           "settings": {
             "mode": "dropNN"
           },
           "type": "reduce"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$endKm1-$startKm1",
-          "hide": false,
-          "refId": "vehicle1DrivenKm",
-          "type": "math"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$vehicle1ChargedEnergy/($vehicle1DrivenKm/100)",
-          "hide": false,
-          "refId": "vehicle1Consumption",
-          "type": "math"
         },
         {
           "datasource": {
@@ -3924,20 +3941,6 @@
           "hide": true,
           "reducer": "max",
           "refId": "endKm2",
-          "settings": {
-            "mode": "dropNN"
-          },
-          "type": "reduce"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "vehicle2Odometer",
-          "hide": true,
-          "reducer": "min",
-          "refId": "startKm2",
           "settings": {
             "mode": "dropNN"
           },
@@ -4006,7 +4009,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4086,7 +4090,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "vehicle1",
@@ -4216,7 +4220,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4297,7 +4302,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "vehicle1",
@@ -4428,7 +4433,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4508,7 +4514,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "",
@@ -4824,13 +4830,13 @@
     ]
   },
   "time": {
-    "from": "now/y",
-    "to": "now/y"
+    "from": "now-1y/y",
+    "to": "now-1y/y"
   },
   "timepicker": {},
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 194,
+  "version": 195,
   "weekStart": ""
 }
