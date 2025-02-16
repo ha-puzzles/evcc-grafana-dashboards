@@ -1,27 +1,32 @@
 #!/bin/bash
 
-# Aggregate date into daily chunks
+# Aggregation script for EVCC grafana dashboards. See https://github.com/ha-puzzles/evcc-grafana-dashboards
 
-#consts
-INFLUX_EVCC_DB="evcc" # Name of the Influx DB, where you write the EVCC data into.
-INFLUX_EVCC_USER="" # User name of the EVCC DB. Empty, if no user is required. Default: ""
-INFLUX_EVCC_PASSWORD="none" # Password of the EVCC DB user. Can be anything except an empty string in case no password is set.  Default: "none"
-INFLUX_AGGR_DB="evcc_aggr" # Name of the Influx DB, where you write the aggregations into.
-INFLUX_AGGR_USER="" # User name of the aggregation DB. Empty, if no user is required. Default: ""
-INFLUX_AGGR_PASSWORD="none" # Password of the aggreation DB user. Can be anything except an empty string in case no password is set.  Default: "none"
-INFLUX_HOST="localhost" # If the script is run remotely, enter the host name of the remote host. Default: "localhost"
-INFLUX_PORT=8086 # The port to connect to influx. Default: 8086
-HOME_BATTERY="true" # Set to false in case your home does not use a battery.
-DEBUG="false" # Set to true to generate debug output.
-LOADPOINT_1_TITLE="Garage" # Title of loadpoint 1 as defined in evcc.yaml
-LOADPOINT_2_ENABLED=true # Set to false in case you have just one loadpoint
-LOADPOINT_2_TITLE="Stellplatz" # Title of loadpoint 2 as defined in evcc.yaml
-VEHICLE_1_TITLE="Ioniq 5" # Title of vehicle 1 as defined in evcc.yaml
-VEHICLE_2_ENABLED=true # Set to false in case you have just one vehicle
-VEHICLE_2_TITLE="Tesla" # Title of vehicle 2 as defined in evcc.yaml
-TIMEZONE="`cat /etc/timezone`" # Time zone as in TZ identifier column here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-PEAK_POWER_LIMIT=40000 # Limit in W to filter out unrealistic peaks
-DYNAMIC_TARIFF="true" # Set to true to collect tariff history.
+logError() {
+    echo "[ERROR]   $1"
+}
+
+logWarning() {
+    echo "[WARNING] $1"
+}
+
+logInfo() {
+    echo "[INFO]    $1"
+}
+
+logDebug() {
+    if [ "$DEBUG" == "true" ]; then
+        echo "[DEBUG]   $1"
+    fi
+}
+
+# Source configuration from evcc-influx-aggregate.conf, which needs to be located in the same directory as this script.
+if [ -f "$(dirname $0)/evcc-influx-aggregate.conf" ]; then
+    . "$(dirname $0)/evcc-influx-aggregate.conf"
+else
+    logError "Configuration file $(dirname $0)/evcc-influx-aggregate.conf not found."
+    exit 1
+fi
 
 #arguments
 AGGREGATE_YEAR=0
@@ -48,24 +53,6 @@ DAYS_OF_MONTH[9]=30
 DAYS_OF_MONTH[10]=31
 DAYS_OF_MONTH[11]=30
 DAYS_OF_MONTH[12]=31
-
-logError() {
-    echo "[ERROR]   $1"
-}
-
-logWarning() {
-    echo "[WARNING] $1"
-}
-
-logInfo() {
-    echo "[INFO]    $1"
-}
-
-logDebug() {
-    if [ "$DEBUG" == "true" ]; then
-        echo "[DEBUG]   $1"
-    fi
-}
 
 parseArguments() {
     if [ "$#" -eq 0 ]; then
