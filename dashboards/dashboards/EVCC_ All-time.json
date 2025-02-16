@@ -890,12 +890,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "year"
+              "options": "2025"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "none"
+                "id": "displayName",
+                "value": "2025"
               }
             ]
           }
@@ -914,12 +914,10 @@
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "vertical",
         "showValue": "auto",
@@ -927,16 +925,17 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "none",
+          "mode": "single",
           "sort": "none"
         },
-        "xField": "year",
+        "xField": "Field",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
+          "alias": "[[tag_year]]",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -953,7 +952,7 @@
           "measurement": "pvMonthlyEnergy",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\") FROM \"pvMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
+          "query": "SELECT value, year FROM \"pvMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -977,37 +976,49 @@
       "title": "Jährlicher Ertrag",
       "transformations": [
         {
-          "id": "joinByField",
-          "options": {}
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Total"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Field"
+              }
+            ]
+          }
         },
         {
           "id": "transpose",
           "options": {}
-        },
-        {
-          "id": "extractFields",
-          "options": {
-            "delimiter": ",",
-            "format": "regexp",
-            "jsonPaths": [
-              {
-                "path": ""
-              }
-            ],
-            "regExp": "/year: (?<year>.*) }/",
-            "source": "Field"
-          }
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "1677625200000",
-                "year"
-              ]
-            }
-          }
         }
       ],
       "type": "barchart"
@@ -1129,9 +1140,7 @@
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
@@ -1213,7 +1222,7 @@
             "fields": {},
             "sort": [
               {
-                "desc": true,
+                "desc": false,
                 "field": "year"
               }
             ]
@@ -1264,8 +1273,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "purple",
-            "mode": "fixed"
+            "fixedColor": "semi-dark-green",
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1308,12 +1317,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "year"
+              "options": "2025"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "none"
+                "id": "displayName",
+                "value": "2025"
               }
             ]
           }
@@ -1325,19 +1334,17 @@
         "x": 3,
         "y": 12
       },
-      "id": 26,
+      "id": 29,
       "options": {
         "barRadius": 0.2,
         "barWidth": 0.97,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "vertical",
         "showValue": "auto",
@@ -1345,16 +1352,17 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "none",
+          "mode": "single",
           "sort": "none"
         },
-        "xField": "year",
+        "xField": "Field",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
+          "alias": "[[tag_year]]",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -1371,7 +1379,7 @@
           "measurement": "pvMonthlyEnergy",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\") FROM \"homeMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
+          "query": "SELECT value, year FROM \"homeMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1395,37 +1403,49 @@
       "title": "Jährlicher Hausverbrauch",
       "transformations": [
         {
-          "id": "joinByField",
-          "options": {}
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Total"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Field"
+              }
+            ]
+          }
         },
         {
           "id": "transpose",
           "options": {}
-        },
-        {
-          "id": "extractFields",
-          "options": {
-            "delimiter": ",",
-            "format": "regexp",
-            "jsonPaths": [
-              {
-                "path": ""
-              }
-            ],
-            "regExp": "/year: (?<year>.*) }/",
-            "source": "Field"
-          }
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "1677625200000",
-                "year"
-              ]
-            }
-          }
         }
       ],
       "type": "barchart"
@@ -1548,9 +1568,7 @@
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
@@ -1632,7 +1650,7 @@
             "fields": {},
             "sort": [
               {
-                "desc": true,
+                "desc": false,
                 "field": "year"
               }
             ]
@@ -1670,8 +1688,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "dark-yellow",
-            "mode": "fixed"
+            "fixedColor": "semi-dark-green",
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -1714,12 +1732,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "year"
+              "options": "2025"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "none"
+                "id": "displayName",
+                "value": "2025"
               }
             ]
           }
@@ -1731,19 +1749,17 @@
         "x": 3,
         "y": 18
       },
-      "id": 27,
+      "id": 30,
       "options": {
         "barRadius": 0.2,
         "barWidth": 0.97,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "vertical",
         "showValue": "auto",
@@ -1751,16 +1767,17 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "none",
+          "mode": "single",
           "sort": "none"
         },
-        "xField": "year",
+        "xField": "Field",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
+          "alias": "[[tag_year]]",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -1777,7 +1794,7 @@
           "measurement": "pvMonthlyEnergy",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\") FROM \"gridMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
+          "query": "SELECT value, year FROM \"gridMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -1801,37 +1818,49 @@
       "title": "Jährlicher Netzbezug",
       "transformations": [
         {
-          "id": "joinByField",
-          "options": {}
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Total"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Field"
+              }
+            ]
+          }
         },
         {
           "id": "transpose",
           "options": {}
-        },
-        {
-          "id": "extractFields",
-          "options": {
-            "delimiter": ",",
-            "format": "regexp",
-            "jsonPaths": [
-              {
-                "path": ""
-              }
-            ],
-            "regExp": "/year: (?<year>.*) }/",
-            "source": "Field"
-          }
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "1677625200000",
-                "year"
-              ]
-            }
-          }
         }
       ],
       "type": "barchart"
@@ -1954,9 +1983,7 @@
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
@@ -2038,7 +2065,7 @@
             "fields": {},
             "sort": [
               {
-                "desc": true,
+                "desc": false,
                 "field": "year"
               }
             ]
@@ -2076,8 +2103,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "yellow",
-            "mode": "fixed"
+            "fixedColor": "semi-dark-green",
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -2120,12 +2147,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "year"
+              "options": "2025"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "none"
+                "id": "displayName",
+                "value": "2025"
               }
             ]
           }
@@ -2137,19 +2164,17 @@
         "x": 3,
         "y": 24
       },
-      "id": 28,
+      "id": 31,
       "options": {
         "barRadius": 0.2,
         "barWidth": 0.97,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "orientation": "vertical",
         "showValue": "auto",
@@ -2157,16 +2182,17 @@
         "tooltip": {
           "hideZeros": false,
           "maxHeight": 600,
-          "mode": "none",
+          "mode": "single",
           "sort": "none"
         },
-        "xField": "year",
+        "xField": "Field",
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
+          "alias": "[[tag_year]]",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2183,7 +2209,7 @@
           "measurement": "pvMonthlyEnergy",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\") FROM \"feedInMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
+          "query": "SELECT value, year FROM \"feedInMonthlyEnergy\" WHERE $timeFilter GROUP BY \"year\"::tag",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -2204,40 +2230,52 @@
           "tags": []
         }
       ],
-      "title": "Jährlicher Einspeisung",
+      "title": "Jährliche Einspeisung",
       "transformations": [
         {
-          "id": "joinByField",
-          "options": {}
+          "id": "reduce",
+          "options": {
+            "includeTimeField": false,
+            "labelsToFields": false,
+            "mode": "seriesToRows",
+            "reducers": [
+              "sum"
+            ]
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "greater",
+                  "options": {
+                    "value": 0
+                  }
+                },
+                "fieldName": "Total"
+              }
+            ],
+            "match": "any",
+            "type": "include"
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": false,
+                "field": "Field"
+              }
+            ]
+          }
         },
         {
           "id": "transpose",
           "options": {}
-        },
-        {
-          "id": "extractFields",
-          "options": {
-            "delimiter": ",",
-            "format": "regexp",
-            "jsonPaths": [
-              {
-                "path": ""
-              }
-            ],
-            "regExp": "/year: (?<year>.*) }/",
-            "source": "Field"
-          }
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "1677625200000",
-                "year"
-              ]
-            }
-          }
         }
       ],
       "type": "barchart"
@@ -2360,9 +2398,7 @@
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [
-            "sum"
-          ],
+          "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
@@ -2444,7 +2480,7 @@
             "fields": {},
             "sort": [
               {
-                "desc": true,
+                "desc": false,
                 "field": "year"
               }
             ]
@@ -3062,7 +3098,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               },
               {
                 "color": "text",
@@ -3180,7 +3217,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "30 Tage Hausverbrauch",
@@ -3468,7 +3505,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               }
             ]
           },
@@ -3604,7 +3642,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "orange",
@@ -3707,7 +3746,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -4025,7 +4064,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               }
             ]
           },
@@ -4227,7 +4267,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "alias": "",
@@ -4396,7 +4436,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4481,7 +4522,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -4527,7 +4569,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -4614,7 +4657,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -4818,7 +4861,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4903,7 +4947,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -4949,7 +4994,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -5036,7 +5082,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -5495,6 +5541,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 197,
+  "version": 198,
   "weekStart": ""
 }
