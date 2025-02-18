@@ -22,7 +22,7 @@ Installationsschritte für eine **frische, neue Installation**. Sollte in der Gr
 
 Folgende Grundvoraussetzungen müssen erfüllt sein:
 
-- EVCC: https://evcc.io/
+- EVCC: https://evcc.io/ (0.200 oder neuer empfohlen)
 - Influx DB v1.8 (InfluxDB 2.x wird nicht unterstützt, siehe FAQ): https://www.influxdata.com/
 - Grafana: https://grafana.com/ (aktuell getestete Version: 11.5.0)
 - Grundlegende Linux Kenntnisse oder die Bereitschaft sich diese anzueignen.
