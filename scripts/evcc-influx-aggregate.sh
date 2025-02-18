@@ -439,9 +439,11 @@ detectValues() {
     index=0
     vehicle_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "select min(value) from vehicleOdometer group by vehicle" | grep "tags: vehicle=" | sed "s/tags: vehicle=//" | grep -v "(offline)" | grep -v "^$" | sort)
     while read vehicle; do
-        VEHICLES[${index}]=$vehicle
-        index=$((index+1))
-        logInfo "Detected vehicle $index: $vehicle"
+        if [ "$vehicle" != "" ]; then
+            VEHICLES[${index}]=$vehicle
+            index=$((index+1))
+            logInfo "Detected vehicle $index: $vehicle"
+        fi
     done <<< "$vehicle_list"
     logDebug "Detected ${#VEHICLES[*]} vehicles: ${VEHICLES[*]}"
 
@@ -449,9 +451,11 @@ detectValues() {
     index=0
     loadpoint_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "select min(value) from vehicleOdometer group by loadpoint" | grep "tags: loadpoint=" | sed "s/tags: loadpoint=//" | grep -v "^$" | sort)
     while read loadpoint; do
-        LOADPOINTS[${index}]=$loadpoint
-        index=$((index+1))
-        logInfo "Detected loadpoint $index: $loadpoint"
+        if [ "$loadpoint" != "" ]; then
+            LOADPOINTS[${index}]=$loadpoint
+            index=$((index+1))
+            logInfo "Detected loadpoint $index: $loadpoint"
+        fi
     done <<< "$loadpoint_list"
     logDebug "Detected ${#LOADPOINTS[*]} vehicles: ${LOADPOINTS[*]}"
 }
@@ -469,8 +473,10 @@ fi
 
 # Start aggregation
 if [ "$DELETE_AGGREGATIONS" != "true" ]; then
-    logInfo "[`date '+%F %T'`] Starting aggregation..."
     detectValues
+    if [ "$DETECT_VALUES" != "true" ]; then
+        logInfo "[`date '+%F %T'`] Starting aggregation..."
+    fi
 fi
 
 if [ "$AGGREGATE_YEAR" -ne 0 ]; then

@@ -24,20 +24,6 @@
       "pluginName": "InfluxDB"
     },
     {
-      "name": "VAR_VEHICLE1NAME",
-      "type": "constant",
-      "label": "Name, 1. Fahrzeug",
-      "value": "Ioniq 5",
-      "description": ""
-    },
-    {
-      "name": "VAR_VEHICLE2NAME",
-      "type": "constant",
-      "label": "Name, 2. Fahrzeug",
-      "value": "Tesla",
-      "description": ""
-    },
-    {
       "name": "VAR_SPEICHERKAPAZITAET",
       "type": "constant",
       "label": "Hausspeicherkapazität / Wh",
@@ -59,7 +45,7 @@
         "fieldConfig": {
           "defaults": {
             "color": {
-              "fixedColor": "semi-dark-green",
+              "fixedColor": "orange",
               "mode": "fixed"
             },
             "mappings": [],
@@ -123,26 +109,22 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "loadpoint1"
+                "options": "Garage"
               },
               "properties": [
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "light-orange",
+                    "fixedColor": "orange",
                     "mode": "fixed"
                   }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$loadpoint1Name"
                 }
               ]
             },
             {
               "matcher": {
                 "id": "byName",
-                "options": "loadpoint2"
+                "options": "Stellplatz"
               },
               "properties": [
                 {
@@ -151,10 +133,21 @@
                     "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
-                },
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "PV"
+              },
+              "properties": [
                 {
-                  "id": "displayName",
-                  "value": "$loadpoint2Name"
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
                 }
               ]
             }
@@ -187,7 +180,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "11.5.0",
+        "pluginVersion": "11.5.1",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -288,7 +281,7 @@
             "tags": []
           },
           {
-            "alias": "loadpoint1",
+            "alias": "$tag_loadpoint",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -310,52 +303,9 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpoint1DailyEnergy WHERE $timeFilter tz('$timezone')",
+            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter  GROUP BY \"loadpoint\"::tag TZ('$timezone')",
             "rawQuery": true,
-            "refId": "loadpoint1Energie",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "alias": "loadpoint2",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpoint2DailyEnergy WHERE $timeFilter tz('$timezone')",
-            "rawQuery": true,
-            "refId": "loadpoint2Energie",
+            "refId": "loadpoints",
             "resultFormat": "time_series",
             "select": [
               [
@@ -499,7 +449,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.1",
         "targets": [
           {
             "alias": "PV",
@@ -633,52 +583,9 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") from loadpoint1DailyEnergy WHERE $timeFilter tz('$timezone')",
+            "query": "SELECT sum(\"value\")  FROM \"loadpointDailyEnergy\" WHERE $timeFilter  TZ('$timezone')",
             "rawQuery": true,
-            "refId": "energieLP1",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "alias": "Loadpoint2",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": true,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT sum(\"value\") from loadpoint2DailyEnergy WHERE $timeFilter tz('$timezone')",
-            "rawQuery": true,
-            "refId": "energieLP2",
+            "refId": "energieLadepunkte",
             "resultFormat": "time_series",
             "select": [
               [
@@ -702,7 +609,7 @@
               "type": "__expr__",
               "uid": "__expr__"
             },
-            "expression": "1 - $Netzbezug/($energieHaus + $energieLP1 + $energieLP2)",
+            "expression": "1 - $Netzbezug/($energieHaus + $energieLadepunkte)",
             "hide": false,
             "refId": "Autarkie",
             "type": "math"
@@ -3098,8 +3005,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               },
               {
                 "color": "text",
@@ -3505,8 +3411,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           },
@@ -3642,8 +3547,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green",
-                      "value": null
+                      "color": "green"
                     },
                     {
                       "color": "orange",
@@ -3814,52 +3718,9 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\") from loadpoint1MonthlyEnergy WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT sum(\"value\") from loadpointMonthlyEnergy WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
-          "refId": "lp1Gesamt",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(\"value\") from loadpoint2MonthlyEnergy WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "lp2Gesamt",
+          "refId": "lpGesamt",
           "resultFormat": "time_series",
           "select": [
             [
@@ -3882,7 +3743,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$hausverbrauchGesamt+$lp1Gesamt+$lp2Gesamt",
+          "expression": "$hausverbrauchGesamt+$lpGesamt",
           "hide": true,
           "refId": "verbrauchGesamt",
           "type": "math"
@@ -4011,6 +3872,9 @@
           "hide": false,
           "reducer": "count",
           "refId": "anzahlGemesseneTage",
+          "settings": {
+            "mode": "dropNN"
+          },
           "type": "reduce"
         },
         {
@@ -4064,8 +3928,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text",
-                "value": null
+                "color": "text"
               }
             ]
           },
@@ -4321,6 +4184,9 @@
           "hide": false,
           "reducer": "count",
           "refId": "anzahlGemesseneTage",
+          "settings": {
+            "mode": "dropNN"
+          },
           "type": "reduce"
         },
         {
@@ -4436,8 +4302,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -4522,8 +4387,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red",
-                      "value": null
+                      "color": "red"
                     },
                     {
                       "color": "green",
@@ -4569,8 +4433,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red",
-                      "value": null
+                      "color": "red"
                     },
                     {
                       "color": "green",
@@ -4584,7 +4447,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "savingsEffectivePrice.last"
+              "options": "Effektiver, durchschnittlicher Preis"
             },
             "properties": [
               {
@@ -4626,16 +4489,40 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "vehicleConsumption"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kW/100km"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Geschätzter Verbrauch"
+              }
+            ]
           }
         ]
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 24,
         "x": 0,
         "y": 62
       },
       "id": 21,
+      "maxPerRow": 2,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -4658,74 +4545,40 @@
         "wideLayout": true
       },
       "pluginVersion": "11.5.1",
+      "repeat": "vehicle",
+      "repeatDirection": "h",
       "targets": [
+        {
+          "alias": "drivenKm",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT spread(\"value\") FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND (\"vehicle\"::tag = '$vehicle') tz('$timezone')",
+          "rawQuery": true,
+          "refId": "drivenKm",
+          "resultFormat": "time_series"
+        },
         {
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
           "hide": true,
-          "measurement": "vehicle1Odometer",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicle1Odometer\" WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT sum(\"value\")/1000 FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter  AND (\"vehicle\"::tag = '$vehicle') tz('$timezone')",
           "rawQuery": true,
-          "refId": "odometer",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "min"
-              }
-            ]
-          ],
-          "tags": []
+          "refId": "chargedEnergy",
+          "resultFormat": "time_series"
         },
         {
           "datasource": {
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "odometer",
-          "hide": true,
-          "reducer": "min",
-          "refId": "startKm",
-          "type": "reduce"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "odometer",
-          "hide": true,
-          "reducer": "max",
-          "refId": "endKm",
-          "type": "reduce"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$endKm - $startKm",
+          "expression": "$chargedEnergy/($drivenKm/100)",
           "hide": false,
-          "refId": "drivenKm",
+          "refId": "vehicleConsumption",
           "type": "math"
         },
         {
@@ -4739,7 +4592,7 @@
           "measurement": "sessionSolarPercentage",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"value\") FROM \"sessionSolarPercentage\" WHERE $timeFilter AND (\"vehicle\"::tag = '$vehicle1Name') tz('$timezone')",
+          "query": "SELECT mean(\"value\") FROM \"sessionSolarPercentage\" WHERE $timeFilter AND (\"vehicle\"::tag = '$vehicle') tz('$timezone')",
           "rawQuery": true,
           "refId": "solarPercent",
           "resultFormat": "time_series",
@@ -4770,7 +4623,7 @@
           "measurement": "sessionPricePerKWh",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"value\") FROM \"sessionPricePerKWh\" WHERE $timeFilter AND (\"vehicle\"::tag = '$vehicle1Name') tz('$timezone') ",
+          "query": "SELECT mean(\"value\") FROM \"sessionPricePerKWh\" WHERE $timeFilter AND (\"vehicle\"::tag = '$vehicle') tz('$timezone') ",
           "rawQuery": true,
           "refId": "chargePrice",
           "resultFormat": "time_series",
@@ -4795,7 +4648,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$drivenKm / 100 * $vehicle1Verbrauch * $stromPreis",
+          "expression": "$drivenKm / 100 * $vehicleConsumption * $stromPreis",
           "hide": false,
           "refId": "electricDriveCostNoPV",
           "type": "math"
@@ -4805,7 +4658,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$drivenKm / 100 * $vehicle1Verbrauch * $chargePrice",
+          "expression": "$drivenKm / 100 * $vehicleConsumption * $chargePrice",
           "hide": false,
           "refId": "electricDriveCost",
           "type": "math"
@@ -4841,432 +4694,7 @@
           "type": "math"
         }
       ],
-      "title": "Fahrtkosten $vehicle1Name",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "-- Mixed --"
-      },
-      "description": "Werte sind grobe Schätzungen anhand Durchschnittswerte.\n\nBerücksichtigt nicht den hier eingestellten Strompreis, sondern die Werte, die aktuellen Preise die EVCC ermittelt.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "€"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "drivenKm"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "km"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "displayName",
-                "value": "Gefahrene Kilometer"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "electricDriveCost"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Fahrtkosten  $vehicle2Name mit PV"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "iceDriveCost"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Fahrtkosten Verbrenner"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "savings"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Eingesparte Fahrtkosten ggü Verbrenner"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "red",
-                      "value": null
-                    },
-                    {
-                      "color": "green",
-                      "value": 0
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "electricDriveCostNoPV"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Fahrtkosten $vehicle2Name ohne PV"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "orange",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "savingsElectricPv"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Eingesparte Fahrtkosten dank PV"
-              },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    {
-                      "color": "red",
-                      "value": null
-                    },
-                    {
-                      "color": "green",
-                      "value": 0
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "savingsEffectivePrice.last"
-            },
-            "properties": [
-              {
-                "id": "decimals",
-                "value": 3
-              },
-              {
-                "id": "displayName",
-                "value": "Effektiver Ladepreis/kwh"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "text",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Solaranteil"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 62
-      },
-      "id": 19,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 20
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.5.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "hide": true,
-          "measurement": "vehicle1Odometer",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicle2Odometer\" WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "odometer",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "min"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "odometer",
-          "hide": true,
-          "reducer": "min",
-          "refId": "startKm",
-          "type": "reduce"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "odometer",
-          "hide": true,
-          "reducer": "max",
-          "refId": "endKm",
-          "type": "reduce"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$endKm - $startKm",
-          "hide": false,
-          "refId": "drivenKm",
-          "type": "math"
-        },
-        {
-          "alias": "Solaranteil",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "savingsSelfConsumptionPercent",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM \"sessionSolarPercentage\" WHERE $timeFilter AND (\"vehicle\"::tag = '$vehicle2Name')  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "solarPercent",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Effektiver, durchschnittlicher Preis",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
-          },
-          "groupBy": [],
-          "hide": false,
-          "measurement": "savingsEffectivePrice",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"value\") FROM \"sessionPricePerKWh\" WHERE $timeFilter AND (\"vehicle\"::tag = '$vehicle2Name')  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "chargePrice",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$drivenKm / 100 * $vehicle2Verbrauch * $stromPreis",
-          "hide": false,
-          "refId": "electricDriveCostNoPV",
-          "type": "math"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$drivenKm / 100 * $vehicle2Verbrauch * $chargePrice",
-          "hide": false,
-          "refId": "electricDriveCost",
-          "type": "math"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$electricDriveCostNoPV - $electricDriveCost",
-          "hide": false,
-          "refId": "savingsElectricPv",
-          "type": "math"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$drivenKm / 100 * $vVerbrauch * $spritKosten",
-          "hide": false,
-          "refId": "iceDriveCost",
-          "type": "math"
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$iceDriveCost - $electricDriveCost",
-          "hide": false,
-          "refId": "savings",
-          "type": "math"
-        }
-      ],
-      "title": "Fahrtkosten $vehicle2Name",
+      "title": "Fahrtkosten $vehicle",
       "type": "stat"
     }
   ],
@@ -5377,86 +4805,6 @@
         "type": "custom"
       },
       {
-        "description": "Title des ersten Fahrzeuges, wie in der evcc.yaml definiert.",
-        "hide": 2,
-        "label": "Name, 1. Fahrzeug",
-        "name": "vehicle1Name",
-        "query": "${VAR_VEHICLE1NAME}",
-        "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_VEHICLE1NAME}",
-          "text": "${VAR_VEHICLE1NAME}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_VEHICLE1NAME}",
-            "text": "${VAR_VEHICLE1NAME}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "current": {
-          "text": "20",
-          "value": "20"
-        },
-        "description": "Geschätzter durchschnittlicher Verbrauch des ersten Fahrzeuges",
-        "includeAll": false,
-        "label": "Fahrzeug 1: Verbrauch in kWh/100km",
-        "name": "vehicle1Verbrauch",
-        "options": [
-          {
-            "selected": true,
-            "text": "20",
-            "value": "20"
-          }
-        ],
-        "query": "20",
-        "type": "custom"
-      },
-      {
-        "description": "Title des zweiten Fahrzeuges, wie in der evcc.yaml definiert.",
-        "hide": 2,
-        "label": "Name, 2. Fahrzeug",
-        "name": "vehicle2Name",
-        "query": "${VAR_VEHICLE2NAME}",
-        "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_VEHICLE2NAME}",
-          "text": "${VAR_VEHICLE2NAME}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_VEHICLE2NAME}",
-            "text": "${VAR_VEHICLE2NAME}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "current": {
-          "text": "17",
-          "value": "17"
-        },
-        "description": "Geschätzter durchschnittlicher Verbrauch des zweiten Fahrzeuges",
-        "includeAll": false,
-        "label": "Fahrzeug 2: Verbrauch in kWh/100km",
-        "name": "vehicle2Verbrauch",
-        "options": [
-          {
-            "selected": true,
-            "text": "17",
-            "value": "17"
-          }
-        ],
-        "query": "17",
-        "type": "custom"
-      },
-      {
         "current": {
           "text": "6",
           "value": "6"
@@ -5530,17 +4878,39 @@
             "selected": false
           }
         ]
+      },
+      {
+        "allowCustomValue": false,
+        "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_AGGREGRATIONS}"
+        },
+        "definition": "show tag values from vehicleMonthlyEnergy with key = \"vehicle\"",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Fahrzeug",
+        "multi": true,
+        "name": "vehicle",
+        "options": [],
+        "query": {
+          "query": "show tag values from vehicleMonthlyEnergy with key = \"vehicle\"",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "2023-03-01 00:00:00",
+    "from": "2023-02-28T23:00:00.000Z",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 198,
+  "version": 204,
   "weekStart": ""
 }
