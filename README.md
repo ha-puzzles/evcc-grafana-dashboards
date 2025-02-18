@@ -81,7 +81,7 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
 
 4. Die Werte des Dashboards anpassen:
    1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt.
-   2. Weitere konstante Parameter des Dashboards anpassen. Siehe auch [unter 'dashboards'](./dashboards/README.md). 
+   2. Letzte Anpassungen in den Dashboards vornehmen. Siehe auch [unter 'dashboards'](./dashboards/README.md). 
    
    Der Screenshot zeigt den Import des Monatsdashboard. Die abgefragten Werte unterscheiden sich von Dashboard zu Dashboard.
 
