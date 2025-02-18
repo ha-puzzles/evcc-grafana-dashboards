@@ -38,6 +38,7 @@ AGGREGATE_DAY_YEAR=0
 AGGREGATE_DAY_MONTH=0
 AGGREGATE_DAY_DAY=0
 DELETE_AGGREGATIONS=false
+DETECT_VALUES=false
 
 # Maps of number of days per month. February leap year is updated later
 declare -A DAYS_OF_MONTH
@@ -53,6 +54,12 @@ DAYS_OF_MONTH[9]=30
 DAYS_OF_MONTH[10]=31
 DAYS_OF_MONTH[11]=30
 DAYS_OF_MONTH[12]=31
+
+# Array of vehicles
+declare -A VEHICLES
+
+#Array of loadpoints
+declare -A LOADPOINTS
 
 parseArguments() {
     if [ "$#" -eq 0 ]; then
@@ -104,12 +111,17 @@ parseArguments() {
         logDebug "Deleting aggregations."
         return 0
     fi
+    if [ "$1" == '--detect' ]; then
+        DETECT_VALUES=true
+        logDebug "Detecting loadpoints and vehicles."
+        return 0
+    fi
     printUsage
     exit 1
 }
 
 printUsage() {
-    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --yesterday | --today | --delete-aggregations]"
+    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --today | --yesterday | --delete-aggregations | --detect]"
 }
 
 isLeapYear() {
@@ -140,6 +152,7 @@ writeDailyAggregations() {
     day=$7
     additionalWhere=$8
     defaultZero=$9
+    additionalTags=${10}
 
     printf -v fYear "%04d" $year
     printf -v fMonth "%02d" $month
@@ -193,7 +206,11 @@ writeDailyAggregations() {
         logInfo "There is no data from $sourceMeasurement for $targetMeasurement."
     fi
     if [ "$energy" != "0" ] || [ "$defaultZero" == "true" ]; then
-        insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestamp}"
+        if [ "$additionalTags" != "" ]; then
+            insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay},${additionalTags} value=${energy} ${timestamp}"
+        else
+            insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${energy} ${timestamp}"
+        fi
         logDebug "Insert statement: $insertStatement"
         influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
     fi
@@ -211,21 +228,21 @@ aggregateDay() {
     writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
     writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
 
-    writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT" "true"
-    if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-        writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT" "true"
-    else
-        logDebug "Loadpoint 2 is disabled."
-    fi
+    # writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint1DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_1_TITLE}') AND value < $PEAK_POWER_LIMIT" "true"
+    # if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
+    #     writeDailyAggregations "integral-all" "value" "chargePower" "loadpoint2DailyEnergy" $ayear $amonth $aday "AND ("loadpoint"::tag = '${LOADPOINT_2_TITLE}') AND value < $PEAK_POWER_LIMIT" "true"
+    # else
+    #     logDebug "Loadpoint 2 is disabled."
+    # fi
 
-    writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle1Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}')" "false"
-    writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle1DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}') AND value < $PEAK_POWER_LIMIT" "true" # Workaround: Integral does not work for vehicle as there are too few data points
-    if [ "$VEHICLE_2_ENABLED" == "true" ]; then
-        writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle2Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}')" "false"
-        writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle2DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}') AND value < $PEAK_POWER_LIMIT" "true" # Workaround: Integral does not work for vehicle as there are too few data points
-    else
-        logDebug "Vehicle 2 is disabled."
-    fi
+    # writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle1Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}')" "false"
+    # writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle1DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_1_TITLE}') AND value < $PEAK_POWER_LIMIT" "true" # Workaround: Integral does not work for vehicle as there are too few data points
+    # if [ "$VEHICLE_2_ENABLED" == "true" ]; then
+    #     writeDailyAggregations "max" "value" "vehicleOdometer" "vehicle2Odometer" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}')" "false"
+    #     writeDailyAggregations "integral-positives" "value" "chargePower" "vehicle2DailyEnergy" $ayear $amonth $aday "AND ("vehicle"::tag = '${VEHICLE_2_TITLE}') AND value < $PEAK_POWER_LIMIT" "true" # Workaround: Integral does not work for vehicle as there are too few data points
+    # else
+    #     logDebug "Vehicle 2 is disabled."
+    # fi
 
     if [ "$HOME_BATTERY" == "true" ]; then
         writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
@@ -243,6 +260,19 @@ aggregateDay() {
     else
         logDebug "Dynamic tariff aggregation is disabled."
     fi
+
+    for vehicle in "${VEHICLES[@]}"; do
+        logDebug "Aggregating vehicle $vehicle"
+        escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
+        writeDailyAggregations "max" "value" "vehicleOdometer" "vehicleOdometerDailyMax" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}'" "false" "vehicle=${escapedVehicle}"
+        writeDailyAggregations "integral-positives" "value" "chargePower" "vehicleDailyEnergy" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}' AND value < $PEAK_POWER_LIMIT" "true" "vehicle=${escapedVehicle}"
+    done
+
+    for loadpoint in "${LOADPOINTS[@]}"; do
+        logDebug "Aggregating loadpoint $loadpoint"
+        escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
+        writeDailyAggregations "integral-all" "value" "chargePower" "loadpointDailyEnergy" $ayear $amonth $aday "AND \"loadpoint\"::tag = '${loadpoint}' AND value < $PEAK_POWER_LIMIT" "true" "loadpoint=${escapedLoadpoint}"
+    done
 }
 
 writeMonthlyAggregations () {
@@ -252,6 +282,8 @@ writeMonthlyAggregations () {
     monthlytargetMeasurement=$4
     year=$5
     month=$6
+    additionalWhere=$7
+    additionalTags=$8
 
     numDays=${DAYS_OF_MONTH[$month]}
 
@@ -266,7 +298,11 @@ writeMonthlyAggregations () {
 
     logDebug "${fYear}-${fMonth}: Creating monthly aggregation from $dailytargetMeasurement into ${monthlytargetMeasurement}"
     logDebug "Month has $numDays days."
-    query="SELECT $aggregation(\"$field\") FROM $dailytargetMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
+    if [ "$additionalWhere" != "" ]; then
+        query="SELECT $aggregation(\"$field\") FROM $dailytargetMeasurement WHERE ${timeCondition} ${additionalWhere} tz('$TIMEZONE')"
+    else
+        query="SELECT $aggregation(\"$field\") FROM $dailytargetMeasurement WHERE ${timeCondition} tz('$TIMEZONE')"
+    fi
     logDebug "Query: $query"
 
     queryResult=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1`
@@ -277,8 +313,12 @@ writeMonthlyAggregations () {
         energy=`echo "$queryResult" | cut -d " " -f 2`
     else
         logInfo "There is no data from $dailytargetMeasurement for $monthlytargetMeasurement. Writing 0 as data point for this month."
-    fi    
-    insertStatement="INSERT ${monthlytargetMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestamp}"
+    fi
+    if [ "$additionalTags" != "" ]; then
+        insertStatement="INSERT ${monthlytargetMeasurement},year=${fYear},month=${fMonth},${additionalTags} value=${energy} ${timestamp}"
+    else
+        insertStatement="INSERT ${monthlytargetMeasurement},year=${fYear},month=${fMonth} value=${energy} ${timestamp}"
+    fi
     logDebug "Insert statement: $insertStatement"
     influx  -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
 }
@@ -294,21 +334,21 @@ aggregateMonth() {
     writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
     writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
 
-    writeMonthlyAggregations "sum" "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
-    if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-        writeMonthlyAggregations "sum" "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
-    else
-        logDebug "Loadpoint 2 is disabled."
-    fi
+    # writeMonthlyAggregations "sum" "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
+    # if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
+    #     writeMonthlyAggregations "sum" "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
+    # else
+    #     logDebug "Loadpoint 2 is disabled."
+    # fi
     
-    writeMonthlyAggregations "spread" "value" "vehicle1Odometer" "vehicle1DrivenKm" $ayear $amonth 
-    writeMonthlyAggregations "sum" "value" "vehicle1DailyEnergy" "vehicle1MonthlyEnergy" $ayear $amonth 
-    if [ "$VEHICLE_2_ENABLED" == "true" ]; then
-        writeMonthlyAggregations "spread" "value" "vehicle2Odometer" "vehicle2DrivenKm" $ayear $amonth 
-        writeMonthlyAggregations "sum" "value" "vehicle2DailyEnergy" "vehicle2MonthlyEnergy" $ayear $amonth 
-    else
-        logDebug "Vehicle 2 is disabled."
-    fi
+    # writeMonthlyAggregations "spread" "value" "vehicle1Odometer" "vehicle1DrivenKm" $ayear $amonth 
+    # writeMonthlyAggregations "sum" "value" "vehicle1DailyEnergy" "vehicle1MonthlyEnergy" $ayear $amonth 
+    # if [ "$VEHICLE_2_ENABLED" == "true" ]; then
+    #     writeMonthlyAggregations "spread" "value" "vehicle2Odometer" "vehicle2DrivenKm" $ayear $amonth 
+    #     writeMonthlyAggregations "sum" "value" "vehicle2DailyEnergy" "vehicle2MonthlyEnergy" $ayear $amonth 
+    # else
+    #     logDebug "Vehicle 2 is disabled."
+    # fi
 
     if [ "$HOME_BATTERY" == "true" ]; then
         writeMonthlyAggregations "sum" "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
@@ -316,6 +356,19 @@ aggregateMonth() {
     else
         logDebug "Home battery aggregation is disabled"
     fi
+
+    for vehicle in "${VEHICLES[@]}"; do
+        logDebug "Aggregating vehicle $vehicle"
+        escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
+        writeMonthlyAggregations "spread" "value" "vehicleOdometerDailyMax" "vehicleMonthlyDrivenKm" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
+        writeMonthlyAggregations "sum" "value" "vehicleDailyEnergy" "vehicleMonthlyEnergy" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
+    done
+
+    for loadpoint in "${LOADPOINTS[@]}"; do
+        logDebug "Aggregating loadpoint $loadpoint"
+        escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
+        writeMonthlyAggregations "sum" "value" "loadpointDailyEnergy" "loadpointMonthlyEnergy" $ayear $amonth "AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"
+    done
 }
 
 dropMeasurement() {
@@ -338,16 +391,12 @@ dropAggregations() {
         sleep 1
         dropMeasurement "pvDailyEnergy"
         dropMeasurement "homeDailyEnergy"
-        dropMeasurement "loadpoint1DailyEnergy"
-        dropMeasurement "loadpoint2DailyEnergy"
         dropMeasurement "gridDailyEnergy"
         dropMeasurement "feedInDailyEnergy"
         dropMeasurement "dischargeDailyEnergy"
         dropMeasurement "chargeDailyEnergy"
         dropMeasurement "pvMonthlyEnergy"
         dropMeasurement "homeMonthlyEnergy"
-        dropMeasurement "loadpoint1MonthlyEnergy"
-        dropMeasurement "loadpoint2MonthlyEnergy"
         dropMeasurement "gridMonthlyEnergy"
         dropMeasurement "feedInMonthlyEnergy"
         dropMeasurement "dischargeMonthlyEnergy"
@@ -357,6 +406,18 @@ dropAggregations() {
         dropMeasurement "tariffGridDailyMax"
         dropMeasurement "tariffGridDailyMean"
         dropMeasurement "tariffGridDailyMin"
+        dropMeasurement "vehicleDailyEnergy"
+        dropMeasurement "vehicleMonthlyEnergy"
+        dropMeasurement "vehicleOdometerDailyMax"
+        dropMeasurement "vehicleMonthlyDrivenKm"
+        dropMeasurement "loadpointDailyEnergy"
+        dropMeasurement "loadpointMonthlyEnergy"
+
+        # Legacy measurements
+        dropMeasurement "loadpoint1DailyEnergy"
+        dropMeasurement "loadpoint2DailyEnergy"
+        dropMeasurement "loadpoint1MonthlyEnergy"
+        dropMeasurement "loadpoint2MonthlyEnergy"
         dropMeasurement "vehicle1DailyEnergy"
         dropMeasurement "vehicle1DrivenKm"
         dropMeasurement "vehicle1MonthlyEnergy"
@@ -368,6 +429,35 @@ dropAggregations() {
     else
         logInfo "Deletion of aggregated measurements aborted."
     fi
+}
+
+detectValues() {
+    # We are reading from vehicleOdometer as it typically contains entries for all vehicles and loadpoints, however has
+    # the least amount of records for a speedy query result.
+
+    # Detecting vehicles
+    index=0
+    vehicle_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "select min(value) from vehicleOdometer group by vehicle" | grep "tags: vehicle=" | sed "s/tags: vehicle=//" | grep -v "(offline)" | grep -v "^$" | sort)
+    while read vehicle; do
+        if [ "$vehicle" != "" ]; then
+            VEHICLES[${index}]=$vehicle
+            index=$((index+1))
+            logInfo "Detected vehicle $index: $vehicle"
+        fi
+    done <<< "$vehicle_list"
+    logDebug "Detected ${#VEHICLES[*]} vehicles: ${VEHICLES[*]}"
+
+    # Detecting loadpoints
+    index=0
+    loadpoint_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "select min(value) from vehicleOdometer group by loadpoint" | grep "tags: loadpoint=" | sed "s/tags: loadpoint=//" | grep -v "^$" | sort)
+    while read loadpoint; do
+        if [ "$loadpoint" != "" ]; then
+            LOADPOINTS[${index}]=$loadpoint
+            index=$((index+1))
+            logInfo "Detected loadpoint $index: $loadpoint"
+        fi
+    done <<< "$loadpoint_list"
+    logDebug "Detected ${#LOADPOINTS[*]} vehicles: ${LOADPOINTS[*]}"
 }
 
 ###############################################################################
@@ -383,7 +473,10 @@ fi
 
 # Start aggregation
 if [ "$DELETE_AGGREGATIONS" != "true" ]; then
-    logInfo "[`date '+%F %T'`] Starting aggregation..."
+    detectValues
+    if [ "$DETECT_VALUES" != "true" ]; then
+        logInfo "[`date '+%F %T'`] Starting aggregation..."
+    fi
 fi
 
 if [ "$AGGREGATE_YEAR" -ne 0 ]; then

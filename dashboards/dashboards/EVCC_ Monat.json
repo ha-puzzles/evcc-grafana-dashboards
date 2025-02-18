@@ -24,20 +24,6 @@
       "pluginName": "InfluxDB"
     },
     {
-      "name": "VAR_LOADPOINT1NAME",
-      "type": "constant",
-      "label": "Name, 1. Loadpoint",
-      "value": "Garage",
-      "description": ""
-    },
-    {
-      "name": "VAR_LOADPOINT2NAME",
-      "type": "constant",
-      "label": "Name, 2. Loadpoint",
-      "value": "Stellplatz",
-      "description": ""
-    },
-    {
       "name": "VAR_TIMEZONE",
       "type": "constant",
       "label": "Zeitzone",
@@ -73,7 +59,7 @@
         "fieldConfig": {
           "defaults": {
             "color": {
-              "fixedColor": "semi-dark-green",
+              "fixedColor": "orange",
               "mode": "fixed"
             },
             "mappings": [],
@@ -137,26 +123,22 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "loadpoint1"
+                "options": "Garage"
               },
               "properties": [
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "light-orange",
+                    "fixedColor": "orange",
                     "mode": "fixed"
                   }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$loadpoint1Name"
                 }
               ]
             },
             {
               "matcher": {
                 "id": "byName",
-                "options": "loadpoint2"
+                "options": "Stellplatz"
               },
               "properties": [
                 {
@@ -165,10 +147,21 @@
                     "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
-                },
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "PV"
+              },
+              "properties": [
                 {
-                  "id": "displayName",
-                  "value": "$loadpoint2Name"
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "green",
+                    "mode": "fixed"
+                  }
                 }
               ]
             }
@@ -201,7 +194,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "11.5.0",
+        "pluginVersion": "11.5.1",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -302,7 +295,7 @@
             "tags": []
           },
           {
-            "alias": "loadpoint1",
+            "alias": "$tag_loadpoint",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -324,52 +317,9 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpoint1DailyEnergy WHERE $timeFilter tz('$timezone')",
+            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter  GROUP BY \"loadpoint\"::tag TZ('$timezone')",
             "rawQuery": true,
-            "refId": "loadpoint1Energie",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "alias": "loadpoint2",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpoint2DailyEnergy WHERE $timeFilter tz('$timezone')",
-            "rawQuery": true,
-            "refId": "loadpoint2Energie",
+            "refId": "loadpoints",
             "resultFormat": "time_series",
             "select": [
               [
@@ -513,7 +463,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.1",
         "targets": [
           {
             "alias": "PV",
@@ -647,52 +597,9 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") from loadpoint1DailyEnergy WHERE $timeFilter tz('$timezone')",
+            "query": "SELECT sum(\"value\")  FROM \"loadpointDailyEnergy\" WHERE $timeFilter  TZ('$timezone')",
             "rawQuery": true,
-            "refId": "energieLP1",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "alias": "Loadpoint2",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "fe8sr664fohz4a"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": true,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT sum(\"value\") from loadpoint2DailyEnergy WHERE $timeFilter tz('$timezone')",
-            "rawQuery": true,
-            "refId": "energieLP2",
+            "refId": "energieLadepunkte",
             "resultFormat": "time_series",
             "select": [
               [
@@ -716,7 +623,7 @@
               "type": "__expr__",
               "uid": "__expr__"
             },
-            "expression": "1 - $Netzbezug/($energieHaus + $energieLP1 + $energieLP2)",
+            "expression": "1 - $Netzbezug/($energieHaus + $energieLadepunkte)",
             "hide": false,
             "refId": "Autarkie",
             "type": "math"
@@ -1125,7 +1032,7 @@
           "colorMode": "value",
           "graphMode": "none",
           "justifyMode": "auto",
-          "orientation": "auto",
+          "orientation": "horizontal",
           "percentChangeColorMode": "standard",
           "reduceOptions": {
             "calcs": [
@@ -1142,7 +1049,7 @@
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.1",
         "targets": [
           {
             "alias": "Speicher laden",
@@ -1342,7 +1249,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "semi-dark-green",
+            "fixedColor": "orange",
             "mode": "fixed"
           },
           "custom": {
@@ -1421,7 +1328,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "loadpoint1"
+              "options": "Garage"
             },
             "properties": [
               {
@@ -1433,13 +1340,9 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "light-orange",
+                  "fixedColor": "orange",
                   "mode": "fixed"
                 }
-              },
-              {
-                "id": "displayName",
-                "value": "$loadpoint1Name"
               }
             ]
           },
@@ -1476,7 +1379,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "loadpoint2"
+              "options": "Stellplatz"
             },
             "properties": [
               {
@@ -1485,19 +1388,23 @@
                   "fixedColor": "dark-orange",
                   "mode": "fixed"
                 }
-              },
-              {
-                "id": "displayName",
-                "value": "$loadpoint2Name"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": ""
+              "options": "PV"
             },
-            "properties": []
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
         ]
       },
@@ -1622,27 +1529,15 @@
           "resultFormat": "time_series"
         },
         {
-          "alias": "loadpoint1",
+          "alias": "$tag_loadpoint",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "hide": false,
-          "query": "SELECT value * (-1) FROM loadpoint1DailyEnergy WHERE $timeFilter  tz('$timezone')",
+          "query": "SELECT value * (-1) FROM loadpointDailyEnergy WHERE $timeFilter GROUP BY (\"loadpoint\"::tag) tz('$timezone')",
           "rawQuery": true,
-          "refId": "loadpoint1",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "loadpoint2",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "hide": false,
-          "query": "SELECT value * (-1) FROM loadpoint2DailyEnergy WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "loadpoint2",
+          "refId": "loadpoints",
           "resultFormat": "time_series"
         },
         {
@@ -2122,51 +2017,9 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value FROM loadpoint1DailyEnergy WHERE $timeFilter  tz('$timezone')",
+          "query": "SELECT SUM(\"last\") FROM\n(\n  SELECT last(\"value\") FROM \"loadpointDailyEnergy\" WHERE $timeFilter GROUP BY time(1d),\"loadpoint\"::tag tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
-          "refId": "energieLP1",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM loadpoint2DailyEnergy WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "energieLP2",
+          "refId": "energieLoadpoints",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2231,7 +2084,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "1-$zugekaufteEnergie/($energieLP1+ $energieLP2 + $energieHaus)",
+          "expression": "1-$zugekaufteEnergie/($energieLoadpoints + $energieHaus)",
           "hide": false,
           "refId": "Autarkie",
           "type": "math"
@@ -2566,48 +2419,6 @@
   "templating": {
     "list": [
       {
-        "description": "Name des ersten Loadpoints, wie in EVCC definiert.",
-        "hide": 2,
-        "label": "Name, 1. Loadpoint",
-        "name": "loadpoint1Name",
-        "query": "${VAR_LOADPOINT1NAME}",
-        "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_LOADPOINT1NAME}",
-          "text": "${VAR_LOADPOINT1NAME}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_LOADPOINT1NAME}",
-            "text": "${VAR_LOADPOINT1NAME}",
-            "selected": false
-          }
-        ]
-      },
-      {
-        "description": "Name des zweiten Loadpoints, wie in EVCC definiert.",
-        "hide": 2,
-        "label": "Name, 2. Loadpoint",
-        "name": "loadpoint2Name",
-        "query": "${VAR_LOADPOINT2NAME}",
-        "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_LOADPOINT2NAME}",
-          "text": "${VAR_LOADPOINT2NAME}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_LOADPOINT2NAME}",
-            "text": "${VAR_LOADPOINT2NAME}",
-            "selected": false
-          }
-        ]
-      },
-      {
         "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
         "label": "Zeitzone",
@@ -2680,6 +2491,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 179,
+  "version": 184,
   "weekStart": ""
 }

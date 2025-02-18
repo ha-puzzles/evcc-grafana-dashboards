@@ -51,10 +51,8 @@ Statistiken über den gesamten erfassten  Datenzeitraum bestehend aus zwei Teile
 
 # Notwendige Anpassungen
 
-Jedes Dashboard hat eigene Parameter. Da es leider keine globalen Variablen in Grafana gibt, müssen diese einmal pro Dashboard angepasst werden.
-
-Gehe in die Einstellungen des Dashboards und dort auf den Tab 'Variables'. Klicke nun auf jede Variable und passe die Werte an. Du findest dort jeweils Beschreibungen, die den Parameter erklären.
-
-![Variablen Screenshot](img/variables.png)
-
-In einigen Panels werden die Bereiche für Min und Max angepasst werden müssen.
+- Jedes Dashboard hat eigene Parameter. Da es leider keine globalen Variablen in Grafana gibt, müssen diese einmal pro Dashboard während des Imports angepasst werden.
+- In einigen Panels werden die Bereiche für Min und Max angepasst werden müssen je nach maximaler Leistung von PV und Ladepunkten.
+- Je nach Anzahl der Ladepunkte und der Fahrzeuge entsprechende Panelgrößen anpassen.
+- All-time: Default Werte der Variablen, wie die Investitionskosten, anpassen.
+- Optional: Die Ladepunkte und Fahrzeuge erhalten per default alle dieselben Farben. Um für verschiedene Ladepunkte und Fahrzeuge verschiedene Farben zu erhalten müssen in den jeweiligen Panels in Grafana die Overrides angepasst werden. Es sind schon Beispiele dabei für Ladepunkte (Garage, Stellplatz) und Fahrzeuge (Ioniq 5, Tesla). Hier muss in der Regel nur das Feld auf den richtigen Ladepunkt oder das richtige Fahrzeug gemappt werden. Ansonsten müssen weitere Overrides angelegt werden. 
