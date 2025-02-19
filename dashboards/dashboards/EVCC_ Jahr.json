@@ -3348,7 +3348,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter GROUP BY \"vehicle\"::tag tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleOdometer",
           "resultFormat": "time_series",
@@ -3392,7 +3392,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT spread(\"value\") FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter GROUP BY \"vehicle\"::tag tz('$timezone')",
+          "query": "SELECT spread(\"value\") FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleDrivenKm",
           "resultFormat": "time_series",
@@ -3435,7 +3435,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\")/1000 FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter  GROUP BY \"vehicle\" tz('$timezone')",
+          "query": "SELECT sum(\"value\")/1000 FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter  AND value > 0 GROUP BY \"vehicle\" tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleChargedEnergy",
           "resultFormat": "time_series",
@@ -3522,8 +3522,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Ioniq 5"
+              "id": "byRegexp",
+              "options": "/^.*Ioniq 5$/"
             },
             "properties": [
               {
@@ -3537,8 +3537,8 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "Tesla"
+              "id": "byRegexp",
+              "options": "/^.*Tesla$/"
             },
             "properties": [
               {
@@ -3584,7 +3584,7 @@
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "alias": "$tag_vehicle",
+          "alias": "Gefahren: $tag_vehicle",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3606,7 +3606,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicles",
           "resultFormat": "time_series",
@@ -3681,8 +3681,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Ioniq 5"
+              "id": "byRegexp",
+              "options": "/^.*Ioniq 5$/"
             },
             "properties": [
               {
@@ -3696,8 +3696,8 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "Tesla"
+              "id": "byRegexp",
+              "options": "/^.*Tesla$/"
             },
             "properties": [
               {
@@ -3744,7 +3744,7 @@
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "alias": "$tag_vehicle",
+          "alias": "Energie: $tag_vehicle",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3766,7 +3766,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value>0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicles",
           "resultFormat": "time_series",
@@ -3841,8 +3841,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Verbrauch: Ioniq 5"
+              "id": "byRegexp",
+              "options": "/^.*Ioniq 5$/"
             },
             "properties": [
               {
@@ -3856,8 +3856,8 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "Verbrauch: Tesla"
+              "id": "byRegexp",
+              "options": "/^.*Tesla$/"
             },
             "properties": [
               {
@@ -3927,7 +3927,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehiclesEnergy",
           "resultFormat": "time_series",
@@ -3971,7 +3971,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter and value > 0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehiclesKm",
           "resultFormat": "time_series",
@@ -4044,6 +4044,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 208,
+  "version": 212,
   "weekStart": ""
 }
