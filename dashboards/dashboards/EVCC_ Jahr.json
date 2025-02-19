@@ -3195,136 +3195,79 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "fixedColor": "red",
+            "mode": "fixed"
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
                 "value": 80
               }
             ]
-          },
-          "unit": "km"
+          }
         },
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "Ioniq 5: Kilometerstand"
+              "id": "byRegexp",
+              "options": "/^Gefahren: .*$/"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-red",
-                  "mode": "fixed"
-                }
+                "id": "unit",
+                "value": "km"
               }
             ]
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "Tesla: Kilometerstand"
+              "id": "byRegexp",
+              "options": "/^Kilometerstand: .*$/"
             },
             "properties": [
               {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
+                "id": "unit",
+                "value": "km"
               }
             ]
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "Ioniq 5: Gefahrene KM"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Tesla: Gefahrene KM"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Tesla: Geladene Energie"
+              "id": "byRegexp",
+              "options": "/^Energie: .*$/"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "kWh"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
               }
             ]
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "vehicleConsumption Tesla"
+              "id": "byRegexp",
+              "options": "/^Verbrauch: .*$/"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "kWh/100km"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-red",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Tesla: Verbrauch"
               }
             ]
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "Ioniq 5: Geladene Energie"
+              "id": "byRegexp",
+              "options": "/^.*Ioniq 5$/"
             },
             "properties": [
-              {
-                "id": "unit",
-                "value": "kWh"
-              },
               {
                 "id": "color",
                 "value": {
@@ -3336,24 +3279,16 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "vehicleConsumption Ioniq 5"
+              "id": "byRegexp",
+              "options": "/^.*Tesla$/"
             },
             "properties": [
               {
-                "id": "unit",
-                "value": "kWh/100km"
-              },
-              {
                 "id": "color",
                 "value": {
-                  "fixedColor": "light-red",
+                  "fixedColor": "dark-red",
                   "mode": "fixed"
                 }
-              },
-              {
-                "id": "displayName",
-                "value": "Ioniq 5: Verbrauch"
               }
             ]
           }
@@ -3390,7 +3325,7 @@
       "pluginVersion": "11.5.1",
       "targets": [
         {
-          "alias": "$tag_vehicle: Kilometerstand",
+          "alias": "Kilometerstand: $tag_vehicle",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3434,7 +3369,7 @@
           "tags": []
         },
         {
-          "alias": "$tag_vehicle: Gefahrene KM",
+          "alias": "Gefahren: $tag_vehicle",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3478,7 +3413,7 @@
           "tags": []
         },
         {
-          "alias": "$tag_vehicle: Geladene Energie",
+          "alias": "Energie: $tag_vehicle",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3527,7 +3462,7 @@
           },
           "expression": "$vehicleChargedEnergy/($vehicleDrivenKm/100)",
           "hide": false,
-          "refId": "vehicleConsumption",
+          "refId": "Verbrauch:",
           "type": "math"
         }
       ],
@@ -3573,7 +3508,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3731,7 +3667,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -3891,7 +3828,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4099,13 +4037,13 @@
     ]
   },
   "time": {
-    "from": "now-1y/y",
-    "to": "now-1y/y"
+    "from": "now/y",
+    "to": "now/y"
   },
   "timepicker": {},
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 206,
+  "version": 208,
   "weekStart": ""
 }
