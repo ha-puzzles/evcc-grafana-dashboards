@@ -437,7 +437,7 @@ detectValues() {
 
     # Detecting vehicles
     index=0
-    vehicle_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "select min(value) from vehicleOdometer group by vehicle" | grep "tags: vehicle=" | sed "s/tags: vehicle=//" | grep -v "(offline)" | grep -v "^$" | sort)
+    vehicle_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key="vehicle | grep "^vehicle " | sed 's/^vehicle //' | sort)
     while read vehicle; do
         if [ "$vehicle" != "" ]; then
             VEHICLES[${index}]=$vehicle
@@ -449,7 +449,7 @@ detectValues() {
 
     # Detecting loadpoints
     index=0
-    loadpoint_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "select min(value) from vehicleOdometer group by loadpoint" | grep "tags: loadpoint=" | sed "s/tags: loadpoint=//" | grep -v "^$" | sort)
+    loadpoint_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key="loadpoint | grep "^loadpoint " | sed 's/^loadpoint //' | sort)
     while read loadpoint; do
         if [ "$loadpoint" != "" ]; then
             LOADPOINTS[${index}]=$loadpoint

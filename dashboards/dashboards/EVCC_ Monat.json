@@ -43,6 +43,13 @@
       "label": "Installierte Kapazität in Wp",
       "value": "9840",
       "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINTBLACKLIST",
+      "type": "constant",
+      "label": "Blacklist für Loadpoints",
+      "value": "/^none$/",
+      "description": ""
     }
   ],
   "__elements": {
@@ -317,7 +324,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter  GROUP BY \"loadpoint\"::tag TZ('$timezone')",
+            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY \"loadpoint\"::tag TZ('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
             "resultFormat": "time_series",
@@ -1535,7 +1542,7 @@
             "uid": "${DS_EVCC_AGGREGRATIONS}"
           },
           "hide": false,
-          "query": "SELECT value * (-1) FROM loadpointDailyEnergy WHERE $timeFilter GROUP BY (\"loadpoint\"::tag) tz('$timezone')",
+          "query": "SELECT value * (-1) FROM loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY (\"loadpoint\"::tag) tz('$timezone')",
           "rawQuery": true,
           "refId": "loadpoints",
           "resultFormat": "time_series"
@@ -2253,8 +2260,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -2480,6 +2486,27 @@
             "selected": false
           }
         ]
+      },
+      {
+        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "hide": 2,
+        "label": "Blacklist für Loadpoints",
+        "name": "loadpointBlacklist",
+        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINTBLACKLIST}",
+          "text": "${VAR_LOADPOINTBLACKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINTBLACKLIST}",
+            "text": "${VAR_LOADPOINTBLACKLIST}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -2491,6 +2518,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 184,
+  "version": 185,
   "weekStart": ""
 }
