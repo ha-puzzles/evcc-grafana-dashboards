@@ -42,6 +42,20 @@
       "label": "URL, Wechselrichterportal",
       "value": "https://globalhome.solarmanpv.com/plant/infos/data",
       "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINTBLACKLIST",
+      "type": "constant",
+      "label": "Blacklist für Loadpoints",
+      "value": "/^none$/",
+      "description": ""
+    },
+    {
+      "name": "VAR_VEHICLEBLACKLIST",
+      "type": "constant",
+      "label": "Blacklist für Fahrzeuge",
+      "value": "/^Mr White.*$|^.*\\(offline\\)$/",
+      "description": ""
     }
   ],
   "__elements": {
@@ -420,7 +434,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Loadpoint",
             "resultFormat": "time_series",
@@ -909,7 +923,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
             "resultFormat": "time_series",
@@ -2591,7 +2605,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"value\")  / -3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag <> '') AND $timeFilter GROUP BY time(1d), \"vehicle\"::tag fill(0) tz('$timezone') ",
+            "query": "SELECT integral(\"value\")  / -3600000 FROM \"chargePower\" WHERE (\"vehicle\"::tag <> '') AND $timeFilter  AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY time(1d), \"vehicle\"::tag fill(0) tz('$timezone') ",
             "rawQuery": true,
             "refId": "vehicles",
             "resultFormat": "time_series",
@@ -2667,6 +2681,7 @@
             "resultFormat": "time_series"
           }
         ],
+        "title": "Energie (kWh)",
         "transformations": [
           {
             "id": "reduce",
@@ -3247,7 +3262,7 @@
           "measurement": "chargePower",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"value\")\n*(-1)/1000 FROM \"chargePower\" WHERE $timeFilter GROUP BY time($__interval), \"loadpoint\"::tag fill(null)",
+          "query": "SELECT mean(\"value\") *(-1)/1000 FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time($__interval), \"loadpoint\"::tag fill(null)",
           "rawQuery": true,
           "refId": "Loadpoints",
           "resultFormat": "time_series",
@@ -3472,7 +3487,7 @@
           "measurement": "vehicleSoc",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT max(\"value\") FROM \"vehicleSoc\" WHERE $timeFilter AND (\"vehicle\"::tag <> '')  GROUP BY time(5m), \"vehicle\"::tag fill(none) tz('$timezone')",
+          "query": "SELECT max(\"value\") FROM \"vehicleSoc\" WHERE $timeFilter AND (\"vehicle\"::tag <> '')  AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY time(5m), \"vehicle\"::tag fill(none) tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicles",
           "resultFormat": "time_series",
@@ -3732,6 +3747,48 @@
             "selected": false
           }
         ]
+      },
+      {
+        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "hide": 2,
+        "label": "Blacklist für Loadpoints",
+        "name": "loadpointBlacklist",
+        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINTBLACKLIST}",
+          "text": "${VAR_LOADPOINTBLACKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINTBLACKLIST}",
+            "text": "${VAR_LOADPOINTBLACKLIST}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "description": "Liste der Fahrzeuge, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere Fahrzeuge mit (offline) am Ende aus: /^.*\\(offline\\)$/",
+        "hide": 2,
+        "label": "Blacklist für Fahrzeuge",
+        "name": "vehicleBlacklist",
+        "query": "${VAR_VEHICLEBLACKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLEBLACKLIST}",
+          "text": "${VAR_VEHICLEBLACKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VEHICLEBLACKLIST}",
+            "text": "${VAR_VEHICLEBLACKLIST}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -3749,6 +3806,6 @@
   "timezone": "",
   "title": "EVCC: Today (Mobile)",
   "uid": "MRHnynkRz",
-  "version": 123,
+  "version": 124,
   "weekStart": ""
 }

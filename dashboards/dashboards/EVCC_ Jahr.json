@@ -21,6 +21,20 @@
       "label": "Zeitzone",
       "value": "Europe/Berlin",
       "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINTBLACKLIST",
+      "type": "constant",
+      "label": "Blacklist für Loadpoints",
+      "value": "/^none$/",
+      "description": ""
+    },
+    {
+      "name": "VAR_VEHICLEBLACKLIST",
+      "type": "constant",
+      "label": "Blacklist für Fahrzeuge",
+      "value": "/^Mr White.*$|^.*\\(offline\\)$/",
+      "description": ""
     }
   ],
   "__elements": {
@@ -295,7 +309,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter  GROUP BY \"loadpoint\"::tag TZ('$timezone')",
+            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY \"loadpoint\"::tag TZ('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
             "resultFormat": "time_series",
@@ -1577,7 +1591,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value * (-1)  FROM \"loadpointMonthlyEnergy\" WHERE $timeFilter GROUP BY (\"loadpoint\"::tag)  TZ('$timezone')",
+          "query": "SELECT value * (-1)  FROM \"loadpointMonthlyEnergy\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY (\"loadpoint\"::tag)  TZ('$timezone')",
           "rawQuery": true,
           "refId": "Ladepunkte",
           "resultFormat": "time_series",
@@ -2937,8 +2951,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3070,8 +3083,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3203,8 +3215,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3348,7 +3359,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleOdometer",
           "resultFormat": "time_series",
@@ -3392,7 +3403,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT spread(\"value\") FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag tz('$timezone')",
+          "query": "SELECT spread(\"value\") FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleDrivenKm",
           "resultFormat": "time_series",
@@ -3435,7 +3446,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\")/1000 FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter  AND value > 0 GROUP BY \"vehicle\" tz('$timezone')",
+          "query": "SELECT sum(\"value\")/1000 FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter  AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\" tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleChargedEnergy",
           "resultFormat": "time_series",
@@ -3508,8 +3519,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3606,7 +3616,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicles",
           "resultFormat": "time_series",
@@ -3667,8 +3677,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3766,7 +3775,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value>0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value>0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicles",
           "resultFormat": "time_series",
@@ -3828,8 +3837,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3927,7 +3935,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value > 0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehiclesEnergy",
           "resultFormat": "time_series",
@@ -3971,7 +3979,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter and value > 0 GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter and value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehiclesKm",
           "resultFormat": "time_series",
@@ -4033,17 +4041,59 @@
             "selected": false
           }
         ]
+      },
+      {
+        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "hide": 2,
+        "label": "Blacklist für Loadpoints",
+        "name": "loadpointBlacklist",
+        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINTBLACKLIST}",
+          "text": "${VAR_LOADPOINTBLACKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINTBLACKLIST}",
+            "text": "${VAR_LOADPOINTBLACKLIST}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "description": "Liste der Fahrzeuge, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere Fahrzeuge mit (offline) am Ende aus: /^.*\\(offline\\)$/",
+        "hide": 2,
+        "label": "Blacklist für Fahrzeuge",
+        "name": "vehicleBlacklist",
+        "query": "${VAR_VEHICLEBLACKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLEBLACKLIST}",
+          "text": "${VAR_VEHICLEBLACKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VEHICLEBLACKLIST}",
+            "text": "${VAR_VEHICLEBLACKLIST}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
   "time": {
-    "from": "now/y",
-    "to": "now/y"
+    "from": "now-2y/y",
+    "to": "now-2y/y"
   },
   "timepicker": {},
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 212,
+  "version": 220,
   "weekStart": ""
 }

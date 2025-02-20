@@ -29,6 +29,20 @@
       "label": "Hausspeicherkapazität / Wh",
       "value": "9500",
       "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINTBLACKLIST",
+      "type": "constant",
+      "label": "Blacklist für Loadpoints",
+      "value": "/^none$/",
+      "description": ""
+    },
+    {
+      "name": "VAR_VEHICLEBLACKLIST",
+      "type": "constant",
+      "label": "Blacklist für Fahrzeuge",
+      "value": "/^Mr White.*$|^.*\\(offline\\)$/",
+      "description": ""
     }
   ],
   "__elements": {
@@ -303,7 +317,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter  GROUP BY \"loadpoint\"::tag TZ('$timezone')",
+            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY \"loadpoint\"::tag TZ('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
             "resultFormat": "time_series",
@@ -4290,7 +4304,7 @@
         "type": "datasource",
         "uid": "-- Mixed --"
       },
-      "description": "Werte sind grobe Schätzungen anhand Durchschnittswerte.\n\nBerücksichtigt nicht den hier eingestellten Strompreis, sondern die Werte, die aktuellen Preise die EVCC ermittelt.",
+      "description": "Werte sind grobe Schätzungen anhand Durchschnittswerte.\n\nBerücksichtigt nicht den hier eingestellten Strompreis, sondern die aktuellen Preise die EVCC ermittelt.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -4510,6 +4524,10 @@
               {
                 "id": "displayName",
                 "value": "Geschätzter Verbrauch"
+              },
+              {
+                "id": "decimals",
+                "value": 1
               }
             ]
           }
@@ -4887,7 +4905,6 @@
           "uid": "${DS_EVCC_AGGREGRATIONS}"
         },
         "definition": "show tag values from vehicleMonthlyEnergy with key = \"vehicle\"",
-        "hide": 2,
         "includeAll": true,
         "label": "Fahrzeug",
         "multi": true,
@@ -4900,6 +4917,48 @@
         "refresh": 1,
         "regex": "",
         "type": "query"
+      },
+      {
+        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "hide": 2,
+        "label": "Blacklist für Loadpoints",
+        "name": "loadpointBlacklist",
+        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINTBLACKLIST}",
+          "text": "${VAR_LOADPOINTBLACKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINTBLACKLIST}",
+            "text": "${VAR_LOADPOINTBLACKLIST}",
+            "selected": false
+          }
+        ]
+      },
+      {
+        "description": "Liste der Fahrzeuge, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere Fahrzeuge mit (offline) am Ende aus: /^.*\\(offline\\)$/",
+        "hide": 2,
+        "label": "Blacklist für Fahrzeuge",
+        "name": "vehicleBlacklist",
+        "query": "${VAR_VEHICLEBLACKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_VEHICLEBLACKLIST}",
+          "text": "${VAR_VEHICLEBLACKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_VEHICLEBLACKLIST}",
+            "text": "${VAR_VEHICLEBLACKLIST}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -4911,6 +4970,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 204,
+  "version": 208,
   "weekStart": ""
 }
