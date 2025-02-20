@@ -80,8 +80,8 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
       | EVCC: PV Today:          | **22028** |
 
 4. Die Werte des Dashboards anpassen:
-   1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt.
-   2. Letzte Anpassungen in den Dashboards vornehmen. Siehe auch [unter 'dashboards'](./dashboards/README.md). 
+   1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt. Weitere Variablen wie abgefragt ausfüllen. Diese können aber auch noch nach dem Import angepasst werden. Die Blacklist Variablen würde ich nur bei Bedarf später ändern.
+   2. Letzte Anpassungen in den Dashboards vornehmen. Siehe auch [unter 'dashboards'](./dashboards/README.md#anpassungen). 
    
    Der Screenshot zeigt den Import des Monatsdashboard. Die abgefragten Werte unterscheiden sich von Dashboard zu Dashboard.
 
@@ -106,7 +106,7 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
 4. Auf 'Dashboards/Library Panels' gehen. **Dort alle Library Panels löschen, die von mir kommen.** Wird dies nicht gemacht, führt dies zu teilweise inkonsistenten Dashboards, welche das neue Dashboard mit alten Library Panels vermischen.
    
    ![PV Library Panels löschen](./img/delete-library-panels.png)
-2. Dashboards über den Grafana.com Community Store installieren:
+5. Dashboards über den Grafana.com Community Store installieren:
    1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
       ![Import dashboard](./img/import.png)
    2. Unter "Find and import dashboards..." folgende Dashboards mit folgenden IDs importieren:
@@ -118,7 +118,9 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
       | EVCC: PV Today (Mobile): | **22027** |
       | EVCC: PV Today:          | **22028** |
 
-8. Die Werte der Dashboards wie oben beschreiben anpassen.
+6. Die Werte des Dashboards anpassen:
+   1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt. Weitere Variablen wie abgefragt ausfüllen. Diese können aber auch noch nach dem Import angepasst werden. Die Blacklist Variablen würde ich nur bei Bedarf später ändern.
+   2. Letzte Anpassungen in den Dashboards vornehmen. Siehe auch [unter 'dashboards'](./dashboards/README.md#anpassungen). 
 
 
 ## FAQ
@@ -136,6 +138,15 @@ Gute Frage. Leider ist mir derzeit keine Möglichkeit bekannt unter HAOS (oder �
 Was ich evaluiert habe ist die Nutzung von Continuous Queries innerhalb von Influx. Leider stoße ich hier an andere Grenzen, da InfluxQL Funktionen wie $TODAY fehlen um die entsprechenden Queries formulieren zu können. 
 
 Die einzige Möglichkeit, die ich hier sehe ist das Shell Script auf einem externen Linux System zu konfigurieren, das sich remote mit der Influx DB auf dem HAOS System verbindet. Siehe die [Dokumentation des Aggregations Scriptes](./scripts/README.md) wie man es so konfiguriert, dass man es auf einem externen Linux System laufen lassen kann.
+
+### Nach dem Upgrade siehen die Dashboards irgendwie komisch aus
+
+Hast Du die Upgrade Schritte, insbesondere das Löschen der Library Panels befolgt, bevor Du die neuen Dashboards importiert hast?
+
+### Ein paar Panele zeigen nur "No Data" an.
+
+- Hast Du die Aggregation schon für alle betreffenden Zeiträume laufen gelassen? Siehe [scripts](./scripts/).
+- Wurden beim Import die richtigen Data Sources ausgewählt? Falls nein, kann sie auch nachträglich in den betroffenen Panels noch geändert werden.
 
 
 
