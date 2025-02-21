@@ -4904,14 +4904,15 @@
           "type": "influxdb",
           "uid": "${DS_EVCC_AGGREGRATIONS}"
         },
-        "definition": "show tag values from vehicleMonthlyEnergy with key = \"vehicle\"",
+        "definition": "show tag values from vehicleMonthlyEnergy with key = \"vehicle\" where \"vehicle\" !~ $vehicleBlacklist",
+        "hide": 2,
         "includeAll": true,
         "label": "Fahrzeug",
         "multi": true,
         "name": "vehicle",
         "options": [],
         "query": {
-          "query": "show tag values from vehicleMonthlyEnergy with key = \"vehicle\"",
+          "query": "show tag values from vehicleMonthlyEnergy with key = \"vehicle\" where \"vehicle\" !~ $vehicleBlacklist",
           "refId": "InfluxVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -4970,6 +4971,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 208,
+  "version": 209,
   "weekStart": ""
 }
