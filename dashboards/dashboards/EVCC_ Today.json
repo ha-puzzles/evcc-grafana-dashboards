@@ -1296,6 +1296,10 @@
                     "fixedColor": "purple",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Eigenverbrauch"
                 }
               ]
             },
@@ -1311,21 +1315,10 @@
                     "fixedColor": "green",
                     "mode": "fixed"
                   }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "netzbezug"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "watth"
                 },
                 {
-                  "id": "max"
+                  "id": "displayName",
+                  "value": "Autarkie"
                 }
               ]
             },
@@ -1372,7 +1365,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "netzbezug",
@@ -2333,6 +2326,10 @@
                     "fixedColor": "yellow",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Einspeisung"
                 }
               ]
             },
@@ -2348,6 +2345,10 @@
                     "fixedColor": "yellow",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Einspeisung"
                 }
               ]
             },
@@ -2363,10 +2364,6 @@
                     "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$loadpoint1Name"
                 }
               ]
             },
@@ -2382,6 +2379,10 @@
                     "fixedColor": "blue",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Speicher laden"
                 }
               ]
             },
@@ -2401,6 +2402,10 @@
                     "fixedColor": "blue",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Speicher entladen"
                 }
               ]
             },
@@ -2447,7 +2452,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "PV",
@@ -2725,7 +2730,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.1"
+      "version": "11.5.2"
     },
     {
       "type": "datasource",
@@ -3129,7 +3134,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "PV",
@@ -3540,6 +3545,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 178,
+  "version": 179,
   "weekStart": ""
 }

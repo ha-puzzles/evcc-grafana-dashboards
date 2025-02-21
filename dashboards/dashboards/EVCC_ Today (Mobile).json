@@ -568,6 +568,10 @@
                     "fixedColor": "yellow",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Einspeisung"
                 }
               ]
             },
@@ -583,6 +587,10 @@
                     "fixedColor": "yellow",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Einspeisung"
                 }
               ]
             },
@@ -598,10 +606,6 @@
                     "fixedColor": "light-orange",
                     "mode": "fixed"
                   }
-                },
-                {
-                  "id": "displayName",
-                  "value": "$loadpoint1Name"
                 }
               ]
             },
@@ -617,6 +621,10 @@
                     "fixedColor": "blue",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Speicher laden"
                 }
               ]
             },
@@ -636,6 +644,10 @@
                     "fixedColor": "blue",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Speicher entladen"
                 }
               ]
             },
@@ -682,7 +694,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "PV",
@@ -1786,6 +1798,10 @@
                     "fixedColor": "purple",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Eigenverbrauch"
                 }
               ]
             },
@@ -1801,21 +1817,10 @@
                     "fixedColor": "green",
                     "mode": "fixed"
                   }
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "netzbezug"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "watth"
                 },
                 {
-                  "id": "max"
+                  "id": "displayName",
+                  "value": "Autarkie"
                 }
               ]
             },
@@ -1862,7 +1867,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "netzbezug",
@@ -2725,7 +2730,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.1"
+      "version": "11.5.2"
     },
     {
       "type": "datasource",
@@ -3131,7 +3136,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "PV",
@@ -3417,7 +3422,7 @@
         },
         "valueMode": "hidden"
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Speicher",

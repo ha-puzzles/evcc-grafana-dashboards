@@ -1125,7 +1125,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.1"
+      "version": "11.5.2"
     },
     {
       "type": "panel",
@@ -1437,7 +1437,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "PV",
@@ -1786,7 +1786,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -2115,7 +2115,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Erzeugt/Tag",
@@ -2428,7 +2428,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Erzeugt",
@@ -2720,7 +2720,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Maximaler Batterie SOC/Tag",
@@ -2847,7 +2847,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Minimaler Batterie SOC/Tag",
@@ -2951,8 +2951,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3016,7 +3015,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3084,8 +3083,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3147,7 +3145,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3217,8 +3215,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3336,7 +3333,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Kilometerstand: $tag_vehicle",
@@ -3522,8 +3519,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3595,7 +3591,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Gefahren: $tag_vehicle",
@@ -3681,8 +3677,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3755,7 +3750,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Energie: $tag_vehicle",
@@ -3842,8 +3837,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3915,7 +3909,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -4100,6 +4094,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 221,
+  "version": 222,
   "weekStart": ""
 }

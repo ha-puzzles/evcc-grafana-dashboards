@@ -662,7 +662,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.1"
+      "version": "11.5.2"
     },
     {
       "type": "datasource",
@@ -853,7 +853,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -1078,7 +1078,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -1280,7 +1280,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -1506,7 +1506,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -1695,7 +1695,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -1921,7 +1921,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -2110,7 +2110,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -2336,7 +2336,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -2544,7 +2544,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "PV Energie",
@@ -2720,7 +2720,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Einspeisung",
@@ -2894,7 +2894,7 @@
           }
         ]
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Hausverbrauch",
