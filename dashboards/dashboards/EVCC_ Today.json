@@ -2907,8 +2907,12 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "transparent",
+                      "color": "#7a7a7a4d",
                       "value": null
+                    },
+                    {
+                      "color": "transparent",
+                      "value": 0
                     },
                     {
                       "color": "green",
@@ -3536,6 +3540,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 177,
+  "version": 178,
   "weekStart": ""
 }
