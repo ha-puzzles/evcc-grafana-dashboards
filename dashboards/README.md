@@ -83,10 +83,14 @@ Statistiken über den gesamten erfassten  Datenzeitraum bestehend aus zwei Teile
   ![Zeitraum anpassen](img/time-range.png)
 
   Danach das Dashboard speichern und dabei die ausgewählte Zeit mit abspeichern.
-- *Optional*: Falls in den Fahrtkosten Panele unten "Fahrzeuge" (zum Beispiel eine Wärmepumpe) auftauchen, die hier nicht erscheinen sollen, oder falls bestimmte Fahrzeuge ausgeblendet werden soll, dann diesen Schritten folgen:
-  1. In der Auswahlbox oben für das Fahrzeug ist 'All' vorausgewählt. Diese Auswahl auf die gewünschten Fahrzeuge ändern:
+- *Optional*: Falls in den Fahrtkosten Panele unten "Fahrzeuge" (zum Beispiel eine Wärmepumpe) auftauchen, die hier nicht erscheinen sollen, oder falls bestimmte Fahrzeuge temporär ohne Anpassung der Blacklist ein-und ausgeblendet werden soll, dann diesen Schritten folgen:
+  1. Dashboard editieren und in den Settings zum 'Variablen' tab gehen
+  2. Auf die Variable 'vehicle' klicken.
+  3. Unter 'Show on dashboard' den Wert 'Label and value` auswählen.
+  4. Oben rechts auf das Dashboard zurückgehen. Nun taucht hier eine Auswahlbox oben für das Fahrzeug auf. Hier ist 'All' vorausgewählt. Diese Auswahl auf die gewünschten Fahrzeuge ändern:
       
-      ![Fahrzeugauswahl](img/select-vehicle.png)
+    ![Fahrzeugauswahl](img/select-vehicle.png)
+  5. *Optional*: Mit Schritt 1-3 die variable wieder verstecken, wenn man sie nicht mehr sehen will. Oder einfach sichtbar lassen, dann kann man die Auswahl in Zukunft schnell ändern
   2. Dashboard abspeichern. Dabei 'Update default variable values' auswählen.
 
       ![Dashboard abspeichern](img/save-dashboard.png)
