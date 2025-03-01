@@ -78,6 +78,7 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
       | EVCC: PV Monat:          | **22026** |
       | EVCC: PV Today (Mobile): | **22027** |
       | EVCC: PV Today:          | **22028** |
+      | EVCC: PV Today Details:  | **22956** |
 
 4. Die Werte des Dashboards anpassen:
    1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt. Weitere Variablen wie abgefragt ausfüllen. Diese können aber auch noch nach dem Import angepasst werden. Die Blacklist Variablen würde ich nur bei Bedarf später ändern.
@@ -117,6 +118,7 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
       | EVCC: PV Monat:          | **22026** |
       | EVCC: PV Today (Mobile): | **22027** |
       | EVCC: PV Today:          | **22028** |
+      | EVCC: PV Today Details:  | **22956** |
 
 6. Die Werte des Dashboards anpassen:
    1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt. Weitere Variablen wie abgefragt ausfüllen. Diese können aber auch noch nach dem Import angepasst werden. Die Blacklist Variablen würde ich nur bei Bedarf später ändern.
