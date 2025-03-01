@@ -156,7 +156,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "purple",
+                    "fixedColor": "light-purple",
                     "mode": "fixed"
                   }
                 }
@@ -221,6 +221,21 @@
                   }
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Heizlüfter"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "dark-purple",
+                    "mode": "fixed"
+                  }
+                }
+              ]
             }
           ]
         },
@@ -238,7 +253,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "PV",
@@ -263,7 +278,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time(1m) fill(none)  tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none)  tz('$timezone')",
             "rawQuery": true,
             "refId": "PV Leistung",
             "resultFormat": "time_series",
@@ -369,6 +384,49 @@
             "tags": []
           },
           {
+            "alias": "Heizlüfter",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"value\") * (-1) FROM \"extPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "Ext",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
             "alias": "Speicher",
             "datasource": {
               "type": "influxdb",
@@ -391,7 +449,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"batteryPower\" WHERE $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"batteryPower\" WHERE $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Batterieleistung",
             "resultFormat": "time_series",
@@ -617,7 +675,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "Speicher",
@@ -643,7 +701,7 @@
             "measurement": "batterySoc",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE $timeFilter and value <= 100 GROUP BY time(5m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"batterySoc\" WHERE $timeFilter and value <= 100 AND (\"id\"::tag = '') GROUP BY time(5m) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Speicher",
             "resultFormat": "time_series",
@@ -966,7 +1024,7 @@
             "titleSize": 12
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "",
@@ -992,7 +1050,7 @@
             "measurement": "pvPower",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"value\") /3600 FROM \"pvPower\" WHERE $timeFilter AND value < $peakPowerLimit  GROUP BY time(1d) fill(none) tz('$timezone')",
+            "query": "SELECT integral(\"value\") /3600 FROM \"pvPower\" WHERE $timeFilter AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time(1d) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "energyPV",
             "resultFormat": "time_series",
@@ -1527,7 +1585,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"value\") /3600 FROM \"pvPower\" WHERE $timeFilter AND value < $peakPowerLimit  GROUP BY time(15m) fill(0) tz('$timezone')",
+            "query": "SELECT integral(\"value\") /3600 FROM \"pvPower\" WHERE $timeFilter AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time(15m) fill(0) tz('$timezone')",
             "rawQuery": true,
             "refId": "energiePV",
             "resultFormat": "time_series",
@@ -1825,7 +1883,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "PV",
@@ -1850,7 +1908,7 @@
             "measurement": "pvPower",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"value\") /3600000 FROM \"pvPower\" WHERE $timeFilter  and value < $peakPowerLimit GROUP BY time(1d) fill(null)  tz('$timezone')",
+            "query": "SELECT integral(\"value\") /3600000 FROM \"pvPower\" WHERE $timeFilter  and value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time(1d) fill(null)  tz('$timezone')",
             "rawQuery": true,
             "refId": "energyPV",
             "resultFormat": "time_series",
@@ -1893,7 +1951,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series",
@@ -1936,7 +1994,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(1m) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Einspeisung",
             "resultFormat": "time_series",
@@ -2022,7 +2080,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 GROUP BY time(1m) fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 AND (\"id\"::tag = '') GROUP BY time(10s) fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Laden",
             "resultFormat": "time_series",
@@ -2065,7 +2123,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value >=0 AND (\"id\"::tag = '') GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Entladen",
             "resultFormat": "time_series",
@@ -2151,7 +2209,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT \"guest_energy\" FROM (SELECT integral(\"value\") / -3600000 AS \"guest_energy\"  FROM \"chargePower\" WHERE (\"vehicle\"::tag = '') AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')) WHERE \"guest_energy\" <= -0.1",
+            "query": "SELECT \"guest_energy\" FROM (SELECT integral(\"value\") / -3600000 AS \"guest_energy\"  FROM \"chargePower\" WHERE (\"vehicle\"::tag = '') AND $timeFilter GROUP BY time(1d) fill(null) tz('$timezone')) WHERE \"guest_energy\" <= -0.1 tz('$timezone') ",
             "rawQuery": true,
             "refId": "guestVehicle",
             "resultFormat": "time_series",
@@ -2477,7 +2535,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "PV Leistung",
             "resultFormat": "time_series",
@@ -2628,7 +2686,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") *(-1) FROM \"batteryPower\" WHERE $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") *(-1) FROM \"batteryPower\" WHERE $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "batterieleistung",
             "resultFormat": "time_series",
@@ -3020,7 +3078,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "purple",
+                      "color": "light-purple",
                       "value": null
                     },
                     {
@@ -3105,6 +3163,42 @@
                 ]
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Heizlüfter"
+            },
+            "properties": [
+              {
+                "id": "min",
+                "value": -3
+              },
+              {
+                "id": "max",
+                "value": 3
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "dark-purple",
+                      "value": null
+                    },
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "#7a7a7a4d",
+                      "value": 0.001
+                    }
+                  ]
+                }
+              }
+            ]
           }
         ]
       },
@@ -3146,7 +3240,7 @@
           "measurement": "pvPower",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT last(\"value\")  / 1000 FROM \"autogen\".\"pvPower\" WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"value\")  / 1000 FROM \"autogen\".\"pvPower\" WHERE $timeFilter AND (\"id\"::tag = '') tz('$timezone')",
           "rawQuery": true,
           "refId": "PV",
           "resultFormat": "time_series",
@@ -3224,13 +3318,25 @@
           "resultFormat": "time_series"
         },
         {
+          "alias": "Heizlüfter",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": true,
+          "query": "SELECT \"value\" *(-1)/1000 FROM \"extPower\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Ext",
+          "resultFormat": "time_series"
+        },
+        {
           "alias": "Speicher",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT \"value\"  / 1000 FROM \"autogen\".\"batteryPower\" WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT \"value\"  / 1000 FROM \"autogen\".\"batteryPower\" WHERE $timeFilter AND (\"id\"::tag = '') tz('$timezone')",
           "rawQuery": true,
           "refId": "Speicher",
           "resultFormat": "time_series"
@@ -3265,7 +3371,7 @@
           "measurement": "chargePower",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"value\") *(-1)/1000 FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time($__interval), \"loadpoint\"::tag fill(null)",
+          "query": "SELECT last(\"value\") *(-1)/1000 FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY \"loadpoint\"::tag fill(null) tz('$timezone') ",
           "rawQuery": true,
           "refId": "Loadpoints",
           "resultFormat": "time_series",
@@ -3545,6 +3651,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 179,
+  "version": 185,
   "weekStart": ""
 }
