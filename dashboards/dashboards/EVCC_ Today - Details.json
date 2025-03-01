@@ -1,68 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_EVCC_INFLUXDB",
-      "label": "EVCC InfluxDB",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    },
-    {
-      "name": "VAR_TIMEZONE",
-      "type": "constant",
-      "label": "Zeitzone",
-      "value": "Europe/Berlin",
-      "description": ""
-    },
-    {
-      "name": "VAR_PEAKPOWERLIMIT",
-      "type": "constant",
-      "label": "Filter für maximale Leistung / W",
-      "value": "25000",
-      "description": ""
-    },
-    {
-      "name": "VAR_LOADPOINTBLACKLIST",
-      "type": "constant",
-      "label": "Blacklist für Loadpoints",
-      "value": "/^none$/",
-      "description": ""
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "bargauge",
-      "name": "Bar gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.5.2"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -82,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 19,
   "links": [
     {
       "asDropdown": false,
@@ -151,8 +87,9 @@
     },
     {
       "datasource": {
+        "default": true,
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "description": "",
       "fieldConfig": {
@@ -261,7 +198,7 @@
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -304,7 +241,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -349,8 +286,9 @@
     },
     {
       "datasource": {
+        "default": true,
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "description": "",
       "fieldConfig": {
@@ -493,7 +431,7 @@
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -536,7 +474,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -581,8 +519,9 @@
     },
     {
       "datasource": {
+        "default": true,
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "description": "",
       "fieldConfig": {
@@ -691,7 +630,7 @@
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -734,7 +673,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -779,8 +718,9 @@
     },
     {
       "datasource": {
+        "default": true,
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "description": "",
       "fieldConfig": {
@@ -836,7 +776,7 @@
               }
             ]
           },
-          "unit": "kWh"
+          "unit": "watt"
         },
         "overrides": [
           {
@@ -906,7 +846,7 @@
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -949,7 +889,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1008,7 +948,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1068,7 +1008,7 @@
           "alias": "Strom L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1110,7 +1050,7 @@
           "alias": "Strom L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1153,7 +1093,7 @@
           "alias": "Strom L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1199,7 +1139,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1285,7 +1225,7 @@
           "alias": "Strom L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1327,7 +1267,7 @@
           "alias": "Strom L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1370,7 +1310,7 @@
           "alias": "Strom L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1416,7 +1356,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1476,7 +1416,7 @@
           "alias": "Leistung L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1519,7 +1459,7 @@
           "alias": "Leistung L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1562,7 +1502,7 @@
           "alias": "Leistung L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1608,7 +1548,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "uid": "L-nZgczgk"
       },
       "fieldConfig": {
         "defaults": {
@@ -1693,7 +1633,7 @@
           "alias": "Energie L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1735,7 +1675,7 @@
           "alias": "Energie L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1777,7 +1717,7 @@
           "alias": "Energie L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "groupBy": [
             {
@@ -1832,7 +1772,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "description": "",
           "fieldConfig": {
@@ -1846,8 +1786,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -1888,13 +1827,12 @@
             "wideLayout": true
           },
           "pluginVersion": "11.5.2",
-          "repeatDirection": "v",
           "targets": [
             {
               "alias": "Strom L1 $loadpoint",
               "datasource": {
                 "type": "influxdb",
-                "uid": "${DS_EVCC_INFLUXDB}"
+                "uid": "L-nZgczgk"
               },
               "groupBy": [
                 {
@@ -1938,7 +1876,7 @@
               "alias": "Strom L2 $loadpoint",
               "datasource": {
                 "type": "influxdb",
-                "uid": "${DS_EVCC_INFLUXDB}"
+                "uid": "L-nZgczgk"
               },
               "groupBy": [
                 {
@@ -1983,7 +1921,7 @@
               "alias": "Strom L3 $loadpoint",
               "datasource": {
                 "type": "influxdb",
-                "uid": "${DS_EVCC_INFLUXDB}"
+                "uid": "L-nZgczgk"
               },
               "groupBy": [
                 {
@@ -2031,7 +1969,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
+            "uid": "L-nZgczgk"
           },
           "description": "",
           "fieldConfig": {
@@ -2079,8 +2017,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -2113,13 +2050,12 @@
             }
           },
           "pluginVersion": "11.5.2",
-          "repeatDirection": "h",
           "targets": [
             {
               "alias": "Strom L1 $loadpoint",
               "datasource": {
                 "type": "influxdb",
-                "uid": "${DS_EVCC_INFLUXDB}"
+                "uid": "L-nZgczgk"
               },
               "groupBy": [
                 {
@@ -2163,7 +2099,7 @@
               "alias": "Strom L2 $loadpoint",
               "datasource": {
                 "type": "influxdb",
-                "uid": "${DS_EVCC_INFLUXDB}"
+                "uid": "L-nZgczgk"
               },
               "groupBy": [
                 {
@@ -2208,7 +2144,7 @@
               "alias": "Strom L3 $loadpoint",
               "datasource": {
                 "type": "influxdb",
-                "uid": "${DS_EVCC_INFLUXDB}"
+                "uid": "L-nZgczgk"
               },
               "groupBy": [
                 {
@@ -2259,6 +2195,7 @@
       "type": "row"
     }
   ],
+  "preload": false,
   "refresh": "10s",
   "schemaVersion": 40,
   "tags": [
@@ -2267,70 +2204,51 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "text": "Europe/Berlin",
+          "value": "Europe/Berlin"
+        },
         "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
         "label": "Zeitzone",
         "name": "timezone",
-        "query": "${VAR_TIMEZONE}",
+        "query": "Europe/Berlin",
         "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_TIMEZONE}",
-          "text": "${VAR_TIMEZONE}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_TIMEZONE}",
-            "text": "${VAR_TIMEZONE}",
-            "selected": false
-          }
-        ]
+        "type": "constant"
       },
       {
+        "current": {
+          "text": "25000",
+          "value": "25000"
+        },
         "description": "Grenze der maximalen Leistung in W, über diese hinaus Leistungswerte als Ausreißer ignoriert werden.",
         "hide": 2,
         "label": "Filter für maximale Leistung / W",
         "name": "peakPowerLimit",
-        "query": "${VAR_PEAKPOWERLIMIT}",
+        "query": "25000",
         "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_PEAKPOWERLIMIT}",
-          "text": "${VAR_PEAKPOWERLIMIT}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_PEAKPOWERLIMIT}",
-            "text": "${VAR_PEAKPOWERLIMIT}",
-            "selected": false
-          }
-        ]
+        "type": "constant"
       },
       {
+        "current": {
+          "text": "/^none$/",
+          "value": "/^none$/"
+        },
         "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
         "hide": 2,
         "label": "Blacklist für Loadpoints",
         "name": "loadpointBlacklist",
-        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "query": "/^none$/",
         "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_LOADPOINTBLACKLIST}",
-          "text": "${VAR_LOADPOINTBLACKLIST}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_LOADPOINTBLACKLIST}",
-            "text": "${VAR_LOADPOINTBLACKLIST}",
-            "selected": false
-          }
-        ]
+        "type": "constant"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlacklist",
         "hide": 2,
         "includeAll": true,
@@ -2356,6 +2274,6 @@
   "timezone": "browser",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 28,
+  "version": 30,
   "weekStart": ""
 }
