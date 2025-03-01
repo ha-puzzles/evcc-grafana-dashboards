@@ -49,6 +49,15 @@ Statistiken über den gesamten erfassten  Datenzeitraum bestehend aus zwei Teile
 
 ![All-Time Screenshot](img/all-time.png)
 
+# Today Details
+
+Weitere Details, die bei der Fehlersuche helfen können wie 
+- die Leistung der einzelnen PVs oder Batteriemodule, falls mehrere konfiguriert sind.
+- Leistung und Ströme der einzelnen Phasen
+- Ladeströme der Wallboxen
+
+![Today Details Screenshot](img/today-details.png)
+
 # Anpassungen
 
 ## Gemeinsame Einstellungen von allen Dashboards
@@ -94,3 +103,6 @@ Statistiken über den gesamten erfassten  Datenzeitraum bestehend aus zwei Teile
   2. Dashboard abspeichern. Dabei 'Update default variable values' auswählen.
 
       ![Dashboard abspeichern](img/save-dashboard.png)
+
+## Today Details
+- Mittels overrides können den einzelnen PV Teilen Namen zugewiesen werden.
