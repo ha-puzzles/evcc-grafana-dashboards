@@ -3019,7 +3019,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               },
               {
                 "color": "text",
@@ -3137,7 +3138,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "30 Tage Hausverbrauch",
@@ -3425,7 +3426,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               }
             ]
           },
@@ -3561,7 +3563,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": null
                     },
                     {
                       "color": "orange",
@@ -3664,7 +3667,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -3942,7 +3945,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": null
               }
             ]
           },
@@ -4144,7 +4148,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "alias": "",
@@ -4316,7 +4320,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -4362,7 +4367,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Fahrtkosten $vehicle1Name mit PV"
+                "value": "Fahrtkosten $vehicle mit PV"
               },
               {
                 "id": "color",
@@ -4401,7 +4406,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -4420,7 +4426,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Fahrtkosten $vehicle1Name ohne PV"
+                "value": "Fahrtkosten $vehicle ohne PV"
               },
               {
                 "id": "color",
@@ -4447,7 +4453,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": null
                     },
                     {
                       "color": "green",
@@ -4512,7 +4519,7 @@
             "properties": [
               {
                 "id": "unit",
-                "value": "kW/100km"
+                "value": "kWh/100km"
               },
               {
                 "id": "color",
@@ -4562,7 +4569,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.1",
+      "pluginVersion": "11.5.2",
       "repeat": "vehicle",
       "repeatDirection": "h",
       "targets": [
@@ -4971,6 +4978,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 209,
+  "version": 210,
   "weekStart": ""
 }
