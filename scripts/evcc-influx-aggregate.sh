@@ -203,7 +203,7 @@ writeDailyAggregations() {
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         energy=`echo "$queryResult" | cut -d " " -f 2`
     else
-        logInfo "There is no data from $sourceMeasurement for $targetMeasurement."
+        logDebug "There is no data from $sourceMeasurement for $targetMeasurement."
     fi
     if [ "$energy" != "0" ] || [ "$defaultZero" == "true" ]; then
         if [ "$additionalTags" != "" ]; then
@@ -296,7 +296,7 @@ writeMonthlyAggregations () {
     if [ `echo $queryResult | wc -w ` -eq 2 ]; then
         energy=`echo "$queryResult" | cut -d " " -f 2`
     else
-        logInfo "There is no data from $dailytargetMeasurement for $monthlytargetMeasurement. Writing 0 as data point for this month."
+        logDebug "There is no data from $dailytargetMeasurement for $monthlytargetMeasurement. Writing 0 as data point for this month."
     fi
     if [ "$additionalTags" != "" ]; then
         insertStatement="INSERT ${monthlytargetMeasurement},year=${fYear},month=${fMonth},${additionalTags} value=${energy} ${timestamp}"
