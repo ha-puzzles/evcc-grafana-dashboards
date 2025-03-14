@@ -61,67 +61,102 @@ declare -A VEHICLES
 #Array of loadpoints
 declare -A LOADPOINTS
 
+testNumber() {
+    if ! [[ "$1" =~ ^[1-9][0-9]*$ ]]; then
+        return 1
+    fi
+    return 0
+}
+
+testYear() {
+    if ! testNumber $1 || [ "$1" -lt 1970 ] || [ "$1" -gt 2100 ]; then
+        logError "Year must be a number between 1970 and 2100."
+        exit 1
+    fi
+}
+
+testMonth() {
+    if ! testNumber $1 || [ "$1" -lt 1 ] || [ "$1" -gt 12 ]; then
+        logError "Month must be a number between 1 and 12."
+        exit 1
+    fi
+}
+
+testDay() {
+    if ! testNumber $1 || [ "$1" -lt 1 ] || [ "$1" -gt 31 ]; then
+        logError "Day must be a number between 1 and 31."
+        exit 1
+    fi
+}
+
 parseArguments() {
     if [ "$#" -eq 0 ]; then
         printUsage
         exit 1
     fi
-    if [ "$1" == '--year' ]; then
-        if [ "$#" -ne 2 ]; then
+    while [ "$#" -gt 0 ]; do
+        if [ "$1" == '--year' ]; then
+            if [ "$#" -lt 2 ]; then
+                printUsage
+                exit 1
+            fi
+            testYear $2
+            AGGREGATE_YEAR=$2
+            shift 2
+            logDebug "Aggregating year $AGGREGATE_YEAR"
+        elif [ "$1" == '--month' ]; then
+            if [ "$#" -lt 3 ]; then
+                printUsage
+                exit 1
+            fi
+            testYear $2
+            AGGREGATE_MONTH_YEAR=$2
+            testMonth $3
+            AGGREGATE_MONTH_MONTH=$3
+            shift 3
+            logDebug "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
+        elif [ "$1" == '--day' ]; then
+            if [ "$#" -lt 4 ]; then
+                printUsage
+                exit 1
+            fi
+            testYear $2
+            AGGREGATE_DAY_YEAR=$2
+            testMonth $3
+            AGGREGATE_DAY_MONTH=$3
+            testDay $4
+            AGGREGATE_DAY_DAY=$4
+            shift 4
+            logDebug "Aggregating day ${AGGREGATE_DAY_YEAR}-${AGGREGATE_DAY_MONTH}-${AGGREGATE_DAY_DAY}"
+        elif [ "$1" == '--yesterday' ]; then
+            AGGREGATE_YESTERDAY=true
+            shift 1
+            logDebug "Aggregating yesterday"
+        elif [ "$1" == '--today' ]; then
+            AGGREGATE_TODAY=true
+            shift 1
+            logDebug "Aggregating today"
+        elif [ "$1" == '--delete-aggregations' ]; then
+            DELETE_AGGREGATIONS=true
+            shift 1
+            logDebug "Deleting aggregations."
+        elif [ "$1" == '--detect' ]; then
+            DETECT_VALUES=true
+            shift 1
+            logDebug "Detecting loadpoints and vehicles."
+        elif [ "$1" == '--debug' ]; then
+            export DEBUG=true
+            shift 1
+            logDebug "Enabling debug."
+        else
             printUsage
             exit 1
         fi
-        AGGREGATE_YEAR=$2
-        logDebug "Aggregating year $AGGREGATE_YEAR"
-        return 0
-    fi
-    if [ "$1" == '--month' ]; then
-        if [ "$#" -ne 3 ]; then
-            printUsage
-            exit 1
-        fi
-        AGGREGATE_MONTH_YEAR=$2
-        AGGREGATE_MONTH_MONTH=$3
-        logDebug "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
-        return 0
-    fi
-    if [ "$1" == '--day' ]; then
-        if [ "$#" -ne 4 ]; then
-            printUsage
-            exit 1
-        fi
-        AGGREGATE_DAY_YEAR=$2
-        AGGREGATE_DAY_MONTH=$3
-        AGGREGATE_DAY_DAY=$4
-        logDebug "Aggregating day ${AGGREGATE_DAY_YEAR}-${AGGREGATE_DAY_MONTH}-${AGGREGATE_DAY_DAY}"
-        return 0
-    fi
-    if [ "$1" == '--yesterday' ]; then
-        AGGREGATE_YESTERDAY=true
-        logDebug "Aggregating yesterday"
-        return 0
-    fi
-    if [ "$1" == '--today' ]; then
-        AGGREGATE_TODAY=true
-        logDebug "Aggregating today"
-        return 0
-    fi
-    if [ "$1" == '--delete-aggregations' ]; then
-        DELETE_AGGREGATIONS=true
-        logDebug "Deleting aggregations."
-        return 0
-    fi
-    if [ "$1" == '--detect' ]; then
-        DETECT_VALUES=true
-        logDebug "Detecting loadpoints and vehicles."
-        return 0
-    fi
-    printUsage
-    exit 1
+    done
 }
 
 printUsage() {
-    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --today | --yesterday | --delete-aggregations | --detect]"
+    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --today | --yesterday | --delete-aggregations | --detect] [--debug]"
 }
 
 isLeapYear() {
@@ -318,22 +353,6 @@ aggregateMonth() {
     writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
     writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
 
-    # writeMonthlyAggregations "sum" "value" "loadpoint1DailyEnergy" "loadpoint1MonthlyEnergy" $ayear $amonth 
-    # if [ "$LOADPOINT_2_ENABLED" == "true" ]; then
-    #     writeMonthlyAggregations "sum" "value" "loadpoint2DailyEnergy" "loadpoint2MonthlyEnergy" $ayear $amonth
-    # else
-    #     logDebug "Loadpoint 2 is disabled."
-    # fi
-    
-    # writeMonthlyAggregations "spread" "value" "vehicle1Odometer" "vehicle1DrivenKm" $ayear $amonth 
-    # writeMonthlyAggregations "sum" "value" "vehicle1DailyEnergy" "vehicle1MonthlyEnergy" $ayear $amonth 
-    # if [ "$VEHICLE_2_ENABLED" == "true" ]; then
-    #     writeMonthlyAggregations "spread" "value" "vehicle2Odometer" "vehicle2DrivenKm" $ayear $amonth 
-    #     writeMonthlyAggregations "sum" "value" "vehicle2DailyEnergy" "vehicle2MonthlyEnergy" $ayear $amonth 
-    # else
-    #     logDebug "Vehicle 2 is disabled."
-    # fi
-
     if [ "$HOME_BATTERY" == "true" ]; then
         writeMonthlyAggregations "sum" "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
         writeMonthlyAggregations "sum" "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
@@ -441,7 +460,7 @@ detectValues() {
             logInfo "Detected loadpoint $index: $loadpoint"
         fi
     done <<< "$loadpoint_list"
-    logDebug "Detected ${#LOADPOINTS[*]} vehicles: ${LOADPOINTS[*]}"
+    logDebug "Detected ${#LOADPOINTS[*]} loadpoints: ${LOADPOINTS[*]}"
 }
 
 ###############################################################################
