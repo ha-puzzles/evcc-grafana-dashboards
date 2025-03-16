@@ -56,6 +56,13 @@
       "label": "Blacklist für Fahrzeuge",
       "value": "/^Mr White.*$|^.*\\(offline\\)$/",
       "description": ""
+    },
+    {
+      "name": "VAR_ENERGYSAMPLEINTERVAL",
+      "type": "constant",
+      "label": "Energie Abtast Interval",
+      "value": "60s",
+      "description": ""
     }
   ],
   "__elements": {
@@ -1385,11 +1392,12 @@
             "showLegend": false
           },
           "tooltip": {
+            "hideZeros": false,
             "mode": "multi",
             "sort": "none"
           }
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "Preis",
@@ -1409,7 +1417,7 @@
               "uid": "L-nZgczgk"
             },
             "hide": false,
-            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series"
@@ -1552,7 +1560,7 @@
             "measurement": "pvPower",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "energyPV",
             "resultFormat": "time_series",
@@ -1594,7 +1602,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0) tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0) tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series",
@@ -1636,7 +1644,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0) tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0) tz('$timezone')",
             "rawQuery": true,
             "refId": "Einspeisung",
             "resultFormat": "time_series",
@@ -1679,7 +1687,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"homePower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"homePower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "energieHaus",
             "resultFormat": "time_series",
@@ -1950,7 +1958,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0) tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0) tz('$timezone')",
             "rawQuery": true,
             "refId": "netzbezug",
             "resultFormat": "time_series",
@@ -2035,7 +2043,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"homePower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"homePower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "energieHaus",
             "resultFormat": "time_series",
@@ -2087,7 +2095,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / 3600 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "energiePV",
             "resultFormat": "time_series",
@@ -2130,7 +2138,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(1m) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0) tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /-3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(15m) fill(0) tz('$timezone')",
             "rawQuery": true,
             "refId": "eingespeist",
             "resultFormat": "time_series",
@@ -2410,7 +2418,7 @@
             "measurement": "pvPower",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / 3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / 3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "energyPV",
             "resultFormat": "time_series",
@@ -2453,7 +2461,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzbezug",
             "resultFormat": "time_series",
@@ -2496,7 +2504,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT min(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time(10s) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT min(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0)) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Einspeisung",
             "resultFormat": "time_series",
@@ -2539,7 +2547,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"homePower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"homePower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "energyHome",
             "resultFormat": "time_series",
@@ -2582,7 +2590,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT min(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 AND (\"id\"::tag = '') GROUP BY time(10s) fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT min(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Laden",
             "resultFormat": "time_series",
@@ -2625,7 +2633,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value >=0 AND (\"id\"::tag = '') GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value >=0 AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Entladen",
             "resultFormat": "time_series",
@@ -2668,7 +2676,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter AND (\"vehicle\"::tag <> '') GROUP BY time(10s), \"vehicle\"::tag fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d), \"vehicle\"::tag  fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter AND (\"vehicle\"::tag <> '') GROUP BY time($energySampleInterval), \"vehicle\"::tag fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d), \"vehicle\"::tag  fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "vehicles",
             "resultFormat": "time_series",
@@ -2711,7 +2719,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter and value >=0 AND (\"vehicle\"::tag = '') GROUP BY time(10s) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter and value >=0 AND (\"vehicle\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "guestVehicle",
             "resultFormat": "time_series",
@@ -3890,6 +3898,27 @@
             "selected": false
           }
         ]
+      },
+      {
+        "description": "Das Abtastinterval für die Energieberechnung. Sollte mindestens 2x dem Abfrageintervall von EVCC entsprechen. Default: 60s, da das Default Intervall von EVCC 60s beträgt.",
+        "hide": 2,
+        "label": "Energie Abtast Interval",
+        "name": "energySampleInterval",
+        "query": "${VAR_ENERGYSAMPLEINTERVAL}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_ENERGYSAMPLEINTERVAL}",
+          "text": "${VAR_ENERGYSAMPLEINTERVAL}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_ENERGYSAMPLEINTERVAL}",
+            "text": "${VAR_ENERGYSAMPLEINTERVAL}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -3907,6 +3936,6 @@
   "timezone": "",
   "title": "EVCC: Today (Mobile)",
   "uid": "MRHnynkRz",
-  "version": 130,
+  "version": 131,
   "weekStart": ""
 }
