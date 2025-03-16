@@ -3034,25 +3034,6 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "volleStromkosten"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Energiekosten ohne PV"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "#d6d6d6",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "zugekauftKosten30Tage"
             },
             "properties": [
@@ -3063,7 +3044,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "orange",
+                  "fixedColor": "dark-yellow",
                   "mode": "fixed"
                 }
               }
@@ -3082,7 +3063,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "light-yellow",
+                  "fixedColor": "yellow",
                   "mode": "fixed"
                 }
               }
@@ -3096,7 +3077,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Energiekosten"
+                "value": "Kosten"
               },
               {
                 "id": "color",
@@ -3104,14 +3085,25 @@
                   "fixedColor": "dark-red",
                   "mode": "fixed"
                 }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "energieProfit30Tage"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Einnahmen"
               },
               {
-                "id": "custom.fillOpacity",
-                "value": 100
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
               }
             ]
           }
@@ -3400,9 +3392,19 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$zugekauftKosten30Tage + $einspeiseVerguetung30Tage",
+          "expression": "(abs($zugekauftKosten30Tage + $einspeiseVerguetung30Tage) + ($zugekauftKosten30Tage + $einspeiseVerguetung30Tage)) /2",
           "hide": false,
           "refId": "energieKosten30Tage",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "-(abs($zugekauftKosten30Tage + $einspeiseVerguetung30Tage)- ($zugekauftKosten30Tage + $einspeiseVerguetung30Tage)) /2",
+          "hide": false,
+          "refId": "energieProfit30Tage",
           "type": "math"
         }
       ],
@@ -4978,6 +4980,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 210,
+  "version": 214,
   "weekStart": ""
 }
