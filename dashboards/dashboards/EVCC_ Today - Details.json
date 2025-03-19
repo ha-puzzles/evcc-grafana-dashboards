@@ -2260,8 +2260,8 @@
             "axisPlacement": "left",
             "axisWidth": 80,
             "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
+            "barWidthFactor": 0.2,
+            "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
@@ -2269,21 +2269,21 @@
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": 900000,
+            "insertNulls": 60000,
             "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
+            "lineWidth": 4,
+            "pointSize": 8,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
+            "showPoints": "always",
             "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "line"
+              "mode": "off"
             }
           },
           "decimals": 0,
@@ -2296,15 +2296,42 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 24
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^1 phasig: .*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/^3 phasig: .*/"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 5,
@@ -2329,15 +2356,27 @@
       "pluginVersion": "11.5.2",
       "targets": [
         {
-          "alias": "Ladeleistung $loadpoint",
+          "alias": "1 phasig: $loadpoint",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT max(\"value\") FROM \"phasesActive\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
+          "query": "SELECT max(\"value\") FROM \"phasesActive\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') AND value = 1 GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
           "rawQuery": true,
-          "refId": "Ladeleistung",
+          "refId": "1P",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "3 phasig: $loadpoint",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT max(\"value\") FROM \"phasesActive\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') AND value = 3 GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "3P",
           "resultFormat": "time_series"
         }
       ],
@@ -2517,23 +2556,6 @@
         ]
       },
       {
-        "current": {},
-        "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlacklist",
-        "hide": 2,
-        "includeAll": true,
-        "label": "Ladepunkt",
-        "multi": true,
-        "name": "loadpoint",
-        "options": [],
-        "query": {
-          "query": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlacklist",
-          "refId": "InfluxVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
-      },
-      {
         "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
         "hide": 2,
         "label": "Blacklist für Loadpoints",
@@ -2553,17 +2575,34 @@
             "selected": false
           }
         ]
+      },
+      {
+        "current": {},
+        "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlacklist",
+        "hide": 2,
+        "includeAll": true,
+        "label": "Ladepunkt",
+        "multi": true,
+        "name": "loadpoint",
+        "options": [],
+        "query": {
+          "query": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlacklist",
+          "refId": "InfluxVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-1d/d",
-    "to": "now-1d/d"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 48,
+  "version": 57,
   "weekStart": ""
 }
