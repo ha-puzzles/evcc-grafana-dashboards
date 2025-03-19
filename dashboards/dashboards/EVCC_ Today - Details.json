@@ -1043,7 +1043,7 @@
       "id": 3,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "percentChangeColorMode": "standard",
@@ -1081,6 +1081,8 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l1\") FROM \"gridCurrents\" WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
           "refId": "currentL1",
           "resultFormat": "time_series",
           "select": [
@@ -1118,6 +1120,8 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l2\") FROM \"gridCurrents\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
           "refId": "currentL2",
           "resultFormat": "time_series",
           "select": [
@@ -1155,6 +1159,8 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l3\") FROM \"gridCurrents\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
           "refId": "currentL3",
           "resultFormat": "time_series",
           "select": [
@@ -1280,6 +1286,8 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l1\") FROM \"gridCurrents\" WHERE $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "rawQuery": true,
           "refId": "currentL1",
           "resultFormat": "time_series",
           "select": [
@@ -1317,6 +1325,8 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l2\") FROM \"gridCurrents\" WHERE $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "rawQuery": true,
           "refId": "currentL2",
           "resultFormat": "time_series",
           "select": [
@@ -1354,6 +1364,8 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l3\") FROM \"gridCurrents\" WHERE $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "rawQuery": true,
           "refId": "currentL3",
           "resultFormat": "time_series",
           "select": [
@@ -1415,7 +1427,7 @@
       "id": 5,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "percentChangeColorMode": "standard",
@@ -1453,7 +1465,9 @@
           "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
+          "query": "SELECT mean(\"l1\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
           "refId": "powerL1",
           "resultFormat": "time_series",
           "select": [
@@ -1490,7 +1504,9 @@
           "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
+          "query": "SELECT mean(\"l2\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
           "refId": "powerL2",
           "resultFormat": "time_series",
           "select": [
@@ -1527,7 +1543,9 @@
           "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
-          "policy": "autogen",
+          "policy": "default",
+          "query": "SELECT mean(\"l3\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
           "refId": "powerL3",
           "resultFormat": "time_series",
           "select": [
@@ -1653,6 +1671,8 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l1\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m)",
+          "rawQuery": true,
           "refId": "powerL1",
           "resultFormat": "time_series",
           "select": [
@@ -1689,6 +1709,8 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l2\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m)",
+          "rawQuery": true,
           "refId": "powerL2",
           "resultFormat": "time_series",
           "select": [
@@ -1725,6 +1747,8 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
+          "query": "SELECT mean(\"l3\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m)",
+          "rawQuery": true,
           "refId": "powerL3",
           "resultFormat": "time_series",
           "select": [
@@ -1800,7 +1824,7 @@
       "id": 11,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
+        "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "horizontal",
         "percentChangeColorMode": "standard",
@@ -1838,7 +1862,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l1\") FROM \"autogen\".\"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"l1\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "L1",
           "resultFormat": "time_series",
@@ -1883,7 +1907,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l2\") FROM \"autogen\".\"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"l2\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "L2",
           "resultFormat": "time_series",
@@ -1928,7 +1952,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l3\") FROM \"autogen\".\"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"l3\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "L3",
           "resultFormat": "time_series",
@@ -1962,7 +1986,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT mean(\"value\") FROM \"autogen\".\"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"value\") FROM \"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "Strom",
           "resultFormat": "time_series"
@@ -2074,7 +2098,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l1\") FROM \"autogen\".\"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"l1\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "L1garage",
           "resultFormat": "time_series",
@@ -2119,7 +2143,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l2\") FROM \"autogen\".\"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"l2\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "L2garage",
           "resultFormat": "time_series",
@@ -2164,7 +2188,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l3\") FROM \"autogen\".\"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"l3\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "L3garage",
           "resultFormat": "time_series",
@@ -2209,7 +2233,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"value\") FROM \"autogen\".\"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT mean(\"value\") FROM \"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter GROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "Strom",
           "resultFormat": "time_series",
@@ -2591,13 +2615,13 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "2025-03-17T08:44:25.334Z",
+    "to": "2025-03-17T11:50:19.685Z"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 59,
+  "version": 66,
   "weekStart": ""
 }
