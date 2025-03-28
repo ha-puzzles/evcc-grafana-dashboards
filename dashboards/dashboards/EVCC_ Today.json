@@ -285,7 +285,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none)  tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(none)  tz('$timezone')",
             "rawQuery": true,
             "refId": "PV Leistung",
             "resultFormat": "time_series",
@@ -327,7 +327,7 @@
             ],
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT mean(\"value\") FROM \"gridPower\" WHERE $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT mean(\"value\") FROM \"gridPower\" WHERE $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Netzleistung",
             "resultFormat": "time_series",
@@ -370,7 +370,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Hausverbrauch",
             "resultFormat": "time_series",
@@ -413,7 +413,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"extPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"extPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Ext",
             "resultFormat": "time_series",
@@ -456,7 +456,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT mean(\"value\") FROM \"batteryPower\" WHERE $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT mean(\"value\") FROM \"batteryPower\" WHERE $timeFilter AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Batterieleistung",
             "resultFormat": "time_series",
@@ -499,7 +499,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time($energySampleInterval), \"loadpoint\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Loadpoint",
             "resultFormat": "time_series",
@@ -600,7 +600,7 @@
                 },
                 {
                   "color": "green",
-                  "value": 90
+                  "value": 80
                 }
               ]
             },
@@ -756,172 +756,7 @@
             "tags": []
           }
         ],
-        "title": "Batterien",
-        "transparent": true,
-        "type": "timeseries"
-      }
-    },
-    "ae8zrcafrfl6ob": {
-      "name": "EVCC: Dynamischer Strompreis",
-      "uid": "ae8zrcafrfl6ob",
-      "kind": 1,
-      "model": {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_EVCC_INFLUXDB}"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "continuous-GrYlRd"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisGridShow": true,
-              "axisLabel": "",
-              "axisPlacement": "left",
-              "axisSoftMax": 42,
-              "axisSoftMin": 20,
-              "axisWidth": 50,
-              "barAlignment": 1,
-              "barWidthFactor": 0.8,
-              "drawStyle": "bars",
-              "fillOpacity": 80,
-              "gradientMode": "scheme",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "stepBefore",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byType",
-                "options": "time"
-              },
-              "properties": [
-                {
-                  "id": "custom.axisPlacement",
-                  "value": "hidden"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Netzbezug"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "watth"
-                },
-                {
-                  "id": "custom.drawStyle",
-                  "value": "bars"
-                },
-                {
-                  "id": "custom.fillOpacity",
-                  "value": 65
-                },
-                {
-                  "id": "custom.axisPlacement",
-                  "value": "hidden"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "#818181",
-                    "mode": "fixed"
-                  }
-                },
-                {
-                  "id": "custom.lineWidth",
-                  "value": 0
-                },
-                {
-                  "id": "custom.axisSoftMin",
-                  "value": 0
-                }
-              ]
-            }
-          ]
-        },
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": false
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.5.2",
-        "targets": [
-          {
-            "alias": "Preis",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "query": "SELECT last(\"value\") * 100 FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
-            "rawQuery": true,
-            "refId": "Tarif",
-            "resultFormat": "time_series"
-          },
-          {
-            "alias": "Netzbezug",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "hide": false,
-            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
-            "rawQuery": true,
-            "refId": "Netzbezug",
-            "resultFormat": "time_series"
-          }
-        ],
-        "title": "Dynamischer Strompreis (ct/kWh)",
+        "title": "Batteriestände",
         "transparent": true,
         "type": "timeseries"
       }
@@ -935,14 +770,14 @@
           "type": "influxdb",
           "uid": "${DS_EVCC_INFLUXDB}"
         },
-        "description": "Autarkie muss durch die Summe der Haus Energie und die Summe der einzelnen Loadpoints geteilt werden.",
+        "description": "",
         "fieldConfig": {
           "defaults": {
             "color": {
               "fixedColor": "semi-dark-green",
               "mode": "thresholds"
             },
-            "decimals": 1,
+            "decimals": 0,
             "links": [],
             "mappings": [],
             "thresholds": {
@@ -1328,7 +1163,7 @@
                 "mode": "off"
               }
             },
-            "decimals": 1,
+            "decimals": 0,
             "links": [
               {
                 "title": "PV Today",
@@ -1671,6 +1506,171 @@
         "type": "timeseries"
       }
     },
+    "ae8zrcafrfl6ob": {
+      "name": "EVCC: Dynamischer Strompreis",
+      "uid": "ae8zrcafrfl6ob",
+      "kind": 1,
+      "model": {
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_INFLUXDB}"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-GrYlRd"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisGridShow": true,
+              "axisLabel": "",
+              "axisPlacement": "left",
+              "axisSoftMax": 42,
+              "axisSoftMin": 20,
+              "axisWidth": 50,
+              "barAlignment": 1,
+              "barWidthFactor": 0.8,
+              "drawStyle": "bars",
+              "fillOpacity": 80,
+              "gradientMode": "scheme",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepBefore",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byType",
+                "options": "time"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Netzbezug"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "watth"
+                },
+                {
+                  "id": "custom.drawStyle",
+                  "value": "bars"
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 65
+                },
+                {
+                  "id": "custom.axisPlacement",
+                  "value": "hidden"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "#818181",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "custom.lineWidth",
+                  "value": 0
+                },
+                {
+                  "id": "custom.axisSoftMin",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": false
+          },
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "alias": "Preis",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "query": "SELECT last(\"value\") * 100 FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "Tarif",
+            "resultFormat": "time_series"
+          },
+          {
+            "alias": "Netzbezug",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "hide": false,
+            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "Netzbezug",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Strompreis (ct/kWh)",
+        "transparent": true,
+        "type": "timeseries"
+      }
+    },
     "d-V6JqRgz": {
       "name": "EVCC: Energie",
       "uid": "d-V6JqRgz",
@@ -1689,12 +1689,10 @@
             },
             "custom": {
               "axisBorderShow": false,
-              "axisCenteredZero": true,
+              "axisCenteredZero": false,
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "axisSoftMax": 30,
-              "axisSoftMin": -30,
               "fillOpacity": 35,
               "gradientMode": "none",
               "hideFrom": {
@@ -1733,7 +1731,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "yellow",
+                    "fixedColor": "semi-dark-yellow",
                     "mode": "fixed"
                   }
                 }
@@ -1748,7 +1746,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "yellow",
+                    "fixedColor": "light-yellow",
                     "mode": "fixed"
                   }
                 }
@@ -1793,7 +1791,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "blue",
+                    "fixedColor": "light-blue",
                     "mode": "fixed"
                   }
                 }
@@ -1808,7 +1806,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "blue",
+                    "fixedColor": "semi-dark-blue",
                     "mode": "fixed"
                   }
                 }
@@ -1874,9 +1872,9 @@
             "calcs": [],
             "displayMode": "list",
             "placement": "bottom",
-            "showLegend": false
+            "showLegend": true
           },
-          "orientation": "horizontal",
+          "orientation": "vertical",
           "showValue": "always",
           "stacking": "none",
           "text": {
@@ -2174,7 +2172,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter AND (\"vehicle\"::tag <> '') AND \"vehicle\"::tag !~ $vehicleBlacklist  GROUP BY time($energySampleInterval), \"vehicle\"::tag fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d), \"vehicle\"::tag  fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter AND value > 0 AND (\"vehicle\"::tag <> '') AND \"vehicle\"::tag !~ $vehicleBlacklist  GROUP BY time($energySampleInterval), \"vehicle\"::tag fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d), \"vehicle\"::tag  fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "vehicles",
             "resultFormat": "time_series",
@@ -2217,7 +2215,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter and value >=0 AND (\"vehicle\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / -3600000 as \"guest\" FROM (SELECT max(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter and value > 0 AND (\"vehicle\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "guestVehicle",
             "resultFormat": "time_series",
@@ -2260,7 +2258,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT last(\"value\") FROM \"chargePower\" ",
+            "query": "SELECT min(\"value\") FROM \"chargePower\" WHERE value = 0",
             "rawQuery": true,
             "refId": "workaround",
             "resultFormat": "time_series",
@@ -2574,7 +2572,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "PV Leistung",
             "resultFormat": "time_series",
@@ -2617,7 +2615,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"gridPower\" WHERE $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"gridPower\" WHERE $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "netzleistung",
             "resultFormat": "time_series",
@@ -2682,7 +2680,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Hausverbrauch",
             "resultFormat": "time_series",
@@ -2725,7 +2723,7 @@
             "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") *(-1) FROM \"batteryPower\" WHERE $timeFilter AND (\"id\"::tag = '') GROUP BY time(1m) fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") *(-1) FROM \"batteryPower\" WHERE $timeFilter AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "batterieleistung",
             "resultFormat": "time_series",
@@ -2790,7 +2788,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time($energySampleInterval), \"loadpoint\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
             "resultFormat": "time_series",
@@ -2827,7 +2825,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.2"
+      "version": "11.6.0"
     },
     {
       "type": "datasource",
@@ -2963,8 +2961,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "orange",
-                "value": null
+                "color": "orange"
               },
               {
                 "color": "transparent",
@@ -3009,8 +3006,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "#7a7a7a4d",
-                      "value": null
+                      "color": "#7a7a7a4d"
                     },
                     {
                       "color": "transparent",
@@ -3045,8 +3041,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "light-yellow",
-                      "value": null
+                      "color": "light-yellow"
                     },
                     {
                       "color": "transparent",
@@ -3081,8 +3076,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "blue",
-                      "value": null
+                      "color": "blue"
                     },
                     {
                       "color": "transparent",
@@ -3117,8 +3111,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "purple",
-                      "value": null
+                      "color": "purple"
                     },
                     {
                       "color": "#7a7a7a4d",
@@ -3141,8 +3134,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "light-orange",
-                      "value": null
+                      "color": "light-orange"
                     },
                     {
                       "color": "transparent",
@@ -3178,8 +3170,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "semi-dark-orange",
-                      "value": null
+                      "color": "semi-dark-orange"
                     },
                     {
                       "color": "transparent",
@@ -3223,8 +3214,7 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "dark-purple",
-                      "value": null
+                      "color": "dark-purple"
                     },
                     {
                       "color": "transparent",
@@ -3267,7 +3257,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "PV",
@@ -3431,6 +3421,7 @@
           "tags": []
         }
       ],
+      "title": "Leistungen",
       "transparent": true,
       "type": "gauge"
     },
@@ -3449,7 +3440,7 @@
     },
     {
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 5,
         "x": 19,
         "y": 0
@@ -3465,20 +3456,7 @@
         "h": 5,
         "w": 5,
         "x": 19,
-        "y": 6
-      },
-      "id": 73,
-      "libraryPanel": {
-        "uid": "ae8zrcafrfl6ob",
-        "name": "EVCC: Dynamischer Strompreis"
-      }
-    },
-    {
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 19,
-        "y": 11
+        "y": 7
       },
       "id": 64,
       "libraryPanel": {
@@ -3488,15 +3466,28 @@
     },
     {
       "gridPos": {
-        "h": 3,
+        "h": 2,
         "w": 5,
         "x": 19,
-        "y": 15
+        "y": 12
       },
       "id": 51,
       "libraryPanel": {
         "uid": "a46718d5-2383-4dba-b828-5941581b208e",
         "name": "EVCC: Kennzahlen Verlauf"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 14
+      },
+      "id": 73,
+      "libraryPanel": {
+        "uid": "ae8zrcafrfl6ob",
+        "name": "EVCC: Dynamischer Strompreis"
       }
     },
     {
@@ -3527,7 +3518,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [
     "PV"
   ],
@@ -3704,13 +3695,13 @@
     ]
   },
   "time": {
-    "from": "now-1d/d",
-    "to": "now-1d/d"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {},
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 192,
+  "version": 199,
   "weekStart": ""
 }
