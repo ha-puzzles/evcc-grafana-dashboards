@@ -85,7 +85,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Eingespeist"
+                "options": "Einspeisung"
               },
               "properties": [
                 {
@@ -186,7 +186,7 @@
           },
           "valueMode": "text"
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -330,7 +330,7 @@
             "tags": []
           },
           {
-            "alias": "Eingespeist",
+            "alias": "Einspeisung",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -363,7 +363,7 @@
               "fixedColor": "semi-dark-green",
               "mode": "thresholds"
             },
-            "decimals": 1,
+            "decimals": 0,
             "links": [],
             "mappings": [],
             "thresholds": {
@@ -455,7 +455,7 @@
             "valueSize": 16
           }
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "PV",
@@ -1041,7 +1041,7 @@
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "11.5.1",
+        "pluginVersion": "11.5.2",
         "targets": [
           {
             "alias": "Speicher laden",
@@ -1103,7 +1103,6 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Speicher",
         "transparent": true,
         "type": "stat"
       }
@@ -1125,7 +1124,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.5.2"
+      "version": "11.6.0"
     },
     {
       "type": "panel",
@@ -1308,8 +1307,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "text",
@@ -1353,7 +1351,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Zugekauft"
+              "options": "Netzbezug"
             },
             "properties": [
               {
@@ -1368,7 +1366,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Eingespeist"
+              "options": "Einspeisung"
             },
             "properties": [
               {
@@ -1437,7 +1435,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "PV",
@@ -1483,7 +1481,7 @@
           "tags": []
         },
         {
-          "alias": "Zugekauft",
+          "alias": "Netzbezug",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -1612,7 +1610,7 @@
           "tags": []
         },
         {
-          "alias": "Eingespeist",
+          "alias": "Einspeisung",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -1717,6 +1715,7 @@
               "mode": "off"
             }
           },
+          "decimals": 0,
           "mappings": [],
           "max": 1,
           "min": 0,
@@ -1724,8 +1723,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1786,7 +1784,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "datasource": {
@@ -2035,8 +2033,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "#EAB839",
@@ -2081,7 +2078,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Verbraucht/Tag"
+                "value": "Verbrauch/Tag"
               }
             ]
           }
@@ -2115,10 +2112,10 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
-          "alias": "Erzeugt/Tag",
+          "alias": "PV/Tag",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2161,7 +2158,7 @@
           "tags": []
         },
         {
-          "alias": "Verbraucht/Tag",
+          "alias": "",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2204,7 +2201,7 @@
           "tags": []
         },
         {
-          "alias": "Verbraucht/Tag",
+          "alias": "",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2257,7 +2254,7 @@
           "type": "math"
         },
         {
-          "alias": "Zugekauft/Tag",
+          "alias": "Netzbezug/Tag",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2355,8 +2352,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-green",
-                "value": null
+                "color": "semi-dark-green"
               },
               {
                 "color": "red",
@@ -2370,7 +2366,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Zugekauft"
+              "options": "Netzbezug"
             },
             "properties": [
               {
@@ -2401,7 +2397,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Verbraucht"
+                "value": "Verbrauch"
               }
             ]
           }
@@ -2428,10 +2424,10 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
-          "alias": "Erzeugt",
+          "alias": "PV",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2570,7 +2566,7 @@
           "type": "math"
         },
         {
-          "alias": "Zugekauft",
+          "alias": "Netzbezug",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2707,9 +2703,9 @@
         },
         "showValue": "never",
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "showColorScale": false,
-          "yHistogram": false
+          "yHistogram": true
         },
         "yAxis": {
           "axisPlacement": "left",
@@ -2720,7 +2716,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "Maximaler Batterie SOC/Tag",
@@ -2834,7 +2830,7 @@
         },
         "showValue": "never",
         "tooltip": {
-          "mode": "single",
+          "mode": "multi",
           "showColorScale": false,
           "yHistogram": false
         },
@@ -2847,7 +2843,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "Minimaler Batterie SOC/Tag",
@@ -3015,7 +3011,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3145,7 +3141,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3333,7 +3329,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "Kilometerstand: $tag_vehicle",
@@ -3591,7 +3587,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "Gefahren: $tag_vehicle",
@@ -3750,7 +3746,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "Energie: $tag_vehicle",
@@ -3909,7 +3905,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.5.2",
+      "pluginVersion": "11.6.0",
       "targets": [
         {
           "alias": "",
@@ -4015,7 +4011,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [
     "PV"
   ],
@@ -4094,6 +4090,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 222,
+  "version": 231,
   "weekStart": ""
 }
