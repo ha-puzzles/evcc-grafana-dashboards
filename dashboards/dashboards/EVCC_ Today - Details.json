@@ -28,6 +28,13 @@
       "label": "Blacklist für Loadpoints",
       "value": "/^none$/",
       "description": ""
+    },
+    {
+      "name": "VAR_ENERGYSAMPLEINTERVAL",
+      "type": "constant",
+      "label": "Energie Abtast Interval",
+      "value": "60s",
+      "description": ""
     }
   ],
   "__elements": {},
@@ -159,7 +166,7 @@
         "defaults": {
           "color": {
             "fixedColor": "text",
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "mappings": [],
           "min": 0,
@@ -181,8 +188,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 1/"
+              "id": "byName",
+              "options": "PV 1"
             },
             "properties": [
               {
@@ -192,7 +199,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "light-green",
                   "mode": "fixed"
                 }
               }
@@ -200,8 +207,8 @@
           },
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 2/"
+              "id": "byName",
+              "options": "PV 2"
             },
             "properties": [
               {
@@ -212,6 +219,20 @@
                 "id": "color",
                 "value": {
                   "fixedColor": "dark-green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gesamt"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
                   "mode": "fixed"
                 }
               }
@@ -301,7 +322,7 @@
           "tags": []
         },
         {
-          "alias": "",
+          "alias": "PV $tag_id",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
@@ -345,6 +366,7 @@
         }
       ],
       "title": "PV Energie",
+      "transparent": true,
       "type": "bargauge"
     },
     {
@@ -357,7 +379,7 @@
         "defaults": {
           "color": {
             "fixedColor": "text",
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -423,13 +445,19 @@
               {
                 "id": "custom.lineWidth",
                 "value": 0
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed"
+                }
               }
             ]
           },
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 1/"
+              "id": "byName",
+              "options": "PV 1"
             },
             "properties": [
               {
@@ -439,7 +467,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "green",
+                  "fixedColor": "light-green",
                   "mode": "fixed"
                 }
               }
@@ -447,8 +475,8 @@
           },
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 2/"
+              "id": "byName",
+              "options": "PV 2"
             },
             "properties": [
               {
@@ -533,7 +561,7 @@
           "tags": []
         },
         {
-          "alias": "",
+          "alias": "PV $tag_id",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
@@ -588,8 +616,8 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "text",
-            "mode": "fixed"
+            "fixedColor": "blue",
+            "mode": "palette-classic"
           },
           "mappings": [],
           "min": 0,
@@ -611,41 +639,10 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 1/"
+              "id": "byName",
+              "options": ""
             },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Speicher 1"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 2/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Speicher 2"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
+            "properties": []
           }
         ]
       },
@@ -710,7 +707,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"batterySoc\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1d) tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"batterySoc\" \nWHERE (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
           "refId": "PV Leistung",
           "resultFormat": "time_series",
@@ -731,7 +728,7 @@
           "tags": []
         },
         {
-          "alias": "",
+          "alias": "Speicher $tag_id",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
@@ -753,7 +750,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"batterySoc\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag <> '')\n              AND $timeFilter \nGROUP BY time(1d), \"id\"::tag fill(none)  tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"batterySoc\" \nWHERE (\"id\"::tag <> '')\n              AND $timeFilter \nGROUP BY time(1d), \"id\"::tag fill(none)  tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -775,6 +772,7 @@
         }
       ],
       "title": "Speicherstand",
+      "transparent": true,
       "type": "bargauge"
     },
     {
@@ -787,7 +785,7 @@
         "defaults": {
           "color": {
             "fixedColor": "text",
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
           "custom": {
             "axisBorderShow": false,
@@ -838,46 +836,7 @@
           },
           "unit": "watt"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 1/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Speicher 1"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byRegexp",
-              "options": "/id: 2/"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Speicher 2"
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 7,
@@ -925,7 +884,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"batteryPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1m) tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"batteryPower\" \nWHERE (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "PV Leistung",
           "resultFormat": "time_series",
@@ -946,7 +905,7 @@
           "tags": []
         },
         {
-          "alias": "",
+          "alias": "Speicher $tag_id",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
@@ -968,7 +927,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"batteryPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag <> '')\n              AND $timeFilter \nGROUP BY time(1m), \"id\"::tag fill(none)  tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"batteryPower\" \nWHERE (\"id\"::tag <> '')\n              AND $timeFilter \nGROUP BY time(1m), \"id\"::tag fill(none)  tz('$timezone')",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -999,6 +958,976 @@
         "w": 24,
         "x": 0,
         "y": 19
+      },
+      "id": 17,
+      "panels": [],
+      "title": "Tarife",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "kWh"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gesamt"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PV Vorhersage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 20
+      },
+      "id": 18,
+      "maxDataPoints": 1400,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "PV Vorhersage",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT integral(\"value\") / 3600000 FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Vorhersage",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Gesamt",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT integral(\"subquery\") / 3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Leistung",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "PV Vorhersage",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 50,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gesamt"
+            },
+            "properties": [
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PV Vorhersage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 20,
+        "x": 4,
+        "y": 20
+      },
+      "id": 16,
+      "maxDataPoints": 1400,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "PV Vorhersage",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT max(\"value\") FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1m) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Vorhersage",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Gesamt",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"value\") FROM \"pvPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1m) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Leistung",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "PV Vorhersage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Durchschnitt"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 29
+      },
+      "id": 20,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "Max",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "query": "SELECT max(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Max",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Durchschnitt",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT mean(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Avg",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Min",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT min(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Min",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Strompreis",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "axisSoftMax": 0.42,
+            "axisSoftMin": 0.2,
+            "axisWidth": 50,
+            "barAlignment": 1,
+            "barWidthFactor": 0.8,
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "stepBefore",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Netzbezug"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "watt"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Preis"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 20,
+        "x": 4,
+        "y": 29
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "Preis",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Tarif",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Netzbezug",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Netzbezug",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Strompreis",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "g/kWh"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Max"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Durchschnitt"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Min"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 38
+      },
+      "id": 22,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "Max",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "query": "SELECT max(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Max",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Durchschnitt",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT mean(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Avg",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Min",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT min(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Min",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "CO2",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": false,
+            "axisLabel": "",
+            "axisPlacement": "left",
+            "axisSoftMax": 700,
+            "axisSoftMin": 0,
+            "barAlignment": 1,
+            "barWidthFactor": 0.8,
+            "drawStyle": "bars",
+            "fillOpacity": 80,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Netzbezug"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "watt"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 20
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "text",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.axisSoftMin",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CO2"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "g/kWh"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 20,
+        "x": 4,
+        "y": 38
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "alias": "CO2",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "query": "SELECT last(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Tarif",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Netzbezug",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "Netzbezug",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "CO2",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 47
       },
       "id": 9,
       "panels": [],
@@ -1038,7 +1967,7 @@
         "h": 8,
         "w": 4,
         "x": 0,
-        "y": 20
+        "y": 48
       },
       "id": 3,
       "options": {
@@ -1182,6 +2111,7 @@
         }
       ],
       "title": "Ströme/Phase",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -1251,7 +2181,7 @@
         "h": 8,
         "w": 20,
         "x": 4,
-        "y": 20
+        "y": 48
       },
       "id": 4,
       "options": {
@@ -1422,7 +2352,7 @@
         "h": 8,
         "w": 4,
         "x": 0,
-        "y": 28
+        "y": 56
       },
       "id": 5,
       "options": {
@@ -1567,6 +2497,7 @@
         }
       ],
       "title": "Leistung/Phase",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -1635,7 +2566,7 @@
         "h": 8,
         "w": 20,
         "x": 4,
-        "y": 28
+        "y": 56
       },
       "id": 6,
       "options": {
@@ -1777,7 +2708,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 64
       },
       "id": 10,
       "panels": [],
@@ -1819,7 +2750,7 @@
         "h": 11,
         "w": 4,
         "x": 0,
-        "y": 37
+        "y": 65
       },
       "id": 11,
       "options": {
@@ -1993,6 +2924,7 @@
         }
       ],
       "title": "Ladeströme/Phase",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -2063,7 +2995,7 @@
         "h": 11,
         "w": 20,
         "x": 4,
-        "y": 37
+        "y": 65
       },
       "id": 7,
       "options": {
@@ -2361,7 +3293,7 @@
         "h": 5,
         "w": 20,
         "x": 4,
-        "y": 48
+        "y": 76
       },
       "id": 15,
       "options": {
@@ -2491,7 +3423,7 @@
         "h": 7,
         "w": 20,
         "x": 4,
-        "y": 53
+        "y": 81
       },
       "id": 14,
       "options": {
@@ -2611,17 +3543,38 @@
         "refresh": 1,
         "regex": "",
         "type": "query"
+      },
+      {
+        "description": "Das Abtastinterval für die Energieberechnung. Sollte mindestens 2x dem Abfrageintervall von EVCC entsprechen. Default: 60s, da das Default Intervall von EVCC 60s beträgt.",
+        "hide": 2,
+        "label": "Energie Abtast Interval",
+        "name": "energySampleInterval",
+        "query": "${VAR_ENERGYSAMPLEINTERVAL}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_ENERGYSAMPLEINTERVAL}",
+          "text": "${VAR_ENERGYSAMPLEINTERVAL}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_ENERGYSAMPLEINTERVAL}",
+            "text": "${VAR_ENERGYSAMPLEINTERVAL}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
   "time": {
-    "from": "2025-03-17T08:44:25.334Z",
-    "to": "2025-03-17T11:50:19.685Z"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 66,
+  "version": 80,
   "weekStart": ""
 }
