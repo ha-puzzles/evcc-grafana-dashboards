@@ -29,7 +29,7 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
 
 4. Konfigurationsdatei [`evcc-influx-aggregate.conf`](./evcc-influx-aggregate.conf) mit den entsprechenden Werten anpassen. Die Werte sind mit erklärenden Kommentaren versehen. Bitte alle Werte überprüfen und gegebenenfalls anpassen.
 
-5. Die Recht für das Script anpassen, damit es ausführbar wird: `chmod +x evcc-influx-aggregate.sh`
+5. Die Rechte für das Script anpassen, damit es ausführbar wird: `chmod +x evcc-influx-aggregate.sh`
 
 6. Einmal die Fahrzeuge und Ladepunkte erkennen lassen:
    ```bash

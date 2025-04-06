@@ -337,15 +337,12 @@ writeDailyPriceAggregation() {
         if [ "$value" != "" ]; then
             gridPrices[$row]=$value
         else 
-            logDebug "Price for index $row is empty. Using default grid price."
+            logDebug "Price for index $row is empty. Using default grid price. Please make sure that a 'grid' tariff is configured in EVCC: https://docs.evcc.io/docs/reference/configuration/tariffs"
             gridPrices[$row]=$DEFAULT_ENERGY_PRICE
         fi
         row=$((row+1))
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Grid prices: ${gridPrices[*]}"
-    if [ ${#gridPrices[@]} -eq 0 ]; then
-        logWarning "Unable to read grid prices. Please make sure that a 'grid' tariff is configured in EVCC: https://docs.evcc.io/docs/reference/configuration/tariffs"
-    fi
 
     totalPrice=0
     for (( i=0; i<${#gridEnergies[@]}; i++ )); do
@@ -386,7 +383,7 @@ writeDailyPriceAggregation() {
         if [ "$value" != "" ]; then
             feedInPrices[$row]=$value
         else
-            logDebug "Price for index $row is empty. Using default feed-in price."
+            logDebug "Price for index $row is empty. Using default feed-in price. Please make sure that a 'feedin' tariff is configured in EVCC: https://docs.evcc.io/docs/reference/configuration/tariffs"
             feedInPrices[$row]=$DEFAULT_FEED_IN_PRICE
         fi
         row=$((row+1))
