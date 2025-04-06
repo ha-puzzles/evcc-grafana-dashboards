@@ -37,6 +37,12 @@ AGGREGATE_MONTH_MONTH=0
 AGGREGATE_DAY_YEAR=0
 AGGREGATE_DAY_MONTH=0
 AGGREGATE_DAY_DAY=0
+AGGREGATE_FROM_YEAR=0
+AGGREGATE_FROM_MONTH=0
+AGGREGATE_FROM_DAY=0
+AGGREGATE_TO_YEAR=0
+AGGREGATE_TO_MONTH=0
+AGGREGATE_TO_DAY=0
 DELETE_AGGREGATIONS=false
 DETECT_VALUES=false
 
@@ -61,30 +67,40 @@ declare -A VEHICLES
 #Array of loadpoints
 declare -A LOADPOINTS
 
-testNumber() {
+validateNumber() {
     if ! [[ "$1" =~ ^[1-9][0-9]*$ ]]; then
         return 1
     fi
     return 0
 }
 
-testYear() {
-    if ! testNumber $1 || [ "$1" -lt 1970 ] || [ "$1" -gt 2100 ]; then
+validateDate() {
+    year=$1
+    month=$2
+    day=$3
+
+    if ! validateNumber "$year" || [ "$year" -lt 1970 ] || [ "$year" -gt 2100 ]; then
         logError "Year must be a number between 1970 and 2100."
         exit 1
     fi
-}
 
-testMonth() {
-    if ! testNumber $1 || [ "$1" -lt 1 ] || [ "$1" -gt 12 ]; then
-        logError "Month must be a number between 1 and 12."
+    if [ "$month" == "" ]; then
+        return 0
+    fi
+    if ! validateNumber "$month" || [ "$month" -lt 1 ] || [ "$month" -gt 12 ]; then
+        logError "Month must be number between 1 and 12."
         exit 1
     fi
-}
 
-testDay() {
-    if ! testNumber $1 || [ "$1" -lt 1 ] || [ "$1" -gt 31 ]; then
-        logError "Day must be a number between 1 and 31."
+    if [ "$day" == "" ]; then
+        return 0
+    fi
+     if isLeapYear $year; then
+        logDebug "The year $year is a leap year. February has 29 days."
+        DAYS_OF_MONTH[2]=29
+    fi
+    if ! validateNumber "$day" || [ "$day" -lt 1 ] || [ "$day" -gt ${DAYS_OF_MONTH[$month]} ]; then
+        logError "Day must be a number between 1 and ${DAYS_OF_MONTH[$month]} for the month $month."
         exit 1
     fi
 }
@@ -95,12 +111,16 @@ parseArguments() {
         exit 1
     fi
     while [ "$#" -gt 0 ]; do
-        if [ "$1" == '--year' ]; then
+        if [ "$1" == '--debug' ]; then
+            export DEBUG=true
+            shift 1
+            logDebug "Enabling debug."
+        elif [ "$1" == '--year' ]; then
             if [ "$#" -lt 2 ]; then
                 printUsage
                 exit 1
             fi
-            testYear $2
+            validateDate $2
             AGGREGATE_YEAR=$2
             shift 2
             logDebug "Aggregating year $AGGREGATE_YEAR"
@@ -109,9 +129,8 @@ parseArguments() {
                 printUsage
                 exit 1
             fi
-            testYear $2
+            validateDate $2 $3
             AGGREGATE_MONTH_YEAR=$2
-            testMonth $3
             AGGREGATE_MONTH_MONTH=$3
             shift 3
             logDebug "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
@@ -120,14 +139,37 @@ parseArguments() {
                 printUsage
                 exit 1
             fi
-            testYear $2
+            validateDate $2 $3 $4
             AGGREGATE_DAY_YEAR=$2
-            testMonth $3
             AGGREGATE_DAY_MONTH=$3
-            testDay $4
             AGGREGATE_DAY_DAY=$4
             shift 4
             logDebug "Aggregating day ${AGGREGATE_DAY_YEAR}-${AGGREGATE_DAY_MONTH}-${AGGREGATE_DAY_DAY}"
+        elif [ "$1" == '--from' ]; then
+            if [ "$#" -lt 4 ]; then
+                printUsage
+                exit 1
+            fi
+            validateDate $2 $3 $4
+            AGGREGATE_FROM_YEAR=$2
+            AGGREGATE_FROM_MONTH=$3
+            AGGREGATE_FROM_DAY=$4
+            AGGREGATE_TO_YEAR=`date +%Y`
+            AGGREGATE_TO_MONTH=`date +%-m`
+            AGGREGATE_TO_DAY=`date +%-d`
+            shift 4
+            if [ "$1" == '--to' ]; then
+                if [ "$#" -lt 4 ]; then
+                    printUsage
+                    exit 1
+                fi
+                validateDate $2 $3 $4
+                AGGREGATE_TO_YEAR=$2
+                AGGREGATE_TO_MONTH=$3
+                AGGREGATE_TO_DAY=$4
+                shift 4
+            fi
+            logDebug "Aggregating from day ${AGGREGATE_FROM_YEAR}-${AGGREGATE_FROM_MONTH}-${AGGREGATE_FROM_DAY} to ${AGGREGATE_TO_YEAR}-${AGGREGATE_TO_MONTH}-${AGGREGATE_TO_DAY}"
         elif [ "$1" == '--yesterday' ]; then
             AGGREGATE_YESTERDAY=true
             shift 1
@@ -144,10 +186,6 @@ parseArguments() {
             DETECT_VALUES=true
             shift 1
             logDebug "Detecting loadpoints and vehicles."
-        elif [ "$1" == '--debug' ]; then
-            export DEBUG=true
-            shift 1
-            logDebug "Enabling debug."
         else
             printUsage
             exit 1
@@ -156,7 +194,15 @@ parseArguments() {
 }
 
 printUsage() {
-    echo "`basename $0` [--year <year> | --month <year> <month> | --day <year> <month> <day> | --today | --yesterday | --delete-aggregations | --detect] [--debug]"
+    echo "Usage: One of the following:"
+    echo "       `basename $0` --year <year> [--debug]"
+    echo "       `basename $0` --month <year> <month> [--debug]"
+    echo "       `basename $0` --day <year> <month> <day> [--debug]"
+    echo "       `basename $0` --from <year> <month> <day> [--to <year> <month> <day>] [--debug]"
+    echo "       `basename $0` --yesterday [--debug]"
+    echo "       `basename $0` --today [--debug]"
+    echo "       `basename $0` --detect [--debug]"
+    echo "       `basename $0` --delete-aggregations [--debug]"
 }
 
 isLeapYear() {
@@ -463,6 +509,8 @@ detectValues() {
     logDebug "Detected ${#LOADPOINTS[*]} loadpoints: ${LOADPOINTS[*]}"
 }
 
+
+
 ###############################################################################
 ### MAIN
 ###############################################################################
@@ -509,6 +557,40 @@ elif [ "$AGGREGATE_DAY_YEAR" -ne 0 ]; then
     fi
     aggregateDay $AGGREGATE_DAY_YEAR $AGGREGATE_DAY_MONTH $AGGREGATE_DAY_DAY
     aggregateMonth $AGGREGATE_DAY_YEAR $AGGREGATE_DAY_MONTH
+elif [ "$AGGREGATE_FROM_YEAR" -ne 0 ]; then
+    for (( year=$AGGREGATE_FROM_YEAR; year<=$AGGREGATE_TO_YEAR; year++ )); do
+        if isLeapYear $year; then
+            logDebug "The year $year is a leap year. February has 29 days."
+            DAYS_OF_MONTH[2]=29
+        else
+            logDebug "The year $year is not a leap year. February has 28 days."
+            DAYS_OF_MONTH[2]=28
+        fi
+
+        startMonth=1
+        endMonth=12
+        if [ $year -eq $AGGREGATE_FROM_YEAR ]; then
+            startMonth=$AGGREGATE_FROM_MONTH
+        fi
+        if [ $year -eq $AGGREGATE_TO_YEAR ]; then
+            endMonth=$AGGREGATE_TO_MONTH
+        fi
+
+        for (( month=$startMonth; month<=$endMonth; month++ )); do
+            startDay=1
+            endDay=${DAYS_OF_MONTH[$month]}
+            if [ $year -eq $AGGREGATE_FROM_YEAR ] && [ $month -eq $AGGREGATE_FROM_MONTH ]; then
+                startDay=$AGGREGATE_FROM_DAY
+            fi
+            if [ $year -eq $AGGREGATE_TO_YEAR ] && [ $month -eq $AGGREGATE_TO_MONTH ]; then
+                endDay=$AGGREGATE_TO_DAY
+            fi
+            for (( day=$startDay; day<=$endDay; day++ )); do
+                aggregateDay $year $month $day
+            done
+            aggregateMonth $year $month
+        done
+    done
 elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     year=`date -d yesterday +%Y`
     # Converting to a base 10 number, stripping of a leading 0

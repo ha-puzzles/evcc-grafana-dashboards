@@ -65,13 +65,14 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
 | Parameter                    | Beschreibung                                                                             |
 | ---------------------------- | ---------------------------------------------------------------------------------------- |
 | `--day <year> <month> <day>` | Aggregiere die Daten für den angegebenen Tag und den Monat                               |
-| `--month <year> <month>`     | Aggegriere alle Daten für alle Tage dem dem angegebenen Monat.                           |
-| `--year <year>`              | Aggegriere alle Daten für alle Tage und Monate des angegebenen Jahres                    |
+| `--month <year> <month>`     | Aggregiere alle Daten für alle Tage dem dem angegebenen Monat.                           |
+| `--year <year>`              | Aggregiere alle Daten für alle Tage und Monate des angegebenen Jahres                    |
+| `--from <year> <month> <day> [--to <year> <month> <day>]` | Aggregiere all Daten ab einem bestimmten Startdatum bis zu einem Enddatum. Wenn kein Enddatum mit `--to` angegeben wird, ist das Enddatum der aktuelle Tag. |
 | `--today`                    | Aggregiere die Daten des heutigen Tages und des aktuellen Monats                         |
 | `--yesterday`                | Aggregiere die Daten des gestrigen Tages und des gestrigen Monats                        |
-| `--delete-aggregations`      | Lösche die Measurements der aggregierten Daten aus der Influx Datenbank. Das Löschen eines Measurements kann durchaus einige Zeit benötigen. |
-| `--detect`                   | Suche die Loadpoints und Vehicles aus der Datenbank heraus. Es ist empfehlenswert dies einmal vor der ersten Aggregation auszuführen, um zu überprüfen ob die Namen der Loadpoints und Vehicles stimmen.|
-| `--debug`                    | Aktiviere Debug Ausgabe                                                                  |
+| `--delete-aggregations`      | Lösche die Measurements der aggregierten Daten aus der Influx Datenbank. Das Löschen eines einzelnen Measurements kann durchaus einige Minuten benötigen. |
+| `--detect`                   | Suche die Loadpoints und Vehicles aus der Datenbank heraus. Es ist empfehlenswert dies einmal vor der ersten Aggregation auszuführen, um zu überprüfen ob die Namen der Loadpoints und Vehicles stimmen. Sollten hier noch ältere Werte gefunden werden, können diese in den Dashboards über die Blacklist Variable ausgeblendet werden. |
+| `--debug`                    | Aktiviere Debug Ausgabe zur Fehlersuche.                                                 |
 
 
 ### Beispiele
@@ -84,4 +85,9 @@ evcc-influx-aggregate.sh --year 2024
 Aggregiere die Daten vom 16.7.2024:
 ```bash
 evcc-influx-aggregate.sh --day 2024 7 16
+```
+
+Aggregiere die Daten beginnend am 6.3.2023 bis zum 15.2.2025:
+```bash
+evcc-influx-aggregate.sh --from 2023 3 6 --to 2025 2 15
 ```
