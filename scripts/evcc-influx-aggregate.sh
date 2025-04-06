@@ -304,40 +304,40 @@ aggregateDay() {
 
     logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
 
-    # writeDailyAggregations "integral-positives" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
-    # writeDailyAggregations "integral-positives" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
-    # writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
-    # writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    writeDailyAggregations "integral-positives" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
+    writeDailyAggregations "integral-positives" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
 
-    # if [ "$HOME_BATTERY" == "true" ]; then
-    #     writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
-    #     writeDailyAggregations "integral-negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
-    #     writeDailyAggregations "min" "value" "batterySoc" "batteryMinSoc" $ayear $amonth $aday "AND value < 101 AND value > 0 AND ("id"::tag = '')" "false"
-    #     writeDailyAggregations "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101 AND ("id"::tag = '')" "false"
-    # else
-    #     logDebug "Home battery aggregation is disabled."
-    # fi
+    if [ "$HOME_BATTERY" == "true" ]; then
+        writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
+        writeDailyAggregations "integral-negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
+        writeDailyAggregations "min" "value" "batterySoc" "batteryMinSoc" $ayear $amonth $aday "AND value < 101 AND value > 0 AND ("id"::tag = '')" "false"
+        writeDailyAggregations "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101 AND ("id"::tag = '')" "false"
+    else
+        logDebug "Home battery aggregation is disabled."
+    fi
 
-    # if [ "$DYNAMIC_TARIFF" == "true" ]; then
-    #     writeDailyAggregations "min" "value" "tariffGrid" "tariffGridDailyMin" $ayear $amonth $aday "" "false"
-    #     writeDailyAggregations "max" "value" "tariffGrid" "tariffGridDailyMax" $ayear $amonth $aday "" "false"
-    #     writeDailyAggregations "mean" "value" "tariffGrid" "tariffGridDailyMean" $ayear $amonth $aday "" "false"
-    # else
-    #     logDebug "Dynamic tariff aggregation is disabled."
-    # fi
+    if [ "$DYNAMIC_TARIFF" == "true" ]; then
+        writeDailyAggregations "min" "value" "tariffGrid" "tariffGridDailyMin" $ayear $amonth $aday "" "false"
+        writeDailyAggregations "max" "value" "tariffGrid" "tariffGridDailyMax" $ayear $amonth $aday "" "false"
+        writeDailyAggregations "mean" "value" "tariffGrid" "tariffGridDailyMean" $ayear $amonth $aday "" "false"
+    else
+        logDebug "Dynamic tariff aggregation is disabled."
+    fi
 
-    # for vehicle in "${VEHICLES[@]}"; do
-    #     logDebug "Aggregating vehicle $vehicle"
-    #     escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
-    #     writeDailyAggregations "max" "value" "vehicleOdometer" "vehicleOdometerDailyMax" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}'" "false" "vehicle=${escapedVehicle}"
-    #     writeDailyAggregations "integral-positives" "value" "chargePower" "vehicleDailyEnergy" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}' AND value < $PEAK_POWER_LIMIT" "true" "vehicle=${escapedVehicle}"
-    # done
+    for vehicle in "${VEHICLES[@]}"; do
+        logDebug "Aggregating vehicle $vehicle"
+        escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
+        writeDailyAggregations "max" "value" "vehicleOdometer" "vehicleOdometerDailyMax" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}'" "false" "vehicle=${escapedVehicle}"
+        writeDailyAggregations "integral-positives" "value" "chargePower" "vehicleDailyEnergy" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}' AND value < $PEAK_POWER_LIMIT" "true" "vehicle=${escapedVehicle}"
+    done
 
-    # for loadpoint in "${LOADPOINTS[@]}"; do
-    #     logDebug "Aggregating loadpoint $loadpoint"
-    #     escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
-    #     writeDailyAggregations "integral-positives" "value" "chargePower" "loadpointDailyEnergy" $ayear $amonth $aday "AND \"loadpoint\"::tag = '${loadpoint}' AND value < $PEAK_POWER_LIMIT" "true" "loadpoint=${escapedLoadpoint}"
-    # done
+    for loadpoint in "${LOADPOINTS[@]}"; do
+        logDebug "Aggregating loadpoint $loadpoint"
+        escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
+        writeDailyAggregations "integral-positives" "value" "chargePower" "loadpointDailyEnergy" $ayear $amonth $aday "AND \"loadpoint\"::tag = '${loadpoint}' AND value < $PEAK_POWER_LIMIT" "true" "loadpoint=${escapedLoadpoint}"
+    done
 }
 
 writeMonthlyAggregations () {
@@ -394,30 +394,30 @@ aggregateMonth() {
 
     logInfo "`printf "Aggregating monthly metrics for %04d" $ayear`-`printf "%02d" $amonth`"
 
-    # writeMonthlyAggregations "sum" "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
 
-    # if [ "$HOME_BATTERY" == "true" ]; then
-    #     writeMonthlyAggregations "sum" "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
-    #     writeMonthlyAggregations "sum" "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
-    # else
-    #     logDebug "Home battery aggregation is disabled"
-    # fi
+    if [ "$HOME_BATTERY" == "true" ]; then
+        writeMonthlyAggregations "sum" "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "sum" "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
+    else
+        logDebug "Home battery aggregation is disabled"
+    fi
 
-    # for vehicle in "${VEHICLES[@]}"; do
-    #     logDebug "Aggregating vehicle $vehicle"
-    #     escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
-    #     writeMonthlyAggregations "spread" "value" "vehicleOdometerDailyMax" "vehicleMonthlyDrivenKm" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
-    #     writeMonthlyAggregations "sum" "value" "vehicleDailyEnergy" "vehicleMonthlyEnergy" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
-    # done
+    for vehicle in "${VEHICLES[@]}"; do
+        logDebug "Aggregating vehicle $vehicle"
+        escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
+        writeMonthlyAggregations "spread" "value" "vehicleOdometerDailyMax" "vehicleMonthlyDrivenKm" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
+        writeMonthlyAggregations "sum" "value" "vehicleDailyEnergy" "vehicleMonthlyEnergy" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
+    done
 
-    # for loadpoint in "${LOADPOINTS[@]}"; do
-    #     logDebug "Aggregating loadpoint $loadpoint"
-    #     escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
-    #     writeMonthlyAggregations "sum" "value" "loadpointDailyEnergy" "loadpointMonthlyEnergy" $ayear $amonth "AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"
-    # done
+    for loadpoint in "${LOADPOINTS[@]}"; do
+        logDebug "Aggregating loadpoint $loadpoint"
+        escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
+        writeMonthlyAggregations "sum" "value" "loadpointDailyEnergy" "loadpointMonthlyEnergy" $ayear $amonth "AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"
+    done
 }
 
 dropMeasurement() {
@@ -557,6 +557,40 @@ elif [ "$AGGREGATE_DAY_YEAR" -ne 0 ]; then
     fi
     aggregateDay $AGGREGATE_DAY_YEAR $AGGREGATE_DAY_MONTH $AGGREGATE_DAY_DAY
     aggregateMonth $AGGREGATE_DAY_YEAR $AGGREGATE_DAY_MONTH
+elif [ "$AGGREGATE_FROM_YEAR" -ne 0 ]; then
+    for (( year=$AGGREGATE_FROM_YEAR; year<=$AGGREGATE_TO_YEAR; year++ )); do
+        if isLeapYear $year; then
+            logDebug "The year $year is a leap year. February has 29 days."
+            DAYS_OF_MONTH[2]=29
+        else
+            logDebug "The year $year is not a leap year. February has 28 days."
+            DAYS_OF_MONTH[2]=28
+        fi
+
+        startMonth=1
+        endMonth=12
+        if [ $year -eq $AGGREGATE_FROM_YEAR ]; then
+            startMonth=$AGGREGATE_FROM_MONTH
+        fi
+        if [ $year -eq $AGGREGATE_TO_YEAR ]; then
+            endMonth=$AGGREGATE_TO_MONTH
+        fi
+
+        for (( month=$startMonth; month<=$endMonth; month++ )); do
+            startDay=1
+            endDay=${DAYS_OF_MONTH[$month]}
+            if [ $year -eq $AGGREGATE_FROM_YEAR ] && [ $month -eq $AGGREGATE_FROM_MONTH ]; then
+                startDay=$AGGREGATE_FROM_DAY
+            fi
+            if [ $year -eq $AGGREGATE_TO_YEAR ] && [ $month -eq $AGGREGATE_TO_MONTH ]; then
+                endDay=$AGGREGATE_TO_DAY
+            fi
+            for (( day=$startDay; day<=$endDay; day++ )); do
+                aggregateDay $year $month $day
+            done
+            aggregateMonth $year $month
+        done
+    done
 elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     year=`date -d yesterday +%Y`
     # Converting to a base 10 number, stripping of a leading 0
