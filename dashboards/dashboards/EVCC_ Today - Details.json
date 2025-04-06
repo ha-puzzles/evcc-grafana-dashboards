@@ -1776,7 +1776,7 @@
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
           "rawQuery": true,
-          "refId": "Tarif",
+          "refId": "tariffGrid",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1838,6 +1838,17 @@
           "tags": []
         },
         {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": true,
+          "query": "SELECT last(\"value\") FROM \"tariffFeedIn\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "tariffFeedin",
+          "resultFormat": "time_series"
+        },
+        {
           "alias": "",
           "datasource": {
             "type": "influxdb",
@@ -1885,7 +1896,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$Tarif * $grid",
+          "expression": "$tariffGrid * $grid",
           "hide": true,
           "refId": "bought",
           "type": "math"
@@ -1895,7 +1906,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$feedIn * $feedInTarif",
+          "expression": "$tariffFeedin * $feedIn",
           "hide": true,
           "refId": "sold",
           "type": "math"
@@ -4224,6 +4235,6 @@
   "timezone": "browser",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 91,
+  "version": 92,
   "weekStart": ""
 }
