@@ -329,6 +329,11 @@ writeDailyPriceAggregation() {
     logDebug "Grid energies: ${gridEnergies[*]}"
 
     # Get grid prices
+    # In case of fixed tariffs, prices are very infrequently updated. So we need to get the last available price as default.
+    query="SELECT last("value") FROM "tariffGrid" WHERE time <= '${toTime}'"
+    lastGridPrice=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1 | awk '{print $2}'`
+    logDebug "Last available grid price: $lastGridPrice"
+    
     query="SELECT last("value") FROM "tariffGrid" WHERE ${timeCondition} GROUP BY time(1h) TZ('$TIMEZONE')"
     logDebug "Query: $query"
     declare -a gridPrices
@@ -338,7 +343,7 @@ writeDailyPriceAggregation() {
             gridPrices[$row]=$value
         else 
             logDebug "Price for index $row is empty. Using default grid price. Please make sure that a 'grid' tariff is configured in EVCC: https://docs.evcc.io/docs/reference/configuration/tariffs"
-            gridPrices[$row]=$DEFAULT_ENERGY_PRICE
+            gridPrices[$row]=$lastGridPrice
         fi
         row=$((row+1))
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
@@ -346,11 +351,13 @@ writeDailyPriceAggregation() {
 
     totalPrice=0
     for (( i=0; i<${#gridEnergies[@]}; i++ )); do
+        price=0
         if [ "${gridPrices[$i]}" == "" ]; then
-            logDebug "Price for index $i is empty. Skipping."
-            continue
+            logDebug "Price for index $i is empty. Using last grid price: ${lastGridPrice} €"
+            price=$(echo "${gridEnergies[$i]} * ${lastGridPrice}" | bc)
+        else
+            price=$(echo "${gridEnergies[$i]} * ${gridPrices[$i]}" | bc)
         fi
-        price=$(echo "${gridEnergies[$i]} * ${gridPrices[$i]}" | bc)
         totalPrice=$(echo "$totalPrice + $price" | bc)
     done
     logDebug "Total daily energy purchase price: ${totalPrice}€"
@@ -375,6 +382,11 @@ writeDailyPriceAggregation() {
     logDebug "Feed in energies: ${feedInEnergies[*]}"
 
     # Get feed in prices
+     # In case of fixed tariffs, prices are very infrequently updated. So we need to get the last available price as default.
+    query="SELECT last("value") FROM "tariffFeedIn" WHERE time <= '${toTime}'"
+    lastFeedInPrice=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1 | awk '{print $2}'`
+    logDebug "Last available feed in price: $lastFeedInPrice"
+
     query="SELECT last("value") FROM "tariffFeedIn" WHERE ${timeCondition} GROUP BY time(1h) TZ('$TIMEZONE')"
     logDebug "Query: $query"
     declare -a feedInPrices
@@ -384,7 +396,7 @@ writeDailyPriceAggregation() {
             feedInPrices[$row]=$value
         else
             logDebug "Price for index $row is empty. Using default feed-in price. Please make sure that a 'feedin' tariff is configured in EVCC: https://docs.evcc.io/docs/reference/configuration/tariffs"
-            feedInPrices[$row]=$DEFAULT_FEED_IN_PRICE
+            feedInPrices[$row]=$lastFeedInPrice
         fi
         row=$((row+1))
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
@@ -392,11 +404,13 @@ writeDailyPriceAggregation() {
 
     totalPrice=0
     for (( i=0; i<${#feedInEnergies[@]}; i++ )); do
+        price=0
         if [ "${feedInPrices[$i]}" == "" ]; then
-            logDebug "Price for index $i is empty. Skipping."
-            continue
+            logDebug "Price for index $i is empty. Using last feed in price: ${lastFeedInPrice} €"
+            price=$(echo "${feedInEnergies[$i]} * ${lastFeedInPrice}" | bc)
+        else
+            price=$(echo "${feedInEnergies[$i]} * ${feedInPrices[$i]}" | bc)
         fi
-        price=$(echo "${feedInEnergies[$i]} * ${feedInPrices[$i]}" | bc)
         totalPrice=$(echo "$totalPrice + $price" | bc)
     done
     logDebug "Total daily energy sold price: ${totalPrice}€"
