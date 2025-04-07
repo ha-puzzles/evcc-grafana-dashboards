@@ -73,7 +73,7 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
 | `--today`                    | Aggregiere die Daten des heutigen Tages und des aktuellen Monats                         |
 | `--yesterday`                | Aggregiere die Daten des gestrigen Tages und des gestrigen Monats                        |
 | `--delete-aggregations`      | Lösche die Measurements der aggregierten Daten aus der Influx Datenbank. Das Löschen eines einzelnen Measurements kann durchaus einige Minuten benötigen. |
-| `--detect`                   | Suche die Loadpoints und Vehicles aus der Datenbank heraus. Es ist empfehlenswert dies einmal vor der ersten Aggregation auszuführen, um zu überprüfen ob die Namen der Loadpoints und Vehicles stimmen. Sollten hier noch ältere Werte gefunden werden, können diese in den Dashboards über die Blacklist Variable ausgeblendet werden. |
+| `--detect`                   | Suche die Loadpoints und Vehicles aus der Datenbank heraus. Es ist empfehlenswert dies einmal vor der ersten Aggregation auszuführen, um zu überprüfen ob die Namen der Loadpoints und Vehicles stimmen. Sollten hier noch ältere Werte gefunden werden, können diese in den Dashboards über die Blocklist Variable ausgeblendet werden. |
 | `--debug`                    | Aktiviere Debug Ausgabe zur Fehlersuche.                                                 |
 
 
