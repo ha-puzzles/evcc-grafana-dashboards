@@ -339,7 +339,7 @@ writeDailyPriceAggregation() {
 
     # Calculate total daily purchase price
     totalPrice=0
-    query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE ${timeCondition} AND \"value\" >=0 GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
+    query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE ${timeCondition} AND \"value\" >=0 AND value < $PEAK_POWER_LIMIT GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
     logDebug "Query: $query"
     row=0
     while read -r value; do
@@ -356,6 +356,46 @@ writeDailyPriceAggregation() {
     logDebug "Total daily energy purchase price: ${totalPrice}€"
 
     insertStatement="INSERT energyPurchasedDailyPrice,year=${fYear},month=${fMonth},day=${fDay} value=${totalPrice} ${timestamp}"
+    logDebug "Insert statement: $insertStatement"
+    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
+
+    # Calculate potential energy price assuming that all energy is purchased from the grid
+    totalPrice=0
+    query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"homePower\" WHERE ${timeCondition} AND value < $PEAK_POWER_LIMIT GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
+    logDebug "Query: $query"
+    row=0
+    while read -r value; do
+        if [ "$value" != "" ]; then
+            if [ "${gridPrices[$i]}" == "" ]; then
+                logDebug "Price for index $row is empty. Using last grid price $lastGridPrice."
+                totalPrice=$(echo "$totalPrice + $value * $lastGridPrice" | bc)
+            else
+                totalPrice=$(echo "$totalPrice + $value * ${gridPrices[$i]}" | bc)
+            fi
+            row=$((row+1))
+        fi
+    done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
+    logDebug "Potential daily energy purchase price after homePower: ${totalPrice}€"
+    for loadpoint in "${LOADPOINTS[@]}"; do
+        query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE ${timeCondition} AND value < $PEAK_POWER_LIMIT AND \"loadpoint\"::tag = '${loadpoint}' GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
+        logDebug "Query: $query"
+        row=0
+        while read -r value; do
+            if [ "$value" != "" ]; then
+                if [ "${gridPrices[$i]}" == "" ]; then
+                    logDebug "Price for index $row is empty. Using last grid price $lastGridPrice."
+                    totalPrice=$(echo "$totalPrice + $value * $lastGridPrice" | bc)
+                else
+                    totalPrice=$(echo "$totalPrice + $value * ${gridPrices[$i]}" | bc)
+                fi
+                row=$((row+1))
+            fi
+        done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
+        logDebug "Potential daily energy purchase price after loadpoint ${loadpoint}: ${totalPrice}€"
+    done
+    logDebug "Potential daily energy purchase price: ${totalPrice}€"
+
+    insertStatement="INSERT potentialPurchasedDailyPrice,year=${fYear},month=${fMonth},day=${fDay} value=${totalPrice} ${timestamp}"
     logDebug "Insert statement: $insertStatement"
     influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
 
@@ -510,6 +550,7 @@ aggregateMonth() {
     # writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
     # writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
     # writeMonthlyAggregations "sum" "value" "energyPurchasedDailyPrice" "energyPurchasedMonthlyPrice" $ayear $amonth
+    # writeMonthlyAggregations "sum" "value" "potentialPurchasedDailyPrice" "potentialPurchasedMonthlyPrice" $ayear $amonth
     # writeMonthlyAggregations "sum" "value" "energySoldDailyPrice" "energySoldMonthlyPrice" $ayear $amonth
 
     # if [ "$HOME_BATTERY" == "true" ]; then
