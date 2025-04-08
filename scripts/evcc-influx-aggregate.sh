@@ -661,6 +661,8 @@ detectValues() {
 ###############################################################################
 ### MAIN
 ###############################################################################
+
+starttime=$(date +%s)
 parseArguments $@
 
 if ! bc --version > /dev/null 2>&1; then
@@ -769,4 +771,11 @@ elif [ "$DELETE_AGGREGATIONS" == "true" ]; then
     dropAggregations
 fi
 
+duration=$(( $(date +%s) - $starttime ))
+hours=$((duration / 3600))
+minutes=$(( (duration % 3600) / 60 ))
+seconds=$((duration % 60))
+printf -v duration "%02dh %02dm %02ds" $hours $minutes $seconds
+echo
+logInfo "Aggregation finished after ${duration}."
 ### END
