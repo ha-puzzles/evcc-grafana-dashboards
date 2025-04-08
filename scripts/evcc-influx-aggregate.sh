@@ -223,7 +223,7 @@ isLeapYear() {
     return 0
 }
 
-writeDailyAggregations() {
+writeDailyAggregation() {
     mode=$1 # integral-all | integral-positives | integral-negatives | max | min | mean
     field=$2
     sourceMeasurement=$3
@@ -298,6 +298,55 @@ writeDailyAggregations() {
 }
 
 writeDailyPriceAggregation() {
+    sourceMeasurement=$1
+    targetMeasurement=$2
+    year=$3
+    month=$4
+    day=$5
+    prices=$6
+    defaultPrice=$7
+    additionalWhere=$8
+    additionalTags=$9
+
+    printf -v fYear "%04d" $year
+    printf -v fMonth "%02d" $month
+    printf -v fDay "%02d" $day
+
+    # Convert time to UTC for local timezone
+    fromTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T00:00:00 +%FT%T%Z`" -u +%FT%TZ)
+    toTime=$(date -d "`date -d ${fYear}-${fMonth}-${fDay}T23:59:59 +%FT%T%Z`" -u +%FT%TZ)
+    timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
+    
+    logDebug "${fYear}-${fMonth}-${fDay}: Aggregating total price from $sourceMeasurement into ${targetMeasurement}"
+
+    totalPrice=0
+    query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"${sourceMeasurement}\" WHERE ${timeCondition} ${additionalWhere} GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
+    logDebug "Query: $query"
+    row=0
+    while read -r value; do
+        if [ "$value" != "" ]; then
+            if [ "${prices[$i]}" == "" ]; then
+                logDebug "Price for index $row is empty. Using last known price $defaultPrice."
+                totalPrice=$(echo "$totalPrice + $value * $defaultPrice" | bc)
+            else
+                totalPrice=$(echo "$totalPrice + $value * ${prices[$i]}" | bc)
+            fi
+            row=$((row+1))
+        fi
+    done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
+    logDebug "Total daily price: ${totalPrice}€"
+
+
+    if [ "$additionalTags" != "" ]; then
+        insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay},${additionalTags} value=${totalPrice} ${timestamp}"
+    else
+        insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay} value=${totalPrice} ${timestamp}"
+    fi
+    logDebug "Insert statement: $insertStatement"
+    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
+}
+
+writeDailyPriceAggregations() {
     year=$1
     month=$2
     day=$3
@@ -317,18 +366,18 @@ writeDailyPriceAggregation() {
 
     # Get grid prices
     # In case of fixed tariffs, prices are very infrequently updated. So we need to get the last available price as default.
-    query="SELECT last("value") FROM "tariffGrid" WHERE time <= '${fromTime}'"
+    query="SELECT last("value") FROM "tariffGrid" WHERE time <= '${fromTime}' TZ('$TIMEZONE')"
     lastGridPrice=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1 | awk '{print $2}'`
     logDebug "Last queried grid price: $lastGridPrice"
     
-    query="SELECT last("value") FROM "tariffGrid" WHERE ${timeCondition} GROUP BY time(1h) TZ('$TIMEZONE')"
+    query="SELECT last("value") FROM "tariffGrid" WHERE ${timeCondition} GROUP BY time($TARIFF_PRICE_INTERVAL) TZ('$TIMEZONE')"
     logDebug "Query: $query"
     declare -a gridPrices
     row=0
     while read value; do
         if [ "$value" != "" ]; then
             gridPrices[$row]=$value
-            export lastGridPrice=$value
+            lastGridPrice=$value
         else 
             logDebug "Price for index $row is empty. Using last grid price $lastGridPrice. Please make sure that a 'grid' tariff is configured in EVCC: https://docs.evcc.io/docs/reference/configuration/tariffs"
             gridPrices[$row]=$lastGridPrice
@@ -337,77 +386,21 @@ writeDailyPriceAggregation() {
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Grid prices: ${gridPrices[*]}"
 
-    # Calculate total daily purchase price
-    totalPrice=0
-    query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE ${timeCondition} AND \"value\" >=0 AND value < $PEAK_POWER_LIMIT GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
-    logDebug "Query: $query"
-    row=0
-    while read -r value; do
-        if [ "$value" != "" ]; then
-            if [ "${gridPrices[$i]}" == "" ]; then
-                logDebug "Price for index $row is empty. Using last grid price $lastGridPrice."
-                totalPrice=$(echo "$totalPrice + $value * $lastGridPrice" | bc)
-            else
-                totalPrice=$(echo "$totalPrice + $value * ${gridPrices[$i]}" | bc)
-            fi
-            row=$((row+1))
-        fi
-    done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
-    logDebug "Total daily energy purchase price: ${totalPrice}€"
-
-    insertStatement="INSERT energyPurchasedDailyPrice,year=${fYear},month=${fMonth},day=${fDay} value=${totalPrice} ${timestamp}"
-    logDebug "Insert statement: $insertStatement"
-    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
-
-    # Calculate potential energy price assuming that all energy is purchased from the grid
-    totalPrice=0
-    query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"homePower\" WHERE ${timeCondition} AND value < $PEAK_POWER_LIMIT GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
-    logDebug "Query: $query"
-    row=0
-    while read -r value; do
-        if [ "$value" != "" ]; then
-            if [ "${gridPrices[$i]}" == "" ]; then
-                logDebug "Price for index $row is empty. Using last grid price $lastGridPrice."
-                totalPrice=$(echo "$totalPrice + $value * $lastGridPrice" | bc)
-            else
-                totalPrice=$(echo "$totalPrice + $value * ${gridPrices[$i]}" | bc)
-            fi
-            row=$((row+1))
-        fi
-    done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
-    logDebug "Potential daily energy purchase price after homePower: ${totalPrice}€"
+    writeDailyPriceAggregation "gridPower" "energyPurchasedDailyPrice" $year $month $day ${gridPrices} $lastGridPrice "AND \"value\" >=0 AND value < $PEAK_POWER_LIMIT"
+    writeDailyPriceAggregation "homePower" "potentialHomeDailyPrice" $year $month $day ${gridPrices} $lastGridPrice "AND value < $PEAK_POWER_LIMIT"
     for loadpoint in "${LOADPOINTS[@]}"; do
-        query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE ${timeCondition} AND value < $PEAK_POWER_LIMIT AND \"loadpoint\"::tag = '${loadpoint}' GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
-        logDebug "Query: $query"
-        row=0
-        while read -r value; do
-            if [ "$value" != "" ]; then
-                if [ "${gridPrices[$i]}" == "" ]; then
-                    logDebug "Price for index $row is empty. Using last grid price $lastGridPrice."
-                    totalPrice=$(echo "$totalPrice + $value * $lastGridPrice" | bc)
-                else
-                    totalPrice=$(echo "$totalPrice + $value * ${gridPrices[$i]}" | bc)
-                fi
-                row=$((row+1))
-            fi
-        done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
-        logDebug "Potential daily energy purchase price after loadpoint ${loadpoint}: ${totalPrice}€"
+        writeDailyPriceAggregation "chargePower" "potentialLoadpointDailyPrice" $year $month $day ${gridPrices} $lastGridPrice "AND value < $PEAK_POWER_LIMIT AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${loadpoint}"
     done
-    logDebug "Potential daily energy purchase price: ${totalPrice}€"
-
-    insertStatement="INSERT potentialPurchasedDailyPrice,year=${fYear},month=${fMonth},day=${fDay} value=${totalPrice} ${timestamp}"
-    logDebug "Insert statement: $insertStatement"
-    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
 
     ### Energy sold price ###
 
     # Get feed in prices
      # In case of fixed tariffs, prices are very infrequently updated. So we need to get the last available price as default.
-    query="SELECT last("value") FROM "tariffFeedIn" WHERE time <= '${fromTime}'"
+    query="SELECT last("value") FROM "tariffFeedIn" WHERE time <= '${fromTime}' TZ('$TIMEZONE')"
     lastFeedInPrice=`influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n 1 | awk '{print $2}'`
     logDebug "Last queried feed in price: $lastFeedInPrice"
 
-    query="SELECT last("value") FROM "tariffFeedIn" WHERE ${timeCondition} GROUP BY time(1h) TZ('$TIMEZONE')"
+    query="SELECT last("value") FROM "tariffFeedIn" WHERE ${timeCondition} GROUP BY time($TARIFF_PRICE_INTERVAL) TZ('$TIMEZONE')"
     logDebug "Query: $query"
     declare -a feedInPrices
     row=0
@@ -423,27 +416,18 @@ writeDailyPriceAggregation() {
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Feed in prices: ${feedInPrices[*]}"
 
-    # Calculate total daily sold price
-    totalPrice=0
-    query="SELECT integral(\"subquery\") / -3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE ${timeCondition} AND \"value\" <=0 GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
-    logDebug "Query: $query"
-    row=0
-    while read -r value; do
-        if [ "$value" != "" ]; then
-            if [ "${feedInPrices[$i]}" == "" ]; then
-                logDebug "Price for index $row is empty. Using last feed-in price $lastFeedInPrice."
-                totalPrice=$(echo "$totalPrice + $value * $lastFeedInPrice" | bc)
-            else
-                totalPrice=$(echo "$totalPrice + $value * ${feedInPrices[$i]}" | bc)
-            fi
-            row=$((row+1))
-        fi
-    done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
-    logDebug "Total daily energy sold price: ${totalPrice}€"
+    writeDailyPriceAggregation "gridPower" "energySoldDailyPrice" $year $month $day ${feedInPrices} $lastFeedInPrice "AND \"value\" <=0 AND value < $PEAK_POWER_LIMIT"
 
-    insertStatement="INSERT energySoldDailyPrice,year=${fYear},month=${fMonth},day=${fDay} value=${totalPrice} ${timestamp}"
-    logDebug "Insert statement: $insertStatement"
-    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$insertStatement"
+
+    # TODO:
+    # Create common functions for calculating total price. Reuse these.
+    # Potential purchase price: Aggregate separate for home and loadpoints (tagged values by loadpoint). Sum up in Grafana.
+    # Batterie kosten $speicherentladen/1000 * ($stromPreis - $einspeiseVerguetung) 
+    #                 - ($speicherladen-$speicherentladen)/1000 * $einspeiseVerguetung
+
+    # Auto ladekosten (tagged values by car). Preis von tariffPriceLoadpoints (annähernder stündlicher Durchschnittswert): "SELECT last("mean") FROM "tariffPriceLoadpoints" WHERE time <= '${fromTime}' GROUP BY time($TARIFF_PRICE_INTERVAL) TZ('$TIMEZONE')"
+    # tariffEffectivePrice wird nicht mehr geschrieben seit 2023-09-25. Seitdem tariffPriceLoadpoints
+    # Auto potentielle Ladekosten. Preis von tariffGrid.  
 }
 
 aggregateDay() {
@@ -453,24 +437,24 @@ aggregateDay() {
 
     # logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
 
-    # writeDailyAggregations "integral-positives" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
-    # writeDailyAggregations "integral-positives" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
-    # writeDailyAggregations "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
-    # writeDailyAggregations "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    # writeDailyAggregation "integral-positives" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
+    # writeDailyAggregation "integral-positives" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    # writeDailyAggregation "integral-positives" "value" "gridPower" "gridDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
+    # writeDailyAggregation "integral-negatives" "value" "gridPower" "feedInDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
 
     # if [ "$HOME_BATTERY" == "true" ]; then
-    #     writeDailyAggregations "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
-    #     writeDailyAggregations "integral-negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
-    #     writeDailyAggregations "min" "value" "batterySoc" "batteryMinSoc" $ayear $amonth $aday "AND value < 101 AND value > 0 AND ("id"::tag = '')" "false"
-    #     writeDailyAggregations "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101 AND ("id"::tag = '')" "false"
+    #     writeDailyAggregation "integral-positives" "value" "batteryPower" "dischargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
+    #     writeDailyAggregation "integral-negatives" "value" "batteryPower" "chargeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
+    #     writeDailyAggregation "min" "value" "batterySoc" "batteryMinSoc" $ayear $amonth $aday "AND value < 101 AND value > 0 AND ("id"::tag = '')" "false"
+    #     writeDailyAggregation "max" "value" "batterySoc" "batteryMaxSoc" $ayear $amonth $aday "AND value < 101 AND ("id"::tag = '')" "false"
     # else
     #     logDebug "Home battery aggregation is disabled."
     # fi
 
     # if [ "$DYNAMIC_TARIFF" == "true" ]; then
-    #     writeDailyAggregations "min" "value" "tariffGrid" "tariffGridDailyMin" $ayear $amonth $aday "" "false"
-    #     writeDailyAggregations "max" "value" "tariffGrid" "tariffGridDailyMax" $ayear $amonth $aday "" "false"
-    #     writeDailyAggregations "mean" "value" "tariffGrid" "tariffGridDailyMean" $ayear $amonth $aday "" "false"
+    #     writeDailyAggregation "min" "value" "tariffGrid" "tariffGridDailyMin" $ayear $amonth $aday "" "false"
+    #     writeDailyAggregation "max" "value" "tariffGrid" "tariffGridDailyMax" $ayear $amonth $aday "" "false"
+    #     writeDailyAggregation "mean" "value" "tariffGrid" "tariffGridDailyMean" $ayear $amonth $aday "" "false"
     # else
     #     logDebug "Dynamic tariff aggregation is disabled."
     # fi
@@ -478,17 +462,17 @@ aggregateDay() {
     # for vehicle in "${VEHICLES[@]}"; do
     #     logDebug "Aggregating vehicle $vehicle"
     #     escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
-    #     writeDailyAggregations "max" "value" "vehicleOdometer" "vehicleOdometerDailyMax" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}'" "false" "vehicle=${escapedVehicle}"
-    #     writeDailyAggregations "integral-positives" "value" "chargePower" "vehicleDailyEnergy" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}' AND value < $PEAK_POWER_LIMIT" "true" "vehicle=${escapedVehicle}"
+    #     writeDailyAggregation "max" "value" "vehicleOdometer" "vehicleOdometerDailyMax" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}'" "false" "vehicle=${escapedVehicle}"
+    #     writeDailyAggregation "integral-positives" "value" "chargePower" "vehicleDailyEnergy" $ayear $amonth $aday "AND \"vehicle\"::tag = '${vehicle}' AND value < $PEAK_POWER_LIMIT" "true" "vehicle=${escapedVehicle}"
     # done
 
     # for loadpoint in "${LOADPOINTS[@]}"; do
     #     logDebug "Aggregating loadpoint $loadpoint"
     #     escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
-    #     writeDailyAggregations "integral-positives" "value" "chargePower" "loadpointDailyEnergy" $ayear $amonth $aday "AND \"loadpoint\"::tag = '${loadpoint}' AND value < $PEAK_POWER_LIMIT" "true" "loadpoint=${escapedLoadpoint}"
+    #     writeDailyAggregation "integral-positives" "value" "chargePower" "loadpointDailyEnergy" $ayear $amonth $aday "AND \"loadpoint\"::tag = '${loadpoint}' AND value < $PEAK_POWER_LIMIT" "true" "loadpoint=${escapedLoadpoint}"
     # done
 
-    writeDailyPriceAggregation $ayear $amonth $aday
+    writeDailyPriceAggregations $ayear $amonth $aday
 }
 
 writeMonthlyAggregations () {
