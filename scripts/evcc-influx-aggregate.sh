@@ -428,7 +428,7 @@ writeDailyPriceAggregations() {
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Feed in prices: ${feedInPrices[*]}"
 
-    writeDailyPriceAggregation "gridPower" "energySoldDailyPrice" $year $month $day "AND \"value\" <=0 AND value < $PEAK_POWER_LIMIT" ""  $lastGridPrice "${gridPrices[@]}"
+    writeDailyPriceAggregation "gridPower" "energySoldDailyPrice" $year $month $day "AND \"value\" <=0 AND value < $PEAK_POWER_LIMIT" ""  $lastFeedInPrice "${feedInPrices[@]}"
 
 
     # TODO:
@@ -537,34 +537,34 @@ aggregateMonth() {
     ayear=$1
     amonth=$2
 
-    # logInfo "`printf "Aggregating monthly metrics for %04d" $ayear`-`printf "%02d" $amonth`"
+    logInfo "`printf "Aggregating monthly metrics for %04d" $ayear`-`printf "%02d" $amonth`"
 
-    # writeMonthlyAggregations "sum" "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "energyPurchasedDailyPrice" "energyPurchasedMonthlyPrice" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "energySoldDailyPrice" "energySoldMonthlyPrice" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "pvDailyEnergy" "pvMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "homeDailyEnergy" "homeMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "energyPurchasedDailyPrice" "energyPurchasedMonthlyPrice" $ayear $amonth
+    writeMonthlyAggregations "sum" "value" "energySoldDailyPrice" "energySoldMonthlyPrice" $ayear $amonth
 
-    # if [ "$HOME_BATTERY" == "true" ]; then
-    #     writeMonthlyAggregations "sum" "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
-    #     writeMonthlyAggregations "sum" "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
-    # else
-    #     logDebug "Home battery aggregation is disabled"
-    # fi
+    if [ "$HOME_BATTERY" == "true" ]; then
+        writeMonthlyAggregations "sum" "value" "dischargeDailyEnergy" "dischargeMonthlyEnergy" $ayear $amonth
+        writeMonthlyAggregations "sum" "value" "chargeDailyEnergy" "chargeMonthlyEnergy" $ayear $amonth
+    else
+        logDebug "Home battery aggregation is disabled"
+    fi
 
-    # for vehicle in "${VEHICLES[@]}"; do
-    #     logDebug "Aggregating vehicle $vehicle"
-    #     escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
-    #     writeMonthlyAggregations "spread" "value" "vehicleOdometerDailyMax" "vehicleMonthlyDrivenKm" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
-    #     writeMonthlyAggregations "sum" "value" "vehicleDailyEnergy" "vehicleMonthlyEnergy" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
-    # done
+    for vehicle in "${VEHICLES[@]}"; do
+        logDebug "Aggregating vehicle $vehicle"
+        escapedVehicle=$(echo $vehicle | sed 's/ /\\ /g')
+        writeMonthlyAggregations "spread" "value" "vehicleOdometerDailyMax" "vehicleMonthlyDrivenKm" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
+        writeMonthlyAggregations "sum" "value" "vehicleDailyEnergy" "vehicleMonthlyEnergy" $ayear $amonth "AND \"vehicle\"::tag = '${vehicle}'" "vehicle=${escapedVehicle}"
+    done
 
-    # for loadpoint in "${LOADPOINTS[@]}"; do
-    #     logDebug "Aggregating loadpoint $loadpoint"
-    #     escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
-    #     writeMonthlyAggregations "sum" "value" "loadpointDailyEnergy" "loadpointMonthlyEnergy" $ayear $amonth "AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"
-    # done
+    for loadpoint in "${LOADPOINTS[@]}"; do
+        logDebug "Aggregating loadpoint $loadpoint"
+        escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
+        writeMonthlyAggregations "sum" "value" "loadpointDailyEnergy" "loadpointMonthlyEnergy" $ayear $amonth "AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"
+    done
 }
 
 dropMeasurement() {
