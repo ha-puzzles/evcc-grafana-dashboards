@@ -303,10 +303,12 @@ writeDailyPriceAggregation() {
     year=$3
     month=$4
     day=$5
-    prices=$6
-    defaultPrice=$7
-    additionalWhere=$8
-    additionalTags=$9
+    additionalWhere=$6
+    additionalTags=$7
+    defaultPrice=$8
+    shift 8
+    declare -a prices
+    prices=("$@")
 
     printf -v fYear "%04d" $year
     printf -v fMonth "%02d" $month
@@ -318,10 +320,19 @@ writeDailyPriceAggregation() {
     timeCondition="time >= '${fromTime}' AND time <= '${toTime}'"
     
     logDebug "${fYear}-${fMonth}-${fDay}: Aggregating total price from $sourceMeasurement into ${targetMeasurement}"
+    # logDebug "Arguments: sourceMeasurement=${sourceMeasurement} 
+    #                      targetMeasurement=${targetMeasurement} 
+    #                      year=${year}
+    #                      month=${month}
+    #                      day=${day}
+    #                      additionalWhere=${additionalWhere}
+    #                      additionalTags=${additionalTags}
+    #                      defaultPrice=${defaultPrice}
+    #                      prices=${prices[*]}"
 
     totalPrice=0
     query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"${sourceMeasurement}\" WHERE ${timeCondition} ${additionalWhere} GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
-    logDebug "Query: $query"
+    logDebug "Query statement: $query"
     row=0
     while read -r value; do
         if [ "$value" != "" ]; then
@@ -386,10 +397,11 @@ writeDailyPriceAggregations() {
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Grid prices: ${gridPrices[*]}"
 
-    writeDailyPriceAggregation "gridPower" "energyPurchasedDailyPrice" $year $month $day ${gridPrices} $lastGridPrice "AND \"value\" >=0 AND value < $PEAK_POWER_LIMIT"
-    writeDailyPriceAggregation "homePower" "potentialHomeDailyPrice" $year $month $day ${gridPrices} $lastGridPrice "AND value < $PEAK_POWER_LIMIT"
+    writeDailyPriceAggregation "gridPower" "energyPurchasedDailyPrice" $year $month $day "AND \"value\" >=0 AND value < $PEAK_POWER_LIMIT" "" $lastGridPrice "${gridPrices[@]}"
+    writeDailyPriceAggregation "homePower" "potentialHomeDailyPrice" $year $month $day "AND value < $PEAK_POWER_LIMIT" "" $lastGridPrice "${gridPrices[@]}"
     for loadpoint in "${LOADPOINTS[@]}"; do
-        writeDailyPriceAggregation "chargePower" "potentialLoadpointDailyPrice" $year $month $day ${gridPrices} $lastGridPrice "AND value < $PEAK_POWER_LIMIT AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${loadpoint}"
+        escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
+        writeDailyPriceAggregation "chargePower" "potentialLoadpointDailyPrice" $year $month $day  "AND value < $PEAK_POWER_LIMIT AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"  $lastGridPrice "${gridPrices[@]}"
     done
 
     ### Energy sold price ###
@@ -416,12 +428,10 @@ writeDailyPriceAggregations() {
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Feed in prices: ${feedInPrices[*]}"
 
-    writeDailyPriceAggregation "gridPower" "energySoldDailyPrice" $year $month $day ${feedInPrices} $lastFeedInPrice "AND \"value\" <=0 AND value < $PEAK_POWER_LIMIT"
+    writeDailyPriceAggregation "gridPower" "energySoldDailyPrice" $year $month $day "AND \"value\" <=0 AND value < $PEAK_POWER_LIMIT" ""  $lastGridPrice "${gridPrices[@]}"
 
 
     # TODO:
-    # Create common functions for calculating total price. Reuse these.
-    # Potential purchase price: Aggregate separate for home and loadpoints (tagged values by loadpoint). Sum up in Grafana.
     # Batterie kosten $speicherentladen/1000 * ($stromPreis - $einspeiseVerguetung) 
     #                 - ($speicherladen-$speicherentladen)/1000 * $einspeiseVerguetung
 
@@ -435,7 +445,7 @@ aggregateDay() {
     amonth=$2
     aday=$3
 
-    # logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
+    logInfo "Aggregating daily metrics for `printf "%04d" $ayear`-`printf "%02d" $amonth`-`printf "%02d" $aday`"
 
     # writeDailyAggregation "integral-positives" "value" "pvPower" "pvDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT AND ("id"::tag = '')" "true"
     # writeDailyAggregation "integral-positives" "value" "homePower" "homeDailyEnergy" $ayear $amonth $aday "AND value < $PEAK_POWER_LIMIT" "true"
@@ -534,7 +544,6 @@ aggregateMonth() {
     # writeMonthlyAggregations "sum" "value" "gridDailyEnergy" "gridMonthlyEnergy" $ayear $amonth
     # writeMonthlyAggregations "sum" "value" "feedInDailyEnergy" "feedInMonthlyEnergy" $ayear $amonth
     # writeMonthlyAggregations "sum" "value" "energyPurchasedDailyPrice" "energyPurchasedMonthlyPrice" $ayear $amonth
-    # writeMonthlyAggregations "sum" "value" "potentialPurchasedDailyPrice" "potentialPurchasedMonthlyPrice" $ayear $amonth
     # writeMonthlyAggregations "sum" "value" "energySoldDailyPrice" "energySoldMonthlyPrice" $ayear $amonth
 
     # if [ "$HOME_BATTERY" == "true" ]; then
