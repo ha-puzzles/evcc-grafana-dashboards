@@ -9,6 +9,13 @@
       "pluginName": "InfluxDB"
     },
     {
+      "name": "DS_EXPRESSION",
+      "label": "Expression",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "__expr__"
+    },
+    {
       "name": "VAR_TIMEZONE",
       "type": "constant",
       "label": "Zeitzone",
@@ -44,16 +51,16 @@
       "description": ""
     },
     {
-      "name": "VAR_LOADPOINTBLACKLIST",
+      "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Blacklist für Loadpoints",
+      "label": "Blocklist für Loadpoints",
       "value": "/^none$/",
       "description": ""
     },
     {
-      "name": "VAR_VEHICLEBLACKLIST",
+      "name": "VAR_VEHICLEBLOCKLIST",
       "type": "constant",
-      "label": "Blacklist für Fahrzeuge",
+      "label": "Blocklist für Fahrzeuge",
       "value": "/^Mr White.*$|^.*\\(offline\\)$/",
       "description": ""
     },
@@ -95,14 +102,14 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 35,
+              "fillOpacity": 20,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
                 "viz": false
               },
-              "insertNulls": false,
+              "insertNulls": 300000,
               "lineInterpolation": "linear",
               "lineStyle": {
                 "fill": "solid"
@@ -260,7 +267,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.2",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
             "alias": "PV",
@@ -410,7 +417,7 @@
                 "type": "fill"
               }
             ],
-            "hide": true,
+            "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
             "query": "SELECT max(\"value\") * (-1) FROM \"extPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
@@ -499,7 +506,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time($energySampleInterval), \"loadpoint\"::tag fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY time($energySampleInterval), \"loadpoint\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "Loadpoint",
             "resultFormat": "time_series",
@@ -550,14 +557,14 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 35,
-              "gradientMode": "none",
+              "fillOpacity": 20,
+              "gradientMode": "opacity",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
                 "viz": false
               },
-              "insertNulls": false,
+              "insertNulls": 1800000,
               "lineInterpolation": "linear",
               "lineStyle": {
                 "fill": "solid"
@@ -682,7 +689,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.2",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
             "alias": "Speicher",
@@ -739,7 +746,7 @@
             "measurement": "vehicleSoc",
             "orderByTime": "ASC",
             "policy": "autogen",
-            "query": "SELECT max(\"value\") FROM \"vehicleSoc\" WHERE $timeFilter AND (\"vehicle\"::tag <> '') AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY time(5m), \"vehicle\"::tag fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") FROM \"vehicleSoc\" WHERE $timeFilter AND (\"vehicle\"::tag <> '') AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY time(5m), \"vehicle\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "vehicles",
             "resultFormat": "time_series",
@@ -1139,8 +1146,8 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 35,
-              "gradientMode": "none",
+              "fillOpacity": 20,
+              "gradientMode": "opacity",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
@@ -1266,7 +1273,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.2",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
             "alias": "netzbezug",
@@ -1506,171 +1513,6 @@
         "type": "timeseries"
       }
     },
-    "ae8zrcafrfl6ob": {
-      "name": "EVCC: Dynamischer Strompreis",
-      "uid": "ae8zrcafrfl6ob",
-      "kind": 1,
-      "model": {
-        "datasource": {
-          "type": "influxdb",
-          "uid": "${DS_EVCC_INFLUXDB}"
-        },
-        "description": "",
-        "fieldConfig": {
-          "defaults": {
-            "color": {
-              "mode": "continuous-GrYlRd"
-            },
-            "custom": {
-              "axisBorderShow": false,
-              "axisCenteredZero": false,
-              "axisColorMode": "text",
-              "axisGridShow": true,
-              "axisLabel": "",
-              "axisPlacement": "left",
-              "axisSoftMax": 42,
-              "axisSoftMin": 20,
-              "axisWidth": 50,
-              "barAlignment": 1,
-              "barWidthFactor": 0.8,
-              "drawStyle": "bars",
-              "fillOpacity": 80,
-              "gradientMode": "scheme",
-              "hideFrom": {
-                "legend": false,
-                "tooltip": false,
-                "viz": false
-              },
-              "insertNulls": false,
-              "lineInterpolation": "stepBefore",
-              "lineWidth": 1,
-              "pointSize": 5,
-              "scaleDistribution": {
-                "type": "linear"
-              },
-              "showPoints": "auto",
-              "spanNulls": false,
-              "stacking": {
-                "group": "A",
-                "mode": "none"
-              },
-              "thresholdsStyle": {
-                "mode": "off"
-              }
-            },
-            "mappings": [],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 80
-                }
-              ]
-            }
-          },
-          "overrides": [
-            {
-              "matcher": {
-                "id": "byType",
-                "options": "time"
-              },
-              "properties": [
-                {
-                  "id": "custom.axisPlacement",
-                  "value": "hidden"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
-                "options": "Netzbezug"
-              },
-              "properties": [
-                {
-                  "id": "unit",
-                  "value": "watth"
-                },
-                {
-                  "id": "custom.drawStyle",
-                  "value": "bars"
-                },
-                {
-                  "id": "custom.fillOpacity",
-                  "value": 65
-                },
-                {
-                  "id": "custom.axisPlacement",
-                  "value": "hidden"
-                },
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "#818181",
-                    "mode": "fixed"
-                  }
-                },
-                {
-                  "id": "custom.lineWidth",
-                  "value": 0
-                },
-                {
-                  "id": "custom.axisSoftMin",
-                  "value": 0
-                }
-              ]
-            }
-          ]
-        },
-        "options": {
-          "legend": {
-            "calcs": [],
-            "displayMode": "list",
-            "placement": "bottom",
-            "showLegend": false
-          },
-          "tooltip": {
-            "hideZeros": false,
-            "mode": "multi",
-            "sort": "none"
-          }
-        },
-        "pluginVersion": "11.5.2",
-        "targets": [
-          {
-            "alias": "Preis",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "query": "SELECT last(\"value\") * 100 FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
-            "rawQuery": true,
-            "refId": "Tarif",
-            "resultFormat": "time_series"
-          },
-          {
-            "alias": "Netzbezug",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "hide": false,
-            "query": "SELECT integral(\"subquery\") /3600 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
-            "rawQuery": true,
-            "refId": "Netzbezug",
-            "resultFormat": "time_series"
-          }
-        ],
-        "title": "Strompreis (ct/kWh)",
-        "transparent": true,
-        "type": "timeseries"
-      }
-    },
     "d-V6JqRgz": {
       "name": "EVCC: Energie",
       "uid": "d-V6JqRgz",
@@ -1693,7 +1535,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "fillOpacity": 35,
+              "fillOpacity": 20,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -1827,7 +1669,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Gastfahrzeug"
+                  "value": "Gast"
                 }
               ]
             },
@@ -1889,7 +1731,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "11.5.2",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
             "alias": "PV",
@@ -2172,7 +2014,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter AND value > 0 AND (\"vehicle\"::tag <> '') AND \"vehicle\"::tag !~ $vehicleBlacklist  GROUP BY time($energySampleInterval), \"vehicle\"::tag fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d), \"vehicle\"::tag  fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / -3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter AND value > 0 AND (\"vehicle\"::tag <> '') AND \"vehicle\"::tag !~ $vehicleBlocklist  GROUP BY time($energySampleInterval), \"vehicle\"::tag fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d), \"vehicle\"::tag  fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "vehicles",
             "resultFormat": "time_series",
@@ -2345,7 +2187,7 @@
                 "tooltip": false,
                 "viz": false
               },
-              "insertNulls": false,
+              "insertNulls": 300000,
               "lineInterpolation": "linear",
               "lineWidth": 0,
               "pointSize": 1,
@@ -2547,7 +2389,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.2",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
             "alias": "PV",
@@ -2788,7 +2630,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY time($energySampleInterval), \"loadpoint\"::tag fill(none) tz('$timezone')",
+            "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY time($energySampleInterval), \"loadpoint\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
             "resultFormat": "time_series",
@@ -2816,6 +2658,11 @@
   },
   "__requires": [
     {
+      "type": "datasource",
+      "id": "__expr__",
+      "version": "1.0.0"
+    },
+    {
       "type": "panel",
       "id": "gauge",
       "name": "Gauge",
@@ -2832,6 +2679,12 @@
       "id": "influxdb",
       "name": "InfluxDB",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
     }
   ],
   "annotations": {
@@ -2987,8 +2840,8 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "$inverterPortalTitle",
-                    "url": "$inverterPortalUrl"
+                    "title": "Mehr Details",
+                    "url": "/pv/d/fed98n901h0xsb/evcc3a-today-details?$__url_time_range"
                   }
                 ]
               },
@@ -3053,6 +2906,15 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Mehr Details",
+                    "url": "/pv/d/fed98n901h0xsb/evcc3a-today-details?$__url_time_range"
+                  }
+                ]
               }
             ]
           },
@@ -3232,7 +3094,7 @@
         ]
       },
       "gridPos": {
-        "h": 26,
+        "h": 24,
         "w": 3,
         "x": 0,
         "y": 0
@@ -3352,7 +3214,7 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": true,
+          "hide": false,
           "query": "SELECT \"value\" *(-1)/1000 FROM \"extPower\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "Ext",
@@ -3400,7 +3262,7 @@
           "measurement": "chargePower",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") *(-1)/1000 FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY \"loadpoint\"::tag fill(null) tz('$timezone') ",
+          "query": "SELECT last(\"value\") *(-1)/1000 FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY \"loadpoint\"::tag fill(null) tz('$timezone') ",
           "rawQuery": true,
           "refId": "Loadpoints",
           "resultFormat": "time_series",
@@ -3427,7 +3289,7 @@
     },
     {
       "gridPos": {
-        "h": 23,
+        "h": 21,
         "w": 16,
         "x": 3,
         "y": 0
@@ -3453,7 +3315,7 @@
     },
     {
       "gridPos": {
-        "h": 5,
+        "h": 4,
         "w": 5,
         "x": 19,
         "y": 7
@@ -3469,7 +3331,7 @@
         "h": 2,
         "w": 5,
         "x": 19,
-        "y": 12
+        "y": 11
       },
       "id": 51,
       "libraryPanel": {
@@ -3479,23 +3341,10 @@
     },
     {
       "gridPos": {
-        "h": 4,
+        "h": 9,
         "w": 5,
         "x": 19,
-        "y": 14
-      },
-      "id": 73,
-      "libraryPanel": {
-        "uid": "ae8zrcafrfl6ob",
-        "name": "EVCC: Dynamischer Strompreis"
-      }
-    },
-    {
-      "gridPos": {
-        "h": 8,
-        "w": 5,
-        "x": 19,
-        "y": 18
+        "y": 13
       },
       "id": 40,
       "libraryPanel": {
@@ -3508,13 +3357,349 @@
         "h": 3,
         "w": 16,
         "x": 3,
-        "y": 23
+        "y": 21
       },
       "id": 45,
       "libraryPanel": {
         "uid": "d9a5a952-0d17-428f-9102-19683b4e515f",
         "name": "EVCC: Energieverteilung über Zeit"
       }
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "More details",
+              "url": "/pv/d/fed98n901h0xsb/evcc3a-today-details?$__url_time_range"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "boughtTotal"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Einkauf"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "soldTotal"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Verkauf"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "dailyTotal"
+            },
+            "properties": [
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 0
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color"
+              },
+              {
+                "id": "displayName",
+                "value": "Tagessumme"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 5,
+        "x": 19,
+        "y": 22
+      },
+      "id": 74,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "tariffGrid",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "grid",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": true,
+          "query": "SELECT last(\"value\") FROM \"tariffFeedIn\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "tariffFeedin",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "feedIn",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$tariffGrid * $grid",
+          "hide": true,
+          "refId": "bought",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$tariffFeedin * $feedIn",
+          "hide": true,
+          "refId": "sold",
+          "type": "math"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "bought",
+          "hide": false,
+          "reducer": "sum",
+          "refId": "boughtTotal",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "sold",
+          "hide": false,
+          "reducer": "sum",
+          "refId": "soldTotal",
+          "settings": {
+            "mode": "dropNN"
+          },
+          "type": "reduce"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$boughtTotal + $soldTotal",
+          "hide": false,
+          "refId": "dailyTotal",
+          "type": "math"
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
     }
   ],
   "refresh": "10s",
@@ -3632,20 +3817,20 @@
       {
         "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
         "hide": 2,
-        "label": "Blacklist für Loadpoints",
-        "name": "loadpointBlacklist",
-        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "label": "Blocklist für Loadpoints",
+        "name": "loadpointBlocklist",
+        "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
         "type": "constant",
         "current": {
-          "value": "${VAR_LOADPOINTBLACKLIST}",
-          "text": "${VAR_LOADPOINTBLACKLIST}",
+          "value": "${VAR_LOADPOINTBLOCKLIST}",
+          "text": "${VAR_LOADPOINTBLOCKLIST}",
           "selected": false
         },
         "options": [
           {
-            "value": "${VAR_LOADPOINTBLACKLIST}",
-            "text": "${VAR_LOADPOINTBLACKLIST}",
+            "value": "${VAR_LOADPOINTBLOCKLIST}",
+            "text": "${VAR_LOADPOINTBLOCKLIST}",
             "selected": false
           }
         ]
@@ -3653,20 +3838,20 @@
       {
         "description": "Liste der Fahrzeuge, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere Fahrzeuge mit (offline) am Ende aus: /^.*\\(offline\\)$/",
         "hide": 2,
-        "label": "Blacklist für Fahrzeuge",
-        "name": "vehicleBlacklist",
-        "query": "${VAR_VEHICLEBLACKLIST}",
+        "label": "Blocklist für Fahrzeuge",
+        "name": "vehicleBlocklist",
+        "query": "${VAR_VEHICLEBLOCKLIST}",
         "skipUrlSync": true,
         "type": "constant",
         "current": {
-          "value": "${VAR_VEHICLEBLACKLIST}",
-          "text": "${VAR_VEHICLEBLACKLIST}",
+          "value": "${VAR_VEHICLEBLOCKLIST}",
+          "text": "${VAR_VEHICLEBLOCKLIST}",
           "selected": false
         },
         "options": [
           {
-            "value": "${VAR_VEHICLEBLACKLIST}",
-            "text": "${VAR_VEHICLEBLACKLIST}",
+            "value": "${VAR_VEHICLEBLOCKLIST}",
+            "text": "${VAR_VEHICLEBLOCKLIST}",
             "selected": false
           }
         ]
@@ -3702,6 +3887,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 199,
+  "version": 209,
   "weekStart": ""
 }

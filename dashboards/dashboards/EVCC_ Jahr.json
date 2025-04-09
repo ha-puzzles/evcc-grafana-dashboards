@@ -23,16 +23,16 @@
       "description": ""
     },
     {
-      "name": "VAR_LOADPOINTBLACKLIST",
+      "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Blacklist für Loadpoints",
+      "label": "Blocklist für Loadpoints",
       "value": "/^none$/",
       "description": ""
     },
     {
-      "name": "VAR_VEHICLEBLACKLIST",
+      "name": "VAR_VEHICLEBLOCKLIST",
       "type": "constant",
-      "label": "Blacklist für Fahrzeuge",
+      "label": "Blocklist für Fahrzeuge",
       "value": "/^Mr White.*$|^.*\\(offline\\)$/",
       "description": ""
     }
@@ -309,7 +309,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY \"loadpoint\"::tag TZ('$timezone')",
+            "query": "SELECT sum(\"value\") /1000 from loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY \"loadpoint\"::tag TZ('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
             "resultFormat": "time_series",
@@ -744,6 +744,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "auto",
+              "axisWidth": 80,
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
@@ -843,11 +844,12 @@
             "showLegend": true
           },
           "tooltip": {
+            "hideZeros": false,
             "mode": "multi",
             "sort": "none"
           }
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
             "alias": "Max",
@@ -1275,31 +1277,19 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "barAlignment": 1,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 35,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
             "thresholdsStyle": {
-              "mode": "dashed"
+              "mode": "off"
             }
           },
           "mappings": [],
@@ -1422,18 +1412,26 @@
       },
       "id": 47,
       "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
         "tooltip": {
           "hideZeros": false,
-          "maxHeight": 600,
           "mode": "multi",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "11.6.0",
       "targets": [
@@ -1654,11 +1652,11 @@
         }
       ],
       "title": "Energie",
-      "type": "timeseries"
+      "type": "barchart"
     },
     {
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 4,
         "x": 0,
         "y": 13
@@ -1688,28 +1686,16 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "barAlignment": 1,
-            "barWidthFactor": 0.6,
-            "drawStyle": "bars",
-            "fillOpacity": 35,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 1,
             "scaleDistribution": {
               "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -1764,25 +1750,33 @@
         ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 20,
         "x": 4,
         "y": 13
       },
       "id": 25,
       "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
         "legend": {
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
         },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
         "tooltip": {
           "hideZeros": false,
-          "maxHeight": 600,
           "mode": "multi",
-          "sort": "desc"
-        }
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "11.6.0",
       "targets": [
@@ -1987,14 +1981,14 @@
         }
       ],
       "title": "Kennzahlen",
-      "type": "timeseries"
+      "type": "barchart"
     },
     {
       "gridPos": {
         "h": 8,
         "w": 4,
         "x": 0,
-        "y": 19
+        "y": 21
       },
       "id": 53,
       "libraryPanel": {
@@ -2007,13 +2001,383 @@
         "h": 8,
         "w": 20,
         "x": 4,
-        "y": 19
+        "y": 21
       },
       "id": 54,
       "libraryPanel": {
         "uid": "ae8zwbjv24kqof",
         "name": "EVCC: Dynamischer Strompreis: Täglich"
       }
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 29
+      },
+      "id": 64,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "alias": "Einkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(value) FROM energyPurchasedMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "purchased",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Verkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(value) FROM energySoldMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "sold",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$purchased + $sold",
+          "hide": false,
+          "refId": "Bilanz",
+          "type": "math"
+        }
+      ],
+      "title": "Stromkosten",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 80,
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Einkauf"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Verkauf"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 20,
+        "x": 4,
+        "y": 29
+      },
+      "id": 63,
+      "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "alias": "Einkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM energyPurchasedMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "purchased",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Verkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM energySoldMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "sold",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Stromkosten",
+      "type": "barchart"
     },
     {
       "datasource": {
@@ -2088,7 +2452,7 @@
         "h": 9,
         "w": 4,
         "x": 0,
-        "y": 27
+        "y": 37
       },
       "id": 3,
       "options": {
@@ -2407,7 +2771,7 @@
         "h": 9,
         "w": 20,
         "x": 4,
-        "y": 27
+        "y": 37
       },
       "id": 2,
       "options": {
@@ -2618,7 +2982,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 46
       },
       "id": 62,
       "panels": [],
@@ -2630,7 +2994,7 @@
         "h": 9,
         "w": 4,
         "x": 0,
-        "y": 37
+        "y": 47
       },
       "id": 37,
       "libraryPanel": {
@@ -2662,7 +3026,7 @@
         "h": 9,
         "w": 10,
         "x": 4,
-        "y": 37
+        "y": 47
       },
       "id": 6,
       "options": {
@@ -2789,7 +3153,7 @@
         "h": 9,
         "w": 10,
         "x": 14,
-        "y": 37
+        "y": 47
       },
       "id": 51,
       "options": {
@@ -2915,7 +3279,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 35,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2994,7 +3358,7 @@
         "h": 10,
         "w": 10,
         "x": 4,
-        "y": 46
+        "y": 56
       },
       "id": 50,
       "maxDataPoints": 50000,
@@ -3059,7 +3423,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 35,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3115,7 +3479,7 @@
         "h": 10,
         "w": 10,
         "x": 14,
-        "y": 46
+        "y": 56
       },
       "id": 49,
       "maxDataPoints": 50000,
@@ -3187,7 +3551,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 66
       },
       "id": 56,
       "panels": [],
@@ -3305,7 +3669,7 @@
         "h": 16,
         "w": 4,
         "x": 0,
-        "y": 57
+        "y": 67
       },
       "id": 59,
       "options": {
@@ -3355,7 +3719,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY \"vehicle\"::tag tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleOdometer",
           "resultFormat": "time_series",
@@ -3399,7 +3763,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT spread(\"value\") FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag tz('$timezone')",
+          "query": "SELECT spread(\"value\") FROM \"vehicleOdometerDailyMax\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY \"vehicle\"::tag tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleDrivenKm",
           "resultFormat": "time_series",
@@ -3442,7 +3806,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"value\")/1000 FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter  AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\" tz('$timezone')",
+          "query": "SELECT sum(\"value\")/1000 FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter  AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY \"vehicle\" tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicleChargedEnergy",
           "resultFormat": "time_series",
@@ -3495,7 +3859,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 35,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3562,7 +3926,7 @@
         "h": 8,
         "w": 20,
         "x": 4,
-        "y": 57
+        "y": 67
       },
       "id": 58,
       "options": {
@@ -3581,7 +3945,7 @@
         "stacking": "none",
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         },
         "xTickLabelRotation": 0,
@@ -3612,7 +3976,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicles",
           "resultFormat": "time_series",
@@ -3653,7 +4017,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 35,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3720,7 +4084,7 @@
         "h": 8,
         "w": 20,
         "x": 4,
-        "y": 65
+        "y": 75
       },
       "id": 60,
       "options": {
@@ -3739,7 +4103,7 @@
         "stacking": "none",
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         },
         "xField": "Time",
@@ -3771,7 +4135,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value>0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value>0 AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehicles",
           "resultFormat": "time_series",
@@ -3813,7 +4177,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 35,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3879,7 +4243,7 @@
         "h": 8,
         "w": 20,
         "x": 4,
-        "y": 73
+        "y": 83
       },
       "id": 61,
       "options": {
@@ -3898,7 +4262,7 @@
         "stacking": "none",
         "tooltip": {
           "hideZeros": false,
-          "mode": "single",
+          "mode": "multi",
           "sort": "none"
         },
         "xField": "Time",
@@ -3931,7 +4295,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyEnergy\" WHERE $timeFilter AND value > 0 AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehiclesEnergy",
           "resultFormat": "time_series",
@@ -3975,7 +4339,7 @@
           "measurement": "vehicle1Odometer",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter and value > 0 AND \"vehicle\"::tag !~ $vehicleBlacklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
+          "query": "SELECT \"value\" FROM \"vehicleMonthlyDrivenKm\" WHERE $timeFilter and value > 0 AND \"vehicle\"::tag !~ $vehicleBlocklist GROUP BY \"vehicle\"::tag  tz('$timezone')",
           "rawQuery": true,
           "refId": "vehiclesKm",
           "resultFormat": "time_series",
@@ -4041,20 +4405,20 @@
       {
         "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
         "hide": 2,
-        "label": "Blacklist für Loadpoints",
-        "name": "loadpointBlacklist",
-        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "label": "Blocklist für Loadpoints",
+        "name": "loadpointBlocklist",
+        "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
         "type": "constant",
         "current": {
-          "value": "${VAR_LOADPOINTBLACKLIST}",
-          "text": "${VAR_LOADPOINTBLACKLIST}",
+          "value": "${VAR_LOADPOINTBLOCKLIST}",
+          "text": "${VAR_LOADPOINTBLOCKLIST}",
           "selected": false
         },
         "options": [
           {
-            "value": "${VAR_LOADPOINTBLACKLIST}",
-            "text": "${VAR_LOADPOINTBLACKLIST}",
+            "value": "${VAR_LOADPOINTBLOCKLIST}",
+            "text": "${VAR_LOADPOINTBLOCKLIST}",
             "selected": false
           }
         ]
@@ -4062,20 +4426,20 @@
       {
         "description": "Liste der Fahrzeuge, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere Fahrzeuge mit (offline) am Ende aus: /^.*\\(offline\\)$/",
         "hide": 2,
-        "label": "Blacklist für Fahrzeuge",
-        "name": "vehicleBlacklist",
-        "query": "${VAR_VEHICLEBLACKLIST}",
+        "label": "Blocklist für Fahrzeuge",
+        "name": "vehicleBlocklist",
+        "query": "${VAR_VEHICLEBLOCKLIST}",
         "skipUrlSync": true,
         "type": "constant",
         "current": {
-          "value": "${VAR_VEHICLEBLACKLIST}",
-          "text": "${VAR_VEHICLEBLACKLIST}",
+          "value": "${VAR_VEHICLEBLOCKLIST}",
+          "text": "${VAR_VEHICLEBLOCKLIST}",
           "selected": false
         },
         "options": [
           {
-            "value": "${VAR_VEHICLEBLACKLIST}",
-            "text": "${VAR_VEHICLEBLACKLIST}",
+            "value": "${VAR_VEHICLEBLOCKLIST}",
+            "text": "${VAR_VEHICLEBLOCKLIST}",
             "selected": false
           }
         ]
@@ -4090,6 +4454,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 231,
+  "version": 245,
   "weekStart": ""
 }
