@@ -64,7 +64,7 @@ Weitere Details, die bei der Fehlersuche helfen können wie
 - Jedes Dashboard hat eigene Parameter. Da es leider keine globalen Variablen in Grafana gibt, müssen diese einmal pro Dashboard während des Imports angepasst werden.
 - Je nach Anzahl der Ladepunkte und der Fahrzeuge müssen einige Panelgrößen anpassen.
 - *Optional*: Die Ladepunkte und Fahrzeuge erhalten per default alle dieselben Farben. Um für verschiedene Ladepunkte und Fahrzeuge verschiedene Farben zu erhalten müssen in den jeweiligen Panels in Grafana die Overrides angepasst werden. Es sind schon Beispiele dabei für Ladepunkte (Garage, Stellplatz) und Fahrzeuge (Ioniq 5, Tesla). Hier muss in der Regel nur das Feld auf den richtigen Ladepunkt oder das richtige Fahrzeug gemappt werden. Ansonsten müssen weitere Overrides angelegt werden. 
-- *Optional*: Falls Ladepunkte oder Fahrzeuge angezeigt werden, die man nicht sehen will (zum Beispiel weil während der Einrichtung etwas mehrfach umbenannt worden ist), kann man in den Dashboard Einstellungen die Variablen 'loadpointBlacklist' und 'vehicleBlacklist' anpassen.
+- *Optional*: Falls Ladepunkte oder Fahrzeuge angezeigt werden, die man nicht sehen will (zum Beispiel weil während der Einrichtung etwas mehrfach umbenannt worden ist), kann man in den Dashboard Einstellungen die Variablen 'loadpointBlockist' und 'vehicleBlockist' anpassen.
   - Dashboard in den Edit Mode versetzen.
   - Auf 'Settings' klicken.
   - Auf dem Tab 'Variables' auf die Variablen Klicken
@@ -92,7 +92,7 @@ Weitere Details, die bei der Fehlersuche helfen können wie
   ![Zeitraum anpassen](img/time-range.png)
 
   Danach das Dashboard speichern und dabei die ausgewählte Zeit mit abspeichern.
-- *Optional*: Falls in den Fahrtkosten Panele unten "Fahrzeuge" (zum Beispiel eine Wärmepumpe) auftauchen, die hier nicht erscheinen sollen, oder falls bestimmte Fahrzeuge temporär ohne Anpassung der Blacklist ein-und ausgeblendet werden soll, dann diesen Schritten folgen:
+- *Optional*: Falls in den Fahrtkosten Panele unten "Fahrzeuge" (zum Beispiel eine Wärmepumpe) auftauchen, die hier nicht erscheinen sollen, oder falls bestimmte Fahrzeuge temporär ohne Anpassung der Blockist ein-und ausgeblendet werden soll, dann diesen Schritten folgen:
   1. Dashboard editieren und in den Settings zum 'Variablen' tab gehen
   2. Auf die Variable 'vehicle' klicken.
   3. Unter 'Show on dashboard' den Wert 'Label and value` auswählen.

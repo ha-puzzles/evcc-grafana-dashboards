@@ -30,9 +30,9 @@
       "description": ""
     },
     {
-      "name": "VAR_LOADPOINTBLACKLIST",
+      "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Blacklist für Loadpoints",
+      "label": "Blocklist für Loadpoints",
       "value": "/^none$/",
       "description": ""
     },
@@ -404,7 +404,7 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
-            "gradientMode": "none",
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -454,11 +454,12 @@
             "properties": [
               {
                 "id": "custom.lineWidth",
-                "value": 0
+                "value": 1
               },
               {
                 "id": "color",
                 "value": {
+                  "fixedColor": "text",
                   "mode": "fixed"
                 }
               }
@@ -981,344 +982,6 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red"
-              },
-              {
-                "color": "text",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "kWh"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Gesamt"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PV Vorhersage"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-yellow",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 4,
-        "x": 0,
-        "y": 18
-      },
-      "id": 18,
-      "maxDataPoints": 1400,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 20
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.0",
-      "targets": [
-        {
-          "alias": "PV Vorhersage",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
-          },
-          "hide": false,
-          "query": "SELECT integral(\"value\") / 3600000 FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
-          "rawQuery": true,
-          "refId": "PV Vorhersage",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "Gesamt",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT integral(\"subquery\") / 3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "PV Leistung",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "PV Vorhersage",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "text",
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisWidth": 50,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 3,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "dashed"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "red"
-              },
-              {
-                "color": "text",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "watt"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Gesamt"
-            },
-            "properties": [
-              {
-                "id": "custom.lineWidth",
-                "value": 1
-              },
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "PV Vorhersage"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "semi-dark-yellow",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "bars"
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 20,
-        "x": 4,
-        "y": 18
-      },
-      "id": 16,
-      "maxDataPoints": 1400,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "11.6.0",
-      "targets": [
-        {
-          "alias": "PV Vorhersage",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
-          },
-          "hide": false,
-          "query": "SELECT max(\"value\") FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
-          "rawQuery": true,
-          "refId": "PV Vorhersage",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "Gesamt",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT max(\"value\") FROM \"pvPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1m) tz('$timezone')",
-          "rawQuery": true,
-          "refId": "PV Leistung",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "PV Vorhersage",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
             "mode": "continuous-GrYlRd"
           },
           "mappings": [],
@@ -1388,7 +1051,7 @@
         "h": 9,
         "w": 4,
         "x": 0,
-        "y": 27
+        "y": 18
       },
       "id": 20,
       "options": {
@@ -1578,7 +1241,7 @@
         "h": 9,
         "w": 20,
         "x": 4,
-        "y": 27
+        "y": 18
       },
       "id": 19,
       "options": {
@@ -1725,7 +1388,7 @@
         "h": 9,
         "w": 4,
         "x": 0,
-        "y": 36
+        "y": 27
       },
       "id": 24,
       "options": {
@@ -1978,7 +1641,7 @@
             "barAlignment": 1,
             "barWidthFactor": 0.8,
             "drawStyle": "bars",
-            "fillOpacity": 80,
+            "fillOpacity": 35,
             "gradientMode": "scheme",
             "hideFrom": {
               "legend": false,
@@ -2063,7 +1726,7 @@
         "h": 9,
         "w": 20,
         "x": 4,
-        "y": 36
+        "y": 27
       },
       "id": 23,
       "options": {
@@ -2275,6 +1938,348 @@
         }
       ],
       "title": "Stündliche Kosten",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "kWh"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gesamt"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PV Vorhersage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 4,
+        "x": 0,
+        "y": 36
+      },
+      "id": 18,
+      "maxDataPoints": 1400,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 12,
+          "valueSize": 20
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "alias": "PV Vorhersage",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT integral(\"value\") / 3600000 FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Vorhersage",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Gesamt",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT integral(\"subquery\") / 3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Leistung",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "PV Vorhersage",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_INFLUXDB}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 50,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 3,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red"
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watt"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Gesamt"
+            },
+            "properties": [
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.gradientMode",
+                "value": "opacity"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "PV Vorhersage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "semi-dark-yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 20,
+        "x": 4,
+        "y": 36
+      },
+      "id": 16,
+      "maxDataPoints": 1400,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0",
+      "targets": [
+        {
+          "alias": "PV Vorhersage",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "hide": false,
+          "query": "SELECT max(\"value\") FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Vorhersage",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Gesamt",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT max(\"value\") FROM \"pvPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1m) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "PV Leistung",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "PV Vorhersage",
       "type": "timeseries"
     },
     {
@@ -2677,7 +2682,7 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l1\") FROM \"gridCurrents\" WHERE $timeFilter  tz('$timezone')",
+          "query": "SELECT last(\"l1\") FROM \"gridCurrents\" WHERE $timeFilter  tz('$timezone')",
           "rawQuery": true,
           "refId": "currentL1",
           "resultFormat": "time_series",
@@ -2716,7 +2721,7 @@
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l2\") FROM \"gridCurrents\" WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"l2\") FROM \"gridCurrents\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "currentL2",
           "resultFormat": "time_series",
@@ -3061,7 +3066,7 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"l1\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"l1\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "powerL1",
           "resultFormat": "time_series",
@@ -3100,7 +3105,7 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"l2\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"l2\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "powerL2",
           "resultFormat": "time_series",
@@ -3139,7 +3144,7 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"l3\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"l3\") FROM \"gridPowers\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "powerL3",
           "resultFormat": "time_series",
@@ -3456,7 +3461,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l1\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"l1\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "L1",
           "resultFormat": "time_series",
@@ -3501,7 +3506,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l2\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"l2\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "L2",
           "resultFormat": "time_series",
@@ -3546,7 +3551,7 @@
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l3\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"l3\") FROM \"chargeCurrents\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "L3",
           "resultFormat": "time_series",
@@ -3580,7 +3585,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
-          "query": "SELECT mean(\"value\") FROM \"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "Strom",
           "resultFormat": "time_series"
@@ -4170,34 +4175,34 @@
       {
         "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
         "hide": 2,
-        "label": "Blacklist für Loadpoints",
-        "name": "loadpointBlacklist",
-        "query": "${VAR_LOADPOINTBLACKLIST}",
+        "label": "Blocklist für Loadpoints",
+        "name": "loadpointBlocklist",
+        "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
         "type": "constant",
         "current": {
-          "value": "${VAR_LOADPOINTBLACKLIST}",
-          "text": "${VAR_LOADPOINTBLACKLIST}",
+          "value": "${VAR_LOADPOINTBLOCKLIST}",
+          "text": "${VAR_LOADPOINTBLOCKLIST}",
           "selected": false
         },
         "options": [
           {
-            "value": "${VAR_LOADPOINTBLACKLIST}",
-            "text": "${VAR_LOADPOINTBLACKLIST}",
+            "value": "${VAR_LOADPOINTBLOCKLIST}",
+            "text": "${VAR_LOADPOINTBLOCKLIST}",
             "selected": false
           }
         ]
       },
       {
         "current": {},
-        "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlacklist",
+        "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlocklist",
         "includeAll": true,
         "label": "Ladepunkt",
         "multi": true,
         "name": "loadpoint",
         "options": [],
         "query": {
-          "query": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlacklist",
+          "query": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlocklist",
           "refId": "InfluxVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -4232,9 +4237,9 @@
     "to": "now/d"
   },
   "timepicker": {},
-  "timezone": "browser",
+  "timezone": "Europe/Berlin",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 92,
+  "version": 97,
   "weekStart": ""
 }
