@@ -6,7 +6,9 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
 
 1. Script [`evcc-influx-aggregate.sh`](./evcc-influx-aggregate.sh) und Konfigurationsdatei [`evcc-influx-aggregate.conf`](./evcc-influx-aggregate.conf) herunterladen und auf ein Linux System kopieren. Idealerweise ist dies das System (oder die VM) auf der die InfluxDB läuft. Falls dies nicht möglicht ist (z.B. HAOS), kann das script auch remote von einem anderen Linux System ausgeführt werden.
 
-2. Getrennte Datenbank für die aggregierten Daten anlegen. Falls keine getrennte Datenbank gewünscht wird können auch die Zugangsdaten der EVCC Influx Datenbank genommen werden. Es wird allerdings empfohlen eine getrennte Datenbank für die Aggegrationen anzulegen.
+2. Das UNIX CLI Tool `bc` installieren. Auf Debian-basierten Linux Systemen z.B. mit `apt install bc`.
+
+3. Getrennte Datenbank für die aggregierten Daten anlegen. Falls keine getrennte Datenbank gewünscht wird können auch die Zugangsdaten der EVCC Influx Datenbank genommen werden. Es wird allerdings empfohlen eine getrennte Datenbank für die Aggegrationen anzulegen.
    1. Auf dem Influx server das `influx` CLI starten
    2. Datenbank anlegen (hier nennen wir die DB 'evcc_aggr'): 
       
@@ -18,7 +20,7 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
       
       `create user grafana with password '' with all privileges`
 
-3. Nur bei Remote Ausführung des Scriptes auf einem anderen System als dem auf dem die Influx DB läuft:
+4. Nur bei Remote Ausführung des Scriptes auf einem anderen System als dem auf dem die Influx DB läuft:
    1. Influx Client installieren. Je nach Linuxderivat z.B. `apt-get install influxdb-client`
    2. Mit `influx -version` überprüfen, dass es der Client mit der richtigen Version ist (muss 1.8.x sein)
      ```
@@ -27,23 +29,23 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
      ```
    3. Überprüfen ob man sich zur Influx verbinden kann: `influx -host [Influx DB host name] -port 8086 -database [Database name]`
 
-4. Konfigurationsdatei [`evcc-influx-aggregate.conf`](./evcc-influx-aggregate.conf) mit den entsprechenden Werten anpassen. Die Werte sind mit erklärenden Kommentaren versehen. Bitte alle Werte überprüfen und gegebenenfalls anpassen.
+5. Konfigurationsdatei [`evcc-influx-aggregate.conf`](./evcc-influx-aggregate.conf) mit den entsprechenden Werten anpassen. Die Werte sind mit erklärenden Kommentaren versehen. Bitte alle Werte überprüfen und gegebenenfalls anpassen.
 
-5. Die Recht für das Script anpassen, damit es ausführbar wird: `chmod +x evcc-influx-aggregate.sh`
+6. Die Rechte für das Script anpassen, damit es ausführbar wird: `chmod +x evcc-influx-aggregate.sh`
 
-6. Einmal die Fahrzeuge und Ladepunkte erkennen lassen:
+7. Einmal die Fahrzeuge und Ladepunkte erkennen lassen:
    ```bash
    ./evcc-influx-aggregate.sh --detect
    ```
    Überprüfen ob die Namen der Fahrzeuge und Ladepunkte stimmen.
 
-7. Für jedes Jahr, für das die Influx DB bereits mit EVCC Daten gefüllt ist, eine Aggregierung des gesamten Jahres starten:
+8. Für jedes Jahr, für das die Influx DB bereits mit EVCC Daten gefüllt ist, eine Aggregierung des gesamten Jahres starten:
    ```bash
    ./evcc-influx-aggregate.sh --year 2025
    ```
    Das wird nun etwas dauern.
 
-8. Mit Hilfe von `crontab -e` folgende regelmäßige Aufrufe konfigurieren:
+9. Mit Hilfe von `crontab -e` folgende regelmäßige Aufrufe konfigurieren:
    ```
    5 0 * * * <PATH_TO_SCRIPT>/evcc-influx-aggregate.sh --yesterday >> /var/log/evcc-grafana-dashboards.log 2>&1
    0 * * * * <PATH_TO_SCRIPT>/evcc-influx-aggregate.sh --today >> /var/log/evcc-grafana-dashboards.log 2>&1
@@ -52,7 +54,7 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
 
    Damit wird dann jede Nacht der gestrige Tage aggregiert, sowie jede volle Stunde einmal der aktuelle Tag. Die Ausgaben werden in der Datei `/var/log/evcc-grafana-dashboards.log` geloggt.
 
-9. Anlegen und Setzen der permissions des Log Files:
+10. Anlegen und Setzen der permissions des Log Files:
    ```bash
    sudo touch /var/log/evcc-grafana-dashboards.log
    sudo chown <USERNAME> /var/log/evcc-grafana-dashboards.log
@@ -71,7 +73,7 @@ Irgendwann war der Raspberry PI heillos damit überfordert alle Daten live zusam
 | `--today`                    | Aggregiere die Daten des heutigen Tages und des aktuellen Monats                         |
 | `--yesterday`                | Aggregiere die Daten des gestrigen Tages und des gestrigen Monats                        |
 | `--delete-aggregations`      | Lösche die Measurements der aggregierten Daten aus der Influx Datenbank. Das Löschen eines einzelnen Measurements kann durchaus einige Minuten benötigen. |
-| `--detect`                   | Suche die Loadpoints und Vehicles aus der Datenbank heraus. Es ist empfehlenswert dies einmal vor der ersten Aggregation auszuführen, um zu überprüfen ob die Namen der Loadpoints und Vehicles stimmen. Sollten hier noch ältere Werte gefunden werden, können diese in den Dashboards über die Blacklist Variable ausgeblendet werden. |
+| `--detect`                   | Suche die Loadpoints und Vehicles aus der Datenbank heraus. Es ist empfehlenswert dies einmal vor der ersten Aggregation auszuführen, um zu überprüfen ob die Namen der Loadpoints und Vehicles stimmen. Sollten hier noch ältere Werte gefunden werden, können diese in den Dashboards über die Blocklist Variable ausgeblendet werden. |
 | `--debug`                    | Aktiviere Debug Ausgabe zur Fehlersuche.                                                 |
 
 
