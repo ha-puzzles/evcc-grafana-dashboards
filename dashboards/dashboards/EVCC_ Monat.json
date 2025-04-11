@@ -1286,7 +1286,7 @@
           "links": [
             {
               "title": "PV Today",
-              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
           "mappings": [],
@@ -1740,7 +1740,7 @@
           "links": [
             {
               "title": "PV Today",
-              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
           "mappings": [],
@@ -1888,7 +1888,7 @@
           "links": [
             {
               "title": "PV Today",
-              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
           "mappings": [],
@@ -2185,12 +2185,7 @@
             "mode": "thresholds"
           },
           "decimals": 2,
-          "links": [
-            {
-              "title": "PV Today",
-              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-            }
-          ],
+          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -2376,7 +2371,7 @@
           "links": [
             {
               "title": "PV Today",
-              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
           "mappings": [],
@@ -2627,7 +2622,7 @@
           "links": [
             {
               "title": "PV Today",
-              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
           "mappings": [],
@@ -2902,6 +2897,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 202,
+  "version": 206,
   "weekStart": ""
 }
