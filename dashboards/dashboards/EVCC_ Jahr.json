@@ -1587,7 +1587,7 @@
           "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT value * (-1)  FROM \"loadpointMonthlyEnergy\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlacklist GROUP BY (\"loadpoint\"::tag)  TZ('$timezone')",
+          "query": "SELECT value * (-1)  FROM \"loadpointMonthlyEnergy\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY (\"loadpoint\"::tag)  TZ('$timezone')",
           "rawQuery": true,
           "refId": "Ladepunkte",
           "resultFormat": "time_series",
@@ -4454,6 +4454,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 245,
+  "version": 246,
   "weekStart": ""
 }
