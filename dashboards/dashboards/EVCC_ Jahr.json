@@ -2020,12 +2020,7 @@
             "mode": "thresholds"
           },
           "decimals": 2,
-          "links": [
-            {
-              "title": "PV Today",
-              "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-            }
-          ],
+          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -4454,6 +4449,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 246,
+  "version": 247,
   "weekStart": ""
 }

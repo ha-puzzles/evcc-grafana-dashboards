@@ -2703,7 +2703,7 @@
                 "value": [
                   {
                     "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                    "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
                   }
                 ]
               },
@@ -2878,7 +2878,7 @@
                 "value": [
                   {
                     "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                    "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
                   }
                 ]
               },
@@ -3051,7 +3051,7 @@
                 "value": [
                   {
                     "title": "PV Today",
-                    "url": "http://home:3001/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                    "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
                   }
                 ]
               },
@@ -5211,6 +5211,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 242,
+  "version": 243,
   "weekStart": ""
 }
