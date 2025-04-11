@@ -305,7 +305,7 @@ writeDailyPriceAggregation() {
     day=$5
     additionalWhere=$6
     additionalTags=$7
-    defaultPrice=$8
+    lastPrice=$8
     shift 8
     declare -a prices
     prices=("$@")
@@ -327,7 +327,7 @@ writeDailyPriceAggregation() {
     #                      day=${day}
     #                      additionalWhere=${additionalWhere}
     #                      additionalTags=${additionalTags}
-    #                      defaultPrice=${defaultPrice}
+    #                      lastPrice=${lastPrice}
     #                      prices=${prices[*]}"
 
     totalPrice=0
@@ -336,11 +336,12 @@ writeDailyPriceAggregation() {
     row=0
     while read -r value; do
         if [ "$value" != "" ]; then
-            if [ "${prices[$i]}" == "" ]; then
-                logDebug "Price for index $row is empty. Using last known price $defaultPrice."
-                totalPrice=$(echo "$totalPrice + $value * $defaultPrice" | bc)
+            if [ "${prices[$row]}" == "" ]; then
+                logDebug "Price for index $row is empty. Using last known price $lastPrice."
+                totalPrice=$(echo "$totalPrice + $value * $lastPrice" | bc)
             else
-                totalPrice=$(echo "$totalPrice + $value * ${prices[$i]}" | bc)
+                totalPrice=$(echo "$totalPrice + $value * ${prices[$row]}" | bc)
+                lastPrice=${prices[$row]}
             fi
             row=$((row+1))
         fi
