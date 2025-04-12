@@ -637,9 +637,9 @@
         "type": "gauge"
       }
     },
-    "ae8zw9y346bk0f": {
-      "name": "EVCC: Dynamischer Strompreis: Täglicher Durchschnitt",
-      "uid": "ae8zw9y346bk0f",
+    "feio30f3nm0owe": {
+      "name": "EVCC: Strombilanz",
+      "uid": "feio30f3nm0owe",
       "kind": 1,
       "model": {
         "datasource": {
@@ -652,35 +652,108 @@
             "color": {
               "mode": "thresholds"
             },
+            "decimals": 2,
+            "links": [],
             "mappings": [],
             "thresholds": {
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green",
+                  "color": "red",
                   "value": null
                 },
                 {
-                  "color": "red",
-                  "value": 80
+                  "color": "green",
+                  "value": 0
                 }
               ]
             },
-            "unit": "ct/kWh"
+            "unit": "€"
           },
           "overrides": [
             {
               "matcher": {
                 "id": "byName",
-                "options": "Durchschnitt"
+                "options": "tariffGridDailyMean.mean"
               },
               "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Strompreis: Arithmetisches Mittel"
+                },
                 {
                   "id": "color",
                   "value": {
                     "fixedColor": "text",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "unit",
+                  "value": "ct/kWh"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "weightedAveragePrice"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Effektiver Strompreis, dynamisch"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "text",
+                    "mode": "fixed"
+                  }
+                },
+                {
+                  "id": "unit",
+                  "value": "ct/KWh"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "savedPrice"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Eingesparter Strompreis durch dynamischen Tarif"
+                },
+                {
+                  "id": "unit",
+                  "value": "ct/kWh"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "totalSavings"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Einsparung durch dynamischen Tarif"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "potentialPurchased"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Potentieller Einkauf nach arithmetischen Preis"
                 }
               ]
             }
@@ -694,31 +767,250 @@
           "percentChangeColorMode": "standard",
           "reduceOptions": {
             "calcs": [
-              "mean"
+              "lastNotNull"
             ],
             "fields": "",
             "values": false
           },
           "showPercentChange": false,
+          "text": {
+            "titleSize": 12,
+            "valueSize": 20
+          },
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "11.4.0",
+        "pluginVersion": "11.6.0",
         "targets": [
           {
-            "alias": "Durchschnitt",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
             },
-            "hide": false,
-            "query": "SELECT \"value\" * 100 FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter  tz('$timezone')",
             "rawQuery": true,
-            "refId": "avgPrice",
-            "resultFormat": "time_series"
+            "refId": "energyPurchased",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT mean(\"value\") * 100 FROM \"tariffGridDailyMean\" WHERE $timeFilter",
+            "rawQuery": true,
+            "refId": "averagePrice",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "($purchased * -100 )/ $energyPurchased",
+            "hide": false,
+            "refId": "weightedAveragePrice",
+            "type": "math"
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "$averagePrice - $weightedAveragePrice",
+            "hide": false,
+            "refId": "savedPrice",
+            "type": "math"
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "$averagePrice * $energyPurchased / -100",
+            "hide": false,
+            "refId": "potentialPurchased",
+            "type": "math"
+          },
+          {
+            "alias": "Einkauf, dynamisch",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "1d"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "measurement": "pvPower",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(value) * (-1) FROM energyPurchasedDailyPrice WHERE $timeFilter  tz('$timezone')",
+            "rawQuery": true,
+            "refId": "purchased",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "$purchased  - $potentialPurchased ",
+            "hide": false,
+            "refId": "totalSavings",
+            "type": "math"
+          },
+          {
+            "alias": "Verkauf (Einspeisung)",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "1d"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "pvPower",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT sum(value) * (-1) FROM energySoldDailyPrice WHERE $timeFilter  tz('$timezone')",
+            "rawQuery": true,
+            "refId": "sold",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "$purchased + $sold",
+            "hide": false,
+            "refId": "Bilanz",
+            "type": "math"
           }
         ],
-        "title": "Durchschnittlicher Strompreis",
+        "title": "Strombilanz",
         "transparent": true,
         "type": "stat"
       }
@@ -1985,15 +2277,15 @@
     },
     {
       "gridPos": {
-        "h": 8,
+        "h": 16,
         "w": 4,
         "x": 0,
         "y": 21
       },
-      "id": 53,
+      "id": 65,
       "libraryPanel": {
-        "uid": "ae8zw9y346bk0f",
-        "name": "EVCC: Dynamischer Strompreis: Täglicher Durchschnitt"
+        "uid": "feio30f3nm0owe",
+        "name": "EVCC: Strombilanz"
       }
     },
     {
@@ -2008,167 +2300,6 @@
         "uid": "ae8zwbjv24kqof",
         "name": "EVCC: Dynamischer Strompreis: Täglich"
       }
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "currencyEUR"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 4,
-        "x": 0,
-        "y": 29
-      },
-      "id": 64,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 12,
-          "valueSize": 20
-        },
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.6.0",
-      "targets": [
-        {
-          "alias": "Einkauf",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(value) FROM energyPurchasedMonthlyPrice WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "purchased",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Verkauf",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT sum(value) FROM energySoldMonthlyPrice WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "sold",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "datasource": {
-            "type": "__expr__",
-            "uid": "${DS_EXPRESSION}"
-          },
-          "expression": "$purchased + $sold",
-          "hide": false,
-          "refId": "Bilanz",
-          "type": "math"
-        }
-      ],
-      "title": "Stromkosten",
-      "transparent": true,
-      "type": "stat"
     },
     {
       "datasource": {
@@ -4449,6 +4580,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 247,
+  "version": 248,
   "weekStart": ""
 }
