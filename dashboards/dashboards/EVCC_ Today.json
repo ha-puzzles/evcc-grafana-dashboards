@@ -3527,7 +3527,7 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
+          "hide": true,
           "query": "SELECT \"value\" *(-1)/1000 FROM \"extPower\" WHERE $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "Ext",
@@ -3877,6 +3877,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 212,
+  "version": 213,
   "weekStart": ""
 }
