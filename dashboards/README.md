@@ -11,8 +11,17 @@ Real-time Statistiken des aktuellen Tages für Desktops oder Tablets.
 
 Real-time Statistiken des aktuellen Tages, optimiert für mobile Geräte.
 
-![Mobile Screenshot](img/mobile-1.png) ![Mobile Screenshot](img/mobile-2.png)
+![Mobile Screenshot](img/mobile.png)
 
+
+# Today Details
+
+Weitere Details, die bei der Fehlersuche helfen können wie 
+- die Leistung der einzelnen PVs oder Batteriemodule, falls mehrere konfiguriert sind.
+- Leistung und Ströme der einzelnen Phasen
+- Ladeströme der Wallboxen
+
+![Today Details Screenshot](img/today-details.png)
 
 # Monat
 
@@ -45,20 +54,13 @@ Statistiken über den gesamten erfassten  Datenzeitraum bestehend aus zwei Teile
 
 
 > [!NOTE]
-> Dieses Dashboard benötigt monatliche aggregierte Daten. Siehe [scripts](../scripts/) für das Aggregierungsskript.
+> Dieses Dashboard benötigt täglich und monatlich aggregierte Daten. Siehe [scripts](../scripts/) für das Aggregierungsskript.
 
 ![All-Time Screenshot](img/all-time.png)
 
-# Today Details
-
-Weitere Details, die bei der Fehlersuche helfen können wie 
-- die Leistung der einzelnen PVs oder Batteriemodule, falls mehrere konfiguriert sind.
-- Leistung und Ströme der einzelnen Phasen
-- Ladeströme der Wallboxen
-
-![Today Details Screenshot](img/today-details.png)
-
 # Anpassungen
+
+Ganz ohne manuelle Anpassungen geht es leider nicht. Hier einige Dinge, die noch nach dem Import gemacht werden müssen.
 
 ## Gemeinsame Einstellungen von allen Dashboards
 - Jedes Dashboard hat eigene Parameter. Da es leider keine globalen Variablen in Grafana gibt, müssen diese einmal pro Dashboard während des Imports angepasst werden.
@@ -80,13 +82,13 @@ Weitere Details, die bei der Fehlersuche helfen können wie
     | Filtere alles, das mit '(offline)' endet aus | `/^.*\(offline\)$/` |
 
 ## Today und Today (Mobile)
-- Anpassen von (Soft)Min und (Softt)Max angepasst werden müssen je nach maximaler Leistung von PV und Ladepunkten:
+- Anpassen von (Soft)Min und (Softt)Max je nach maximaler Leistung von PV und Ladepunkten in folgenden Panels:
   - Gauges auf der linken Seite
   - Verlaufschart in der Mitte
   - Energie unten rechts
 
 ## All-time
-- Unter den Dashboard Settings di Default Werte der Variablen, wie die Investitionskosten, anpassen.
+- Unter den Dashboard Settings die Default Werte der Variablen, wie die Investitionskosten, anpassen.
 - Zeitraum anpassen: Startdatum unter 'From' auswählen und in 'To' muss `now` stehen.
 
   ![Zeitraum anpassen](img/time-range.png)
@@ -99,10 +101,10 @@ Weitere Details, die bei der Fehlersuche helfen können wie
   4. Oben rechts auf das Dashboard zurückgehen. Nun taucht hier eine Auswahlbox oben für das Fahrzeug auf. Hier ist 'All' vorausgewählt. Diese Auswahl auf die gewünschten Fahrzeuge ändern:
       
     ![Fahrzeugauswahl](img/select-vehicle.png)
-  5. *Optional*: Mit Schritt 1-3 die variable wieder verstecken, wenn man sie nicht mehr sehen will. Oder einfach sichtbar lassen, dann kann man die Auswahl in Zukunft schnell ändern
+  5. *Optional*: Mit Schritt 1-3 die variable wieder verstecken, wenn man sie nicht mehr sehen will. Oder einfach sichtbar lassen, dann kann man die Auswahl in Zukunft schnell ändern.
   2. Dashboard abspeichern. Dabei 'Update default variable values' auswählen.
 
-      ![Dashboard abspeichern](img/save-dashboard.png)
+    ![Dashboard abspeichern](img/save-dashboard.png)
 
 ## Today Details
 - Mittels overrides können den einzelnen PV Teilen Namen zugewiesen werden.
