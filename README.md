@@ -141,7 +141,7 @@ Was ich evaluiert habe ist die Nutzung von Continuous Queries innerhalb von Infl
 
 Die einzige Möglichkeit, die ich hier sehe ist das Shell Script auf einem externen Linux System zu konfigurieren, das sich remote mit der Influx DB auf dem HAOS System verbindet. Siehe die [Dokumentation des Aggregations Scriptes](./scripts/README.md) wie man es so konfiguriert, dass man es auf einem externen Linux System laufen lassen kann.
 
-### Nach dem Upgrade siehen die Dashboards irgendwie komisch aus
+### Nach dem Upgrade sehen die Dashboards irgendwie komisch aus
 
 Hast Du die Upgrade Schritte, insbesondere das Löschen der Library Panels befolgt, bevor Du die neuen Dashboards importiert hast?
 
