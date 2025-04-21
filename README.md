@@ -131,7 +131,7 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
 
 Leider nur sehr eingeschränkt und daher nicht zu empfehlen. 
 
-Wer Influx 2 mit FluxQL nutzt kann die Today Dashboards nutzen. Alle Dashboards, die aggregierte Daten brauchen werden allerdings nicht unterstützt, da ich derzeit keine Möglichkeit sehe mit dem Influx 2 CLI direkte Queries auszuführen (siehe #14). Eine Unterstützung der Query Language Flux bedeutet einen kompletten Rewrite. Diesen Rewrite plane ich allerdings nicht zu machen, da Influx 2 mit Flux eine Einbahnstraße geworden ist. Siehe auch: [The Plan for InfluxDB 3.0 Open Source](https://www.influxdata.com/blog/the-plan-for-influxdb-3-0-open-source/)
+Wer Influx 2 mit InfluxQL nutzt kann die Today Dashboards nutzen. Alle Dashboards, die aggregierte Daten brauchen werden allerdings nicht unterstützt, da ich derzeit keine Möglichkeit sehe mit dem Influx 2 CLI direkte Queries auszuführen (siehe #14). Eine Unterstützung der Query Language Flux bedeutet einen kompletten Rewrite. Diesen Rewrite plane ich allerdings nicht zu machen, da Influx 2 mit Flux eine Einbahnstraße geworden ist. Siehe auch: [The Plan for InfluxDB 3.0 Open Source](https://www.influxdata.com/blog/the-plan-for-influxdb-3-0-open-source/)
 
 ### Wie führe ich das Aggregation Script unter HAOS aus?
 
