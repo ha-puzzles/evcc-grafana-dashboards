@@ -98,7 +98,7 @@ Falls schon eine ältere Version installiert worden ist, hier die Schritte um di
 
 1. Ein Backup der aktuellen Grafana Datenbank erstellen für den Fall der Fälle.
    1. Grafana stoppen: `sudo systemctl stop grafana-server`
-   2. Ein Backup der Grafana Datenbank in /tmp erstellen: `cp -rv /usr/lib/grafana /tmp`
+   2. Ein Backup der Grafana Datenbank in /tmp erstellen: `cp -rv /var/lib/grafana /tmp`
    3. Grafana starten: `sudo systemctl start grafana-server`
 2. Grafana im Browser öffnen und im Menü auf 'Dashboards' clicken.
 3. Alle EVCC PV Dashboards löschen.
