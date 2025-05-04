@@ -384,7 +384,7 @@ writeDailyPriceAggregations() {
         lastGridPrice=0
     fi
     
-    query="SELECT last("value") FROM "tariffGrid" WHERE ${timeCondition} GROUP BY time($TARIFF_PRICE_INTERVAL) TZ('$TIMEZONE')"
+    query="SELECT last("value") FROM "tariffGrid" WHERE ${timeCondition} GROUP BY time($TARIFF_PRICE_INTERVAL) fill(previous) TZ('$TIMEZONE')"
     logDebug "Query: $query"
     declare -a gridPrices
     row=0
@@ -410,7 +410,7 @@ writeDailyPriceAggregations() {
         lastFeedInPrice=0
     fi
 
-    query="SELECT last("value") FROM "tariffFeedIn" WHERE ${timeCondition} GROUP BY time($TARIFF_PRICE_INTERVAL) TZ('$TIMEZONE')"
+    query="SELECT last("value") FROM "tariffFeedIn" WHERE ${timeCondition} GROUP BY time($TARIFF_PRICE_INTERVAL) fill(previous) TZ('$TIMEZONE')"
     logDebug "Query: $query"
     declare -a feedInPrices
     row=0
@@ -436,7 +436,7 @@ writeDailyPriceAggregations() {
     fi
 
     # Charge prices can vary way more often than hourly. But let's assume that during one session we either do fast charging
-    # or surplus charging, so let's hope an average over an hour is accurate enough.
+    # or surplus charging, so let's hope an average over the tarif price interval is accurate enough.
     query="SELECT mean("value") FROM "tariffPriceLoadpoints" WHERE ${timeCondition} GROUP BY time($TARIFF_PRICE_INTERVAL) TZ('$TIMEZONE')"
     logDebug "Query: $query"
     declare -a chargePrices
