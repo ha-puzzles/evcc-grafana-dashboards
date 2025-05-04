@@ -42,6 +42,13 @@
       "label": "Energie Abtast Interval",
       "value": "60s",
       "description": ""
+    },
+    {
+      "name": "VAR_TARIFFPRICEINTERVAL",
+      "type": "constant",
+      "label": "Stromtarif Interval",
+      "value": "15m",
+      "description": ""
     }
   ],
   "__elements": {},
@@ -61,7 +68,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.6.0"
+      "version": "11.6.1"
     },
     {
       "type": "datasource",
@@ -287,7 +294,7 @@
         },
         "valueMode": "color"
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Gesamt",
@@ -404,7 +411,7 @@
             "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 20,
-            "gradientMode": "opacity",
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -526,7 +533,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Gesamt",
@@ -692,7 +699,7 @@
         },
         "valueMode": "color"
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Gesamt",
@@ -868,7 +875,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Gesamt",
@@ -1075,7 +1082,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Max",
@@ -1139,7 +1146,7 @@
             "axisSoftMin": 0.2,
             "axisWidth": 50,
             "barAlignment": 1,
-            "barWidthFactor": 0.8,
+            "barWidthFactor": 0.9,
             "drawStyle": "bars",
             "fillOpacity": 80,
             "gradientMode": "scheme",
@@ -1257,7 +1264,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Preis",
@@ -1265,7 +1272,7 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(previous) tz('$timezone')",
           "rawQuery": true,
           "refId": "Tarif",
           "resultFormat": "time_series"
@@ -1412,7 +1419,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "",
@@ -1437,7 +1444,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(previous) tz('$timezone')",
           "rawQuery": true,
           "refId": "tariffGrid",
           "resultFormat": "time_series",
@@ -1480,7 +1487,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(0) tz('$timezone')",
           "rawQuery": true,
           "refId": "grid",
           "resultFormat": "time_series",
@@ -1506,7 +1513,7 @@
             "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": true,
-          "query": "SELECT last(\"value\") FROM \"tariffFeedIn\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"tariffFeedIn\" WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(previous) tz('$timezone')",
           "rawQuery": true,
           "refId": "tariffFeedin",
           "resultFormat": "time_series"
@@ -1534,7 +1541,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(0) tz('$timezone')",
           "rawQuery": true,
           "refId": "feedIn",
           "resultFormat": "time_series",
@@ -1742,7 +1749,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "",
@@ -1767,7 +1774,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(previous) tz('$timezone')",
           "rawQuery": true,
           "refId": "tariffGrid",
           "resultFormat": "time_series",
@@ -1810,7 +1817,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(0) tz('$timezone')",
           "rawQuery": true,
           "refId": "grid",
           "resultFormat": "time_series",
@@ -1853,7 +1860,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT last(\"value\") FROM \"tariffFeedIn\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
+          "query": "SELECT last(\"value\") FROM \"tariffFeedIn\" WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(previous) tz('$timezone')",
           "rawQuery": true,
           "refId": "tariffFeedIn",
           "resultFormat": "time_series",
@@ -1896,7 +1903,7 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1h) fill(0) tz('$timezone')",
+          "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value <=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(0) tz('$timezone')",
           "rawQuery": true,
           "refId": "feedIn",
           "resultFormat": "time_series",
@@ -2028,7 +2035,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "PV Vorhersage",
@@ -2125,7 +2132,7 @@
             "lineStyle": {
               "fill": "solid"
             },
-            "lineWidth": 1,
+            "lineWidth": 2,
             "pointSize": 3,
             "scaleDistribution": {
               "type": "linear"
@@ -2163,10 +2170,6 @@
             },
             "properties": [
               {
-                "id": "custom.lineWidth",
-                "value": 1
-              },
-              {
                 "id": "color",
                 "value": {
                   "fixedColor": "green",
@@ -2176,6 +2179,10 @@
               {
                 "id": "custom.gradientMode",
                 "value": "opacity"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
               }
             ]
           },
@@ -2221,7 +2228,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "PV Vorhersage",
@@ -2384,7 +2391,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Max",
@@ -2565,7 +2572,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "CO2",
@@ -2663,7 +2670,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Strom L1",
@@ -2868,7 +2875,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Strom L1",
@@ -3046,7 +3053,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Leistung L1",
@@ -3251,7 +3258,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Leistung L1",
@@ -3442,7 +3449,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "L1 $loadpoint",
@@ -3678,7 +3685,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "L1 $loadpoint",
@@ -3975,7 +3982,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "1 phasig: $loadpoint",
@@ -4104,7 +4111,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.6.1",
       "targets": [
         {
           "alias": "Ladeleistung $loadpoint",
@@ -4229,6 +4236,27 @@
             "selected": false
           }
         ]
+      },
+      {
+        "description": "Interval in dem der Stromtarif sich ändert. Ändert er sich im Stundentakt, kann das auf '1h' geändert werden. Hat man einen konstanten Tarif, dann auf '1d' für einen Tag.",
+        "hide": 2,
+        "label": "Stromtarif Interval",
+        "name": "tariffPriceInterval",
+        "query": "${VAR_TARIFFPRICEINTERVAL}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_TARIFFPRICEINTERVAL}",
+          "text": "${VAR_TARIFFPRICEINTERVAL}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_TARIFFPRICEINTERVAL}",
+            "text": "${VAR_TARIFFPRICEINTERVAL}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -4237,9 +4265,9 @@
     "to": "now/d"
   },
   "timepicker": {},
-  "timezone": "Europe/Berlin",
+  "timezone": "browser",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 97,
+  "version": 104,
   "weekStart": ""
 }
