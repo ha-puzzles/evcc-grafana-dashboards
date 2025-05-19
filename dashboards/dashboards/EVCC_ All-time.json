@@ -31,17 +31,17 @@
       "description": ""
     },
     {
-      "name": "VAR_LOADPOINTBLOCKLIST",
-      "type": "constant",
-      "label": "Blocklist für Loadpoints",
-      "value": "/^none$/",
-      "description": ""
-    },
-    {
       "name": "VAR_VEHICLEBLOCKLIST",
       "type": "constant",
       "label": "Blocklist für Fahrzeuge",
       "value": "/^Mr White.*$|^.*\\(offline\\)$/",
+      "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINTBLOCKLIST",
+      "type": "constant",
+      "label": "Blocklist für Loadpoints",
+      "value": "/^none$/",
       "description": ""
     }
   ],
@@ -61,6 +61,27 @@
             "color": {
               "fixedColor": "orange",
               "mode": "fixed"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "hidden",
+              "fillOpacity": 100,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
             },
             "mappings": [],
             "thresholds": {
@@ -168,33 +189,28 @@
           ]
         },
         "options": {
-          "displayMode": "basic",
+          "barRadius": 0.2,
+          "barWidth": 0.7,
+          "fullHighlight": false,
+          "groupWidth": 1,
           "legend": {
             "calcs": [],
             "displayMode": "list",
             "placement": "bottom",
-            "showLegend": false
+            "showLegend": true
           },
-          "maxVizHeight": 300,
-          "minVizHeight": 10,
-          "minVizWidth": 0,
-          "namePlacement": "top",
-          "orientation": "horizontal",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
           },
-          "showUnfilled": true,
-          "sizing": "manual",
-          "text": {
-            "titleSize": 12
-          },
-          "valueMode": "text"
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 0
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -352,7 +368,7 @@
         ],
         "title": "Energie",
         "transparent": true,
-        "type": "bargauge"
+        "type": "barchart"
       }
     },
     "c872420b-86a9-4544-9e33-f367a07f9e40": {
@@ -1258,7 +1274,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.6.0"
+      "version": "12.0.0"
     },
     {
       "type": "datasource",
@@ -1372,7 +1388,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1426,9 +1442,9 @@
       "id": 25,
       "options": {
         "barRadius": 0.2,
-        "barWidth": 0.97,
+        "barWidth": 0.7,
         "fullHighlight": false,
-        "groupWidth": 0.7,
+        "groupWidth": 1,
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1448,7 +1464,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -1557,7 +1573,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1672,7 +1688,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "",
@@ -1797,7 +1813,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1851,9 +1867,9 @@
       "id": 29,
       "options": {
         "barRadius": 0.2,
-        "barWidth": 0.97,
+        "barWidth": 0.7,
         "fullHighlight": false,
-        "groupWidth": 0.7,
+        "groupWidth": 1,
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1873,7 +1889,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -1982,7 +1998,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2098,7 +2114,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "",
@@ -2210,7 +2226,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2264,9 +2280,9 @@
       "id": 30,
       "options": {
         "barRadius": 0.2,
-        "barWidth": 0.97,
+        "barWidth": 0.69,
         "fullHighlight": false,
-        "groupWidth": 0.7,
+        "groupWidth": 1,
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2286,7 +2302,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -2395,7 +2411,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2511,7 +2527,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "",
@@ -2636,7 +2652,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2690,9 +2706,9 @@
       "id": 31,
       "options": {
         "barRadius": 0.2,
-        "barWidth": 0.97,
+        "barWidth": 0.7,
         "fullHighlight": false,
-        "groupWidth": 0.7,
+        "groupWidth": 1,
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -2712,7 +2728,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -2821,7 +2837,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2937,7 +2953,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "",
@@ -3144,7 +3160,7 @@
           }
         ]
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "PV Energie",
@@ -3319,7 +3335,7 @@
           }
         ]
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Einspeisung",
@@ -3492,7 +3508,7 @@
           }
         ]
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -3587,7 +3603,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3679,13 +3695,9 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "dark-red",
+                  "fixedColor": "red",
                   "mode": "fixed"
                 }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 80
               }
             ]
           },
@@ -3705,10 +3717,6 @@
                   "fixedColor": "green",
                   "mode": "fixed"
                 }
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 80
               }
             ]
           }
@@ -3735,7 +3743,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -4052,7 +4060,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -4567,7 +4575,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -5553,27 +5561,6 @@
         "type": "query"
       },
       {
-        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
-        "hide": 2,
-        "label": "Blocklist für Loadpoints",
-        "name": "loadpointBlocklist",
-        "query": "${VAR_LOADPOINTBLOCKLIST}",
-        "skipUrlSync": true,
-        "type": "constant",
-        "current": {
-          "value": "${VAR_LOADPOINTBLOCKLIST}",
-          "text": "${VAR_LOADPOINTBLOCKLIST}",
-          "selected": false
-        },
-        "options": [
-          {
-            "value": "${VAR_LOADPOINTBLOCKLIST}",
-            "text": "${VAR_LOADPOINTBLOCKLIST}",
-            "selected": false
-          }
-        ]
-      },
-      {
         "description": "Liste der Fahrzeuge, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere Fahrzeuge mit (offline) am Ende aus: /^.*\\(offline\\)$/",
         "hide": 2,
         "label": "Blocklist für Fahrzeuge",
@@ -5593,6 +5580,27 @@
             "selected": false
           }
         ]
+      },
+      {
+        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "hide": 2,
+        "label": "Blocklist für Loadpoints",
+        "name": "loadpointBlocklist",
+        "query": "${VAR_LOADPOINTBLOCKLIST}",
+        "skipUrlSync": true,
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINTBLOCKLIST}",
+          "text": "${VAR_LOADPOINTBLOCKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINTBLOCKLIST}",
+            "text": "${VAR_LOADPOINTBLOCKLIST}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
@@ -5604,6 +5612,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 244,
+  "version": 247,
   "weekStart": ""
 }
