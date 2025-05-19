@@ -54,6 +54,27 @@
               "fixedColor": "orange",
               "mode": "fixed"
             },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "hidden",
+              "fillOpacity": 100,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
             "mappings": [],
             "thresholds": {
               "mode": "absolute",
@@ -160,33 +181,28 @@
           ]
         },
         "options": {
-          "displayMode": "basic",
+          "barRadius": 0.2,
+          "barWidth": 0.7,
+          "fullHighlight": false,
+          "groupWidth": 1,
           "legend": {
             "calcs": [],
             "displayMode": "list",
             "placement": "bottom",
-            "showLegend": false
+            "showLegend": true
           },
-          "maxVizHeight": 300,
-          "minVizHeight": 10,
-          "minVizWidth": 0,
-          "namePlacement": "top",
-          "orientation": "horizontal",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
           },
-          "showUnfilled": true,
-          "sizing": "manual",
-          "text": {
-            "titleSize": 12
-          },
-          "valueMode": "text"
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 0
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -344,7 +360,7 @@
         ],
         "title": "Energie",
         "transparent": true,
-        "type": "bargauge"
+        "type": "barchart"
       }
     },
     "c872420b-86a9-4544-9e33-f367a07f9e40": {
@@ -1141,7 +1157,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "Max",
@@ -1179,7 +1195,7 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Dynamischer Strompreis",
+        "title": "Strompreis",
         "type": "timeseries"
       }
     },
@@ -1418,7 +1434,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.6.0"
+      "version": "12.0.0"
     },
     {
       "type": "panel",
@@ -1569,14 +1585,14 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineWidth": 1,
+            "lineWidth": 0,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -1704,8 +1720,8 @@
       },
       "id": 47,
       "options": {
-        "barRadius": 0.2,
-        "barWidth": 0.97,
+        "barRadius": 0,
+        "barWidth": 0.7,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
@@ -1715,8 +1731,8 @@
           "showLegend": true
         },
         "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
+        "showValue": "never",
+        "stacking": "normal",
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
@@ -1725,7 +1741,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "PV",
@@ -1978,7 +1994,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2070,7 +2086,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2318,7 +2334,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2412,7 +2428,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Einkauf",
@@ -2602,7 +2618,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "PV/Tag",
@@ -2914,7 +2930,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "PV",
@@ -3206,7 +3222,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Maximaler Batterie SOC/Tag",
@@ -3333,7 +3349,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Minimaler Batterie SOC/Tag",
@@ -3405,7 +3421,7 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3501,7 +3517,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3549,7 +3565,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3631,7 +3647,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3819,7 +3835,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Kilometerstand: $tag_vehicle",
@@ -3985,7 +4001,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -4077,7 +4093,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Gefahren: $tag_vehicle",
@@ -4143,7 +4159,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -4236,7 +4252,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Energie: $tag_vehicle",
@@ -4303,7 +4319,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -4395,7 +4411,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "",
@@ -4580,6 +4596,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 248,
+  "version": 250,
   "weekStart": ""
 }

@@ -69,6 +69,27 @@
               "fixedColor": "orange",
               "mode": "fixed"
             },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "hidden",
+              "fillOpacity": 100,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
             "mappings": [],
             "thresholds": {
               "mode": "absolute",
@@ -175,33 +196,28 @@
           ]
         },
         "options": {
-          "displayMode": "basic",
+          "barRadius": 0.2,
+          "barWidth": 0.7,
+          "fullHighlight": false,
+          "groupWidth": 1,
           "legend": {
             "calcs": [],
             "displayMode": "list",
             "placement": "bottom",
-            "showLegend": false
+            "showLegend": true
           },
-          "maxVizHeight": 300,
-          "minVizHeight": 10,
-          "minVizWidth": 0,
-          "namePlacement": "top",
-          "orientation": "horizontal",
-          "reduceOptions": {
-            "calcs": [
-              "lastNotNull"
-            ],
-            "fields": "",
-            "values": false
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "tooltip": {
+            "hideZeros": false,
+            "mode": "single",
+            "sort": "none"
           },
-          "showUnfilled": true,
-          "sizing": "manual",
-          "text": {
-            "titleSize": 12
-          },
-          "valueMode": "text"
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 0
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -359,7 +375,7 @@
         ],
         "title": "Energie",
         "transparent": true,
-        "type": "bargauge"
+        "type": "barchart"
       }
     },
     "c872420b-86a9-4544-9e33-f367a07f9e40": {
@@ -1156,7 +1172,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "Max",
@@ -1194,7 +1210,7 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Dynamischer Strompreis",
+        "title": "Strompreis",
         "type": "timeseries"
       }
     },
@@ -1433,7 +1449,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.6.0"
+      "version": "12.0.0"
     },
     {
       "type": "datasource",
@@ -1559,14 +1575,14 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineWidth": 1,
+            "lineWidth": 0,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -1703,8 +1719,8 @@
       },
       "id": 25,
       "options": {
-        "barRadius": 0.2,
-        "barWidth": 0.97,
+        "barRadius": 0,
+        "barWidth": 0.7,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
@@ -1714,8 +1730,8 @@
           "showLegend": true
         },
         "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
+        "showValue": "never",
+        "stacking": "normal",
         "tooltip": {
           "hideZeros": false,
           "mode": "multi",
@@ -1724,7 +1740,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "PV",
@@ -1936,7 +1952,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "PV",
@@ -2014,7 +2030,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2061,7 +2077,7 @@
       "id": 13,
       "options": {
         "barRadius": 0.2,
-        "barWidth": 0.97,
+        "barWidth": 0.7,
         "fullHighlight": false,
         "groupWidth": 0.7,
         "legend": {
@@ -2081,7 +2097,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Maximale PV Leistung",
@@ -2162,7 +2178,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2266,7 +2282,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "datasource": {
@@ -2483,7 +2499,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2601,7 +2617,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Einkauf",
@@ -2735,7 +2751,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 20,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2832,7 +2848,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "Speicher max",
@@ -3028,6 +3044,6 @@
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 209,
+  "version": 216,
   "weekStart": ""
 }

@@ -89,13 +89,13 @@
               "axisGridShow": true,
               "axisLabel": "",
               "axisPlacement": "auto",
-              "axisSoftMax": 10000,
-              "axisSoftMin": -10000,
+              "axisSoftMax": 9000,
+              "axisSoftMin": -9000,
               "axisWidth": 50,
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 20,
+              "fillOpacity": 60,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -119,10 +119,12 @@
                 "mode": "none"
               },
               "thresholdsStyle": {
-                "mode": "dashed"
+                "mode": "line"
               }
             },
             "mappings": [],
+            "max": 12000,
+            "min": -12000,
             "thresholds": {
               "mode": "absolute",
               "steps": [
@@ -131,7 +133,7 @@
                   "value": null
                 },
                 {
-                  "color": "text",
+                  "color": "#b3b3b3",
                   "value": 0
                 }
               ]
@@ -260,7 +262,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "PV",
@@ -410,7 +412,7 @@
                 "type": "fill"
               }
             ],
-            "hide": false,
+            "hide": true,
             "orderByTime": "ASC",
             "policy": "default",
             "query": "SELECT max(\"value\") * (-1) FROM \"extPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
@@ -532,7 +534,7 @@
           "type": "influxdb",
           "uid": "${DS_EVCC_INFLUXDB}"
         },
-        "description": "Grün: Prioritisierunggrenze für Autoladung\n\nRot: Tiefentladegrenze des Hausspeichers",
+        "description": "Schwarz: Prioritisierunggrenze für Autoladung\n\nGrün: Ladelimit für Autos\n\nRot: Tiefentladegrenze des Hausspeichers",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -550,14 +552,14 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 20,
-              "gradientMode": "opacity",
+              "fillOpacity": 60,
+              "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
                 "viz": false
               },
-              "insertNulls": 1800000,
+              "insertNulls": 3600000,
               "lineInterpolation": "linear",
               "lineStyle": {
                 "fill": "solid"
@@ -591,11 +593,15 @@
                 },
                 {
                   "color": "red",
-                  "value": 20
+                  "value": 10
                 },
                 {
                   "color": "green",
                   "value": 80
+                },
+                {
+                  "color": "text",
+                  "value": 90
                 }
               ]
             },
@@ -677,7 +683,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "Speicher",
@@ -1134,8 +1140,8 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 20,
-              "gradientMode": "opacity",
+              "fillOpacity": 100,
+              "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
@@ -1256,7 +1262,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "netzbezug",
@@ -1518,7 +1524,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "fillOpacity": 20,
+              "fillOpacity": 100,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -1714,7 +1720,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
           {
             "alias": "PV",
@@ -1889,49 +1895,6 @@
             "tags": []
           },
           {
-            "alias": "Speicher laden",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT min(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
-            "rawQuery": true,
-            "refId": "Laden",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
             "alias": "Speicher entladen",
             "datasource": {
               "type": "influxdb",
@@ -1957,6 +1920,49 @@
             "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value >=0 AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "Entladen",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Speicher laden",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT integral(\"subquery\") /3600000 FROM (SELECT min(\"value\") AS \"subquery\" FROM \"batteryPower\" WHERE $timeFilter and value <=0 AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0)  tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "rawQuery": true,
+            "refId": "Laden",
             "resultFormat": "time_series",
             "select": [
               [
@@ -2163,7 +2169,7 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 80,
+              "fillOpacity": 100,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -2268,7 +2274,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Einspeisung"
+                  "value": "Netzbezug"
                 }
               ]
             },
@@ -2372,51 +2378,8 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.0",
         "targets": [
-          {
-            "alias": "PV",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
-            "rawQuery": true,
-            "refId": "PV Leistung",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
           {
             "alias": "Netzleistung",
             "datasource": {
@@ -2443,71 +2406,6 @@
             "query": "SELECT max(\"value\") FROM \"gridPower\" WHERE $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "netzleistung",
-            "resultFormat": "time_series",
-            "select": [
-              [
-                {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
-                },
-                {
-                  "params": [],
-                  "type": "mean"
-                }
-              ]
-            ],
-            "tags": []
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "(abs($netzleistung) + $netzleistung) / 2",
-            "hide": false,
-            "refId": "Netzbezug",
-            "type": "math"
-          },
-          {
-            "datasource": {
-              "name": "Expression",
-              "type": "__expr__",
-              "uid": "__expr__"
-            },
-            "expression": "-(abs($netzleistung) - $netzleistung) / 2",
-            "hide": false,
-            "refId": "Einspeisung",
-            "type": "math"
-          },
-          {
-            "alias": "Haus",
-            "datasource": {
-              "type": "influxdb",
-              "uid": "L-nZgczgk"
-            },
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "null"
-                ],
-                "type": "fill"
-              }
-            ],
-            "hide": false,
-            "orderByTime": "ASC",
-            "policy": "default",
-            "query": "SELECT max(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
-            "rawQuery": true,
-            "refId": "Hausverbrauch",
             "resultFormat": "time_series",
             "select": [
               [
@@ -2574,9 +2472,74 @@
               "type": "__expr__",
               "uid": "__expr__"
             },
+            "expression": "(abs($netzleistung) + $netzleistung) / 2",
+            "hide": false,
+            "refId": "Netzbezug",
+            "type": "math"
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
             "expression": "(abs($batterieleistung) - $batterieleistung) / 2",
             "hide": false,
             "refId": "Speicher entladen",
+            "type": "math"
+          },
+          {
+            "alias": "PV",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "PV Leistung",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "-(abs($netzleistung) - $netzleistung) / 2",
+            "hide": false,
+            "refId": "Einspeisung",
             "type": "math"
           },
           {
@@ -2616,6 +2579,49 @@
             "query": "SELECT max(\"value\") * (-1) FROM \"chargePower\" WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY time($energySampleInterval), \"loadpoint\"::tag fill(none) tz('$timezone')",
             "rawQuery": true,
             "refId": "loadpoints",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "alias": "Haus",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT max(\"value\") * (-1) FROM \"homePower\" WHERE (\"value\"::field < $peakPowerLimit) AND $timeFilter GROUP BY time($energySampleInterval) fill(none) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "Hausverbrauch",
             "resultFormat": "time_series",
             "select": [
               [
@@ -2991,7 +2997,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.6.0"
+      "version": "12.0.0"
     },
     {
       "type": "datasource",
@@ -3432,7 +3438,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.0.0",
       "targets": [
         {
           "alias": "PV",
@@ -3877,6 +3883,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 213,
+  "version": 214,
   "weekStart": ""
 }
