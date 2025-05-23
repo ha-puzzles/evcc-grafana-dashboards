@@ -1036,7 +1036,7 @@
           "type": "influxdb",
           "uid": "${DS_EVCC_INFLUXDB}"
         },
-        "description": "Schwarz: Prioritisierunggrenze für Autoladung\n\nGrün: Ladelimit für Autos\n\nRot: Tiefentladegrenze des Hausspeichers",
+        "description": "Schwarz: Prioritisierunggrenze für Autoladung",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -1090,20 +1090,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "red",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 10
-                },
-                {
-                  "color": "green",
-                  "value": 80
-                },
-                {
                   "color": "text",
-                  "value": 90
+                  "value": null
                 }
               ]
             },
@@ -1257,9 +1245,76 @@
               ]
             ],
             "tags": []
+          },
+          {
+            "alias": "",
+            "datasource": {
+              "type": "influxdb",
+              "uid": "L-nZgczgk"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "10m"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "none"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": false,
+            "measurement": "batterySoc",
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT last(\"value\") FROM \"prioritySoc\" GROUP BY time(5m) fill(none) tz('$timezone')",
+            "rawQuery": true,
+            "refId": "prioritySoc",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "max"
+                }
+              ]
+            ],
+            "tags": []
           }
         ],
         "title": "Batteriestände",
+        "transformations": [
+          {
+            "id": "configFromData",
+            "options": {
+              "applyTo": {
+                "id": "byFrameRefID",
+                "options": "Speicher"
+              },
+              "configRefId": "prioritySoc",
+              "mappings": [
+                {
+                  "fieldName": "prioritySoc.last",
+                  "handlerArguments": {
+                    "threshold": {
+                      "color": "text"
+                    }
+                  },
+                  "handlerKey": "threshold1"
+                }
+              ]
+            }
+          }
+        ],
         "transparent": true,
         "type": "timeseries"
       }
