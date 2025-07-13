@@ -723,7 +723,7 @@
                 {
                   "id": "color",
                   "value": {
-                    "fixedColor": "text",
+                    "fixedColor": "blue",
                     "mode": "fixed"
                   }
                 },
@@ -796,7 +796,7 @@
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "11.6.0",
+        "pluginVersion": "12.0.2",
         "targets": [
           {
             "datasource": {
@@ -1027,7 +1027,6 @@
           }
         ],
         "title": "Strombilanz",
-        "transparent": true,
         "type": "stat"
       }
     },
@@ -1141,6 +1140,25 @@
                   }
                 }
               ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "weightedAveragePrice"
+              },
+              "properties": [
+                {
+                  "id": "displayName",
+                  "value": "Effektiver Strompreis"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "blue",
+                    "mode": "fixed"
+                  }
+                }
+              ]
             }
           ]
         },
@@ -1157,7 +1175,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.0.0",
+        "pluginVersion": "12.0.2",
         "targets": [
           {
             "alias": "Max",
@@ -1176,11 +1194,137 @@
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
             },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
             "hide": false,
+            "orderByTime": "ASC",
+            "policy": "default",
             "query": "SELECT \"value\" * 100 FROM \"tariffGridDailyMean\" WHERE $timeFilter",
             "rawQuery": true,
             "refId": "avgPrice",
-            "resultFormat": "time_series"
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT value FROM energyPurchasedDailyPrice WHERE $timeFilter  tz('$timezone')",
+            "rawQuery": true,
+            "refId": "purchased",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "fe8sr664fohz4a"
+            },
+            "groupBy": [
+              {
+                "params": [
+                  "$__interval"
+                ],
+                "type": "time"
+              },
+              {
+                "params": [
+                  "null"
+                ],
+                "type": "fill"
+              }
+            ],
+            "hide": true,
+            "orderByTime": "ASC",
+            "policy": "default",
+            "query": "SELECT value/1000 from gridDailyEnergy WHERE $timeFilter  tz('$timezone')",
+            "rawQuery": true,
+            "refId": "energyPurchased",
+            "resultFormat": "time_series",
+            "select": [
+              [
+                {
+                  "params": [
+                    "value"
+                  ],
+                  "type": "field"
+                },
+                {
+                  "params": [],
+                  "type": "mean"
+                }
+              ]
+            ],
+            "tags": []
+          },
+          {
+            "datasource": {
+              "name": "Expression",
+              "type": "__expr__",
+              "uid": "__expr__"
+            },
+            "expression": "($purchased * 100 )/ $energyPurchased",
+            "hide": false,
+            "refId": "weightedAveragePrice",
+            "type": "math"
           },
           {
             "alias": "Min",
@@ -1191,7 +1335,7 @@
             "hide": false,
             "query": "SELECT \"value\" * 100 FROM \"tariffGridDailyMin\" WHERE $timeFilter",
             "rawQuery": true,
-            "refId": "A",
+            "refId": "minPrice",
             "resultFormat": "time_series"
           }
         ],
@@ -1434,7 +1578,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.0.0"
+      "version": "12.0.2"
     },
     {
       "type": "panel",
@@ -1741,7 +1885,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "alias": "PV",
@@ -2086,7 +2230,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "datasource": {
@@ -2428,7 +2572,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "alias": "Einkauf",
@@ -2618,7 +2762,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "alias": "PV/Tag",
@@ -2930,7 +3074,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.0.2",
       "targets": [
         {
           "alias": "PV",
