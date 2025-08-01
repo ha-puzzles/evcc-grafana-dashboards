@@ -122,7 +122,6 @@
                 "mode": "line"
               }
             },
-            "decimals": 2,
             "mappings": [],
             "max": 12000,
             "min": -12000,
@@ -263,7 +262,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.1.0",
         "targets": [
           {
             "alias": "PV",
@@ -577,7 +576,6 @@
                 "mode": "off"
               }
             },
-            "decimals": 2,
             "mappings": [],
             "thresholds": {
               "mode": "absolute",
@@ -763,7 +761,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.1.0",
         "targets": [
           {
             "alias": "Netzleistung",
@@ -1083,7 +1081,6 @@
                 "mode": "dashed"
               }
             },
-            "decimals": 0,
             "links": [],
             "mappings": [],
             "max": 100,
@@ -1175,7 +1172,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.1.0",
         "targets": [
           {
             "alias": "Speicher",
@@ -1455,7 +1452,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "11.5.2",
+        "pluginVersion": "12.1.0",
         "targets": [
           {
             "alias": "Preis",
@@ -2327,7 +2324,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.1.0",
         "targets": [
           {
             "alias": "netzbezug",
@@ -3217,7 +3214,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.0.2"
+      "version": "12.1.0"
     },
     {
       "type": "datasource",
@@ -3357,7 +3354,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "orange"
+                "color": "orange",
+                "value": 0
               },
               {
                 "color": "transparent",
@@ -3401,7 +3399,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "transparent"
+                      "color": "transparent",
+                      "value": 0
                     },
                     {
                       "color": "green",
@@ -3432,7 +3431,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "light-yellow"
+                      "color": "light-yellow",
+                      "value": 0
                     },
                     {
                       "color": "transparent",
@@ -3476,7 +3476,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "blue"
+                      "color": "blue",
+                      "value": 0
                     },
                     {
                       "color": "transparent",
@@ -3511,7 +3512,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "purple"
+                      "color": "purple",
+                      "value": 0
                     },
                     {
                       "color": "#7a7a7a4d",
@@ -3534,7 +3536,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "light-orange"
+                      "color": "light-orange",
+                      "value": 0
                     },
                     {
                       "color": "transparent",
@@ -3570,7 +3573,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "semi-dark-orange"
+                      "color": "semi-dark-orange",
+                      "value": 0
                     },
                     {
                       "color": "transparent",
@@ -3631,7 +3635,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "alias": "PV",
@@ -3807,7 +3811,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -3911,7 +3916,7 @@
         },
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "alias": "Speicher",
@@ -4321,8 +4326,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-2d/d",
+    "to": "now-2d/d"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -4334,6 +4339,6 @@
   "timezone": "",
   "title": "EVCC: Today (Mobile)",
   "uid": "MRHnynkRz",
-  "version": 149,
+  "version": 150,
   "weekStart": ""
 }
