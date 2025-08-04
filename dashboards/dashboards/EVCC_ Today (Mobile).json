@@ -123,8 +123,6 @@
               }
             },
             "mappings": [],
-            "max": 12000,
-            "min": -12000,
             "thresholds": {
               "mode": "absolute",
               "steps": [
@@ -4326,8 +4324,8 @@
     ]
   },
   "time": {
-    "from": "now-2d/d",
-    "to": "now-2d/d"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {
     "refresh_intervals": [
