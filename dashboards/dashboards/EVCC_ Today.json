@@ -1698,25 +1698,6 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "guestVehicle"
-              },
-              "properties": [
-                {
-                  "id": "color",
-                  "value": {
-                    "fixedColor": "text",
-                    "mode": "fixed"
-                  }
-                },
-                {
-                  "id": "displayName",
-                  "value": "Gast"
-                }
-              ]
-            },
-            {
-              "matcher": {
-                "id": "byName",
                 "options": "Ioniq 5"
               },
               "properties": [
@@ -1739,6 +1720,36 @@
                   "id": "color",
                   "value": {
                     "fixedColor": "green",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Gast: Garage"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "light-orange",
+                    "mode": "fixed"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Gast: Stellplatz"
+              },
+              "properties": [
+                {
+                  "id": "color",
+                  "value": {
+                    "fixedColor": "dark-orange",
                     "mode": "fixed"
                   }
                 }
@@ -1770,7 +1781,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "12.0.0",
+        "pluginVersion": "12.2.0",
         "targets": [
           {
             "alias": "PV",
@@ -2074,7 +2085,7 @@
             "tags": []
           },
           {
-            "alias": "guestVehicle",
+            "alias": "Gast: $tag_loadpoint",
             "datasource": {
               "type": "influxdb",
               "uid": "L-nZgczgk"
@@ -2096,7 +2107,7 @@
             "hide": false,
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "SELECT integral(\"subquery\") / -3600000 as \"guest\" FROM (SELECT max(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter and value > 0 AND (\"vehicle\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
+            "query": "SELECT integral(\"subquery\") / -3600000 as \"guest\" FROM (SELECT max(\"value\") AS \"subquery\" FROM \"chargePower\" WHERE $timeFilter and value > 0 AND (\"vehicle\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d), \"loadpoint\"::tag fill(0)  tz('$timezone')",
             "rawQuery": true,
             "refId": "guestVehicle",
             "resultFormat": "time_series",
@@ -3047,7 +3058,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.1.0"
+      "version": "12.2.0"
     },
     {
       "type": "datasource",
@@ -3081,7 +3092,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
   "links": [
     {
       "asDropdown": false,
@@ -3496,7 +3506,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "12.1.0",
+      "pluginVersion": "12.2.0",
       "targets": [
         {
           "alias": "PV",
@@ -3757,7 +3767,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "PV"
   ],
@@ -3941,6 +3951,7 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 217,
-  "weekStart": ""
+  "version": 218,
+  "weekStart": "",
+  "id": null
 }
