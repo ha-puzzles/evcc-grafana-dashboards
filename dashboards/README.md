@@ -18,6 +18,7 @@ Real-time Statistiken des aktuellen Tages, optimiert für mobile Geräte.
 
 Weitere Details, die bei der Fehlersuche helfen können wie 
 - die Leistung der einzelnen PVs oder Batteriemodule, falls mehrere konfiguriert sind.
+- Leistung und Verbräuche einzelner AUX und EXT Geräte.
 - Leistung und Ströme der einzelnen Phasen
 - Ladeströme der Wallboxen
 
