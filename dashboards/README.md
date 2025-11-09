@@ -81,13 +81,23 @@ Ganz ohne manuelle Anpassungen geht es leider nicht. Hier einige Dinge, die noch
     | Filtere alles, das mit 'Mr White' beginnt aus | `/^Mr White.*$/` |
     | Filtere alles, das mit '(offline)' endet aus | `/^.*\(offline\)$/` |
 
-## Today und Today (Mobile)
+## EVCC: Today und EVCC: Today (Mobile)
 - Anpassen von (Soft)Min und (Softt)Max je nach maximaler Leistung von PV und Ladepunkten in folgenden Panels:
   - Gauges auf der linken Seite
   - Verlaufschart in der Mitte
   - Energie unten rechts
 
-## All-time
+## EVCC: Today - Details
+- Mittels overrides können den einzelnen PV Teilen Namen zugewiesen werden.
+- Formel für 'Sonstige' Verbraucher: Siehe [Formel für 'Sonstige' anpassen](#formel-für-sonstige-anpassen). 
+
+## EVCC: Monat
+- Formel für 'Sonstige' Verbraucher: Siehe [Formel für 'Sonstige' anpassen](#formel-für-sonstige-anpassen). 
+
+## EVCC: Jahr
+- Formel für 'Sonstige' Verbraucher: Siehe [Formel für 'Sonstige' anpassen](#formel-für-sonstige-anpassen). 
+
+## EVCC: All-time
 - Unter den Dashboard Settings die Default Werte der Variablen, wie die Investitionskosten, anpassen.
 - Zeitraum anpassen: Startdatum unter 'From' auswählen und in 'To' muss `now` stehen.
 
@@ -106,5 +116,39 @@ Ganz ohne manuelle Anpassungen geht es leider nicht. Hier einige Dinge, die noch
 
     ![Dashboard abspeichern](img/save-dashboard.png)
 
-## Today Details
-- Mittels overrides können den einzelnen PV Teilen Namen zugewiesen werden.
+
+## Formel für 'Sonstige' anpassen
+
+In den Dashboards 'EVCC: Today - Details', 'EVCC: Monat', und 'EVCC:Jahr' müssen gegebenenfalls die Formeln für die sonstigen Verbraucher, die nicht von den einzeln gemessenen Geräten erfasst werden, angepasst werden.
+
+1. Feststellen ob AUX ('Self-regulating consumer') oder/und EXT ('Regular consumer') verwendet werden.
+   1. 'EVCC: Today - Details' öffnen.
+   2. Oben rechts auf 'Edit' klicken um in den Edit Mode zu kommen.
+   3. Das Donut Chart 'Haus: Aktuelle Leistung' editieren. Im Panel Menü auf 'Edit' klicken.
+   4. Unten links die Queries 'extPowers' und 'auxPowers' unsichtbar und sichtbar schalten. Ändern sich dabei jeweils die Einträge in der Liste? Dann sind EXT, bzw. AUX Geräte verfügbar.
+   ![Sonstige Verbraucher Formel anpassen](img/aux-ext-devices.png)
+2. Die Formel für 'Sonstige' anpassen.
+   * Es gibt nur AUX Geräte:
+     ```
+     $totalHomePower - $auxPowersSum
+     ```
+   * Es gibt nur EXT Geräte:
+     ```
+     $totalHomePower - $extPowersSum
+     ```
+   * Es gibt AUX und EXT Geräte:
+     ```
+     $totalHomePower - $auxPowersSum - $extPowersSum
+     ```
+3. Schritt 2 für folgende Widgets durchführen
+   * 'EVCC: Today - Details'
+     * 'Haus: Aktuelle Leistung' (wurde bereits erledigt)
+     * 'Haus: Leistung'
+     * 'Haus: Energieverteilung'
+     * 'Haus: Energieverbrauch'
+   * 'EVCC: Monat'
+     * 'Haus: Energieverteilung'
+     * 'Haus: Energieverbrauch'
+   * 'EVCC: Jahr'
+     * 'Haus: Energieverteilung'
+     * 'Haus: Energieverbrauch'

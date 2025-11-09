@@ -103,7 +103,7 @@
                 "viz": false
               },
               "insertNulls": 300000,
-              "lineInterpolation": "smooth",
+              "lineInterpolation": "linear",
               "lineStyle": {
                 "fill": "solid"
               },
@@ -113,6 +113,7 @@
                 "type": "linear"
               },
               "showPoints": "auto",
+              "showValues": false,
               "spanNulls": false,
               "stacking": {
                 "group": "A",
@@ -260,7 +261,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.1.0",
+        "pluginVersion": "12.2.0",
         "targets": [
           {
             "alias": "PV",
@@ -1576,7 +1577,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "fillOpacity": 100,
+              "fillOpacity": 70,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -3058,7 +3059,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.2.0"
+      "version": "12.2.1"
     },
     {
       "type": "datasource",
@@ -3092,6 +3093,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": null,
   "links": [
     {
       "asDropdown": false,
@@ -3365,6 +3367,15 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Mehr Details",
+                    "url": "/d/fed98n901h0xsb/evcc3a-today-details?$__url_time_range"
+                  }
+                ]
               }
             ]
           },
@@ -3506,7 +3517,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "PV",
@@ -3951,7 +3962,6 @@
   "timezone": "",
   "title": "EVCC: Today",
   "uid": "7Ou-Y1Rgk",
-  "version": 218,
-  "weekStart": "",
-  "id": null
+  "version": 219,
+  "weekStart": ""
 }

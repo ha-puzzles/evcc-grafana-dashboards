@@ -192,7 +192,7 @@
             "showLegend": true
           },
           "orientation": "auto",
-          "showValue": "auto",
+          "showValue": "always",
           "stacking": "none",
           "tooltip": {
             "hideZeros": false,
@@ -202,7 +202,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "12.0.0",
+        "pluginVersion": "12.1.1",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -1070,6 +1070,7 @@
                 "type": "linear"
               },
               "showPoints": "auto",
+              "showValues": false,
               "spanNulls": true,
               "stacking": {
                 "group": "A",
@@ -1079,6 +1080,7 @@
                 "mode": "off"
               }
             },
+            "decimals": 2,
             "mappings": [],
             "thresholds": {
               "mode": "absolute",
@@ -1175,7 +1177,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "Max",
@@ -1578,7 +1580,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.0.2"
+      "version": "12.2.1"
     },
     {
       "type": "panel",
@@ -1591,6 +1593,12 @@
       "id": "influxdb",
       "name": "InfluxDB",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
     },
     {
       "type": "panel",
@@ -1700,7 +1708,7 @@
     {
       "gridPos": {
         "h": 12,
-        "w": 4,
+        "w": 5,
         "x": 0,
         "y": 1
       },
@@ -1749,7 +1757,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "text",
@@ -1858,8 +1867,8 @@
       },
       "gridPos": {
         "h": 12,
-        "w": 20,
-        "x": 4,
+        "w": 19,
+        "x": 5,
         "y": 1
       },
       "id": 47,
@@ -1885,7 +1894,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "PV",
@@ -2108,8 +2117,8 @@
     },
     {
       "gridPos": {
-        "h": 8,
-        "w": 4,
+        "h": 7,
+        "w": 5,
         "x": 0,
         "y": 13
       },
@@ -2161,7 +2170,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               }
             ]
           },
@@ -2202,9 +2212,9 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 20,
-        "x": 4,
+        "h": 7,
+        "w": 19,
+        "x": 5,
         "y": 13
       },
       "id": 25,
@@ -2230,7 +2240,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -2436,236 +2446,6 @@
       "type": "barchart"
     },
     {
-      "gridPos": {
-        "h": 18,
-        "w": 4,
-        "x": 0,
-        "y": 21
-      },
-      "id": 65,
-      "libraryPanel": {
-        "uid": "feio30f3nm0owe",
-        "name": "EVCC: Strombilanz"
-      }
-    },
-    {
-      "gridPos": {
-        "h": 11,
-        "w": 20,
-        "x": 4,
-        "y": 21
-      },
-      "id": 54,
-      "libraryPanel": {
-        "uid": "ae8zwbjv24kqof",
-        "name": "EVCC: Dynamischer Strompreis: Täglich"
-      }
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisWidth": 80,
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "currencyEUR"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Einkauf"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Verkauf"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 20,
-        "x": 4,
-        "y": 32
-      },
-      "id": 63,
-      "options": {
-        "barRadius": 0.2,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.0.2",
-      "targets": [
-        {
-          "alias": "Einkauf",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM energyPurchasedMonthlyPrice WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "purchased",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Verkauf",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM energySoldMonthlyPrice WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "sold",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Stromkosten",
-      "type": "barchart"
-    },
-    {
       "datasource": {
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2683,7 +2463,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "#EAB839",
@@ -2701,7 +2482,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Zugekauft/Tag"
+              "options": "Netzbezug/Tag"
             },
             "properties": [
               {
@@ -2722,7 +2503,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "red",
+                  "fixedColor": "purple",
                   "mode": "fixed"
                 }
               },
@@ -2735,10 +2516,10 @@
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 4,
+        "h": 7,
+        "w": 5,
         "x": 0,
-        "y": 39
+        "y": 20
       },
       "id": 3,
       "options": {
@@ -2762,7 +2543,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "PV/Tag",
@@ -2971,7 +2752,7 @@
             "axisPlacement": "auto",
             "axisWidth": 79,
             "barAlignment": 1,
-            "barWidthFactor": 0.6,
+            "barWidthFactor": 0.7,
             "drawStyle": "bars",
             "fillOpacity": 100,
             "gradientMode": "none",
@@ -2988,10 +2769,11 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "none"
+              "mode": "percent"
             },
             "thresholdsStyle": {
               "mode": "off"
@@ -3002,7 +2784,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-green"
+                "color": "semi-dark-green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3041,7 +2824,7 @@
               {
                 "id": "color",
                 "value": {
-                  "fixedColor": "red",
+                  "fixedColor": "purple",
                   "mode": "fixed"
                 }
               },
@@ -3054,10 +2837,10 @@
         ]
       },
       "gridPos": {
-        "h": 9,
-        "w": 20,
-        "x": 4,
-        "y": 39
+        "h": 7,
+        "w": 19,
+        "x": 5,
+        "y": 20
       },
       "id": 2,
       "options": {
@@ -3074,7 +2857,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "PV",
@@ -3263,12 +3046,897 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 80,
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Einkauf"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Verkauf"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 19,
+        "x": 5,
+        "y": 27
+      },
+      "id": 63,
+      "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Einkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM energyPurchasedMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "purchased",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Verkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM energySoldMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "sold",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Stromkosten",
+      "type": "barchart"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 34
+      },
+      "id": 68,
+      "panels": [],
+      "title": "Haus",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sonstige"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#808080",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 5,
+        "x": 0,
+        "y": 35
+      },
+      "id": 67,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT value FROM homeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM extMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM auxMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$homeTotal - $extEnergiesSum",
+          "hide": false,
+          "refId": "Sonstige",
+          "type": "math"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM extMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergies",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM auxMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverteilung",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sonstige"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#808080",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 19,
+        "x": 5,
+        "y": 35
+      },
+      "id": 66,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.7,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT value FROM homeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM extMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM auxMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$homeTotal - $extEnergiesSum",
+          "hide": false,
+          "refId": "Sonstige",
+          "type": "math"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM extMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergies",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM auxMonthlyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverbrauch",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Haus"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Garage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stellplatz"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 5,
+        "x": 0,
+        "y": 45
+      },
+      "id": 69,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM homeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_loadpoint",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM loadpointMonthlyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY (\"loadpoint\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "loadpointEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverteilung",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Haus"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Garage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stellplatz"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 19,
+        "x": 5,
+        "y": 45
+      },
+      "id": 70,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.7,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM homeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_loadpoint",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM loadpointMonthlyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY (\"loadpoint\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "loadpointEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverteilung",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "gridPos": {
+        "h": 16,
+        "w": 5,
+        "x": 0,
+        "y": 55
+      },
+      "id": 65,
+      "libraryPanel": {
+        "uid": "feio30f3nm0owe",
+        "name": "EVCC: Strombilanz"
+      }
+    },
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 19,
+        "x": 5,
+        "y": 55
+      },
+      "id": 54,
+      "libraryPanel": {
+        "uid": "ae8zwbjv24kqof",
+        "name": "EVCC: Dynamischer Strompreis: Täglich"
+      }
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 71
       },
       "id": 62,
       "panels": [],
@@ -3277,10 +3945,10 @@
     },
     {
       "gridPos": {
-        "h": 9,
-        "w": 4,
+        "h": 18,
+        "w": 5,
         "x": 0,
-        "y": 49
+        "y": 72
       },
       "id": 37,
       "libraryPanel": {
@@ -3310,9 +3978,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 10,
-        "x": 4,
-        "y": 49
+        "w": 7,
+        "x": 5,
+        "y": 72
       },
       "id": 6,
       "options": {
@@ -3366,7 +4034,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Maximaler Batterie SOC/Tag",
@@ -3420,6 +4088,157 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "light-blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Speicher laden"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Speicher entladen"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 72
+      },
+      "id": 50,
+      "maxDataPoints": 50000,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Speicher laden",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "laden",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Speicher entladen",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
+          "rawQuery": true,
+          "refId": "entladen",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Speicherladung",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -3437,9 +4256,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 10,
-        "x": 14,
-        "y": 49
+        "w": 7,
+        "x": 5,
+        "y": 81
       },
       "id": 51,
       "options": {
@@ -3493,7 +4312,7 @@
           "unit": "percent"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Minimaler Batterie SOC/Tag",
@@ -3560,155 +4379,6 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "axisSoftMax": 1,
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineStyle": {
-              "fill": "solid"
-            },
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "watth"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Speicher laden"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "light-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Speicher entladen"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "dark-blue",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 10,
-        "x": 4,
-        "y": 58
-      },
-      "id": 50,
-      "maxDataPoints": 50000,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "12.0.0",
-      "targets": [
-        {
-          "alias": "Speicher laden",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "hide": false,
-          "query": "SELECT \"value\" from chargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "laden",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "Speicher entladen",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "hide": false,
-          "query": "SELECT \"value\" from dischargeMonthlyEnergy WHERE $timeFilter tz('$timezone')",
-          "rawQuery": true,
-          "refId": "entladen",
-          "resultFormat": "time_series"
-        }
-      ],
-      "title": "Speicherladung",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "fixedColor": "light-blue",
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
             "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
@@ -3729,7 +4399,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3762,10 +4433,10 @@
         ]
       },
       "gridPos": {
-        "h": 10,
-        "w": 10,
-        "x": 14,
-        "y": 58
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 81
       },
       "id": 49,
       "maxDataPoints": 50000,
@@ -3791,7 +4462,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Speicher laden",
@@ -3837,7 +4508,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 90
       },
       "id": 56,
       "panels": [],
@@ -3861,7 +4532,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3953,9 +4625,9 @@
       },
       "gridPos": {
         "h": 16,
-        "w": 4,
+        "w": 5,
         "x": 0,
-        "y": 69
+        "y": 91
       },
       "id": 59,
       "options": {
@@ -3979,7 +4651,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Kilometerstand: $tag_vehicle",
@@ -4165,7 +4837,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4210,9 +4883,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 20,
-        "x": 4,
-        "y": 69
+        "w": 19,
+        "x": 5,
+        "y": 91
       },
       "id": 58,
       "options": {
@@ -4237,7 +4910,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Gefahren: $tag_vehicle",
@@ -4323,7 +4996,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4368,9 +5042,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 20,
-        "x": 4,
-        "y": 77
+        "w": 19,
+        "x": 5,
+        "y": 99
       },
       "id": 60,
       "options": {
@@ -4396,7 +5070,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Energie: $tag_vehicle",
@@ -4483,7 +5157,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4527,9 +5202,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 20,
-        "x": 4,
-        "y": 85
+        "w": 19,
+        "x": 5,
+        "y": 107
       },
       "id": 61,
       "options": {
@@ -4555,7 +5230,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "",
@@ -4661,7 +5336,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "PV"
   ],
@@ -4740,6 +5415,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 252,
+  "version": 269,
   "weekStart": ""
 }
