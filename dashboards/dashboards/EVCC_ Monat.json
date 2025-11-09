@@ -16,14 +16,6 @@
       "pluginId": "__expr__"
     },
     {
-      "name": "DS_EVCC_INFLUXDB",
-      "label": "EVCC InfluxDB",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    },
-    {
       "name": "VAR_TIMEZONE",
       "type": "constant",
       "label": "Zeitzone",
@@ -207,7 +199,7 @@
             "showLegend": true
           },
           "orientation": "auto",
-          "showValue": "auto",
+          "showValue": "always",
           "stacking": "none",
           "tooltip": {
             "hideZeros": false,
@@ -217,7 +209,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "12.0.0",
+        "pluginVersion": "12.1.1",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -1085,6 +1077,7 @@
                 "type": "linear"
               },
               "showPoints": "auto",
+              "showValues": false,
               "spanNulls": true,
               "stacking": {
                 "group": "A",
@@ -1094,6 +1087,7 @@
                 "mode": "off"
               }
             },
+            "decimals": 2,
             "mappings": [],
             "thresholds": {
               "mode": "absolute",
@@ -1190,7 +1184,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "Max",
@@ -1593,13 +1587,19 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.0.2"
+      "version": "12.2.1"
     },
     {
       "type": "datasource",
       "id": "influxdb",
       "name": "InfluxDB",
       "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
     },
     {
       "type": "panel",
@@ -1688,11 +1688,24 @@
   ],
   "panels": [
     {
+      "collapsed": false,
       "gridPos": {
-        "h": 11,
-        "w": 4,
+        "h": 1,
+        "w": 24,
         "x": 0,
         "y": 0
+      },
+      "id": 33,
+      "panels": [],
+      "title": "PV",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 10,
+        "w": 5,
+        "x": 0,
+        "y": 1
       },
       "id": 19,
       "libraryPanel": {
@@ -1746,7 +1759,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "text",
@@ -1856,10 +1870,10 @@
         ]
       },
       "gridPos": {
-        "h": 11,
-        "w": 20,
-        "x": 4,
-        "y": 0
+        "h": 13,
+        "w": 19,
+        "x": 5,
+        "y": 1
       },
       "id": 25,
       "options": {
@@ -1873,7 +1887,7 @@
           "placement": "bottom",
           "showLegend": true
         },
-        "orientation": "auto",
+        "orientation": "vertical",
         "showValue": "never",
         "stacking": "normal",
         "tooltip": {
@@ -1884,7 +1898,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "PV",
@@ -2060,7 +2074,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               }
             ]
           },
@@ -2069,8 +2084,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 4,
+        "h": 3,
+        "w": 5,
         "x": 0,
         "y": 11
       },
@@ -2096,7 +2111,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "PV",
@@ -2158,144 +2173,11 @@
       "type": "stat"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisWidth": 80,
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [
-            {
-              "title": "PV Today",
-              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-            }
-          ],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "blue",
-                "value": 9840
-              }
-            ]
-          },
-          "unit": "watt"
-        },
-        "overrides": []
-      },
       "gridPos": {
-        "h": 7,
-        "w": 20,
-        "x": 4,
-        "y": 11
-      },
-      "id": 13,
-      "options": {
-        "barRadius": 0.2,
-        "barWidth": 0.7,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.0.2",
-      "targets": [
-        {
-          "alias": "Maximale PV Leistung",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_INFLUXDB}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT max(\"value\") FROM \"pvPower\" WHERE $timeFilter and value < $peakPowerLimit GROUP BY time(1d) fill(null)  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Maximale PV Leistung pro Tag",
-      "type": "barchart"
-    },
-    {
-      "gridPos": {
-        "h": 7,
-        "w": 4,
+        "h": 6,
+        "w": 5,
         "x": 0,
-        "y": 18
+        "y": 14
       },
       "id": 24,
       "libraryPanel": {
@@ -2350,7 +2232,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "purple"
+                "color": "purple",
+                "value": 0
               }
             ]
           },
@@ -2398,10 +2281,10 @@
         ]
       },
       "gridPos": {
-        "h": 7,
-        "w": 20,
-        "x": 4,
-        "y": 18
+        "h": 6,
+        "w": 19,
+        "x": 5,
+        "y": 14
       },
       "id": 6,
       "options": {
@@ -2426,7 +2309,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -2601,11 +2484,665 @@
       "type": "barchart"
     },
     {
+      "collapsed": false,
       "gridPos": {
-        "h": 14,
-        "w": 4,
+        "h": 1,
+        "w": 24,
         "x": 0,
-        "y": 25
+        "y": 20
+      },
+      "id": 34,
+      "panels": [],
+      "title": "Haus",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sonstige"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#808080",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 5,
+        "x": 0,
+        "y": 21
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT value FROM homeDailyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM extDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM auxDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$homeTotal - $extEnergiesSum",
+          "hide": false,
+          "refId": "Sonstige",
+          "type": "math"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM extDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergies",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM auxDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverteilung",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "text",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Sonstige"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#808080",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 19,
+        "x": 5,
+        "y": 21
+      },
+      "id": 31,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.7,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
+        },
+        "orientation": "auto",
+        "showValue": "never",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT value FROM homeDailyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM extDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM auxDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergiesSum",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$homeTotal - $extEnergiesSum",
+          "hide": false,
+          "refId": "Sonstige",
+          "type": "math"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM extDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "extEnergies",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM auxDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverbrauch",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Haus"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Garage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stellplatz"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 5,
+        "x": 0,
+        "y": 32
+      },
+      "id": 36,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM homeDailyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_loadpoint",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY (\"loadpoint\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "loadpointEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverteilung",
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "orange",
+            "mode": "palette-classic-by-name"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [
+            {
+              "title": "PV Today",
+              "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+            }
+          ],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "watth"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Haus"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Garage"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "light-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Stellplatz"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 19,
+        "x": 5,
+        "y": 32
+      },
+      "id": 37,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.7,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "normal",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM homeDailyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "homeTotal",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "$tag_loadpoint",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": false,
+          "query": "SELECT value FROM loadpointDailyEnergy WHERE $timeFilter AND \"loadpoint\"::tag !~ $loadpointBlocklist GROUP BY (\"loadpoint\"::tag) tz('$timezone')",
+          "rawQuery": true,
+          "refId": "loadpointEnergies",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Haus: Energieverteilung",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "gridPos": {
+        "h": 15,
+        "w": 5,
+        "x": 0,
+        "y": 43
       },
       "id": 30,
       "libraryPanel": {
@@ -2615,10 +3152,10 @@
     },
     {
       "gridPos": {
-        "h": 7,
-        "w": 20,
-        "x": 4,
-        "y": 25
+        "h": 8,
+        "w": 19,
+        "x": 5,
+        "y": 43
       },
       "id": 26,
       "libraryPanel": {
@@ -2670,7 +3207,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2734,9 +3272,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 20,
-        "x": 4,
-        "y": 32
+        "w": 19,
+        "x": 5,
+        "y": 51
       },
       "id": 28,
       "options": {
@@ -2761,7 +3299,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Einkauf",
@@ -2865,11 +3403,24 @@
       "type": "barchart"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 58
+      },
+      "id": 35,
+      "panels": [],
+      "title": "Speicher",
+      "type": "row"
+    },
+    {
       "gridPos": {
         "h": 7,
-        "w": 4,
+        "w": 5,
         "x": 0,
-        "y": 39
+        "y": 59
       },
       "id": 16,
       "libraryPanel": {
@@ -2921,7 +3472,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2965,9 +3517,9 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 20,
-        "x": 4,
-        "y": 39
+        "w": 19,
+        "x": 5,
+        "y": 59
       },
       "id": 11,
       "options": {
@@ -2992,7 +3544,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Speicher max",
@@ -3088,7 +3640,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [
     "PV"
   ],
@@ -3181,13 +3733,13 @@
     ]
   },
   "time": {
-    "from": "2025-01-24T05:21:10.587Z",
-    "to": "2025-01-31T22:59:59.999Z"
+    "from": "now/M",
+    "to": "now/M"
   },
   "timepicker": {},
   "timezone": "",
   "title": "EVCC: Monat",
   "uid": "4iQda7igz",
-  "version": 217,
+  "version": 241,
   "weekStart": ""
 }
