@@ -1638,7 +1638,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
   "links": [
     {
       "asDropdown": false,
@@ -3919,7 +3918,7 @@
     },
     {
       "gridPos": {
-        "h": 9,
+        "h": 16,
         "w": 19,
         "x": 5,
         "y": 55
@@ -5415,6 +5414,7 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 269,
-  "weekStart": ""
+  "version": 270,
+  "weekStart": "",
+  "id": null
 }
