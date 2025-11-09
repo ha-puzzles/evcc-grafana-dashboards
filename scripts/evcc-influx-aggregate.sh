@@ -67,6 +67,12 @@ declare -A VEHICLES
 #Array of loadpoints
 declare -A LOADPOINTS
 
+#Array of ext devices
+declare -A EXT_DEVICES
+
+#Array of aux devices
+declare -A AUX_DEVICES
+
 validateNumber() {
     if ! [[ "$1" =~ ^[1-9][0-9]*$ ]]; then
         return 1
@@ -514,6 +520,18 @@ aggregateDay() {
         writeDailyAggregation "integral-positives" "value" "chargePower" "loadpointDailyEnergy" $ayear $amonth $aday "AND \"loadpoint\"::tag = '${loadpoint}' AND value < $PEAK_POWER_LIMIT" "true" "loadpoint=${escapedLoadpoint}"
     done
 
+    for ext_device in "${EXT_DEVICES[@]}"; do
+        logDebug "Aggregating ext device $ext_device"
+        escapedExtDevice=$(echo $ext_device | sed 's/ /\\ /g')
+        writeDailyAggregation "integral-positives" "value" "extPower" "extDailyEnergy" $ayear $amonth $aday "AND \"title\"::tag = '${ext_device}' AND value < $PEAK_POWER_LIMIT" "true" "title=${escapedExtDevice}"
+    done
+
+    for aux_device in "${AUX_DEVICES[@]}"; do
+        logDebug "Aggregating aux device $aux_device"
+        escapedAuxDevice=$(echo $aux_device | sed 's/ /\\ /g')
+        writeDailyAggregation "integral-positives" "value" "auxPower" "auxDailyEnergy" $ayear $amonth $aday "AND \"title\"::tag = '${aux_device}' AND value < $PEAK_POWER_LIMIT" "true" "title=${escapedAuxDevice}"
+    done
+
     writeDailyPriceAggregations $ayear $amonth $aday
 }
 
@@ -597,6 +615,18 @@ aggregateMonth() {
         escapedLoadpoint=$(echo $loadpoint | sed 's/ /\\ /g')
         writeMonthlyAggregations "sum" "value" "loadpointDailyEnergy" "loadpointMonthlyEnergy" $ayear $amonth "AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"
     done
+
+    for ext_device in "${EXT_DEVICES[@]}"; do
+        logDebug "Aggregating ext device $ext_device"
+        escapedExtDevice=$(echo $ext_device | sed 's/ /\\ /g')
+        writeMonthlyAggregations "sum" "value" "extDailyEnergy" "extMonthlyEnergy" $ayear $amonth "AND \"title\"::tag = '${ext_device}'" "title=${escapedExtDevice}"
+    done
+
+    for aux_device in "${AUX_DEVICES[@]}"; do
+        logDebug "Aggregating aux device $aux_device"
+        escapedAuxDevice=$(echo $aux_device | sed 's/ /\\ /g')
+        writeMonthlyAggregations "sum" "value" "auxDailyEnergy" "auxMonthlyEnergy" $ayear $amonth "AND \"title\"::tag = '${aux_device}'" "title=${escapedAuxDevice}"
+    done
 }
 
 dropMeasurement() {
@@ -665,7 +695,7 @@ detectValues() {
 
     # Detecting vehicles
     index=0
-    vehicle_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key="vehicle | grep "^vehicle " | sed 's/^vehicle //' | sort)
+    vehicle_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key=vehicle" | grep "^vehicle " | sed 's/^vehicle //' | sort)
     while read vehicle; do
         if [ "$vehicle" != "" ]; then
             VEHICLES[${index}]=$vehicle
@@ -677,7 +707,7 @@ detectValues() {
 
     # Detecting loadpoints
     index=0
-    loadpoint_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key="loadpoint | grep "^loadpoint " | sed 's/^loadpoint //' | sort)
+    loadpoint_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key=loadpoint" | grep "^loadpoint " | sed 's/^loadpoint //' | sort)
     while read loadpoint; do
         if [ "$loadpoint" != "" ]; then
             LOADPOINTS[${index}]=$loadpoint
@@ -685,7 +715,30 @@ detectValues() {
             logInfo "Detected loadpoint $index: $loadpoint"
         fi
     done <<< "$loadpoint_list"
-    logDebug "Detected ${#LOADPOINTS[*]} loadpoints: ${LOADPOINTS[*]}"
+
+    # Detecting ext devices
+    index=0
+    ext_device_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from extPower with key=title" | grep "^title " | sed 's/^title //' | sort)
+    while read ext_device; do
+        if [ "$ext_device" != "" ]; then
+            EXT_DEVICES[${index}]=$ext_device
+            index=$((index+1))
+            logInfo "Detected ext device $index: $ext_device"
+        fi
+    done <<< "$ext_device_list"
+
+    # Detecting aux devices
+    index=0
+    aux_device_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from auxPower with key=title" | grep "^title " | sed 's/^title //' | sort)
+    while read aux_device; do
+        if [ "$aux_device" != "" ]; then
+            AUX_DEVICES[${index}]=$aux_device
+            index=$((index+1))
+            logInfo "Detected aux device $index: $aux_device"
+        fi
+    done <<< "$aux_device_list"
+
+    logDebug "Detected: vehicles ${#VEHICLES[*]} loadpoints: ${LOADPOINTS[*]} ext devices: ${EXT_DEVICES[*]} aux devices: ${AUX_DEVICES[*]}"
 }
 
 

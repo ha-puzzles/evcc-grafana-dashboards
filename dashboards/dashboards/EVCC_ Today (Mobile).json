@@ -103,7 +103,7 @@
                 "viz": false
               },
               "insertNulls": 300000,
-              "lineInterpolation": "smooth",
+              "lineInterpolation": "linear",
               "lineStyle": {
                 "fill": "solid"
               },
@@ -113,6 +113,7 @@
                 "type": "linear"
               },
               "showPoints": "auto",
+              "showValues": false,
               "spanNulls": false,
               "stacking": {
                 "group": "A",
@@ -260,7 +261,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.1.0",
+        "pluginVersion": "12.2.0",
         "targets": [
           {
             "alias": "PV",
@@ -2584,7 +2585,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "fillOpacity": 100,
+              "fillOpacity": 70,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -3223,7 +3224,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.2.0"
+      "version": "12.2.1"
     },
     {
       "type": "datasource",
@@ -3530,6 +3531,15 @@
                     }
                   ]
                 }
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Mehr Details",
+                    "url": "/d/fed98n901h0xsb/evcc3a-today-details?$__url_time_range"
+                  }
+                ]
               }
             ]
           },
@@ -3644,7 +3654,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "PV",
@@ -3925,7 +3935,7 @@
         },
         "valueMode": "color"
       },
-      "pluginVersion": "12.2.0",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "alias": "Speicher",
@@ -4348,6 +4358,6 @@
   "timezone": "",
   "title": "EVCC: Today (Mobile)",
   "uid": "MRHnynkRz",
-  "version": 150,
+  "version": 151,
   "weekStart": ""
 }
