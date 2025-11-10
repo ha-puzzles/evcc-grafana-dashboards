@@ -1638,6 +1638,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": null,
   "links": [
     {
       "asDropdown": false,
@@ -3435,7 +3436,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 80,
+            "fillOpacity": 100,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3672,6 +3673,25 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "batteryTotal"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Speicher"
+              }
+            ]
           }
         ]
       },
@@ -3731,9 +3751,43 @@
           "rawQuery": true,
           "refId": "loadpointEnergies",
           "resultFormat": "time_series"
+        },
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT value FROM chargeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "chargeEnergy",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "hide": true,
+          "query": "SELECT value FROM dischargeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "dischargeEnergy",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$chargeEnergy - $dischargeEnergy",
+          "hide": false,
+          "refId": "batteryTotal",
+          "type": "math"
         }
       ],
-      "title": "Haus: Energieverteilung",
+      "title": "Gesamt: Energieverteilung",
       "transparent": true,
       "type": "piechart"
     },
@@ -3838,6 +3892,25 @@
                 }
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "batteryTotal"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "displayName",
+                "value": "Speicher"
+              }
+            ]
           }
         ]
       },
@@ -3874,6 +3947,102 @@
       },
       "pluginVersion": "12.2.1",
       "targets": [
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM chargeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "chargeEnergy",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Haus",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM dischargeMonthlyEnergy WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "dischargeEnergy",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "datasource": {
+            "type": "__expr__",
+            "uid": "${DS_EXPRESSION}"
+          },
+          "expression": "$chargeEnergy-$dischargeEnergy",
+          "hide": false,
+          "refId": "batteryTotal",
+          "type": "math"
+        },
         {
           "alias": "Haus",
           "datasource": {
@@ -5414,7 +5583,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 270,
-  "weekStart": "",
-  "id": null
+  "version": 274,
+  "weekStart": ""
 }
