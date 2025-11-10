@@ -114,7 +114,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
   "links": [
     {
       "asDropdown": false,
@@ -2803,7 +2802,7 @@
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"chargePower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"loadpoint\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1d), \"loadpoint\"::tag fill(none) TZ('$timezone')",
           "rawQuery": true,
-          "refId": "extEnergies",
+          "refId": "loadpointEnergies",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2847,7 +2846,7 @@
             "barAlignment": 1,
             "barWidthFactor": 0.6,
             "drawStyle": "bars",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2856,7 +2855,7 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
-            "lineWidth": 0,
+            "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
@@ -2873,7 +2872,6 @@
             }
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3030,7 +3028,7 @@
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"chargePower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"loadpoint\"::tag <> '') \n              AND $timeFilter \nGROUP BY \"loadpoint\"::tag, time(1h) fill(none) TZ('$timezone')",
           "rawQuery": true,
-          "refId": "extEnergies",
+          "refId": "loadpointEnergies",
           "resultFormat": "time_series",
           "select": [
             [
@@ -6025,13 +6023,14 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-2d/d",
+    "to": "now-2d/d"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 249,
-  "weekStart": ""
+  "version": 269,
+  "weekStart": "",
+  "id": null
 }
