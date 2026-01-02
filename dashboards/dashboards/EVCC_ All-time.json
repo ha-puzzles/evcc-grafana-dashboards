@@ -68,7 +68,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "fillOpacity": 100,
+              "fillOpacity": 80,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -210,7 +210,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "12.1.1",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -1022,7 +1022,7 @@
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.3.0",
         "targets": [
           {
             "datasource": {
@@ -1253,6 +1253,7 @@
           }
         ],
         "title": "Strombilanz",
+        "transparent": true,
         "type": "stat"
       }
     }
@@ -1273,7 +1274,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.2.1"
+      "version": "12.3.1"
     },
     {
       "type": "datasource",
@@ -1387,7 +1388,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1464,7 +1465,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -1573,7 +1574,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1689,7 +1690,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "[[tag_month]]",
@@ -1814,7 +1815,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -1891,7 +1892,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -2000,7 +2001,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2117,7 +2118,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "",
@@ -2229,7 +2230,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2306,7 +2307,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -2415,7 +2416,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2532,7 +2533,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "",
@@ -2657,7 +2658,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2734,7 +2735,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 300
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -2843,7 +2844,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2960,7 +2961,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "",
@@ -3163,7 +3164,7 @@
           }
         ]
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "PV Energie",
@@ -3334,7 +3335,7 @@
           }
         ]
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Einspeisung",
@@ -3503,7 +3504,7 @@
           }
         ]
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Hausverbrauch",
@@ -3598,8 +3599,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 100,
-            "gradientMode": "none",
+            "fillOpacity": 80,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -3613,6 +3614,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -3628,7 +3630,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": 0
               },
               {
                 "color": "text",
@@ -3738,7 +3741,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -3816,7 +3819,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": 0
               }
             ]
           },
@@ -3952,7 +3956,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": 0
                     },
                     {
                       "color": "orange",
@@ -4055,7 +4060,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -4348,6 +4353,7 @@
         }
       ],
       "title": "PV Anlage Amortisation",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -4367,7 +4373,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "text"
+                "color": "text",
+                "value": 0
               }
             ]
           },
@@ -4569,7 +4576,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "datasource": {
@@ -4848,6 +4855,7 @@
         }
       ],
       "title": "Speicher Amortisation",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -4867,7 +4875,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4952,7 +4961,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": 0
                     },
                     {
                       "color": "green",
@@ -4998,7 +5008,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "red"
+                      "color": "red",
+                      "value": 0
                     },
                     {
                       "color": "green",
@@ -5113,7 +5124,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "12.3.0",
       "repeat": "vehicle",
       "repeatDirection": "h",
       "targets": [
@@ -5423,7 +5434,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -5443,7 +5454,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "green",
@@ -5486,7 +5498,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "alias": "[[tag_year]]",
@@ -5578,7 +5590,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -5598,7 +5610,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "green",
@@ -5694,7 +5707,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.3.0",
       "targets": [
         {
           "alias": "",
@@ -5789,6 +5802,7 @@
       "type": "barchart"
     }
   ],
+  "preload": false,
   "refresh": "",
   "schemaVersion": 42,
   "tags": [
@@ -6001,6 +6015,6 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 256,
+  "version": 259,
   "weekStart": ""
 }
