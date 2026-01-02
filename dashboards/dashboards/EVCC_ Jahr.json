@@ -60,7 +60,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "fillOpacity": 100,
+              "fillOpacity": 80,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -202,7 +202,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "12.1.1",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "Netzbezug",
@@ -796,7 +796,7 @@
           "textMode": "auto",
           "wideLayout": true
         },
-        "pluginVersion": "12.0.2",
+        "pluginVersion": "12.3.0",
         "targets": [
           {
             "datasource": {
@@ -1027,6 +1027,7 @@
           }
         ],
         "title": "Strombilanz",
+        "transparent": true,
         "type": "stat"
       }
     },
@@ -1095,7 +1096,7 @@
                 }
               ]
             },
-            "unit": "ct/kWh"
+            "unit": "ct"
           },
           "overrides": [
             {
@@ -1177,7 +1178,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.2.1",
+        "pluginVersion": "12.3.0",
         "targets": [
           {
             "alias": "Max",
@@ -1341,7 +1342,7 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Strompreis",
+        "title": "Dynamischer Strompreis (ct/kWh)",
         "type": "timeseries"
       }
     },
@@ -1580,7 +1581,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.2.1"
+      "version": "12.3.1"
     },
     {
       "type": "panel",
@@ -1737,14 +1738,14 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineWidth": 0,
+            "lineWidth": 1,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -1894,7 +1895,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "PV",
@@ -2147,7 +2148,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 80,
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -2240,7 +2241,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -2543,7 +2544,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "PV/Tag",
@@ -2857,7 +2858,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "PV",
@@ -3046,217 +3047,12 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_AGGREGRATIONS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "fixed"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisWidth": 80,
-            "fillOpacity": 100,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineWidth": 1,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 2,
-          "links": [],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 0
-              }
-            ]
-          },
-          "unit": "currencyEUR"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Einkauf"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Verkauf"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "green",
-                  "mode": "fixed"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 19,
-        "x": 5,
-        "y": 27
-      },
-      "id": 63,
-      "options": {
-        "barRadius": 0.2,
-        "barWidth": 0.97,
-        "fullHighlight": false,
-        "groupWidth": 0.7,
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "orientation": "auto",
-        "showValue": "auto",
-        "stacking": "none",
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        },
-        "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 0
-      },
-      "pluginVersion": "12.2.1",
-      "targets": [
-        {
-          "alias": "Einkauf",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM energyPurchasedMonthlyPrice WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "purchased",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Verkauf",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "${DS_EVCC_AGGREGRATIONS}"
-          },
-          "groupBy": [
-            {
-              "params": [
-                "1d"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "pvPower",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT value FROM energySoldMonthlyPrice WHERE $timeFilter  tz('$timezone')",
-          "rawQuery": true,
-          "refId": "sold",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Stromkosten",
-      "type": "barchart"
-    },
-    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 34
+        "y": 27
       },
       "id": 68,
       "panels": [],
@@ -3314,7 +3110,7 @@
         "h": 10,
         "w": 5,
         "x": 0,
-        "y": 35
+        "y": 28
       },
       "id": 67,
       "options": {
@@ -3341,7 +3137,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Haus",
@@ -3436,7 +3232,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -3496,7 +3292,7 @@
         "h": 10,
         "w": 19,
         "x": 5,
-        "y": 35
+        "y": 28
       },
       "id": 66,
       "options": {
@@ -3523,7 +3319,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Haus",
@@ -3699,7 +3495,7 @@
         "h": 10,
         "w": 5,
         "x": 0,
-        "y": 45
+        "y": 38
       },
       "id": 69,
       "options": {
@@ -3726,7 +3522,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Haus",
@@ -3918,7 +3714,7 @@
         "h": 10,
         "w": 19,
         "x": 5,
-        "y": 45
+        "y": 38
       },
       "id": 70,
       "options": {
@@ -3945,7 +3741,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "Haus",
@@ -4069,15 +3865,14 @@
         }
       ],
       "title": "Haus: Energieverteilung",
-      "transparent": true,
       "type": "barchart"
     },
     {
       "gridPos": {
-        "h": 16,
+        "h": 18,
         "w": 5,
         "x": 0,
-        "y": 55
+        "y": 48
       },
       "id": 65,
       "libraryPanel": {
@@ -4087,10 +3882,10 @@
     },
     {
       "gridPos": {
-        "h": 16,
+        "h": 11,
         "w": 19,
         "x": 5,
-        "y": 55
+        "y": 48
       },
       "id": 54,
       "libraryPanel": {
@@ -4099,12 +3894,217 @@
       }
     },
     {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_EVCC_AGGREGRATIONS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisWidth": 80,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "currencyEUR"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Einkauf"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Verkauf"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 19,
+        "x": 5,
+        "y": 59
+      },
+      "id": 63,
+      "options": {
+        "barRadius": 0.2,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "12.2.1",
+      "targets": [
+        {
+          "alias": "Einkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM energyPurchasedMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "purchased",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "Verkauf",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_AGGREGRATIONS}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "1d"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "pvPower",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT value FROM energySoldMonthlyPrice WHERE $timeFilter  tz('$timezone')",
+          "rawQuery": true,
+          "refId": "sold",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Stromkosten",
+      "type": "barchart"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 66
       },
       "id": 62,
       "panels": [],
@@ -4116,7 +4116,7 @@
         "h": 18,
         "w": 5,
         "x": 0,
-        "y": 72
+        "y": 67
       },
       "id": 37,
       "libraryPanel": {
@@ -4148,7 +4148,7 @@
         "h": 9,
         "w": 7,
         "x": 5,
-        "y": 72
+        "y": 67
       },
       "id": 6,
       "options": {
@@ -4274,8 +4274,8 @@
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
-            "fillOpacity": 100,
-            "gradientMode": "none",
+            "fillOpacity": 80,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -4355,7 +4355,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 72
+        "y": 67
       },
       "id": 50,
       "maxDataPoints": 50000,
@@ -4426,7 +4426,7 @@
         "h": 9,
         "w": 7,
         "x": 5,
-        "y": 81
+        "y": 76
       },
       "id": 51,
       "options": {
@@ -4547,7 +4547,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -4604,7 +4604,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 81
+        "y": 76
       },
       "id": 49,
       "maxDataPoints": 50000,
@@ -4676,7 +4676,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 90
+        "y": 85
       },
       "id": 56,
       "panels": [],
@@ -4795,7 +4795,7 @@
         "h": 16,
         "w": 5,
         "x": 0,
-        "y": 91
+        "y": 86
       },
       "id": 59,
       "options": {
@@ -4985,7 +4985,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -5053,7 +5053,7 @@
         "h": 8,
         "w": 19,
         "x": 5,
-        "y": 91
+        "y": 86
       },
       "id": 58,
       "options": {
@@ -5144,7 +5144,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -5212,7 +5212,7 @@
         "h": 8,
         "w": 19,
         "x": 5,
-        "y": 99
+        "y": 94
       },
       "id": 60,
       "options": {
@@ -5305,7 +5305,7 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "axisWidth": 79,
-            "fillOpacity": 100,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -5372,7 +5372,7 @@
         "h": 8,
         "w": 19,
         "x": 5,
-        "y": 107
+        "y": 102
       },
       "id": 61,
       "options": {
@@ -5503,6 +5503,7 @@
       "type": "barchart"
     }
   ],
+  "preload": false,
   "refresh": "",
   "schemaVersion": 42,
   "tags": [
@@ -5583,6 +5584,6 @@
   "timezone": "",
   "title": "EVCC: Jahr",
   "uid": "Bdgi-xggk",
-  "version": 274,
+  "version": 278,
   "weekStart": ""
 }

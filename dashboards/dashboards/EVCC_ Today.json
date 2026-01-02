@@ -95,8 +95,8 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 70,
-              "gradientMode": "none",
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
@@ -261,7 +261,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.2.0",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "PV",
@@ -551,8 +551,8 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 70,
-              "gradientMode": "none",
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
@@ -569,6 +569,7 @@
                 "type": "linear"
               },
               "showPoints": "auto",
+              "showValues": false,
               "spanNulls": false,
               "stacking": {
                 "group": "A",
@@ -669,7 +670,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.1.0",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "Speicher",
@@ -1193,8 +1194,8 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 70,
-              "gradientMode": "none",
+              "fillOpacity": 80,
+              "gradientMode": "opacity",
               "hideFrom": {
                 "legend": false,
                 "tooltip": false,
@@ -1208,6 +1209,7 @@
                 "type": "linear"
               },
               "showPoints": "auto",
+              "showValues": false,
               "spanNulls": false,
               "stacking": {
                 "group": "A",
@@ -1315,7 +1317,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.1.0",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "netzbezug",
@@ -1577,7 +1579,7 @@
               "axisColorMode": "text",
               "axisLabel": "",
               "axisPlacement": "hidden",
-              "fillOpacity": 70,
+              "fillOpacity": 80,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -1782,7 +1784,7 @@
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
-        "pluginVersion": "12.2.0",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "PV",
@@ -2231,7 +2233,7 @@
               "barAlignment": 0,
               "barWidthFactor": 0.6,
               "drawStyle": "line",
-              "fillOpacity": 70,
+              "fillOpacity": 80,
               "gradientMode": "none",
               "hideFrom": {
                 "legend": false,
@@ -2246,6 +2248,7 @@
                 "type": "linear"
               },
               "showPoints": "never",
+              "showValues": false,
               "spanNulls": false,
               "stacking": {
                 "group": "A",
@@ -2440,7 +2443,7 @@
             "sort": "none"
           }
         },
-        "pluginVersion": "12.1.0",
+        "pluginVersion": "12.2.1",
         "targets": [
           {
             "alias": "Netzleistung",
@@ -3059,7 +3062,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.2.1"
+      "version": "12.3.1"
     },
     {
       "type": "datasource",
@@ -3517,7 +3520,7 @@
           "valueSize": 16
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "alias": "PV",
@@ -3777,6 +3780,7 @@
       }
     }
   ],
+  "preload": false,
   "refresh": "10s",
   "schemaVersion": 42,
   "tags": [
