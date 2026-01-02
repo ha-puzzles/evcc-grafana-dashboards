@@ -1326,7 +1326,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
   "links": [
     {
       "asDropdown": true,
@@ -1419,20 +1418,7 @@
           },
           "unit": "watth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "2025"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "2025"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 11,
@@ -1657,6 +1643,66 @@
                 "value": "Monat"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2026"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2026"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2027"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2027"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2028"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2028"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2029"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2029"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2030"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2030"
+              }
+            ]
           }
         ]
       },
@@ -1846,20 +1892,7 @@
           },
           "unit": "watth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "2025"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "2025"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
@@ -2084,6 +2117,66 @@
                 "value": "2025"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2026"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2026"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2027"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2027"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2028"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2028"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2029"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2029"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2030"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2030"
+              }
+            ]
           }
         ]
       },
@@ -2261,20 +2354,7 @@
           },
           "unit": "watth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "2025"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "2025"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
@@ -2499,6 +2579,66 @@
                 "value": "2025"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2026"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2026"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2027"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2027"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2028"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2028"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2029"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2029"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2030"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2030"
+              }
+            ]
           }
         ]
       },
@@ -2689,20 +2829,7 @@
           },
           "unit": "watth"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "2025"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "2025"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "h": 6,
@@ -2925,6 +3052,66 @@
               {
                 "id": "displayName",
                 "value": "2025"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2026"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2026"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2027"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2027"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2028"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2028"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2029"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2029"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2030"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2030"
               }
             ]
           }
@@ -3741,7 +3928,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -5673,6 +5860,66 @@
                 "value": "2025"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2026"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2026"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2027"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2027"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2028"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2028"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2029"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2029"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "2030"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "2030"
+              }
+            ]
           }
         ]
       },
@@ -6015,6 +6262,7 @@
   "timezone": "",
   "title": "EVCC: All-time",
   "uid": "LY-opIigz",
-  "version": 259,
-  "weekStart": ""
+  "version": 261,
+  "weekStart": "",
+  "id": null
 }
