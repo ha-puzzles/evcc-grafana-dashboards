@@ -1,4 +1,100 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_EVCC_INFLUXDB",
+      "label": "EVCC InfluxDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    },
+    {
+      "name": "DS_EXPRESSION",
+      "label": "Expression",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "__expr__"
+    },
+    {
+      "name": "VAR_TIMEZONE",
+      "type": "constant",
+      "label": "Zeitzone",
+      "value": "Europe/Berlin",
+      "description": ""
+    },
+    {
+      "name": "VAR_PEAKPOWERLIMIT",
+      "type": "constant",
+      "label": "Filter für maximale Leistung / W",
+      "value": "25000",
+      "description": ""
+    },
+    {
+      "name": "VAR_LOADPOINTBLOCKLIST",
+      "type": "constant",
+      "label": "Blocklist für Loadpoints",
+      "value": "/^none$/",
+      "description": ""
+    },
+    {
+      "name": "VAR_ENERGYSAMPLEINTERVAL",
+      "type": "constant",
+      "label": "Energie Abtast Interval",
+      "value": "60s",
+      "description": ""
+    },
+    {
+      "name": "VAR_TARIFFPRICEINTERVAL",
+      "type": "constant",
+      "label": "Stromtarif Interval",
+      "value": "15m",
+      "description": ""
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "__expr__",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "barchart",
+      "name": "Bar chart",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.3.2"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -18,7 +114,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 19,
   "links": [
     {
       "asDropdown": false,
@@ -87,9 +182,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -186,13 +280,13 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -235,7 +329,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -281,9 +375,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -390,13 +483,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -439,7 +532,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -484,9 +577,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -583,13 +675,13 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -632,7 +724,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -678,9 +770,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -777,13 +868,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -826,7 +917,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -871,9 +962,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -982,13 +1072,13 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Vorhersage",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT integral(\"value\") / 3600000 FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
@@ -1000,7 +1090,7 @@
           "alias": "Tatsächlich",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1046,9 +1136,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -1170,13 +1259,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Vorhersage",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT max(\"value\") FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
@@ -1188,7 +1277,7 @@
           "alias": "Tatsächlich",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1246,9 +1335,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -1320,13 +1408,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1369,7 +1457,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1412,7 +1500,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1453,9 +1541,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$totalHomePower-$extPowersSum",
           "hide": false,
@@ -1466,7 +1553,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1509,7 +1596,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1555,9 +1642,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -1687,13 +1773,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1736,7 +1822,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1779,7 +1865,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1820,9 +1906,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$totalHomePower-$extPowersSum",
           "hide": false,
@@ -1833,7 +1918,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1876,7 +1961,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -1921,9 +2006,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -1994,13 +2078,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2043,7 +2127,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2086,7 +2170,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2127,9 +2211,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$totalHomeEnergy - $extEnergiesSum",
           "hide": false,
@@ -2140,7 +2223,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2183,7 +2266,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2229,9 +2312,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -2361,13 +2443,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Gesamt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2410,7 +2492,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2453,7 +2535,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2494,9 +2576,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$totalHomeEnergy - $extEnergiesSum",
           "hide": false,
@@ -2507,7 +2588,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2550,7 +2631,7 @@
           "alias": "$tag_title",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2595,9 +2676,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -2700,13 +2780,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Haus",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2749,7 +2829,7 @@
           "alias": "$tag_loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2795,9 +2875,8 @@
     },
     {
       "datasource": {
-        "default": true,
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -2927,13 +3006,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Haus",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -2976,7 +3055,7 @@
           "alias": "$tag_loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3035,7 +3114,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -3135,13 +3214,13 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Max",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "query": "SELECT max(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
@@ -3152,7 +3231,7 @@
           "alias": "Durchschnitt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT mean(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
@@ -3164,7 +3243,7 @@
           "alias": "Min",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT min(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
@@ -3180,7 +3259,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -3319,13 +3398,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Preis",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "query": "SELECT last(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(previous) tz('$timezone')",
           "rawQuery": true,
@@ -3336,7 +3415,7 @@
           "alias": "Netzbezug",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')",
@@ -3351,7 +3430,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -3476,13 +3555,13 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3525,7 +3604,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3567,7 +3646,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": true,
           "query": "SELECT last(\"value\") FROM \"tariffFeedIn\" WHERE $timeFilter GROUP BY time($tariffPriceInterval) fill(previous) tz('$timezone')",
@@ -3579,7 +3658,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3620,9 +3699,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$tariffGrid * $grid",
           "hide": true,
@@ -3631,9 +3709,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$tariffFeedin * $feedIn",
           "hide": true,
@@ -3642,9 +3719,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "bought",
           "hide": false,
@@ -3657,9 +3733,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "sold",
           "hide": false,
@@ -3672,9 +3747,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$boughtTotal + $soldTotal",
           "hide": false,
@@ -3689,7 +3763,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -3811,13 +3885,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3860,7 +3934,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3903,7 +3977,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3946,7 +4020,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -3987,9 +4061,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$tariffGrid * $grid",
           "hide": false,
@@ -3998,9 +4071,8 @@
         },
         {
           "datasource": {
-            "name": "Expression",
             "type": "__expr__",
-            "uid": "__expr__"
+            "uid": "${DS_EXPRESSION}"
           },
           "expression": "$feedIn * $tariffFeedIn",
           "hide": false,
@@ -4014,7 +4086,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -4114,13 +4186,13 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Max",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "query": "SELECT max(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
@@ -4131,7 +4203,7 @@
           "alias": "Durchschnitt",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT mean(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
@@ -4143,7 +4215,7 @@
           "alias": "Min",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT min(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
@@ -4159,7 +4231,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -4301,13 +4373,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.0",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "CO2",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "query": "SELECT last(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
           "rawQuery": true,
@@ -4318,7 +4390,7 @@
           "alias": "Netzbezug",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')",
@@ -4346,7 +4418,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -4400,13 +4472,13 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Strom L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4444,7 +4516,7 @@
           "alias": "Strom L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4483,7 +4555,7 @@
           "alias": "Strom L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4526,7 +4598,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -4607,13 +4679,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Strom L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4651,7 +4723,7 @@
           "alias": "Strom L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4690,7 +4762,7 @@
           "alias": "Strom L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4732,7 +4804,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -4786,13 +4858,13 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Leistung L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4831,7 +4903,7 @@
           "alias": "Leistung L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4870,7 +4942,7 @@
           "alias": "Leistung L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -4913,7 +4985,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "fieldConfig": {
         "defaults": {
@@ -4926,6 +4998,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "left",
+            "axisWidth": 80,
             "barAlignment": 0,
             "barWidthFactor": 0.6,
             "drawStyle": "line",
@@ -4993,13 +5066,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Leistung L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5013,7 +5086,7 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l1\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m)",
+          "query": "SELECT mean(\"l1\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "powerL1",
           "resultFormat": "time_series",
@@ -5037,7 +5110,7 @@
           "alias": "Leistung L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5051,7 +5124,7 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l2\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m)",
+          "query": "SELECT mean(\"l2\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "powerL2",
           "resultFormat": "time_series",
@@ -5075,7 +5148,7 @@
           "alias": "Leistung L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5089,7 +5162,7 @@
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
-          "query": "SELECT mean(\"l3\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m)",
+          "query": "SELECT mean(\"l3\") FROM \"gridPowers\" WHERE $timeFilter GROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "powerL3",
           "resultFormat": "time_series",
@@ -5130,7 +5203,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -5185,13 +5258,13 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "L1 $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5235,7 +5308,7 @@
           "alias": "L2 $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5280,7 +5353,7 @@
           "alias": "L3 $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5325,7 +5398,7 @@
           "alias": "Strom $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT last(\"value\") FROM \"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
@@ -5341,7 +5414,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -5423,13 +5496,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "L1 $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5473,7 +5546,7 @@
           "alias": "L2 $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5518,7 +5591,7 @@
           "alias": "L3 $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5563,7 +5636,7 @@
           "alias": "Strom $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "groupBy": [
             {
@@ -5611,7 +5684,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -5722,13 +5795,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "1 phasig: $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT max(\"value\") FROM \"phasesActive\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') AND value = 1 GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
@@ -5740,7 +5813,7 @@
           "alias": "3 phasig: $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT max(\"value\") FROM \"phasesActive\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') AND value = 3 GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
@@ -5755,7 +5828,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "L-nZgczgk"
+        "uid": "${DS_EVCC_INFLUXDB}"
       },
       "description": "",
       "fieldConfig": {
@@ -5853,13 +5926,13 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.2.1",
+      "pluginVersion": "12.3.2",
       "targets": [
         {
           "alias": "Ladeleistung $loadpoint",
           "datasource": {
             "type": "influxdb",
-            "uid": "L-nZgczgk"
+            "uid": "${DS_EVCC_INFLUXDB}"
           },
           "hide": false,
           "query": "SELECT max(\"value\") FROM \"chargePower\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
@@ -5881,51 +5954,70 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Europe/Berlin",
-          "value": "Europe/Berlin"
-        },
         "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
         "label": "Zeitzone",
         "name": "timezone",
-        "query": "Europe/Berlin",
+        "query": "${VAR_TIMEZONE}",
         "skipUrlSync": true,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_TIMEZONE}",
+          "text": "${VAR_TIMEZONE}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_TIMEZONE}",
+            "text": "${VAR_TIMEZONE}",
+            "selected": false
+          }
+        ]
       },
       {
-        "current": {
-          "text": "25000",
-          "value": "25000"
-        },
         "description": "Grenze der maximalen Leistung in W, über diese hinaus Leistungswerte als Ausreißer ignoriert werden.",
         "hide": 2,
         "label": "Filter für maximale Leistung / W",
         "name": "peakPowerLimit",
-        "query": "25000",
+        "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_PEAKPOWERLIMIT}",
+          "text": "${VAR_PEAKPOWERLIMIT}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_PEAKPOWERLIMIT}",
+            "text": "${VAR_PEAKPOWERLIMIT}",
+            "selected": false
+          }
+        ]
       },
       {
-        "current": {
-          "text": "/^none$/",
-          "value": "/^none$/"
-        },
         "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
         "hide": 2,
         "label": "Blocklist für Loadpoints",
         "name": "loadpointBlocklist",
-        "query": "/^none$/",
+        "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_LOADPOINTBLOCKLIST}",
+          "text": "${VAR_LOADPOINTBLOCKLIST}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_LOADPOINTBLOCKLIST}",
+            "text": "${VAR_LOADPOINTBLOCKLIST}",
+            "selected": false
+          }
+        ]
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlocklist",
         "includeAll": true,
         "label": "Ladepunkt",
@@ -5941,40 +6033,58 @@
         "type": "query"
       },
       {
-        "current": {
-          "text": "60s",
-          "value": "60s"
-        },
         "description": "Das Abtastinterval für die Energieberechnung. Sollte mindestens 2x dem Abfrageintervall von EVCC entsprechen. Default: 60s, da das Default Intervall von EVCC 60s beträgt.",
         "hide": 2,
         "label": "Energie Abtast Interval",
         "name": "energySampleInterval",
-        "query": "60s",
+        "query": "${VAR_ENERGYSAMPLEINTERVAL}",
         "skipUrlSync": true,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_ENERGYSAMPLEINTERVAL}",
+          "text": "${VAR_ENERGYSAMPLEINTERVAL}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_ENERGYSAMPLEINTERVAL}",
+            "text": "${VAR_ENERGYSAMPLEINTERVAL}",
+            "selected": false
+          }
+        ]
       },
       {
-        "current": {
-          "text": "15m",
-          "value": "15m"
-        },
         "description": "Interval in dem der Stromtarif sich ändert. Ändert er sich im Stundentakt, kann das auf '1h' geändert werden. Hat man einen konstanten Tarif, dann auf '1d' für einen Tag.",
         "hide": 2,
         "label": "Stromtarif Interval",
         "name": "tariffPriceInterval",
-        "query": "15m",
+        "query": "${VAR_TARIFFPRICEINTERVAL}",
         "skipUrlSync": true,
-        "type": "constant"
+        "type": "constant",
+        "current": {
+          "value": "${VAR_TARIFFPRICEINTERVAL}",
+          "text": "${VAR_TARIFFPRICEINTERVAL}",
+          "selected": false
+        },
+        "options": [
+          {
+            "value": "${VAR_TARIFFPRICEINTERVAL}",
+            "text": "${VAR_TARIFFPRICEINTERVAL}",
+            "selected": false
+          }
+        ]
       }
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "2026-01-29T23:00:00.000Z",
+    "to": "2026-01-30T22:59:59.000Z"
   },
   "timepicker": {},
   "timezone": "Europe/Berlin",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 278
+  "version": 4,
+  "weekStart": "",
+  "id": null
 }
