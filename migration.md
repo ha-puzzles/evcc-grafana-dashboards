@@ -26,7 +26,7 @@ Optimistische Migration:
 
 ## Installation von Victoria Metrics
 
-Hier gibt es mehrere Methoden. Wichtig bei beiden ist, dass wir die Retention Period erhöhen.
+Hier gibt es mehrere Methoden. Wichtig bei allen ist, dass wir die Retention Period erhöhen.
 
 Zu den Details der Installation siehe [vm-installation.md](./vm-installation.md)
 
@@ -38,23 +38,37 @@ Zu den Details der Installation siehe [vm-installation.md](./vm-installation.md)
    ```
    Der Datenbankname muss eventuell angepasst werden und die parameter `-username <user>` und `-password <password>` könnten auch noch notwendig sein.
 1. Der Import der Daten aus der Influx DB wird nun durch dieses Kommando gestartet:
-   ```bash
-   vmctl influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --vm-addr=http://127.0.0.1:8428 
-   ```
-   Sollten User und Password für Influx notwendig sein, dann
-   ```bash
-   vmctl influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --influx-user <user> --influx-password <password> --vm-addr=http://127.0.0.1:8428 
-   ```
-   `<user>` und `<password>` sind entsprechend anzupassen.
+   - Installation über Docker
+      ```bash
+      sudo docker run -it --rm victoriametrics/vmctl:latest influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --vm-addr=http://127.0.0.1:8428 
+      ```
+      Sollten User und Password für Influx notwendig sein, dann
+      ```bash
+      sudo docker run -it --rm victoriametrics/vmctl:latest influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --influx-user <user> --influx-password <password> --vm-addr=http://127.0.0.1:8428 
+      ```
+      `<user>` und `<password>` sind entsprechend anzupassen.
+
+   - lokale Installation
+      ```bash
+      vmctl influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --vm-addr=http://127.0.0.1:8428 
+      ```
+      Sollten User und Password für Influx notwendig sein, dann
+      ```bash
+      vmctl influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --influx-user <user> --influx-password <password> --vm-addr=http://127.0.0.1:8428 
+      ```
+      `<user>` und `<password>` sind entsprechend anzupassen.
 
 ## Grafana Setup
 1. In Grafana gehen wir zu 'Administration > Plugins and data > Plugins` und suchen dort das 'VictoriaMetrics' Plugin und installieren es.
    ![Grafana Victoria Metrics Plugin](./img/grafana-vm-plugin.png)
 1. Nun legen wir eine unter `Connections > Data sources` eine neue Verbindung zu unserer Datenbank an. Unter 'URL' geben wir `http://<server>>:8428` ein. Scrollen bis ganz nach untern und clicken auf `Save & test`.
    ![Grafana Victoria Metrics data source](./img/grafama-vm-datasource.png)
-1. Jetzt kann man in Grafana über Explore schon die importierten Daten anschauen. Oben die eben angelegte Data Source auswählen, die Zeit auf einen sinnvollen Bereich einstellen und unter 'Metric browser' zum Beispiel die Metric 'pvPower_value' auswählen. Dann auf 'Run query' clicken und man sollte die importierten Daten sehen.
+1. Jetzt kann man in Grafana über Explore schon die importierten Daten anschauen. Oben die eben angelegte Data Source auswählen, die Zeit auf einen sinnvollen Bereich einstellen und unter 'Metric browser' zum Beispiel die Metric `pvPower_value` auswählen. Dann auf 'Run query' clicken und man sollte die importierten Daten sehen.
    ![Grafana Explore](./img/grafana-explore.png)
 
 > [!NOTE]
 > Von Influx importierte Metriken findet man nun unter `<Influx Measurement Name>_<Wert>` und `<Wert>` ist bei den meisten Measurements 'value'. Also hat man früher zum Beispiel aus dem Measurement 'pvPower' den Wert 'value' abgefragt, dann findet man diesen nun unter der Metric 'pvPower_value'.
 
+## Import der neuen Dashboards
+
+TODO (eventuell weiter unter installation.md)
