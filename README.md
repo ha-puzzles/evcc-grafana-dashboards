@@ -1,4 +1,4 @@
-# Grafana Dashboard für EVCC
+# Grafana Dashboards für EVCC
 
 > [!NOTE]
 > Die ältereren Dashboards für Influx DB 1.8 wurden in den Unterorder [`influx`](./influx/) verschoben.
