@@ -4,7 +4,7 @@ Es gibt hier mehrere Wege:
 
 - Docker Image: Empfohlen
 - Debian Package: Hier bekomme ich leider das Web UI nicht zum laufen. Wer dieses nicht braucht, mag damit am besten zurecht kommen.
-- Manuelle Installation.
+- Installation über Binaries.
 
 
 ## Installation über Docker mit Docker Compose
@@ -13,7 +13,7 @@ Es gibt hier mehrere Wege:
    ```bash
    sudo apt update && sudo apt install docker-compose
    ```
-1. Ein Verzeichnis erstellen, wo der Victoria Metrics Docker Container seine Daten ablegt. Zum Beispiel im Home Verzeichnis unter `docker/victoria-metrics`:
+1. Ein Verzeichnis erstellen, in dem der Victoria Metrics Docker Container seine Daten ablegt. Zum Beispiel im Home Verzeichnis unter `docker/victoria-metrics`:
    ```bash
    mkdir -p ~/docker/victoria-metrics
    cd ~/docker/victoria-metrics
@@ -50,8 +50,9 @@ Es gibt hier mehrere Wege:
    ```
 1. In einem Browser die URL `http://<server>:8428` öffnen. `<server>` dabei durch den Host namen Eures Linux servers, auf dem Victoria Metrics läuft, ersetzen. Ihr solltet diese Seite zu Gesicht bekommen:
    ![Victoria Metrics Seite](./img/victoria-metrics-ui.png)
+
    Ein Click auf den Link 'vmui' sollte nun das Victoria Metrics Web UI öffnen.
-1. Das CLI `vmutil` als Docker image ausführen:
+1. Das CLI `vmutil` über Docker ausführen:
    ```
    sudo docker run -it --rm victoriametrics/vmctl:latest --version
    ```
@@ -106,7 +107,7 @@ sudo docker-compose pull && sudo docker-compose up -d
    vmctl --version
    ```
 
-## Manuelle Installation
+## Installation über Binaries
 
 1. Download der Binaries der Victoria Metrics Datenbank und der Utilities von der Victoria Metrics [Releases Seite](https://github.com/VictoriaMetrics/VictoriaMetrics/releases). Wir benötigen folgende Dateien eines Releases, der KEIN Enterprise Release ist:
    - victoria-metrics-linux-<arch>>-<version>.tar.gz
@@ -191,6 +192,6 @@ sudo docker-compose pull && sudo docker-compose up -d
 
 ## Weitere Installations Methoden
 
-Victoria Metrics ist noch über einige weitere Methoden wie Docker, Helm Charts oder Kubernetes verfügbar. Siehe auch der [Quick Start](https://docs.victoriametrics.com/victoriametrics/quick-start/) Guide von Victoria Metrics.
+Victoria Metrics ist noch über einige weitere Methoden wie Helm Charts oder Kubernetes verfügbar. Siehe auch der [Quick Start](https://docs.victoriametrics.com/victoriametrics/quick-start/) Guide von Victoria Metrics.
 
 Egal wie ihr Victoria Metrics installiert, stellt sicher, dass ihr den Parameter `-retentionPeriod=100y` bei der Ausführung der Datenbank setzt.
