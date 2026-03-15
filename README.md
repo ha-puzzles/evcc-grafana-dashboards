@@ -1,61 +1,61 @@
-# Grafana Dashboards für EVCC
+# Grafana dashboards for EVCC
 
 > [!NOTE]
-> Die ältereren Dashboards für Influx DB 1.8 wurden in den Unterorder [`influx`](./influx/) verschoben.
+> The older dashboards for Influx DB 1.8 have been moved to the [`influx`](./influx/) subfolder.
 
 ![Banner Picture](./img/banner_picture.png)
 
-Ein Satz von EVCC Dashboards für Grafana mit Victoria Metrics:
-- Realtime Dashboard for Desktop und Mobile.
-- Detailierte Realtime-Statistiken
-- Monatliche und jährliche Statistiken.
-- Erweiterte All-Time Statistiken mit finanziellen Berechnungen zur Amortisation der PV Anlage sowie grobe Schätzungen der Einsparungen durch ein Elektrofahrzeug
+A collection of EVCC dashboards for Grafana using Victoria Metrics:
+- Real-time dashboards for desktop and mobile
+- Detailed real-time statistics
+- Monthly and yearly statistics
+- Comprehensive all-time statistics, including financial calculations for PV system amortization and rough estimates of savings from electric vehicles
 
-Bitte beachtet auch inbesondere den nächsten Abschnitt, der die Voraussetzungen listet sehr genau, bevor ihr anfangt.
+Please carefully review the next section, which lists the prerequisites, before you begin.
 
-## Grundvoraussetzungen
+## Prerequisites
 
-Folgende Voraussetzungen müssen erfüllt sein, damit diese Dashboards bei Euch laufen:
+The following requirements must be met for these dashboards to work:
 
-- EVCC: https://evcc.io/ (Version 0.300 oder neuer empfohlen).
-- Victoria Metrics (Version: v1.135 oder höher empfohlen).
-- Victoria Metrics [in EVCC als Datenbank konfiguriert](https://docs.evcc.io/docs/reference/configuration/influx#victoriametrics).
-- Grafana (Version 12.3.0 oder höher empfohlen).
-- Grundlegende Linux Kenntnisse oder die Bereitschaft sich diese anzueignen.
-- Die Möglichkeit ein Bash Shell Script regelmäßig per Crontab ausführen zu können (HAOS Benutzer, siehe [FAQ](#faq)).
-- Bereitschaft sich etwas in Grafana einzuarbeiten.
+- EVCC: https://evcc.io/ (version 0.300 or newer recommended)
+- Victoria Metrics (version v1.135 or higher recommended)
+- Victoria Metrics [configured as a database in EVCC](https://docs.evcc.io/docs/reference/configuration/influx#victoriametrics)
+- Grafana (version 12.3.0 or higher recommended)
+- Basic Linux knowledge or willingness to learn
+- Ability to regularly run a Bash shell script via crontab (HAOS users, see [FAQ](#faq))
+- Willingness to learn a bit about Grafana
 
-## Installation der Dashboards
+## Dashboard installation
 
-### Neu-Installation
-Mehr Details zu den einzelnen Installationsschritten in der Datei [installation.md](./installation.md) für eine neue Installation.
+### New installation
+For detailed installation steps, see [installation.md](./installation.md).
 
-### Migration von Influx 1.8
-Wer zuvor schon die Dashboards unter Influx installiert hatte, findet in der Datei [migration.md](./migration.md) die erforderlichen Schritte zur Migration der bestehenden Influx 1.8 Datenbank.
+### Migration from Influx 1.8
+If you previously used the dashboards with Influx, see [migration.md](./migration.md) for instructions on migrating your existing Influx 1.8 database.
 
 ## FAQ
 
-### Wird es Support für neue Influx Versionen geben?
+### Will there be support for new Influx versions?
 
-Nein. Leider hat Influx bei mir mit ihrer undurchsichtigen Produktpolitik jede Sympathie verloren. Für mehr Details, siehe diese [Diskussion](https://github.com/ha-puzzles/evcc-grafana-dashboards/discussions/220).
+No. Unfortunately, Influx has lost my support due to their product policy. For more details, see this [discussion](https://github.com/ha-puzzles/evcc-grafana-dashboards/discussions/220).
 
-Hauptgründe: 
-- Influx ist nicht in der Lage einen Migrationspfad für die eigenen Datenbanken anzubieten.
-- Lizenzmodel und Einschränkungen der freien Version unter Influx 3.
+Main reasons:
+- Influx does not provide a migration path for their own databases
+- License model and restrictions of the free version in Influx 3
 
-### Wie führe ich das Aggregation Script unter HAOS aus?
+### How do I run the aggregation script under HAOS?
 
-Gute Frage. Leider ist mir derzeit keine Möglichkeit bekannt unter HAOS (oder ähnlichen Systemen ohne direkten Zugriff auf das System) Shell Scripte direkt auszuführen. Wer eine Möglichkeit findet bitte Bescheid geben.
+Good question. Unfortunately, I am not aware of any way to run shell scripts directly under HAOS (or similar systems without direct access). If you find a solution, please let me know.
 
-Aggregationen in Victoria Metrics haben nach meiner Kenntnis leider nicht die Möglichkeit zur Berechnung der viertelstündlichen Preise - daher muss hier im Script etwas mehr Logik implementiert werden.
+To my knowledge, Victoria Metrics does not support quarter-hourly price calculations natively, so the script must implement additional logic.
 
-Die einzige Möglichkeit, die ich hier sehe ist das Shell Script auf einem externen Linux System zu konfigurieren, das sich remote mit der Victoria Metrics DB auf dem HAOS System verbindet. Siehe die [Dokumentation des Aggregations Scriptes](./scripts/README.md) wie man es so konfiguriert, dass man es auf einem externen Linux System laufen lassen kann.
+The only option I see is to configure the shell script on an external Linux system that connects remotely to the Victoria Metrics database on the HAOS system. See the [aggregation script documentation](./scripts/README.md) for instructions on running it externally.
 
-### Nach dem Upgrade sehen die Dashboards irgendwie komisch aus
+### After the upgrade, the dashboards look strange
 
-Hast Du die Upgrade Schritte, insbesondere das Löschen der Library Panels befolgt, bevor Du die neuen Dashboards importiert hast?
+Did you follow the upgrade steps, especially deleting the library panels, before importing the new dashboards?
 
-### Ein paar Panele zeigen nur "No Data" an.
+### Some panels only show "No Data"
 
-- Hast Du die Aggregation schon für alle betreffenden Zeiträume laufen gelassen? Siehe [scripts](./scripts/).
-- Wurden beim Import die richtigen Data Sources ausgewählt? Falls nein, kann sie auch nachträglich in den betroffenen Panels noch geändert werden.
+- Did you run the aggregation for all relevant time periods? See [scripts](./scripts/).
+- Were the correct data sources selected during import? If not, you can change them later in the affected panels.

@@ -1,74 +1,78 @@
 # Migration
 
-Beschreibt die Migration von Influx 1.8 mit oder ohne den alten Dashboards (Version 1.x oder älter) auf Victoria Metrics mit den neuen Dashboards (Version 2.x).
+This guide describes how to migrate from Influx 1.8 (with or without the old dashboards, version 1.x or earlier) to Victoria Metrics with the new dashboards (version 2.x).
 
-## Überblick der Schritte
+## Step overview
 
-Vorsichtige Migration mit vorherigem Test (empfohlen):
-1. Installation von Victoria Metrics.
-1. Migration der Daten von Influx 1.8 nach Victoria Metrics.
-1. Installation der neuen Victoria Metrics basierten Dashboards parallel zu den alten Dashboards.
-1. Aggregationscript installieren und ausführen.
-1. Testen der neuen Dashboards.
-1. Nach erfolgreichem Test: Umkonfiguration von EVCC, damit die Daten in Victoria Metrics geschrieben werden.
-1. Erneuerter Import der Daten von Influx 1.8 nach Victoria Metrics, damit die zwischenzeitlich seit dem 2. Schritt geschriebenen Daten auch in Victoria Metrics vorhanden sind.
-1. Erneute Ausführung des Aggregationsscriptes.
-1. Löschen der alten Dashboards und Library Panels.
+Recommended migration with prior testing:
+1. Install Victoria Metrics.
+1. Migrate data from Influx 1.8 to Victoria Metrics.
+1. Install the new Victoria Metrics-based dashboards alongside the old dashboards.
+1. Install and run the aggregation script.
+1. Test the new dashboards.
+1. After successful testing, reconfigure EVCC to write data to Victoria Metrics.
+1. Re-import data from Influx 1.8 to Victoria Metrics so that any data written since step 2 is also available in Victoria Metrics.
+1. Run the aggregation script again.
+1. Delete the old dashboards and library panels.
 
-Optimistische Migration:
-1. Installation von Victoria Metrics.
-1. Umkonfiguration von EVCC, damit die Daten in Victoria Metrics und nicht länger in Influx DB geschrieben werden.
-1. Import der Daten von Influx 1.8 nach Victoria Metrics.
-1. Installation der neuen Victoria Metrics basierten Dashboards.
-1. Aggregationscript installieren und ausführen.
-1. Löschen der alten Dashboards und Library Panels.
+Optimistic migration:
+1. Install Victoria Metrics.
+1. Reconfigure EVCC to write data to Victoria Metrics instead of Influx DB.
+1. Import data from Influx 1.8 to Victoria Metrics.
+1. Install the new Victoria Metrics-based dashboards.
+1. Install and run the aggregation script.
+1. Delete the old dashboards and library panels.
 
+## Installing Victoria Metrics
 
-## Installation von Victoria Metrics
+There are several installation methods. For all of them, it is important to increase the retention period.
 
-Hier gibt es mehrere Methoden. Wichtig bei allen ist, dass wir die Retention Period erhöhen.
-
-Zu den Details der Installation siehe [vm-installation.md](./vm-installation.md)
+For installation details, see [vm-installation.md](./vm-installation.md)
 
 ## Migration
 
-1. In einer früheren Influx Version wurde das Measurement `batteryControllable` geschrieben. Dieses enthielt keine gültigen Zahlen als Metric und muss vor der Migration gelöscht werden.
+1. In earlier versions of Influx, the measurement `batteryControllable` was written. This did not contain valid numbers as a metric and must be deleted before migration.
    ```bash
    influx -database evcc -execute 'drop measurement batteryControllable'
    ```
-   Der Datenbankname muss eventuell angepasst werden und die parameter `-username <user>` und `-password <password>` könnten auch noch notwendig sein.
-1. Der Import der Daten aus der Influx DB wird nun durch dieses Kommando gestartet:
-   - Installation über Docker
+   You may need to adjust the database name, and the parameters `-username <user>` and `-password <password>` may also be required.
+1. Start importing data from Influx DB using the following commands:
+   - Docker installation
       ```bash
       sudo docker run -it --rm victoriametrics/vmctl:latest influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --vm-addr=http://127.0.0.1:8428 
       ```
-      Sollten User und Password für Influx notwendig sein, dann
+      If a username and password are required for Influx:
       ```bash
       sudo docker run -it --rm victoriametrics/vmctl:latest influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --influx-user <user> --influx-password <password> --vm-addr=http://127.0.0.1:8428 
       ```
-      `<user>` und `<password>` sind entsprechend anzupassen.
+      Adjust `<user>` and `<password>` as needed.
 
-   - lokale Installation
+   - Local installation
       ```bash
       vmctl influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --vm-addr=http://127.0.0.1:8428 
       ```
-      Sollten User und Password für Influx notwendig sein, dann
+      If a username and password are required for Influx:
       ```bash
       vmctl influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --influx-user <user> --influx-password <password> --vm-addr=http://127.0.0.1:8428 
       ```
-      `<user>` und `<password>` sind entsprechend anzupassen.
+      Adjust `<user>` and `<password>` as needed.
 
-## Grafana Setup
-1. In Grafana gehen wir zu 'Administration > Plugins and data > Plugins` und suchen dort das 'VictoriaMetrics' Plugin und installieren es.
+## Grafana setup
+1. In Grafana, go to 'Administration > Plugins and data > Plugins', search for the 'VictoriaMetrics' plugin, and install it.
+
    ![Grafana Victoria Metrics Plugin](./img/grafana-vm-plugin.png)
-1. Nun legen wir eine unter `Connections > Data sources` eine neue Verbindung zu unserer Datenbank an. Unter 'URL' geben wir `http://<server>>:8428` ein. Scrollen bis ganz nach untern und clicken auf `Save & test`.
+   
+1. Under `Connections > Data sources`, create a new connection to your database. In the 'URL' field, enter `http://<server>:8428`. Scroll to the bottom and click `Save & test`.
+
    ![Grafana Victoria Metrics data source](./img/grafama-vm-datasource.png)
-1. Jetzt kann man in Grafana über Explore schon die importierten Daten anschauen. Oben die eben angelegte Data Source auswählen, die Zeit auf einen sinnvollen Bereich einstellen und unter 'Metric browser' zum Beispiel die Metric `pvPower_value` auswählen. Dann auf 'Run query' clicken und man sollte die importierten Daten sehen.
+
+1. You can now use Grafana Explore to view the imported data. Select the data source you just created at the top, set the time range to a meaningful period, and in the 'Metric browser', select a metric such as `pvPower_value`. Click 'Run query' to view the imported data.
+
    ![Grafana Explore](./img/grafana-explore.png)
 
 > [!NOTE]
-> Von Influx importierte Metriken findet man nun unter `<Influx Measurement Name>_<Wert>` und `<Wert>` ist bei den meisten Measurements 'value'. Also hat man früher zum Beispiel aus dem Measurement 'pvPower' den Wert 'value' abgefragt, dann findet man diesen nun unter der Metric 'pvPower_value'.
+> Metrics imported from Influx are now found under `<Influx Measurement Name>_<Value>`, where `<Value>` is usually 'value' for most measurements. For example, if you previously queried the value 'value' from the measurement 'pvPower', you will now find it under the metric 'pvPower_value'.
 
-## Import der neuen Dashboards
+## Importing the new dashboards
 
-TODO (eventuell weiter unter installation.md)
+TODO (possibly further in installation.md)
