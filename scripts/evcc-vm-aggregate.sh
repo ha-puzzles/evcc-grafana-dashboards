@@ -205,66 +205,31 @@ printUsage() {
 }
 
 
-#TODO
-dropMeasurement() {
-    local measurement=$1
-    logInfo "Deleting measurement $measurement"
-    local dropStatement="DROP MEASUREMENT ${measurement}"
-    influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_AGGR_DB -username "$INFLUX_AGGR_USER" -password "$INFLUX_AGGR_PASSWORD" -execute "$dropStatement"
+deleteMetric() {
+    local metric=$1
+    logDebug "Deleting metric $metric"
+    curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" -d "match[]=${metric}"
 }
 
-#TODO
-dropAggregations() {
-    logWarning "You are about to delete all aggregated measurements. You will lose all historical measurements for the times, where realtime data is no longer available."
+
+deleteAggregations() {
+    logWarning "You are about to delete all aggregated metrics. You will lose all historical metrics for the times, where realtime data is no longer available."
     logWarning "Are you sure you want to delete all aggregated data? Type 'YES' to continue."
     local confirmation
     read confirmation
     if [ "$confirmation" == "YES" ]; then
-        logInfo "Deleting all aggregated measurements in 3 seconds."
+        logInfo "Deleting all aggregated metrics in 3 seconds."
         sleep 1
-        logInfo "Deleting all aggregated measurements in 2 seconds."
+        logInfo "Deleting all aggregated metrics in 2 seconds."
         sleep 1
-        logInfo "Deleting all aggregated measurements in 1 seconds."
+        logInfo "Deleting all aggregated metrics in 1 seconds."
         sleep 1
-        dropMeasurement "pvDailyEnergy"
-        dropMeasurement "homeDailyEnergy"
-        dropMeasurement "gridDailyEnergy"
-        dropMeasurement "feedInDailyEnergy"
-        dropMeasurement "dischargeDailyEnergy"
-        dropMeasurement "chargeDailyEnergy"
-        dropMeasurement "pvMonthlyEnergy"
-        dropMeasurement "homeMonthlyEnergy"
-        dropMeasurement "gridMonthlyEnergy"
-        dropMeasurement "feedInMonthlyEnergy"
-        dropMeasurement "dischargeMonthlyEnergy"
-        dropMeasurement "chargeMonthlyEnergy"
-        dropMeasurement "batteryMaxSoc"
-        dropMeasurement "batteryMinSoc"
-        dropMeasurement "tariffGridDailyMax"
-        dropMeasurement "tariffGridDailyMean"
-        dropMeasurement "tariffGridDailyMin"
-        dropMeasurement "vehicleDailyEnergy"
-        dropMeasurement "vehicleMonthlyEnergy"
-        dropMeasurement "vehicleOdometerDailyMax"
-        dropMeasurement "vehicleMonthlyDrivenKm"
-        dropMeasurement "loadpointDailyEnergy"
-        dropMeasurement "loadpointMonthlyEnergy"
-
-        # Legacy measurements
-        dropMeasurement "loadpoint1DailyEnergy"
-        dropMeasurement "loadpoint2DailyEnergy"
-        dropMeasurement "loadpoint1MonthlyEnergy"
-        dropMeasurement "loadpoint2MonthlyEnergy"
-        dropMeasurement "vehicle1DailyEnergy"
-        dropMeasurement "vehicle1DrivenKm"
-        dropMeasurement "vehicle1MonthlyEnergy"
-        dropMeasurement "vehicle1Odometer"
-        dropMeasurement "vehicle2DailyEnergy"
-        dropMeasurement "vehicle2DrivenKm"
-        dropMeasurement "vehicle2MonthlyEnergy"
-        dropMeasurement "vehicle2Odometer"
+        deleteMetric "pvEnergyDaily"
+        deleteMetric "homeEnergyDaily"
+        deleteMetric "gridEnergyImportDaily"
+        deleteMetric "gridEnergyExportDaily"
     else
-        logInfo "Deletion of aggregated measurements aborted."
+        logInfo "Deletion of aggregated metrics aborted."
     fi
 }
 
@@ -344,13 +309,10 @@ aggregateQuery() {
     local metric="$2"
     local starttime="$3"
     local endtime="$4"
-    # Use parameters from evcc-vm-aggregate.conf if set, otherwise default to localhost:8428
-    local VM_HOST="${VM_HOST:-localhost}"
-    local VM_PORT="${VM_PORT:-8428}"
-
-    # Properly URL-encode the query string for VictoriaMetrics using jq (no python required)
     local encoded_query
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
+
+    logInfo "Creating aggregated metric $metric"
 
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
@@ -371,12 +333,16 @@ aggregateQuery() {
             line="${metric}{year=\"${year}\",month=\"${month}\",day=\"${day}\"} ${value} ${timestamp}"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
         done
+}
 
 aggregate() {
     local starttime="$1"
     local endtime="$2"
 
-    aggregateQuery 'sum(integrate(((pvPower_value{id=""} < 25000) default 0) [1d:1m] offset -1d)/3600)' "pvEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery 'sum(integrate(((pvPower_value{id=""}) default 0) [1d:1m] offset -1d)/3600)' "pvEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery 'sum(integrate(((homePower_value) default 0) [1d:1m] offset -1d)/-3600)' "homeEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery 'integrate(((gridPower_value > 0) default 0) [1d:1m] offset -1d) / 3600' "gridEnergyImportDaily" "$starttime" "$endtime"
+    aggregateQuery 'integrate(((gridPower_value < 0) default 0) [1d:1m] offset -1d) / 3600' "gridEnergyExportDaily" "$starttime" "$endtime"
 }
 
 ###############################################################################
@@ -428,7 +394,8 @@ elif [ "$AGGREGATE_TODAY" == "true" ]; then
     endtime=$(TZ="$TIMEZONE" date -d "today 23:59:59" +%s)
     aggregate "$starttime" "$endtime"
 elif [ "$DELETE_AGGREGATIONS" == "true" ]; then
-    true
+    deleteAggregations
+    exit 0
 fi
 
 duration=$(( $(date +%s) - $start_time ))
