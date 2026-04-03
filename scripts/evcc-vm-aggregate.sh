@@ -228,65 +228,10 @@ deleteAggregations() {
         deleteMetric "homeEnergyDaily"
         deleteMetric "gridEnergyImportDaily"
         deleteMetric "gridEnergyExportDaily"
+        deleteMetric "loadpointEnergyDaily"
     else
         logInfo "Deletion of aggregated metrics aborted."
     fi
-}
-
-detectValues() {
-    # We are reading from vehicleOdometer as it typically contains entries for all vehicles and loadpoints, however has
-    # the least amount of records for a speedy query result.
-
-    # Detecting vehicles
-    local index=0
-    local vehicle_list
-    vehicle_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key=vehicle" | grep "^vehicle " | sed 's/^vehicle //' | sort)
-    while read vehicle; do
-        if [ "$vehicle" != "" ]; then
-            VEHICLES[${index}]=$vehicle
-            index=$((index+1))
-            logInfo "Detected vehicle $index: $vehicle"
-        fi
-    done <<< "$vehicle_list"
-    logDebug "Detected ${#VEHICLES[*]} vehicles: ${VEHICLES[*]}"
-
-    # Detecting loadpoints
-    index=0
-    local loadpoint_list
-    loadpoint_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from vehicleOdometer with key=loadpoint" | grep "^loadpoint " | sed 's/^loadpoint //' | sort)
-    while read loadpoint; do
-        if [ "$loadpoint" != "" ]; then
-            LOADPOINTS[${index}]=$loadpoint
-            index=$((index+1))
-            logInfo "Detected loadpoint $index: $loadpoint"
-        fi
-    done <<< "$loadpoint_list"
-
-    # Detecting ext devices
-    index=0
-    local ext_device_list
-    ext_device_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from extPower with key=title" | grep "^title " | sed 's/^title //' | sort)
-    while read ext_device; do
-        if [ "$ext_device" != "" ]; then
-            EXT_DEVICES[${index}]=$ext_device
-            index=$((index+1))
-            logInfo "Detected ext device $index: $ext_device"
-        fi
-    done <<< "$ext_device_list"
-
-    # Detecting aux devices
-    index=0
-    local aux_device_list
-    aux_device_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from auxPower with key=title" | grep "^title " | sed 's/^title //' | sort)
-    while read aux_device; do
-        if [ "$aux_device" != "" ]; then
-            AUX_DEVICES[${index}]=$aux_device
-            index=$((index+1))
-            logInfo "Detected aux device $index: $aux_device"
-        fi
-    done <<< "$aux_device_list"
-
-    logDebug "Detected: vehicles ${#VEHICLES[*]} loadpoints: ${LOADPOINTS[*]} ext devices: ${EXT_DEVICES[*]} aux devices: ${AUX_DEVICES[*]}"
 }
 
 checkDependencies() {
@@ -329,8 +274,36 @@ aggregateQuery() {
             ]
             | @csv
         ' | while IFS=',' read -r timestamp value year month day; do
-            # Compose line protocol: metric{year="YYYY",month="MM",day="DD"} value=VAL TIMESTAMP
             line="${metric}{year=\"${year}\",month=\"${month}\",day=\"${day}\"} ${value} ${timestamp}"
+            echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
+        done
+}
+
+aggregateQueryByTag() {
+    local query="$1"
+    local tag="$2"
+    local metric="$3"
+    local starttime="$4"
+    local endtime="$5"
+    local encoded_query
+    encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
+
+    logInfo "Creating aggregated metric $metric"
+
+    curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
+        -d "query=${encoded_query}" \
+        -d "start=${starttime}" \
+        -d "end=${endtime}" \
+        -d "step=1d" | jq -r --arg tag_name "$tag" '
+            (.data.result[] | .metric[$tag_name] as $tag_value | .values[] | 
+            (.[0] | tonumber) as $timestamp |
+            (.[1] | tonumber) as $value |
+            ($timestamp | strftime("%Y") | tonumber) as $y |
+            ($timestamp | strftime("%m") | tonumber) as $m |
+            ($timestamp | strftime("%d") | tonumber) as $d |
+            [$tag_value, $timestamp, $value, $y, $m, $d]) | @csv
+        ' | while IFS=',' read -r tagValue timestamp value year month day; do
+            line="${metric}{$tag=${tagValue},year=\"${year}\",month=\"${month}\",day=\"${day}\"} ${value} ${timestamp}"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
         done
 }
@@ -339,10 +312,13 @@ aggregate() {
     local starttime="$1"
     local endtime="$2"
 
+    logDebug "Aggregating from $(date -d @$starttime) ($starttime) to $(date -d @$endtime) ($endtime)"
+
     aggregateQuery 'sum(integrate(((pvPower_value{id=""}) default 0) [1d:1m] offset -1d)/3600)' "pvEnergyDaily" "$starttime" "$endtime"
     aggregateQuery 'sum(integrate(((homePower_value) default 0) [1d:1m] offset -1d)/-3600)' "homeEnergyDaily" "$starttime" "$endtime"
     aggregateQuery 'integrate(((gridPower_value > 0) default 0) [1d:1m] offset -1d) / 3600' "gridEnergyImportDaily" "$starttime" "$endtime"
     aggregateQuery 'integrate(((gridPower_value < 0) default 0) [1d:1m] offset -1d) / 3600' "gridEnergyExportDaily" "$starttime" "$endtime"
+    aggregateQueryByTag 'sum by (loadpoint)(sort_by_label(integrate(((chargePower_value{loadpoint!="", vehicle!="", loadpoint !~ "$loadpointBlocklist"}) default 0)[1d:1m] offset -1d) / -3600, "loadpoint"))' "loadpoint" "loadpointEnergyDaily" "$starttime" "$endtime"
 }
 
 ###############################################################################
