@@ -340,14 +340,6 @@ fi
 
 parseArguments $@
 
-# Start aggregation
-# if [ "$DELETE_AGGREGATIONS" != "true" ]; then
-#     detectValues
-#     if [ "$DETECT_VALUES" != "true" ]; then
-#         logInfo "[`date '+%F %T'`] Starting aggregation..."
-#     fi
-# fi
-
 if [ "$AGGREGATE_YEAR" -ne 0 ]; then
     # Aggregating by month, because aggregating whole year at once can lead to "too many points" errors.
     for month in {1..12}; do
