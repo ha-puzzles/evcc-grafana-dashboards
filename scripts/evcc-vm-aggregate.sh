@@ -75,120 +75,116 @@ validateDate() {
     local month=$2
     local day=$3
 
-    if ! validateNumber "$year" || [ "$year" -lt 1970 ] || [ "$year" -gt 2100 ]; then
-        logError "Year must be a number between 1970 and 2100."
-        exit 1
-    fi
-
-    if [ "$month" == "" ]; then
+    # Validate year, month, and day as a full date if all are provided
+    if [ -n "$year" ] && [ -n "$month" ] && [ -n "$day" ]; then
+        if ! date -d "$year-$(printf "%02d" $month)-$(printf "%02d" $day)" "+%Y-%m-%d" >/dev/null 2>&1; then
+            logError "Invalid date: $year-$month-$day"
+            exit 1
+        fi
         return 0
     fi
-    if ! validateNumber "$month" || [ "$month" -lt 1 ] || [ "$month" -gt 12 ]; then
-        logError "Month must be number between 1 and 12."
-        exit 1
-    fi
 
-    if [ "$day" == "" ]; then
+    # Validate year and month if only those are provided
+    if [ -n "$year" ] && [ -n "$month" ]; then
+        if ! date -d "$year-$(printf "%02d" $month)-01" "+%Y-%m-%d" >/dev/null 2>&1; then
+            logError "Invalid year/month: $year-$month"
+            exit 1
+        fi
         return 0
     fi
-    if isLeapYear $year; then
-        logDebug "The year $year is a leap year. February has 29 days."
-        DAYS_OF_MONTH[2]=29
-    fi
-    if ! validateNumber "$day" || [ "$day" -lt 1 ] || [ "$day" -gt ${DAYS_OF_MONTH[$month]} ]; then
-        logError "Day must be a number between 1 and ${DAYS_OF_MONTH[$month]} for the month $month."
-        exit 1
+
+    # Validate year only
+    if [ -n "$year" ]; then
+        if ! validateNumber "$year" || [ "$year" -lt 1970 ] || [ "$year" -gt 2100 ]; then
+            logError "Year must be a number between 1970 and 2100."
+            exit 1
+        fi
+        return 0
     fi
 }
 
 parseArguments() {
-    local args=("$@")
-    if [ "${#args[@]}" -eq 0 ]; then
+    if [ $# -eq 0 ]; then
         printUsage
         exit 1
     fi
-    local i=0
-    while [ "$i" -lt "${#args[@]}" ]; do
-        local arg="${args[$i]}"
-        if [ "$arg" == '--debug' ]; then
-            export DEBUG=true
-            logDebug "Enabling debug."
-            ((i++))
-        elif [ "$arg" == '--year' ]; then
-            if [ "$(( ${#args[@]} - i ))" -lt 2 ]; then
-                printUsage
-                exit 1
-            fi
-            validateDate "${args[$((i+1))]}"
-            AGGREGATE_YEAR="${args[$((i+1))]}"
-            logDebug "Aggregating year $AGGREGATE_YEAR"
-            ((i+=2))
-        elif [ "$arg" == '--month' ]; then
-            if [ "$(( ${#args[@]} - i ))" -lt 3 ]; then
-                printUsage
-                exit 1
-            fi
-            validateDate "${args[$((i+1))]}" "${args[$((i+2))]}"
-            AGGREGATE_MONTH_YEAR="${args[$((i+1))]}"
-            AGGREGATE_MONTH_MONTH="${args[$((i+2))]}"
-            logDebug "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
-            ((i+=3))
-        elif [ "$arg" == '--day' ]; then
-            if [ "$(( ${#args[@]} - i ))" -lt 4 ]; then
-                printUsage
-                exit 1
-            fi
-            validateDate "${args[$((i+1))]}" "${args[$((i+2))]}" "${args[$((i+3))]}"
-            AGGREGATE_DAY_YEAR="${args[$((i+1))]}"
-            AGGREGATE_DAY_MONTH="${args[$((i+2))]}"
-            AGGREGATE_DAY_DAY="${args[$((i+3))]}"
-            logDebug "Aggregating day ${AGGREGATE_DAY_YEAR}-${AGGREGATE_DAY_MONTH}-${AGGREGATE_DAY_DAY}"
-            ((i+=4))
-        elif [ "$arg" == '--from' ]; then
-            if [ "$(( ${#args[@]} - i ))" -lt 4 ]; then
-                printUsage
-                exit 1
-            fi
-            validateDate "${args[$((i+1))]}" "${args[$((i+2))]}" "${args[$((i+3))]}"
-            AGGREGATE_FROM_YEAR="${args[$((i+1))]}"
-            AGGREGATE_FROM_MONTH="${args[$((i+2))]}"
-            AGGREGATE_FROM_DAY="${args[$((i+3))]}"
-            AGGREGATE_TO_YEAR=$(date +%Y)
-            AGGREGATE_TO_MONTH=$(date +%-m)
-            AGGREGATE_TO_DAY=$(date +%-d)
-            ((i+=4))
-            if [ "${args[$i]}" == '--to' ]; then
-                if [ "$(( ${#args[@]} - i ))" -lt 4 ]; then
-                    printUsage
-                    exit 1
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --debug)
+                export DEBUG=true
+                logDebug "Enabling debug."
+                shift
+                ;;
+            --year)
+                if [ $# -lt 2 ]; then printUsage; exit 1; fi
+                validateDate "$2"
+                AGGREGATE_YEAR="$2"
+                logDebug "Aggregating year $AGGREGATE_YEAR"
+                shift 2
+                ;;
+            --month)
+                if [ $# -lt 3 ]; then printUsage; exit 1; fi
+                validateDate "$2" "$3"
+                AGGREGATE_MONTH_YEAR="$2"
+                AGGREGATE_MONTH_MONTH="$3"
+                logDebug "Aggregating month ${AGGREGATE_MONTH_YEAR}-${AGGREGATE_MONTH_MONTH}"
+                shift 3
+                ;;
+            --day)
+                if [ $# -lt 4 ]; then printUsage; exit 1; fi
+                validateDate "$2" "$3" "$4"
+                AGGREGATE_DAY_YEAR="$2"
+                AGGREGATE_DAY_MONTH="$3"
+                AGGREGATE_DAY_DAY="$4"
+                logDebug "Aggregating day ${AGGREGATE_DAY_YEAR}-${AGGREGATE_DAY_MONTH}-${AGGREGATE_DAY_DAY}"
+                shift 4
+                ;;
+            --from)
+                if [ $# -lt 4 ]; then printUsage; exit 1; fi
+                validateDate "$2" "$3" "$4"
+                AGGREGATE_FROM_YEAR="$2"
+                AGGREGATE_FROM_MONTH="$3"
+                AGGREGATE_FROM_DAY="$4"
+                AGGREGATE_TO_YEAR=$(date +%Y)
+                AGGREGATE_TO_MONTH=$(date +%-m)
+                AGGREGATE_TO_DAY=$(date +%-d)
+                shift 4
+                if [[ "$1" == "--to" ]]; then
+                    if [ $# -lt 4 ]; then printUsage; exit 1; fi
+                    validateDate "$2" "$3" "$4"
+                    AGGREGATE_TO_YEAR="$2"
+                    AGGREGATE_TO_MONTH="$3"
+                    AGGREGATE_TO_DAY="$4"
+                    shift 4
                 fi
-                validateDate "${args[$((i+1))]}" "${args[$((i+2))]}" "${args[$((i+3))]}"
-                AGGREGATE_TO_YEAR="${args[$((i+1))]}"
-                AGGREGATE_TO_MONTH="${args[$((i+2))]}"
-                AGGREGATE_TO_DAY="${args[$((i+3))]}"
-                ((i+=4))
-            fi
-            logDebug "Aggregating from day ${AGGREGATE_FROM_YEAR}-${AGGREGATE_FROM_MONTH}-${AGGREGATE_FROM_DAY} to ${AGGREGATE_TO_YEAR}-${AGGREGATE_TO_MONTH}-${AGGREGATE_TO_DAY}"
-        elif [ "$arg" == '--yesterday' ]; then
-            AGGREGATE_YESTERDAY=true
-            logDebug "Aggregating yesterday"
-            ((i++))
-        elif [ "$arg" == '--today' ]; then
-            AGGREGATE_TODAY=true
-            logDebug "Aggregating today"
-            ((i++))
-        elif [ "$arg" == '--delete-aggregations' ]; then
-            DELETE_AGGREGATIONS=true
-            logDebug "Deleting aggregations."
-            ((i++))
-        elif [ "$arg" == '--detect' ]; then
-            DETECT_VALUES=true
-            logDebug "Detecting loadpoints and vehicles."
-            ((i++))
-        else
-            printUsage
-            exit 1
-        fi
+                logDebug "Aggregating from day ${AGGREGATE_FROM_YEAR}-${AGGREGATE_FROM_MONTH}-${AGGREGATE_FROM_DAY} to ${AGGREGATE_TO_YEAR}-${AGGREGATE_TO_MONTH}-${AGGREGATE_TO_DAY}"
+                ;;
+            --yesterday)
+                AGGREGATE_YESTERDAY=true
+                logDebug "Aggregating yesterday"
+                shift
+                ;;
+            --today)
+                AGGREGATE_TODAY=true
+                logDebug "Aggregating today"
+                shift
+                ;;
+            --delete-aggregations)
+                DELETE_AGGREGATIONS=true
+                logDebug "Deleting aggregations."
+                shift
+                ;;
+            --detect)
+                DETECT_VALUES=true
+                logDebug "Detecting loadpoints and vehicles."
+                shift
+                ;;
+            *)
+                printUsage
+                exit 1
+                ;;
+        esac
     done
 }
 
@@ -228,10 +224,14 @@ deleteAggregations() {
         deleteMetric "homeEnergyDaily"
         deleteMetric "gridEnergyImportDaily"
         deleteMetric "gridEnergyExportDaily"
+        deleteMetric "batteryEnergyChargedDaily"
+        deleteMetric "batteryEnergyDischargedDaily"
         deleteMetric "loadpointEnergyDaily"
     else
         logInfo "Deletion of aggregated metrics aborted."
     fi
+
+    logInfo "All aggregations deleted."
 }
 
 checkDependencies() {
@@ -304,6 +304,7 @@ aggregateQueryByTag() {
             [$tag_value, $timestamp, $value, $y, $m, $d]) | @csv
         ' | while IFS=',' read -r tagValue timestamp value year month day; do
             line="${metric}{$tag=${tagValue},year=\"${year}\",month=\"${month}\",day=\"${day}\"} ${value} ${timestamp}"
+            logDebug "Inserting line: $line"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
         done
 }
@@ -314,11 +315,13 @@ aggregate() {
 
     logDebug "Aggregating from $(date -d @$starttime) ($starttime) to $(date -d @$endtime) ($endtime)"
 
-    aggregateQuery 'sum(integrate(((pvPower_value{id=""}) default 0) [1d:1m] offset -1d)/3600)' "pvEnergyDaily" "$starttime" "$endtime"
-    aggregateQuery 'sum(integrate(((homePower_value) default 0) [1d:1m] offset -1d)/-3600)' "homeEnergyDaily" "$starttime" "$endtime"
-    aggregateQuery 'integrate(((gridPower_value > 0) default 0) [1d:1m] offset -1d) / 3600' "gridEnergyImportDaily" "$starttime" "$endtime"
-    aggregateQuery 'integrate(((gridPower_value < 0) default 0) [1d:1m] offset -1d) / 3600' "gridEnergyExportDaily" "$starttime" "$endtime"
-    aggregateQueryByTag 'sum by (loadpoint)(sort_by_label(integrate(((chargePower_value{loadpoint!="", vehicle!="", loadpoint !~ "$loadpointBlocklist"}) default 0)[1d:1m] offset -1d) / -3600, "loadpoint"))' "loadpoint" "loadpointEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery "sum(integrate(((pvPower_value{id=\"\"}) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)/3600)" "pvEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery "sum(integrate(((homePower_value) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)/-3600)" "homeEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery "integrate(((gridPower_value > 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "gridEnergyImportDaily" "$starttime" "$endtime"
+    aggregateQuery "integrate(((gridPower_value < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "gridEnergyExportDaily" "$starttime" "$endtime"
+    aggregateQuery "integrate(((batteryPower_value{id=\"\"} < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "batteryEnergyChargedDaily" "$starttime" "$endtime"
+    aggregateQuery "integrate(((batteryPower_value{id=\"\"} > 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "batteryEnergyDischargedDaily" "$starttime" "$endtime"
+    aggregateQueryByTag "sum by (loadpoint)(sort_by_label(integrate(((chargePower_value{loadpoint!=\"\", vehicle!=\"\", loadpoint !~ \"\$loadpointBlocklist\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / -3600, \"loadpoint\"))" "loadpoint" "loadpointEnergyDaily" "$starttime" "$endtime"
 }
 
 ###############################################################################
@@ -346,9 +349,15 @@ parseArguments $@
 # fi
 
 if [ "$AGGREGATE_YEAR" -ne 0 ]; then
-    starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_YEAR-01-01 00:00:00" +%s)
-    endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_YEAR-12-31 23:59:59" +%s)
-    aggregate "$starttime" "$endtime"
+    # Aggregating by month, because aggregating whole year at once can lead to "too many points" errors.
+    for month in {1..12}; do
+        starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_YEAR-$(printf "%02d" $month)-01 00:00:00" +%s)
+        # Get last day of the month
+        last_day=$(TZ="$TIMEZONE" date -d "$AGGREGATE_YEAR-$(printf "%02d" $month)-01 +1 month -1 day" +%d)
+        endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_YEAR-$(printf "%02d" $month)-$last_day 23:59:59" +%s)
+        logInfo "Aggregating $AGGREGATE_YEAR-$(printf "%02d" $month)"
+        aggregate "$starttime" "$endtime"
+    done
 elif [ "$AGGREGATE_MONTH_YEAR" -ne 0 ]; then
     starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_MONTH_YEAR-$(printf "%02d" $AGGREGATE_MONTH_MONTH)-01 00:00:00" +%s)
     endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_MONTH_YEAR-$(printf "%02d" $AGGREGATE_MONTH_MONTH)-01 +1 month -1 day 23:59:59" +%s)
@@ -360,7 +369,44 @@ elif [ "$AGGREGATE_DAY_YEAR" -ne 0 ]; then
 elif [ "$AGGREGATE_FROM_YEAR" -ne 0 ]; then
     starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_FROM_YEAR-$(printf "%02d" $AGGREGATE_FROM_MONTH)-$(printf "%02d" $AGGREGATE_FROM_DAY) 00:00:00" +%s)
     endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_TO_YEAR-$(printf "%02d" $AGGREGATE_TO_MONTH)-$(printf "%02d" $AGGREGATE_TO_DAY) 23:59:59" +%s)
-    aggregate "$starttime" "$endtime"
+
+    # Calculate the first day of the month for the start date
+    current_year=$AGGREGATE_FROM_YEAR
+    current_month=$AGGREGATE_FROM_MONTH
+
+    # Loop until we pass the end date
+    while : ; do
+        # Calculate chunk start
+        chunk_start=$(TZ="$TIMEZONE" date -d "$current_year-$(printf "%02d" $current_month)-01 00:00:00" +%s)
+        # Calculate last day of this month
+        last_day=$(TZ="$TIMEZONE" date -d "$current_year-$(printf "%02d" $current_month)-01 +1 month -1 day" +%d)
+        # Calculate chunk end (end of this month or endtime, whichever is earlier)
+        chunk_end=$(TZ="$TIMEZONE" date -d "$current_year-$(printf "%02d" $current_month)-$last_day 23:59:59" +%s)
+        [ $chunk_end -gt $endtime ] && chunk_end=$endtime
+
+        # Only aggregate if chunk overlaps the requested range
+        if [ $chunk_end -ge $starttime ]; then
+            # Use max of chunk_start and starttime
+            agg_start=$chunk_start
+            [ $agg_start -lt $starttime ] && agg_start=$starttime
+            agg_end=$chunk_end
+            logInfo "Aggregating $current_year-$(printf "%02d" $current_month) from $(date -d @$agg_start) to $(date -d @$agg_end)"
+            aggregate "$agg_start" "$agg_end"
+        fi
+
+        # Break if we've reached or passed the endtime
+        if [ $chunk_end -ge $endtime ]; then
+            break
+        fi
+
+        # Increment month/year
+        if [ $current_month -eq 12 ]; then
+            current_month=1
+            current_year=$((current_year + 1))
+        else
+            current_month=$((current_month + 1))
+        fi
+    done
 elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     starttime=$(TZ="$TIMEZONE" date -d "yesterday 00:00:00" +%s)
     endtime=$(TZ="$TIMEZONE" date -d "yesterday 23:59:59" +%s)
