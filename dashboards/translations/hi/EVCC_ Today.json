@@ -11,21 +11,21 @@
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Maximum power limit / W",
+      "label": "अधिकतम शक्ति सीमा / W",
       "value": "25000",
       "description": ""
     },
     {
       "name": "VAR_EVCCURL",
       "type": "constant",
-      "label": "ईवीसीसी यूआरएल",
+      "label": "EVCC URL",
       "value": "http://home:7070/#/",
       "description": ""
     },
     {
       "name": "VAR_INVERTERPORTALTITLE",
       "type": "constant",
-      "label": "Inverter portal label",
+      "label": "इन्वर्टर पोर्टल लेबल",
       "value": "Sofar Cloud",
       "description": ""
     },
@@ -39,49 +39,49 @@
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded loadpoints",
+      "label": "बहिष्कृत चार्जिंग पॉइंट",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_VEHICLEBLOCKLIST",
       "type": "constant",
-      "label": "Excluded vehicles",
+      "label": "बहिष्कृत वाहन",
       "value": "^Mr White.*$|^.*\\(offline\\)$",
       "description": ""
     },
     {
       "name": "VAR_EXTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded EXT devices",
+      "label": "बहिष्कृत EXT डिवाइस",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_AUXBLOCKLIST",
       "type": "constant",
-      "label": "Excluded  AUX devices",
+      "label": "बहिष्कृत AUX डिवाइस",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_ENERGYSAMPLEINTERVAL",
       "type": "constant",
-      "label": "Sampling interval",
+      "label": "नमूना अंतराल",
       "value": "30s",
       "description": ""
     },
     {
       "name": "VAR_TARIFFPRICEINTERVAL",
       "type": "constant",
-      "label": "Pricing interval",
+      "label": "मूल्य अंतराल",
       "value": "15m",
       "description": ""
     }
   ],
   "__elements": {
     "afc1nq1oy29s0a": {
-      "name": "EVCC: VM: Power trend",
+      "name": "EVCC: VM: शक्ति रुझान",
       "uid": "afc1nq1oy29s0a",
       "kind": 1,
       "model": {
@@ -398,7 +398,7 @@
       }
     },
     "afc1njs05twqoc": {
-      "name": "EVCC: VM: KPI Gauges",
+      "name": "EVCC: VM: KPI गेज",
       "uid": "afc1njs05twqoc",
       "kind": 1,
       "model": {
@@ -452,7 +452,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Autonomy"
+                  "value": "आत्मनिर्भरता"
                 }
               ]
             },
@@ -480,7 +480,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Self consumption"
+                  "value": "स्व-उपभोग"
                 }
               ]
             }
@@ -602,7 +602,7 @@
       }
     },
     "ffc1nfxu4it4wd": {
-      "name": "EVCC: VM: Battery levels",
+      "name": "EVCC: VM: बैटरी स्तर",
       "uid": "ffc1nfxu4it4wd",
       "kind": 1,
       "model": {
@@ -610,7 +610,7 @@
           "type": "victoriametrics-metrics-datasource",
           "uid": "${DS_VM-EVCC}"
         },
-        "description": "Black: Priority SoC threshold for EVCC",
+        "description": "काला: EVCC के लिए प्राथमिक SoC सीमा",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -741,7 +741,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Priority SoC"
+                  "value": "प्राथमिक SoC"
                 },
                 {
                   "id": "custom.fillOpacity",
@@ -855,7 +855,7 @@
       }
     },
     "bfg2x6jhfr75sf": {
-      "name": "EVCC: VM: Current battery levels",
+      "name": "EVCC: VM: वर्तमान बैटरी स्तर",
       "uid": "bfg2x6jhfr75sf",
       "kind": 1,
       "model": {
@@ -988,7 +988,7 @@
       }
     },
     "dfc1nml5oazuoc": {
-      "name": "EVCC: VM: Energy",
+      "name": "EVCC: VM: ऊर्जा",
       "uid": "dfc1nml5oazuoc",
       "kind": 1,
       "model": {
@@ -1053,7 +1053,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Grid consumption"
+                  "value": "ग्रिड खपत"
                 }
               ]
             },
@@ -1072,7 +1072,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Grid feed-in"
+                  "value": "ग्रिड में आपूर्ति"
                 }
               ]
             },
@@ -1402,7 +1402,7 @@
       }
     },
     "afc1nrf3k9hc0e": {
-      "name": "EVCC: VM: Power distribution",
+      "name": "EVCC: VM: शक्ति वितरण",
       "uid": "afc1nrf3k9hc0e",
       "kind": 1,
       "model": {
@@ -1508,7 +1508,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "ग्रिड खपत"
               },
               "properties": [
                 {
@@ -1568,7 +1568,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "ग्रिड में आपूर्ति"
               },
               "properties": [
                 {
@@ -1634,7 +1634,7 @@
             "expr": "clamp_min(avg(gridPower_value) < $peakPowerLimit,0)",
             "format": "time_series",
             "interval": "$energySampleInterval",
-            "legendFormat": "Grid consumption",
+            "legendFormat": "ग्रिड खपत",
             "range": true,
             "refId": "gridPowerIn"
           },
@@ -1673,7 +1673,7 @@
             "expr": "clamp_max(avg(gridPower_value) < $peakPowerLimit,0)",
             "format": "time_series",
             "interval": "$energySampleInterval",
-            "legendFormat": "Grid feed-in",
+            "legendFormat": "ग्रिड में आपूर्ति",
             "range": true,
             "refId": "gridPowerOut"
           },
@@ -1722,7 +1722,7 @@
       }
     },
     "efetnshtos0zkf": {
-      "name": "EVCC:VM: Distribution home consumption",
+      "name": "EVCC: VM: घरेलू खपत वितरण",
       "uid": "efetnshtos0zkf",
       "kind": 1,
       "model": {
@@ -1759,7 +1759,7 @@
             },
             "links": [
               {
-                "title": "Mehr details",
+                "title": "अधिक विवरण",
                 "url": "/d/adddvtj?$__url_time_range"
               }
             ],
@@ -1795,7 +1795,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Other consumers"
+                  "value": "अन्य उपभोक्ता"
                 }
               ]
             }
@@ -1872,7 +1872,7 @@
       }
     },
     "afc1no2uz7u9sf": {
-      "name": "EVCC: VM: Costs",
+      "name": "EVCC: VM: लागत",
       "uid": "afc1no2uz7u9sf",
       "kind": 1,
       "model": {
@@ -1889,7 +1889,7 @@
             "decimals": 2,
             "links": [
               {
-                "title": "Mehr Details",
+                "title": "अधिक विवरण",
                 "url": "/d/adddvtj?$__url_time_range"
               }
             ],
@@ -1975,7 +1975,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Daily total"
+                  "value": "दैनिक कुल"
                 }
               ]
             }
@@ -2123,7 +2123,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Two days ago",
+      "title": "दो दिन पहले",
       "tooltip": "",
       "type": "link",
       "url": "/d/adsmz7v?orgId=1&from=now-2d%2Fd&to=now-2d%2Fd"
@@ -2161,7 +2161,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": true,
-      "title": "$इन्वर्टरपोर्टलटाइटल",
+      "title": "$inverterPortalTitle",
       "tooltip": "",
       "type": "link",
       "url": "$inverterPortalUrl"
@@ -2556,7 +2556,7 @@
           "refId": "loadpointPowers"
         }
       ],
-      "title": "Powers",
+      "title": "शक्तियाँ",
       "transparent": true,
       "type": "gauge"
     },
@@ -2570,7 +2570,7 @@
       "id": 2,
       "libraryPanel": {
         "uid": "afc1nq1oy29s0a",
-        "name": "EVCC: VM: Power trend"
+        "name": "EVCC: VM: शक्ति रुझान"
       }
     },
     {
@@ -2583,7 +2583,7 @@
       "id": 64,
       "libraryPanel": {
         "uid": "afc1njs05twqoc",
-        "name": "EVCC: VM: KPI Gauges"
+        "name": "EVCC: VM: KPI गेज"
       }
     },
     {
@@ -2596,7 +2596,7 @@
       "id": 66,
       "libraryPanel": {
         "uid": "ffc1nfxu4it4wd",
-        "name": "EVCC: VM: Battery levels"
+        "name": "EVCC: VM: बैटरी स्तर"
       }
     },
     {
@@ -2609,7 +2609,7 @@
       "id": 79,
       "libraryPanel": {
         "uid": "bfg2x6jhfr75sf",
-        "name": "EVCC: VM: Current battery levels"
+        "name": "EVCC: VM: वर्तमान बैटरी स्तर"
       }
     },
     {
@@ -2622,7 +2622,7 @@
       "id": 77,
       "libraryPanel": {
         "uid": "dfc1nml5oazuoc",
-        "name": "EVCC: VM: Energy"
+        "name": "EVCC: VM: ऊर्जा"
       }
     },
     {
@@ -2635,7 +2635,7 @@
       "id": 75,
       "libraryPanel": {
         "uid": "afc1nrf3k9hc0e",
-        "name": "EVCC: VM: Power distribution"
+        "name": "EVCC: VM: शक्ति वितरण"
       }
     },
     {
@@ -2648,7 +2648,7 @@
       "id": 78,
       "libraryPanel": {
         "uid": "efetnshtos0zkf",
-        "name": "EVCC:VM: Distribution home consumption"
+        "name": "EVCC: VM: घरेलू खपत वितरण"
       }
     },
     {
@@ -2661,7 +2661,7 @@
       "id": 73,
       "libraryPanel": {
         "uid": "afc1no2uz7u9sf",
-        "name": "EVCC: VM: Costs"
+        "name": "EVCC: VM: लागत"
       }
     }
   ],
@@ -2674,9 +2674,9 @@
   "templating": {
     "list": [
       {
-        "description": "Values exceeding this power limit (W) will be ignored as outliers to ensure data accuracy.",
+        "description": "इस शक्ति सीमा (W) से ऊपर के मानों को डेटा की शुद्धता बनाए रखने के लिए आउटलायर मानकर अनदेखा किया जाएगा।",
         "hide": 2,
-        "label": "Maximum power limit / W",
+        "label": "अधिकतम शक्ति सीमा / W",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -2695,9 +2695,9 @@
         ]
       },
       {
-        "description": "URL to open the EVCC UI.",
+        "description": "EVCC इंटरफ़ेस खोलने का URL।",
         "hide": 2,
-        "label": "ईवीसीसी यूआरएल",
+        "label": "EVCC URL",
         "name": "evccUrl",
         "query": "${VAR_EVCCURL}",
         "skipUrlSync": true,
@@ -2716,9 +2716,9 @@
         ]
       },
       {
-        "description": "Display label of the link to the inverter portal.",
+        "description": "इन्वर्टर पोर्टल लिंक का प्रदर्शित लेबल।",
         "hide": 2,
-        "label": "Inverter portal label",
+        "label": "इन्वर्टर पोर्टल लेबल",
         "name": "inverterPortalTitle",
         "query": "${VAR_INVERTERPORTALTITLE}",
         "skipUrlSync": true,
@@ -2737,7 +2737,7 @@
         ]
       },
       {
-        "description": "URL to reach the inverter portal",
+        "description": "इन्वर्टर पोर्टल तक पहुँचने का URL",
         "hide": 2,
         "label": "इन्वर्टर पोर्टल URL",
         "name": "inverterPortalUrl",
@@ -2758,9 +2758,9 @@
         ]
       },
       {
-        "description": "List of loadpoints that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any entries, you must provide a regex that does not match any existing loadpoint.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out everything starting with 'foo': ^foo.*$",
+        "description": "उन चार्जिंग पॉइंटों की सूची जिन्हें प्रदर्शित नहीं किया जाना चाहिए। यह फ़ील्ड एक रेगुलर एक्सप्रेशन मांगती है और खाली नहीं छोड़ी जा सकती। यदि आप किसी भी प्रविष्टि को फ़िल्टर नहीं करना चाहते, तो आपको ऐसी regex देनी होगी जो किसी भी मौजूदा चार्जिंग पॉइंट से मेल न खाए।\n\nउदाहरण:\n\nकोई प्रविष्टि नहीं: ^none$\n'Garage' को फ़िल्टर करें: ^Garage$\n'Garage' और 'Parking Spot' को फ़िल्टर करें: ^Garage$|^Parking Spot$\n'foo' से शुरू होने वाली हर चीज़ को फ़िल्टर करें: ^foo.*$",
         "hide": 2,
-        "label": "Excluded loadpoints",
+        "label": "बहिष्कृत चार्जिंग पॉइंट",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
@@ -2779,9 +2779,9 @@
         ]
       },
       {
-        "description": "List of vehicles that should NOT be displayed. This field must contain a regular expression and cannot be left empty. If you do not want to filter any vehicles, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out vehicles ending with '(offline)': ^.*\\(offline\\)$",
+        "description": "उन वाहनों की सूची जिन्हें प्रदर्शित नहीं किया जाना चाहिए। इस फ़ील्ड में एक रेगुलर एक्सप्रेशन होना चाहिए और यह खाली नहीं छोड़ी जा सकती। यदि आप किसी भी वाहन को फ़िल्टर नहीं करना चाहते, तो आपको ऐसी regex देनी होगी जो किसी भी प्रविष्टि से मेल न खाए।\n\nउदाहरण:\n\nकोई प्रविष्टि नहीं: ^none$\n'Garage' को फ़िल्टर करें: ^Garage$\n'Garage' और 'Parking Spot' को फ़िल्टर करें: ^Garage$|^Parking Spot$\nउन वाहनों को फ़िल्टर करें जिनका अंत '(offline)' से होता है: ^.*\\(offline\\)$",
         "hide": 2,
-        "label": "Excluded vehicles",
+        "label": "बहिष्कृत वाहन",
         "name": "vehicleBlocklist",
         "query": "${VAR_VEHICLEBLOCKLIST}",
         "skipUrlSync": true,
@@ -2800,9 +2800,9 @@
         ]
       },
       {
-        "description": "List of EXT devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "उन EXT डिवाइसों की सूची जिन्हें प्रदर्शित नहीं किया जाना चाहिए। यह फ़ील्ड एक रेगुलर एक्सप्रेशन मांगती है और खाली नहीं छोड़ी जा सकती। यदि आप किसी भी डिवाइस को फ़िल्टर नहीं करना चाहते, तो आपको ऐसी regex देनी होगी जो किसी भी प्रविष्टि से मेल न खाए।\n\nउदाहरण:\n\nकोई प्रविष्टि नहीं: /^none$/\n'Ground Floor' को फ़िल्टर करें: /^Ground Floor$/\n'Ground Floor' और 'First Floor' को फ़िल्टर करें: /^Ground Floor$|^First Floor$/\n'Distributor' से शुरू होने वाली हर चीज़ को फ़िल्टर करें: /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded EXT devices",
+        "label": "बहिष्कृत EXT डिवाइस",
         "name": "extBlocklist",
         "query": "${VAR_EXTBLOCKLIST}",
         "skipUrlSync": true,
@@ -2821,9 +2821,9 @@
         ]
       },
       {
-        "description": "List of AUX devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "उन AUX डिवाइसों की सूची जिन्हें प्रदर्शित नहीं किया जाना चाहिए। यह फ़ील्ड एक रेगुलर एक्सप्रेशन मांगती है और खाली नहीं छोड़ी जा सकती। यदि आप किसी भी डिवाइस को फ़िल्टर नहीं करना चाहते, तो आपको ऐसी regex देनी होगी जो किसी भी प्रविष्टि से मेल न खाए।\n\nउदाहरण:\n\nकोई प्रविष्टि नहीं: /^none$/\n'Ground Floor' को फ़िल्टर करें: /^Ground Floor$/\n'Ground Floor' और 'First Floor' को फ़िल्टर करें: /^Ground Floor$|^First Floor$/\n'Distributor' से शुरू होने वाली हर चीज़ को फ़िल्टर करें: /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded  AUX devices",
+        "label": "बहिष्कृत AUX डिवाइस",
         "name": "auxBlocklist",
         "query": "${VAR_AUXBLOCKLIST}",
         "skipUrlSync": true,
@@ -2842,9 +2842,9 @@
         ]
       },
       {
-        "description": "Energy calculation sampling interval. Recommended to be at least twice the EVCC polling interval. E.g. a value of 30s would match an EVCC polling interval of 15s.",
+        "description": "ऊर्जा गणना के लिए नमूना अंतराल। इसे EVCC पोलिंग अंतराल से कम से कम दोगुना रखने की सिफारिश की जाती है। उदाहरण के लिए 30s का मान 15s के EVCC पोलिंग अंतराल से मेल खाता है।",
         "hide": 2,
-        "label": "Sampling interval",
+        "label": "नमूना अंतराल",
         "name": "energySampleInterval",
         "query": "${VAR_ENERGYSAMPLEINTERVAL}",
         "skipUrlSync": true,
@@ -2863,9 +2863,9 @@
         ]
       },
       {
-        "description": "The billing interval determines how often electricity price updates are processed (e.g., every 15 or 60 minutes).",
+        "description": "बिलिंग अंतराल निर्धारित करता है कि बिजली मूल्य अपडेट कितनी बार संसाधित होंगे, जैसे हर 15 या 60 मिनट में।",
         "hide": 2,
-        "label": "Pricing interval",
+        "label": "मूल्य अंतराल",
         "name": "tariffPriceInterval",
         "query": "${VAR_TARIFFPRICEINTERVAL}",
         "skipUrlSync": true,
@@ -2891,7 +2891,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "EVCC: Today",
+  "title": "EVCC: आज",
   "uid": "adsmz7v",
   "version": 95,
   "weekStart": ""

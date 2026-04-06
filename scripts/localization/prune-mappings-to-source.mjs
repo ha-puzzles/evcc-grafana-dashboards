@@ -104,6 +104,17 @@ function collectSourceStrings(sourceDir) {
   return { files, values };
 }
 
+function stripVerboseMeta(meta) {
+  if (!meta || typeof meta !== "object") {
+    return null;
+  }
+
+  const nextMeta = { ...meta };
+  delete nextMeta.exactSources;
+
+  return Object.keys(nextMeta).length ? nextMeta : null;
+}
+
 function rebuildMapping(sourceLanguage, targetLanguage, sourceValues) {
   const mappingFile = familyMappingPath(family, sourceLanguage, targetLanguage);
   if (!fs.existsSync(mappingFile)) {
@@ -125,7 +136,20 @@ function rebuildMapping(sourceLanguage, targetLanguage, sourceValues) {
     .filter((entry) => [...sourceValues].some((value) => value.includes(entry.from)))
     .sort((left, right) => left.from.localeCompare(right.from, sourceLanguage));
 
-  writeJson(mappingFile, { exact, contains });
+  const output = {
+    ...mapping,
+    exact,
+    contains,
+  };
+
+  const nextMeta = stripVerboseMeta(mapping.meta);
+  if (nextMeta) {
+    output.meta = nextMeta;
+  } else {
+    delete output.meta;
+  }
+
+  writeJson(mappingFile, output);
 
   return {
     targetLanguage,

@@ -10,7 +10,7 @@
     },
     {
       "name": "DS_EVCC_AGGREGRATIONS",
-      "label": "EVCC Aggregrations",
+      "label": "Agrégations EVCC",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -26,35 +26,35 @@
     {
       "name": "VAR_TIMEZONE",
       "type": "constant",
-      "label": "Zeitzone",
+      "label": "Fuseau horaire",
       "value": "Europe/Berlin",
       "description": ""
     },
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Filter für maximale Leistung / W",
+      "label": "Filtre de puissance maximale / W",
       "value": "25000",
       "description": ""
     },
     {
       "name": "VAR_INSTALLEDWATTPEAK",
       "type": "constant",
-      "label": "Installierte Kapazität in Wp",
+      "label": "Capacité installée en Wp",
       "value": "9840",
       "description": ""
     },
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Blocklist für Loadpoints",
+      "label": "Liste de blocage des points de charge",
       "value": "/^none$/",
       "description": ""
     }
   ],
   "__elements": {
     "f5f62a1c-c847-493c-89f7-06bd383a2025": {
-      "name": "EVCC: Energien aufsummiert über die Zeit",
+      "name": "EVCC : Énergies cumulées dans le temps",
       "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
       "kind": 1,
       "model": {
@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Netzbezug"
+                "options": "Consommation réseau"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Haus"
+                "options": "Maison"
               },
               "properties": [
                 {
@@ -373,13 +373,13 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Energie",
+        "title": "Énergie",
         "transparent": true,
         "type": "barchart"
       }
     },
     "c872420b-86a9-4544-9e33-f367a07f9e40": {
-      "name": "EVCC: Kennzahlen Gauges",
+      "name": "EVCC : Jauges KPI",
       "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
       "kind": 1,
       "model": {
@@ -440,7 +440,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Eigenverbrauch"
+                "options": "Autoconsommation"
               },
               "properties": [
                 {
@@ -461,7 +461,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Eigenverbrauch"
+                  "value": "Autoconsommation"
                 }
               ]
             }
@@ -663,13 +663,13 @@
             "type": "math"
           }
         ],
-        "title": "Kennzahlen",
+        "title": "Indicateurs",
         "transparent": true,
         "type": "gauge"
       }
     },
     "feio30f3nm0owe": {
-      "name": "EVCC: Strombilanz",
+      "name": "EVCC : Bilan électrique",
       "uid": "feio30f3nm0owe",
       "kind": 1,
       "model": {
@@ -710,7 +710,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Strompreis: Arithmetisches Mittel"
+                  "value": "Prix de l'électricité : moyenne arithmétique"
                 },
                 {
                   "id": "color",
@@ -733,7 +733,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Effektiver Strompreis, dynamisch"
+                  "value": "Prix effectif de l'électricité, dynamique"
                 },
                 {
                   "id": "color",
@@ -756,7 +756,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Eingesparter Strompreis durch dynamischen Tarif"
+                  "value": "Prix d'électricité économisé grâce au tarif dynamique"
                 },
                 {
                   "id": "unit",
@@ -772,7 +772,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Einsparung durch dynamischen Tarif"
+                  "value": "Économies grâce au tarif dynamique"
                 }
               ]
             },
@@ -784,7 +784,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Potentieller Einkauf nach arithmetischen Preis"
+                  "value": "Achat potentiel au prix arithmétique"
                 }
               ]
             }
@@ -1041,13 +1041,13 @@
             "type": "math"
           }
         ],
-        "title": "Strombilanz",
+        "title": "Bilan électrique",
         "transparent": true,
         "type": "stat"
       }
     },
     "ae8zwbjv24kqof": {
-      "name": "EVCC: Dynamischer Strompreis: Täglich",
+      "name": "EVCC : Prix dynamique de l'électricité : Quotidien",
       "uid": "ae8zwbjv24kqof",
       "kind": 1,
       "model": {
@@ -1167,7 +1167,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Effektiver Strompreis"
+                  "value": "Prix effectif de l'électricité"
                 },
                 {
                   "id": "color",
@@ -1357,12 +1357,12 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Dynamischer Strompreis (ct/kWh)",
+        "title": "Prix dynamique de l'électricité (ct/kWh)",
         "type": "timeseries"
       }
     },
     "b8787739-953e-4188-9507-0cc12b6ed91b": {
-      "name": "EVCC: Speicher Effizenz",
+      "name": "EVCC : Efficacité de la batterie",
       "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
       "kind": 1,
       "model": {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher laden"
+                "options": "Charge batterie"
               },
               "properties": [
                 {
@@ -1409,14 +1409,14 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Speicher laden"
+                  "value": "Charge batterie"
                 }
               ]
             },
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher entladen"
+                "options": "Décharge batterie"
               },
               "properties": [
                 {
@@ -1428,7 +1428,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Speicher entladen"
+                  "value": "Décharge batterie"
                 }
               ]
             },
@@ -1662,7 +1662,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Aktueller Monat",
+      "title": "Mois en cours",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now%2FM&to=now%2FM"
@@ -1674,7 +1674,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Letzter Monat",
+      "title": "Mois dernier",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-1M%2FM&to=now-1M%2FM"
@@ -1686,7 +1686,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Vorletzter Monat",
+      "title": "Avant-dernier mois",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-2M%2FM&to=now-2M%2FM"
@@ -1755,7 +1755,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -1831,7 +1831,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid consumption"
+                "value": "Consommation réseau"
               }
             ]
           },
@@ -1850,7 +1850,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid feed-in"
+                "value": "Injection réseau"
               }
             ]
           },
@@ -2160,7 +2160,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2236,7 +2236,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid consumption"
+                "value": "Consommation réseau"
               }
             ]
           },
@@ -2255,7 +2255,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid feed-in"
+                "value": "Injection réseau"
               }
             ]
           },
@@ -2390,7 +2390,7 @@
           "trace": 1
         }
       ],
-      "title": "Daily energies",
+      "title": "Énergies quotidiennes",
       "type": "timeseries"
     },
     {
@@ -2502,7 +2502,7 @@
           "type": "math"
         }
       ],
-      "title": "Spezifischer Ertrag",
+      "title": "Rendement spécifique",
       "transparent": true,
       "type": "stat"
     },
@@ -2541,7 +2541,7 @@
           },
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2563,7 +2563,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Eigenverbrauch"
+              "options": "Autoconsommation"
             },
             "properties": [
               {
@@ -2575,7 +2575,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Eigenverbrauch"
+                "value": "Autoconsommation"
               }
             ]
           },
@@ -2799,7 +2799,7 @@
           "type": "math"
         }
       ],
-      "title": "Kennzahlen",
+      "title": "Indicateurs",
       "type": "barchart"
     },
     {
@@ -2812,7 +2812,7 @@
       "id": 19,
       "libraryPanel": {
         "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
-        "name": "EVCC: Energien aufsummiert über die Zeit"
+        "name": "EVCC : Énergies cumulées dans le temps"
       }
     },
     {
@@ -2825,7 +2825,7 @@
       "id": 24,
       "libraryPanel": {
         "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
-        "name": "EVCC: Kennzahlen Gauges"
+        "name": "EVCC : Jauges KPI"
       }
     },
     {
@@ -2838,7 +2838,7 @@
       },
       "id": 34,
       "panels": [],
-      "title": "Haus",
+      "title": "Maison",
       "type": "row"
     },
     {
@@ -2846,7 +2846,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "La formule pour « Autre » doit être ajustée en fonction de la disponibilité des compteurs AUX et EXT. Voir https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen pour plus de détails.",
+      "description": "La formule pour 'Autres' doit être adaptée selon la disponibilité des compteurs AUX et EXT. Voir https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen pour plus d'informations.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2863,7 +2863,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2922,7 +2922,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "Maison",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2989,7 +2989,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Haus: Energieverteilung",
+      "title": "Maison : répartition de l'énergie",
       "transparent": true,
       "type": "piechart"
     },
@@ -2998,7 +2998,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "La formule pour « Autre » doit être ajustée en fonction de la disponibilité des compteurs AUX et EXT. Voir https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen pour plus de détails.",
+      "description": "La formule pour 'Autres' doit être adaptée selon la disponibilité des compteurs AUX et EXT. Voir https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen pour plus d'informations.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3029,7 +3029,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3102,7 +3102,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "Maison",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3169,7 +3169,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Haus: Energieverbrauch",
+      "title": "Maison : consommation d'énergie",
       "type": "barchart"
     },
     {
@@ -3193,7 +3193,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3204,7 +3204,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "Maison"
             },
             "properties": [
               {
@@ -3261,7 +3261,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speicher"
+                "value": "Batterie"
               }
             ]
           }
@@ -3356,7 +3356,7 @@
           "type": "math"
         }
       ],
-      "title": "Gesamt: Energieverteilung",
+      "title": "Total : répartition de l'énergie",
       "transparent": true,
       "type": "piechart"
     },
@@ -3395,7 +3395,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3419,7 +3419,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "Maison"
             },
             "properties": [
               {
@@ -3476,7 +3476,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speicher"
+                "value": "Batterie"
               }
             ]
           }
@@ -3631,7 +3631,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Gesamt: Energieverteilung",
+      "title": "Total : répartition de l'énergie",
       "type": "barchart"
     },
     {
@@ -3644,7 +3644,7 @@
       "id": 30,
       "libraryPanel": {
         "uid": "feio30f3nm0owe",
-        "name": "EVCC: Strombilanz"
+        "name": "EVCC : Bilan électrique"
       }
     },
     {
@@ -3657,7 +3657,7 @@
       "id": 26,
       "libraryPanel": {
         "uid": "ae8zwbjv24kqof",
-        "name": "EVCC: Dynamischer Strompreis: Täglich"
+        "name": "EVCC : Prix dynamique de l'électricité : Quotidien"
       }
     },
     {
@@ -3695,7 +3695,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3754,7 +3754,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Bilanz"
+                "value": "Bilan"
               },
               {
                 "id": "color",
@@ -3895,7 +3895,7 @@
           "type": "math"
         }
       ],
-      "title": "Stromkosten",
+      "title": "Coûts d'électricité",
       "type": "barchart"
     },
     {
@@ -3908,7 +3908,7 @@
       },
       "id": 35,
       "panels": [],
-      "title": "Speicher",
+      "title": "Batterie",
       "type": "row"
     },
     {
@@ -3921,7 +3921,7 @@
       "id": 16,
       "libraryPanel": {
         "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
-        "name": "EVCC: Speicher Effizenz"
+        "name": "EVCC : Efficacité de la batterie"
       }
     },
     {
@@ -3958,7 +3958,7 @@
           },
           "links": [
             {
-              "title": "PV Today",
+              "title": "PV aujourd'hui",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -4128,7 +4128,7 @@
           "tags": []
         }
       ],
-      "title": "Hausspeicher Stände",
+      "title": "Niveaux de la batterie domestique",
       "type": "barchart"
     }
   ],
@@ -4139,9 +4139,9 @@
   "templating": {
     "list": [
       {
-        "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
+        "description": "Fuseau horaire : identifiant TZ tel qu'indiqué ici : https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
-        "label": "Zeitzone",
+        "label": "Fuseau horaire",
         "name": "timezone",
         "query": "${VAR_TIMEZONE}",
         "skipUrlSync": true,
@@ -4160,9 +4160,9 @@
         ]
       },
       {
-        "description": "Grenze der maximalen Leistung in W, über diese hinaus Leistungswerte als Ausreißer ignoriert werden.",
+        "description": "Limite de puissance maximale en W au-delà de laquelle les valeurs sont ignorées comme aberrantes.",
         "hide": 2,
-        "label": "Filter für maximale Leistung / W",
+        "label": "Filtre de puissance maximale / W",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -4181,9 +4181,9 @@
         ]
       },
       {
-        "description": "Installierte Kapazität der Solarpanele in Wp",
+        "description": "Capacité installée des panneaux solaires en Wp",
         "hide": 2,
-        "label": "Installierte Kapazität in Wp",
+        "label": "Capacité installée en Wp",
         "name": "installedWattPeak",
         "query": "${VAR_INSTALLEDWATTPEAK}",
         "skipUrlSync": true,
@@ -4202,9 +4202,9 @@
         ]
       },
       {
-        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "description": "Liste des points de charge qui ne doivent PAS être affichés. L'expression doit être une expression régulière commençant et se terminant par /. Elle ne peut pas être vide. Si rien ne doit être filtré, il faut fournir une expression régulière qui ne correspond à aucune entrée.\n\nExemples :\nAucune entrée : /^none$/\nFiltrer 'Garage' : /^Garage$/\nFiltrer 'Garage' et 'Stellplatz' : /^Garage$|^Stellplatz$/\nFiltrer tout ce qui commence par 'foo' : /^foo.*$/",
         "hide": 2,
-        "label": "Blocklist für Loadpoints",
+        "label": "Liste de blocage des points de charge",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
@@ -4230,7 +4230,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "EVCC: Month",
+  "title": "EVCC : Mois",
   "uid": "adz6thx",
   "version": 6,
   "weekStart": ""

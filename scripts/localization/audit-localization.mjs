@@ -141,19 +141,30 @@ function isLikelyNaturalText(text) {
   return true;
 }
 
-function walk(node, visit, currentPath = "$", parent = null) {
+function walk(node, visit, parent = null) {
   if (Array.isArray(node)) {
-    node.forEach((item, index) => walk(item, visit, `${currentPath}[${index}]`, node));
+    for (const item of node) {
+      walk(item, visit, node);
+    }
     return;
   }
   if (!node || typeof node !== "object") {
     return;
   }
   for (const [key, value] of Object.entries(node)) {
-    const keyPath = `${currentPath}.${key}`;
-    visit(key, value, keyPath, node, parent);
-    walk(value, visit, keyPath, node);
+    visit(key, value, node, parent);
+    walk(value, visit, node);
   }
+}
+
+function trackSourceFile(index, sourceText, relativeFile) {
+  const files = index.get(sourceText) ?? new Set();
+  files.add(relativeFile);
+  index.set(sourceText, files);
+}
+
+function sortedSourceFiles(fileSet, sourceLanguage) {
+  return [...fileSet].sort((left, right) => left.localeCompare(right, sourceLanguage));
 }
 
 function auditTarget({ sourceLanguage, targetLanguage, sourceDir }) {
@@ -165,7 +176,7 @@ function auditTarget({ sourceLanguage, targetLanguage, sourceDir }) {
     const relative = path.relative(sourceDir, file);
     const json = readJson(file);
 
-    walk(json, (key, value, keyPath, node) => {
+    walk(json, (key, value, node) => {
       if (!shouldTranslate(key, value, node)) {
         return;
       }
@@ -181,16 +192,16 @@ function auditTarget({ sourceLanguage, targetLanguage, sourceDir }) {
         return;
       }
 
-      const existing = missing.get(value) ?? [];
-      existing.push(`${relative} :: ${keyPath}`);
-      missing.set(value, existing);
+      trackSourceFile(missing, value, relative);
     });
   }
 
   const sorted = [...missing.entries()].sort((a, b) => a[0].localeCompare(b[0], targetLanguage));
   const exactSuggestions = {};
-  for (const [sourceText] of sorted) {
+  const exactSources = {};
+  for (const [sourceText, fileSet] of sorted) {
     exactSuggestions[sourceText] = "";
+    exactSources[sourceText] = sortedSourceFiles(fileSet, sourceLanguage);
   }
 
   const outputFile = familyReportPath(family, sourceLanguage, targetLanguage);
@@ -203,10 +214,12 @@ function auditTarget({ sourceLanguage, targetLanguage, sourceDir }) {
     notes: [
       "Fill each value with the final target-language translation.",
       `Then merge into ${path.relative(repoRoot, familyMappingPath(family, sourceLanguage, targetLanguage))} under exact.`,
+      "Use exactSources to see which source dashboard file names produced each candidate.",
       "This audit includes displayName/displayNameFromDS override values.",
       "This is a candidate list; some entries can be intentionally unchanged.",
     ],
     exact: exactSuggestions,
+    exactSources,
   });
 
   console.log(`Target '${targetLanguage}': scanned ${files.length} dashboard files.`);
@@ -215,9 +228,10 @@ function auditTarget({ sourceLanguage, targetLanguage, sourceDir }) {
 
   if (sorted.length > 0) {
     console.log("Top candidates:");
-    for (const [sourceText, locations] of sorted.slice(0, 20)) {
+    for (const [sourceText, fileSet] of sorted.slice(0, 20)) {
+      const firstHit = sortedSourceFiles(fileSet, sourceLanguage)[0];
       console.log(`- ${sourceText}`);
-      console.log(`  first hit: ${locations[0]}`);
+      console.log(`  first source file: ${firstHit}`);
     }
   }
 
@@ -265,5 +279,3 @@ function main() {
 }
 
 main();
-
-

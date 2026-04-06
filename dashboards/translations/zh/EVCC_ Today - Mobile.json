@@ -11,21 +11,21 @@
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Maximum power limit ",
+      "label": "最大功率限制",
       "value": "25000",
       "description": ""
     },
     {
       "name": "VAR_EVCCURL",
       "type": "constant",
-      "label": "EVCC 网址",
+      "label": "EVCC URL",
       "value": "http://home:7070/#/",
       "description": ""
     },
     {
       "name": "VAR_INVERTERPORTALTITLE",
       "type": "constant",
-      "label": "Inverter portal label",
+      "label": "逆变器门户标签",
       "value": "Solarman",
       "description": ""
     },
@@ -39,49 +39,49 @@
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded loadpoints",
+      "label": "已排除的充电点",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_VEHICLEBLOCKLIST",
       "type": "constant",
-      "label": "Excluded vehicles",
+      "label": "已排除的车辆",
       "value": "^Mr White.*$|^.*\\(offline\\)$",
       "description": ""
     },
     {
       "name": "VAR_EXTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded EXT devices",
+      "label": "已排除的 EXT 设备",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_AUXBLOCKLIST",
       "type": "constant",
-      "label": "Excluded  AUX devices",
+      "label": "已排除的 AUX 设备",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_ENERGYSAMPLEINTERVAL",
       "type": "constant",
-      "label": "Sampling interval",
+      "label": "采样间隔",
       "value": "30s",
       "description": ""
     },
     {
       "name": "VAR_TARIFFPRICEINTERVAL",
       "type": "constant",
-      "label": "Pricing interval",
+      "label": "价格间隔",
       "value": "15m",
       "description": ""
     }
   ],
   "__elements": {
     "afc1nq1oy29s0a": {
-      "name": "EVCC: VM: Power trend",
+      "name": "EVCC: VM: 功率趋势",
       "uid": "afc1nq1oy29s0a",
       "kind": 1,
       "model": {
@@ -398,7 +398,7 @@
       }
     },
     "afc1nrf3k9hc0e": {
-      "name": "EVCC: VM: Power distribution",
+      "name": "EVCC: VM: 功率分布",
       "uid": "afc1nrf3k9hc0e",
       "kind": 1,
       "model": {
@@ -504,7 +504,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "电网用电"
               },
               "properties": [
                 {
@@ -564,7 +564,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "电网馈入"
               },
               "properties": [
                 {
@@ -630,7 +630,7 @@
             "expr": "clamp_min(avg(gridPower_value) < $peakPowerLimit,0)",
             "format": "time_series",
             "interval": "$energySampleInterval",
-            "legendFormat": "Grid consumption",
+            "legendFormat": "电网用电",
             "range": true,
             "refId": "gridPowerIn"
           },
@@ -669,7 +669,7 @@
             "expr": "clamp_max(avg(gridPower_value) < $peakPowerLimit,0)",
             "format": "time_series",
             "interval": "$energySampleInterval",
-            "legendFormat": "Grid feed-in",
+            "legendFormat": "电网馈入",
             "range": true,
             "refId": "gridPowerOut"
           },
@@ -718,7 +718,7 @@
       }
     },
     "ffc1nfxu4it4wd": {
-      "name": "EVCC: VM: Battery levels",
+      "name": "EVCC: VM: 电池电量",
       "uid": "ffc1nfxu4it4wd",
       "kind": 1,
       "model": {
@@ -726,7 +726,7 @@
           "type": "victoriametrics-metrics-datasource",
           "uid": "${DS_VM-EVCC}"
         },
-        "description": "Black: Priority SoC threshold for EVCC",
+        "description": "黑色：EVCC 优先 SoC 阈值",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -857,7 +857,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Priority SoC"
+                  "value": "优先 SoC"
                 },
                 {
                   "id": "custom.fillOpacity",
@@ -971,7 +971,7 @@
       }
     },
     "bfg2x6jhfr75sf": {
-      "name": "EVCC: VM: Current battery levels",
+      "name": "EVCC: VM: 当前电池电量",
       "uid": "bfg2x6jhfr75sf",
       "kind": 1,
       "model": {
@@ -1104,7 +1104,7 @@
       }
     },
     "afc1njs05twqoc": {
-      "name": "EVCC: VM: KPI Gauges",
+      "name": "EVCC: VM: KPI 仪表",
       "uid": "afc1njs05twqoc",
       "kind": 1,
       "model": {
@@ -1158,7 +1158,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Autonomy"
+                  "value": "自给率"
                 }
               ]
             },
@@ -1186,7 +1186,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Self consumption"
+                  "value": "自耗电"
                 }
               ]
             }
@@ -1308,7 +1308,7 @@
       }
     },
     "dfc1nml5oazuoc": {
-      "name": "EVCC: VM: Energy",
+      "name": "EVCC: VM: 能源",
       "uid": "dfc1nml5oazuoc",
       "kind": 1,
       "model": {
@@ -1373,7 +1373,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Grid consumption"
+                  "value": "电网用电"
                 }
               ]
             },
@@ -1392,7 +1392,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Grid feed-in"
+                  "value": "电网馈入"
                 }
               ]
             },
@@ -1722,7 +1722,7 @@
       }
     },
     "efetnshtos0zkf": {
-      "name": "EVCC:VM: Distribution home consumption",
+      "name": "EVCC: VM: 家庭用电分布",
       "uid": "efetnshtos0zkf",
       "kind": 1,
       "model": {
@@ -1759,7 +1759,7 @@
             },
             "links": [
               {
-                "title": "Mehr details",
+                "title": "更多详情",
                 "url": "/d/adddvtj?$__url_time_range"
               }
             ],
@@ -1795,7 +1795,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Other consumers"
+                  "value": "其他用电设备"
                 }
               ]
             }
@@ -1872,7 +1872,7 @@
       }
     },
     "afc1no2uz7u9sf": {
-      "name": "EVCC: VM: Costs",
+      "name": "EVCC: VM: 成本",
       "uid": "afc1no2uz7u9sf",
       "kind": 1,
       "model": {
@@ -1889,7 +1889,7 @@
             "decimals": 2,
             "links": [
               {
-                "title": "Mehr Details",
+                "title": "更多详情",
                 "url": "/d/adddvtj?$__url_time_range"
               }
             ],
@@ -1975,7 +1975,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Daily total"
+                  "value": "每日总计"
                 }
               ]
             }
@@ -2126,7 +2126,7 @@
       "placement": "inControlsMenu",
       "tags": [],
       "targetBlank": false,
-      "title": "Two days ago",
+      "title": "前天",
       "tooltip": "",
       "type": "link",
       "url": "/d/adtcx74?orgId=1&from=now-2d%2Fd&to=now-2d%2Fd"
@@ -2159,7 +2159,7 @@
       },
       "id": 77,
       "panels": [],
-      "title": "Real-time",
+      "title": "实时",
       "type": "row"
     },
     {
@@ -2208,7 +2208,7 @@
                 "value": [
                   {
                     "targetBlank": true,
-                    "title": "Mehr Details",
+                    "title": "更多详情",
                     "url": "/d/adddvtj?$__url_time_range"
                   }
                 ]
@@ -2246,7 +2246,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netz"
+              "options": "电网"
             },
             "properties": [
               {
@@ -2281,7 +2281,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "title": "Mehr Details",
+                    "title": "更多详情",
                     "url": "/d/adddvtj?$__url_time_range"
                   }
                 ]
@@ -2291,7 +2291,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Speicher"
+              "options": "电池"
             },
             "properties": [
               {
@@ -2327,7 +2327,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "家庭"
             },
             "properties": [
               {
@@ -2358,7 +2358,7 @@
                 "id": "links",
                 "value": [
                   {
-                    "title": "Mehr Details",
+                    "title": "更多详情",
                     "url": "/d/adddvtj?$__url_time_range"
                   }
                 ]
@@ -2491,7 +2491,7 @@
           "editorMode": "code",
           "expr": "avg(gridPower_value) / 1000",
           "format": "time_series",
-          "legendFormat": "Netz",
+          "legendFormat": "电网",
           "range": true,
           "refId": "gridPower"
         },
@@ -2503,7 +2503,7 @@
           "editorMode": "code",
           "expr": "avg(homePower_value) / -1000",
           "format": "time_series",
-          "legendFormat": "Haus",
+          "legendFormat": "家庭",
           "range": true,
           "refId": "homePower"
         },
@@ -2515,7 +2515,7 @@
           "editorMode": "code",
           "expr": "avg(batteryPower_value{id=\"\"}) / 1000",
           "format": "time_series",
-          "legendFormat": "Speicher",
+          "legendFormat": "电池",
           "range": true,
           "refId": "batteryPower"
         },
@@ -2532,7 +2532,7 @@
           "refId": "loadpointPowers"
         }
       ],
-      "title": "Leistungen",
+      "title": "功率",
       "transparent": true,
       "type": "stat"
     },
@@ -2546,7 +2546,7 @@
       "id": 2,
       "libraryPanel": {
         "uid": "afc1nq1oy29s0a",
-        "name": "EVCC: VM: Power trend"
+        "name": "EVCC: VM: 功率趋势"
       }
     },
     {
@@ -2559,7 +2559,7 @@
       "id": 75,
       "libraryPanel": {
         "uid": "afc1nrf3k9hc0e",
-        "name": "EVCC: VM: Power distribution"
+        "name": "EVCC: VM: 功率分布"
       }
     },
     {
@@ -2572,7 +2572,7 @@
       "id": 66,
       "libraryPanel": {
         "uid": "ffc1nfxu4it4wd",
-        "name": "EVCC: VM: Battery levels"
+        "name": "EVCC: VM: 电池电量"
       }
     },
     {
@@ -2585,7 +2585,7 @@
       "id": 80,
       "libraryPanel": {
         "uid": "bfg2x6jhfr75sf",
-        "name": "EVCC: VM: Current battery levels"
+        "name": "EVCC: VM: 当前电池电量"
       }
     },
     {
@@ -2611,7 +2611,7 @@
       "id": 64,
       "libraryPanel": {
         "uid": "afc1njs05twqoc",
-        "name": "EVCC: VM: KPI Gauges"
+        "name": "EVCC: VM: KPI 仪表"
       }
     },
     {
@@ -2624,7 +2624,7 @@
       "id": 82,
       "libraryPanel": {
         "uid": "dfc1nml5oazuoc",
-        "name": "EVCC: VM: Energy"
+        "name": "EVCC: VM: 能源"
       }
     },
     {
@@ -2637,7 +2637,7 @@
       "id": 81,
       "libraryPanel": {
         "uid": "efetnshtos0zkf",
-        "name": "EVCC:VM: Distribution home consumption"
+        "name": "EVCC: VM: 家庭用电分布"
       }
     },
     {
@@ -2650,7 +2650,7 @@
       "id": 79,
       "libraryPanel": {
         "uid": "afc1no2uz7u9sf",
-        "name": "EVCC: VM: Costs"
+        "name": "EVCC: VM: 成本"
       }
     }
   ],
@@ -2663,9 +2663,9 @@
   "templating": {
     "list": [
       {
-        "description": "Values exceeding this power limit (W) will be ignored as outliers to ensure data accuracy.",
+        "description": "超过此功率限制 (W) 的值将被视为离群值而忽略，以确保数据准确性。",
         "hide": 2,
-        "label": "Maximum power limit ",
+        "label": "最大功率限制",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -2684,9 +2684,9 @@
         ]
       },
       {
-        "description": "URL to open the EVCC UI.",
+        "description": "用于打开 EVCC 界面的 URL。",
         "hide": 2,
-        "label": "EVCC 网址",
+        "label": "EVCC URL",
         "name": "evccUrl",
         "query": "${VAR_EVCCURL}",
         "skipUrlSync": true,
@@ -2705,9 +2705,9 @@
         ]
       },
       {
-        "description": "Display label of the link to the inverter portal.",
+        "description": "逆变器门户链接的显示标签。",
         "hide": 2,
-        "label": "Inverter portal label",
+        "label": "逆变器门户标签",
         "name": "inverterPortalTitle",
         "query": "${VAR_INVERTERPORTALTITLE}",
         "skipUrlSync": true,
@@ -2726,7 +2726,7 @@
         ]
       },
       {
-        "description": "URL to reach the inverter portal",
+        "description": "用于访问逆变器门户的 URL",
         "hide": 2,
         "label": "逆变器门户网址",
         "name": "inverterPortalUrl",
@@ -2747,9 +2747,9 @@
         ]
       },
       {
-        "description": "List of loadpoints that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any entries, you must provide a regex that does not match any existing loadpoint.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out everything starting with 'foo': ^foo.*$",
+        "description": "不应显示的充电点列表。此字段需要正则表达式，且不能为空。如果不想过滤任何条目，必须提供一个与现有充电点都不匹配的 regex。\n\n示例：\n\n无条目： ^none$\n过滤 'Garage'： ^Garage$\n过滤 'Garage' 和 'Parking Spot'： ^Garage$|^Parking Spot$\n过滤所有以 'foo' 开头的内容： ^foo.*$",
         "hide": 2,
-        "label": "Excluded loadpoints",
+        "label": "已排除的充电点",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
@@ -2768,9 +2768,9 @@
         ]
       },
       {
-        "description": "List of vehicles that should NOT be displayed. This field must contain a regular expression and cannot be left empty. If you do not want to filter any vehicles, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out vehicles ending with '(offline)': ^.*\\(offline\\)$",
+        "description": "不应显示的车辆列表。此字段必须包含正则表达式，且不能为空。如果不想过滤任何车辆，必须提供一个与所有条目都不匹配的 regex。\n\n示例：\n\n无条目： ^none$\n过滤 'Garage'： ^Garage$\n过滤 'Garage' 和 'Parking Spot'： ^Garage$|^Parking Spot$\n过滤所有以 '(offline)' 结尾的车辆： ^.*\\(offline\\)$",
         "hide": 2,
-        "label": "Excluded vehicles",
+        "label": "已排除的车辆",
         "name": "vehicleBlocklist",
         "query": "${VAR_VEHICLEBLOCKLIST}",
         "skipUrlSync": true,
@@ -2789,9 +2789,9 @@
         ]
       },
       {
-        "description": "List of EXT devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "不应显示的 EXT 设备列表。此字段需要正则表达式，且不能为空。如果不想过滤任何设备，必须提供一个与所有条目都不匹配的 regex。\n\n示例：\n\n无条目： /^none$/\n过滤 'Ground Floor'： /^Ground Floor$/\n过滤 'Ground Floor' 和 'First Floor'： /^Ground Floor$|^First Floor$/\n过滤所有以 'Distributor' 开头的内容： /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded EXT devices",
+        "label": "已排除的 EXT 设备",
         "name": "extBlocklist",
         "query": "${VAR_EXTBLOCKLIST}",
         "skipUrlSync": true,
@@ -2810,9 +2810,9 @@
         ]
       },
       {
-        "description": "List of AUX devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "不应显示的 AUX 设备列表。此字段需要正则表达式，且不能为空。如果不想过滤任何设备，必须提供一个与所有条目都不匹配的 regex。\n\n示例：\n\n无条目： /^none$/\n过滤 'Ground Floor'： /^Ground Floor$/\n过滤 'Ground Floor' 和 'First Floor'： /^Ground Floor$|^First Floor$/\n过滤所有以 'Distributor' 开头的内容： /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded  AUX devices",
+        "label": "已排除的 AUX 设备",
         "name": "auxBlocklist",
         "query": "${VAR_AUXBLOCKLIST}",
         "skipUrlSync": true,
@@ -2831,9 +2831,9 @@
         ]
       },
       {
-        "description": "Energy calculation sampling interval. Recommended to be at least twice the EVCC polling interval. E.g. a value of 30s would match an EVCC polling interval of 15s.",
+        "description": "用于能量计算的采样间隔。建议至少设置为 EVCC 轮询间隔的两倍。例如，30s 对应 15s 的 EVCC 轮询间隔。",
         "hide": 2,
-        "label": "Sampling interval",
+        "label": "采样间隔",
         "name": "energySampleInterval",
         "query": "${VAR_ENERGYSAMPLEINTERVAL}",
         "skipUrlSync": true,
@@ -2852,9 +2852,9 @@
         ]
       },
       {
-        "description": "The billing interval determines how often electricity price updates are processed (e.g., every 15 or 60 minutes).",
+        "description": "计费间隔决定电价更新的处理频率，例如每 15 或 60 分钟一次。",
         "hide": 2,
-        "label": "Pricing interval",
+        "label": "价格间隔",
         "name": "tariffPriceInterval",
         "query": "${VAR_TARIFFPRICEINTERVAL}",
         "skipUrlSync": true,
@@ -2880,7 +2880,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "EVCC: Today - Mobile",
+  "title": "EVCC: 今天 - 移动版",
   "uid": "adtcx74",
   "version": 25,
   "weekStart": ""

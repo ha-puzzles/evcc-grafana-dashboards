@@ -10,7 +10,7 @@
     },
     {
       "name": "DS_EVCC_AGGREGRATIONS",
-      "label": "EVCC Aggregrations",
+      "label": "EVCC 聚合",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -18,7 +18,7 @@
     },
     {
       "name": "DS_EXPRESSION",
-      "label": "表达",
+      "label": "表达式",
       "description": "",
       "type": "datasource",
       "pluginId": "__expr__"
@@ -26,35 +26,35 @@
     {
       "name": "VAR_TIMEZONE",
       "type": "constant",
-      "label": "Zeitzone",
+      "label": "时区",
       "value": "Europe/Berlin",
       "description": ""
     },
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Filter für maximale Leistung / W",
+      "label": "最大功率过滤器 / W",
       "value": "25000",
       "description": ""
     },
     {
       "name": "VAR_INSTALLEDWATTPEAK",
       "type": "constant",
-      "label": "Installierte Kapazität in Wp",
+      "label": "已安装容量（Wp）",
       "value": "9840",
       "description": ""
     },
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Blocklist für Loadpoints",
+      "label": "充电点屏蔽列表",
       "value": "/^none$/",
       "description": ""
     }
   ],
   "__elements": {
     "f5f62a1c-c847-493c-89f7-06bd383a2025": {
-      "name": "EVCC: Energien aufsummiert über die Zeit",
+      "name": "EVCC: 随时间累计的能量",
       "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
       "kind": 1,
       "model": {
@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Netzbezug"
+                "options": "电网用电"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Haus"
+                "options": "家庭"
               },
               "properties": [
                 {
@@ -373,13 +373,13 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Energie",
+        "title": "能源",
         "transparent": true,
         "type": "barchart"
       }
     },
     "c872420b-86a9-4544-9e33-f367a07f9e40": {
-      "name": "EVCC: Kennzahlen Gauges",
+      "name": "EVCC: KPI 仪表",
       "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
       "kind": 1,
       "model": {
@@ -440,7 +440,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Eigenverbrauch"
+                "options": "自耗电"
               },
               "properties": [
                 {
@@ -461,7 +461,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Eigenverbrauch"
+                  "value": "自耗电"
                 }
               ]
             }
@@ -663,13 +663,13 @@
             "type": "math"
           }
         ],
-        "title": "Kennzahlen",
+        "title": "指标",
         "transparent": true,
         "type": "gauge"
       }
     },
     "feio30f3nm0owe": {
-      "name": "EVCC: Strombilanz",
+      "name": "EVCC: 电力平衡",
       "uid": "feio30f3nm0owe",
       "kind": 1,
       "model": {
@@ -710,7 +710,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Strompreis: Arithmetisches Mittel"
+                  "value": "电价：算术平均值"
                 },
                 {
                   "id": "color",
@@ -733,7 +733,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Effektiver Strompreis, dynamisch"
+                  "value": "动态实际电价"
                 },
                 {
                   "id": "color",
@@ -756,7 +756,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Eingesparter Strompreis durch dynamischen Tarif"
+                  "value": "动态费率节省的电价"
                 },
                 {
                   "id": "unit",
@@ -772,7 +772,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Einsparung durch dynamischen Tarif"
+                  "value": "动态费率节省"
                 }
               ]
             },
@@ -784,7 +784,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Potentieller Einkauf nach arithmetischen Preis"
+                  "value": "按算术平均价格的潜在购电"
                 }
               ]
             }
@@ -1041,13 +1041,13 @@
             "type": "math"
           }
         ],
-        "title": "Strombilanz",
+        "title": "电力平衡",
         "transparent": true,
         "type": "stat"
       }
     },
     "ae8zwbjv24kqof": {
-      "name": "EVCC: Dynamischer Strompreis: Täglich",
+      "name": "EVCC: 动态电价：每日",
       "uid": "ae8zwbjv24kqof",
       "kind": 1,
       "model": {
@@ -1167,7 +1167,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Effektiver Strompreis"
+                  "value": "实际电价"
                 },
                 {
                   "id": "color",
@@ -1357,12 +1357,12 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Dynamischer Strompreis (ct/kWh)",
+        "title": "动态电价 (ct/kWh)",
         "type": "timeseries"
       }
     },
     "b8787739-953e-4188-9507-0cc12b6ed91b": {
-      "name": "EVCC: Speicher Effizenz",
+      "name": "EVCC: 电池效率",
       "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
       "kind": 1,
       "model": {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher laden"
+                "options": "电池充电"
               },
               "properties": [
                 {
@@ -1409,14 +1409,14 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Speicher laden"
+                  "value": "电池充电"
                 }
               ]
             },
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher entladen"
+                "options": "电池放电"
               },
               "properties": [
                 {
@@ -1428,7 +1428,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Speicher entladen"
+                  "value": "电池放电"
                 }
               ]
             },
@@ -1662,7 +1662,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Aktueller Monat",
+      "title": "当前月份",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now%2FM&to=now%2FM"
@@ -1674,7 +1674,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Letzter Monat",
+      "title": "上个月",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-1M%2FM&to=now-1M%2FM"
@@ -1686,7 +1686,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Vorletzter Monat",
+      "title": "上上个月",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-2M%2FM&to=now-2M%2FM"
@@ -1755,7 +1755,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -1831,7 +1831,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid consumption"
+                "value": "电网用电"
               }
             ]
           },
@@ -1850,7 +1850,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid feed-in"
+                "value": "电网馈入"
               }
             ]
           },
@@ -2160,7 +2160,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2236,7 +2236,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid consumption"
+                "value": "电网用电"
               }
             ]
           },
@@ -2255,7 +2255,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid feed-in"
+                "value": "电网馈入"
               }
             ]
           },
@@ -2390,7 +2390,7 @@
           "trace": 1
         }
       ],
-      "title": "Daily energies",
+      "title": "每日能量",
       "type": "timeseries"
     },
     {
@@ -2502,7 +2502,7 @@
           "type": "math"
         }
       ],
-      "title": "Spezifischer Ertrag",
+      "title": "比发电量",
       "transparent": true,
       "type": "stat"
     },
@@ -2541,7 +2541,7 @@
           },
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2563,7 +2563,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Eigenverbrauch"
+              "options": "自耗电"
             },
             "properties": [
               {
@@ -2575,7 +2575,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Eigenverbrauch"
+                "value": "自耗电"
               }
             ]
           },
@@ -2799,7 +2799,7 @@
           "type": "math"
         }
       ],
-      "title": "Kennzahlen",
+      "title": "指标",
       "type": "barchart"
     },
     {
@@ -2812,7 +2812,7 @@
       "id": 19,
       "libraryPanel": {
         "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
-        "name": "EVCC: Energien aufsummiert über die Zeit"
+        "name": "EVCC: 随时间累计的能量"
       }
     },
     {
@@ -2825,7 +2825,7 @@
       "id": 24,
       "libraryPanel": {
         "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
-        "name": "EVCC: Kennzahlen Gauges"
+        "name": "EVCC: KPI 仪表"
       }
     },
     {
@@ -2838,7 +2838,7 @@
       },
       "id": 34,
       "panels": [],
-      "title": "Haus",
+      "title": "家庭",
       "type": "row"
     },
     {
@@ -2846,7 +2846,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "“其他”的公式必须根据 AUX 和 EXT 仪表的可用性进行调整。有关详细信息，请参阅 https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen。",
+      "description": "“其他”的公式必须根据 AUX 和 EXT 电表的可用性进行调整。更多信息请参见 https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen 。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2863,7 +2863,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2922,7 +2922,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "家庭",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2989,7 +2989,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Haus: Energieverteilung",
+      "title": "家庭：能源分布",
       "transparent": true,
       "type": "piechart"
     },
@@ -2998,7 +2998,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "“其他”的公式必须根据 AUX 和 EXT 仪表的可用性进行调整。有关详细信息，请参阅 https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen。",
+      "description": "“其他”的公式必须根据 AUX 和 EXT 电表的可用性进行调整。更多信息请参见 https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen 。",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3029,7 +3029,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3102,7 +3102,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "家庭",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3169,7 +3169,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Haus: Energieverbrauch",
+      "title": "家庭：能源消耗",
       "type": "barchart"
     },
     {
@@ -3193,7 +3193,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3204,7 +3204,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "家庭"
             },
             "properties": [
               {
@@ -3261,7 +3261,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speicher"
+                "value": "电池"
               }
             ]
           }
@@ -3356,7 +3356,7 @@
           "type": "math"
         }
       ],
-      "title": "Gesamt: Energieverteilung",
+      "title": "总计：能源分布",
       "transparent": true,
       "type": "piechart"
     },
@@ -3395,7 +3395,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3419,7 +3419,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "家庭"
             },
             "properties": [
               {
@@ -3476,7 +3476,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speicher"
+                "value": "电池"
               }
             ]
           }
@@ -3631,7 +3631,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Gesamt: Energieverteilung",
+      "title": "总计：能源分布",
       "type": "barchart"
     },
     {
@@ -3644,7 +3644,7 @@
       "id": 30,
       "libraryPanel": {
         "uid": "feio30f3nm0owe",
-        "name": "EVCC: Strombilanz"
+        "name": "EVCC: 电力平衡"
       }
     },
     {
@@ -3657,7 +3657,7 @@
       "id": 26,
       "libraryPanel": {
         "uid": "ae8zwbjv24kqof",
-        "name": "EVCC: Dynamischer Strompreis: Täglich"
+        "name": "EVCC: 动态电价：每日"
       }
     },
     {
@@ -3695,7 +3695,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3754,7 +3754,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Bilanz"
+                "value": "平衡"
               },
               {
                 "id": "color",
@@ -3895,7 +3895,7 @@
           "type": "math"
         }
       ],
-      "title": "Stromkosten",
+      "title": "电费",
       "type": "barchart"
     },
     {
@@ -3908,7 +3908,7 @@
       },
       "id": 35,
       "panels": [],
-      "title": "Speicher",
+      "title": "电池",
       "type": "row"
     },
     {
@@ -3921,7 +3921,7 @@
       "id": 16,
       "libraryPanel": {
         "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
-        "name": "EVCC: Speicher Effizenz"
+        "name": "EVCC: 电池效率"
       }
     },
     {
@@ -3958,7 +3958,7 @@
           },
           "links": [
             {
-              "title": "PV Today",
+              "title": "今日光伏",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -4128,7 +4128,7 @@
           "tags": []
         }
       ],
-      "title": "Hausspeicher Stände",
+      "title": "家用电池电量",
       "type": "barchart"
     }
   ],
@@ -4139,9 +4139,9 @@
   "templating": {
     "list": [
       {
-        "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
+        "description": "时区：此处列出的 TZ 标识符：https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
-        "label": "Zeitzone",
+        "label": "时区",
         "name": "timezone",
         "query": "${VAR_TIMEZONE}",
         "skipUrlSync": true,
@@ -4160,9 +4160,9 @@
         ]
       },
       {
-        "description": "Grenze der maximalen Leistung in W, über diese hinaus Leistungswerte als Ausreißer ignoriert werden.",
+        "description": "最大功率限制（W），超过该值的功率将作为离群值忽略。",
         "hide": 2,
-        "label": "Filter für maximale Leistung / W",
+        "label": "最大功率过滤器 / W",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -4181,9 +4181,9 @@
         ]
       },
       {
-        "description": "Installierte Kapazität der Solarpanele in Wp",
+        "description": "已安装的太阳能板容量（Wp）",
         "hide": 2,
-        "label": "Installierte Kapazität in Wp",
+        "label": "已安装容量（Wp）",
         "name": "installedWattPeak",
         "query": "${VAR_INSTALLEDWATTPEAK}",
         "skipUrlSync": true,
@@ -4202,9 +4202,9 @@
         ]
       },
       {
-        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "description": "不应显示的充电点列表。该表达式必须是以 / 开始并以 / 结束的正则表达式，且不能为空。如果不需要过滤任何内容，则这里必须填写一个与任何条目都不匹配的正则表达式。\n\n示例：\n无条目： /^none$/\n过滤 'Garage'： /^Garage$/\n过滤 'Garage' 和 'Stellplatz'： /^Garage$|^Stellplatz$/\n过滤所有以 'foo' 开头的内容： /^foo.*$/",
         "hide": 2,
-        "label": "Blocklist für Loadpoints",
+        "label": "充电点屏蔽列表",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
@@ -4230,7 +4230,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "EVCC: Month",
+  "title": "EVCC: 月度",
   "uid": "adz6thx",
   "version": 6,
   "weekStart": ""

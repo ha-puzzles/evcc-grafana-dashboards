@@ -10,7 +10,7 @@
     },
     {
       "name": "DS_EVCC_AGGREGRATIONS",
-      "label": "EVCC Aggregrations",
+      "label": "EVCC एग्रीगेशन",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -26,35 +26,35 @@
     {
       "name": "VAR_TIMEZONE",
       "type": "constant",
-      "label": "Zeitzone",
+      "label": "समय क्षेत्र",
       "value": "Europe/Berlin",
       "description": ""
     },
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Filter für maximale Leistung / W",
+      "label": "अधिकतम शक्ति फ़िल्टर / W",
       "value": "25000",
       "description": ""
     },
     {
       "name": "VAR_INSTALLEDWATTPEAK",
       "type": "constant",
-      "label": "Installierte Kapazität in Wp",
+      "label": "स्थापित क्षमता Wp में",
       "value": "9840",
       "description": ""
     },
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Blocklist für Loadpoints",
+      "label": "चार्जिंग पॉइंट ब्लॉकलिस्ट",
       "value": "/^none$/",
       "description": ""
     }
   ],
   "__elements": {
     "f5f62a1c-c847-493c-89f7-06bd383a2025": {
-      "name": "EVCC: Energien aufsummiert über die Zeit",
+      "name": "EVCC: समय के साथ संचित ऊर्जा",
       "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
       "kind": 1,
       "model": {
@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Netzbezug"
+                "options": "ग्रिड खपत"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Haus"
+                "options": "घर"
               },
               "properties": [
                 {
@@ -373,13 +373,13 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Energie",
+        "title": "ऊर्जा",
         "transparent": true,
         "type": "barchart"
       }
     },
     "c872420b-86a9-4544-9e33-f367a07f9e40": {
-      "name": "EVCC: Kennzahlen Gauges",
+      "name": "EVCC: KPI गेज",
       "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
       "kind": 1,
       "model": {
@@ -440,7 +440,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Eigenverbrauch"
+                "options": "स्व-उपभोग"
               },
               "properties": [
                 {
@@ -461,7 +461,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Eigenverbrauch"
+                  "value": "स्व-उपभोग"
                 }
               ]
             }
@@ -663,13 +663,13 @@
             "type": "math"
           }
         ],
-        "title": "Kennzahlen",
+        "title": "संकेतक",
         "transparent": true,
         "type": "gauge"
       }
     },
     "feio30f3nm0owe": {
-      "name": "EVCC: Strombilanz",
+      "name": "EVCC: बिजली संतुलन",
       "uid": "feio30f3nm0owe",
       "kind": 1,
       "model": {
@@ -710,7 +710,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Strompreis: Arithmetisches Mittel"
+                  "value": "बिजली मूल्य: अंकगणितीय औसत"
                 },
                 {
                   "id": "color",
@@ -733,7 +733,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Effektiver Strompreis, dynamisch"
+                  "value": "गतिशील प्रभावी बिजली मूल्य"
                 },
                 {
                   "id": "color",
@@ -756,7 +756,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Eingesparter Strompreis durch dynamischen Tarif"
+                  "value": "गतिशील टैरिफ से बची हुई बिजली कीमत"
                 },
                 {
                   "id": "unit",
@@ -772,7 +772,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Einsparung durch dynamischen Tarif"
+                  "value": "गतिशील टैरिफ से बचत"
                 }
               ]
             },
@@ -784,7 +784,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Potentieller Einkauf nach arithmetischen Preis"
+                  "value": "अंकगणितीय मूल्य पर संभावित खरीद"
                 }
               ]
             }
@@ -1041,13 +1041,13 @@
             "type": "math"
           }
         ],
-        "title": "Strombilanz",
+        "title": "बिजली संतुलन",
         "transparent": true,
         "type": "stat"
       }
     },
     "ae8zwbjv24kqof": {
-      "name": "EVCC: Dynamischer Strompreis: Täglich",
+      "name": "EVCC: गतिशील बिजली मूल्य: दैनिक",
       "uid": "ae8zwbjv24kqof",
       "kind": 1,
       "model": {
@@ -1167,7 +1167,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Effektiver Strompreis"
+                  "value": "प्रभावी बिजली मूल्य"
                 },
                 {
                   "id": "color",
@@ -1357,12 +1357,12 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Dynamischer Strompreis (ct/kWh)",
+        "title": "गतिशील बिजली मूल्य (ct/kWh)",
         "type": "timeseries"
       }
     },
     "b8787739-953e-4188-9507-0cc12b6ed91b": {
-      "name": "EVCC: Speicher Effizenz",
+      "name": "EVCC: बैटरी दक्षता",
       "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
       "kind": 1,
       "model": {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher laden"
+                "options": "बैटरी चार्ज"
               },
               "properties": [
                 {
@@ -1409,14 +1409,14 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Speicher laden"
+                  "value": "बैटरी चार्ज"
                 }
               ]
             },
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher entladen"
+                "options": "बैटरी डिस्चार्ज"
               },
               "properties": [
                 {
@@ -1428,7 +1428,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Speicher entladen"
+                  "value": "बैटरी डिस्चार्ज"
                 }
               ]
             },
@@ -1662,7 +1662,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Aktueller Monat",
+      "title": "वर्तमान माह",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now%2FM&to=now%2FM"
@@ -1674,7 +1674,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Letzter Monat",
+      "title": "पिछला माह",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-1M%2FM&to=now-1M%2FM"
@@ -1686,7 +1686,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Vorletzter Monat",
+      "title": "दो महीने पहले",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-2M%2FM&to=now-2M%2FM"
@@ -1755,7 +1755,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -1831,7 +1831,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid consumption"
+                "value": "ग्रिड खपत"
               }
             ]
           },
@@ -1850,7 +1850,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid feed-in"
+                "value": "ग्रिड में आपूर्ति"
               }
             ]
           },
@@ -2160,7 +2160,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2236,7 +2236,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid consumption"
+                "value": "ग्रिड खपत"
               }
             ]
           },
@@ -2255,7 +2255,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid feed-in"
+                "value": "ग्रिड में आपूर्ति"
               }
             ]
           },
@@ -2390,7 +2390,7 @@
           "trace": 1
         }
       ],
-      "title": "Daily energies",
+      "title": "दैनिक ऊर्जा",
       "type": "timeseries"
     },
     {
@@ -2502,7 +2502,7 @@
           "type": "math"
         }
       ],
-      "title": "Spezifischer Ertrag",
+      "title": "विशिष्ट उपज",
       "transparent": true,
       "type": "stat"
     },
@@ -2541,7 +2541,7 @@
           },
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2563,7 +2563,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Eigenverbrauch"
+              "options": "स्व-उपभोग"
             },
             "properties": [
               {
@@ -2575,7 +2575,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Eigenverbrauch"
+                "value": "स्व-उपभोग"
               }
             ]
           },
@@ -2799,7 +2799,7 @@
           "type": "math"
         }
       ],
-      "title": "Kennzahlen",
+      "title": "संकेतक",
       "type": "barchart"
     },
     {
@@ -2812,7 +2812,7 @@
       "id": 19,
       "libraryPanel": {
         "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
-        "name": "EVCC: Energien aufsummiert über die Zeit"
+        "name": "EVCC: समय के साथ संचित ऊर्जा"
       }
     },
     {
@@ -2825,7 +2825,7 @@
       "id": 24,
       "libraryPanel": {
         "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
-        "name": "EVCC: Kennzahlen Gauges"
+        "name": "EVCC: KPI गेज"
       }
     },
     {
@@ -2838,7 +2838,7 @@
       },
       "id": 34,
       "panels": [],
-      "title": "Haus",
+      "title": "घर",
       "type": "row"
     },
     {
@@ -2846,7 +2846,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "AUX और EXT मीटर की उपलब्धता के आधार पर 'अन्य' का फॉर्मूला समायोजित किया जाना चाहिए। विवरण के लिए https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstge-anpassen देखें।",
+      "description": "'अन्य' के लिए सूत्र को AUX और EXT मीटर की उपलब्धता के अनुसार समायोजित करना होगा। अधिक जानकारी के लिए https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen देखें।",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2863,7 +2863,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -2922,7 +2922,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "घर",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2989,7 +2989,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Haus: Energieverteilung",
+      "title": "घर: ऊर्जा वितरण",
       "transparent": true,
       "type": "piechart"
     },
@@ -2998,7 +2998,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "AUX और EXT मीटर की उपलब्धता के आधार पर 'अन्य' का फॉर्मूला समायोजित किया जाना चाहिए। विवरण के लिए https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstge-anpassen देखें।",
+      "description": "'अन्य' के लिए सूत्र को AUX और EXT मीटर की उपलब्धता के अनुसार समायोजित करना होगा। अधिक जानकारी के लिए https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen देखें।",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3029,7 +3029,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3102,7 +3102,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "घर",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3169,7 +3169,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Haus: Energieverbrauch",
+      "title": "घर: ऊर्जा खपत",
       "type": "barchart"
     },
     {
@@ -3193,7 +3193,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3204,7 +3204,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "घर"
             },
             "properties": [
               {
@@ -3261,7 +3261,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speicher"
+                "value": "बैटरी"
               }
             ]
           }
@@ -3356,7 +3356,7 @@
           "type": "math"
         }
       ],
-      "title": "Gesamt: Energieverteilung",
+      "title": "कुल: ऊर्जा वितरण",
       "transparent": true,
       "type": "piechart"
     },
@@ -3395,7 +3395,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3419,7 +3419,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "घर"
             },
             "properties": [
               {
@@ -3476,7 +3476,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Speicher"
+                "value": "बैटरी"
               }
             ]
           }
@@ -3631,7 +3631,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Gesamt: Energieverteilung",
+      "title": "कुल: ऊर्जा वितरण",
       "type": "barchart"
     },
     {
@@ -3644,7 +3644,7 @@
       "id": 30,
       "libraryPanel": {
         "uid": "feio30f3nm0owe",
-        "name": "EVCC: Strombilanz"
+        "name": "EVCC: बिजली संतुलन"
       }
     },
     {
@@ -3657,7 +3657,7 @@
       "id": 26,
       "libraryPanel": {
         "uid": "ae8zwbjv24kqof",
-        "name": "EVCC: Dynamischer Strompreis: Täglich"
+        "name": "EVCC: गतिशील बिजली मूल्य: दैनिक"
       }
     },
     {
@@ -3695,7 +3695,7 @@
           "decimals": 2,
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -3754,7 +3754,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Bilanz"
+                "value": "संतुलन"
               },
               {
                 "id": "color",
@@ -3895,7 +3895,7 @@
           "type": "math"
         }
       ],
-      "title": "Stromkosten",
+      "title": "बिजली की लागत",
       "type": "barchart"
     },
     {
@@ -3908,7 +3908,7 @@
       },
       "id": 35,
       "panels": [],
-      "title": "Speicher",
+      "title": "बैटरी",
       "type": "row"
     },
     {
@@ -3921,7 +3921,7 @@
       "id": 16,
       "libraryPanel": {
         "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
-        "name": "EVCC: Speicher Effizenz"
+        "name": "EVCC: बैटरी दक्षता"
       }
     },
     {
@@ -3958,7 +3958,7 @@
           },
           "links": [
             {
-              "title": "PV Today",
+              "title": "आज का PV",
               "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
             }
           ],
@@ -4128,7 +4128,7 @@
           "tags": []
         }
       ],
-      "title": "Hausspeicher Stände",
+      "title": "घरेलू बैटरी स्तर",
       "type": "barchart"
     }
   ],
@@ -4139,9 +4139,9 @@
   "templating": {
     "list": [
       {
-        "description": "Zeitzone: TZ Identifier wie hier gelistet: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
+        "description": "समय क्षेत्र: यहाँ सूचीबद्ध TZ पहचानकर्ता: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
-        "label": "Zeitzone",
+        "label": "समय क्षेत्र",
         "name": "timezone",
         "query": "${VAR_TIMEZONE}",
         "skipUrlSync": true,
@@ -4160,9 +4160,9 @@
         ]
       },
       {
-        "description": "Grenze der maximalen Leistung in W, über diese hinaus Leistungswerte als Ausreißer ignoriert werden.",
+        "description": "अधिकतम शक्ति सीमा W में; इसके ऊपर के शक्ति मानों को आउटलायर मानकर अनदेखा किया जाएगा।",
         "hide": 2,
-        "label": "Filter für maximale Leistung / W",
+        "label": "अधिकतम शक्ति फ़िल्टर / W",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -4181,9 +4181,9 @@
         ]
       },
       {
-        "description": "Installierte Kapazität der Solarpanele in Wp",
+        "description": "सौर पैनलों की स्थापित क्षमता Wp में",
         "hide": 2,
-        "label": "Installierte Kapazität in Wp",
+        "label": "स्थापित क्षमता Wp में",
         "name": "installedWattPeak",
         "query": "${VAR_INSTALLEDWATTPEAK}",
         "skipUrlSync": true,
@@ -4202,9 +4202,9 @@
         ]
       },
       {
-        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Der Ausdruck ist eine reguläre Expression, die mit / anfangen und mit / enden muss. Sie darf nicht leer sein, wenn also nichts gefiltert werden sollte, muss hier eine reguläre Expression stehen, die keinen der Einträge matched.\n\nBeispiele:\nKeine Einträge: /^none$/\nFiltere 'Garage' aus: /^Garage$/\nFiltere 'Garage' und 'Stellplatz' aus: /^Garage$|^Stellplatz$/\nFiltere alles, das mit 'foo' beginnt aus: /^foo.*$/",
+        "description": "उन चार्जिंग पॉइंटों की सूची जिन्हें प्रदर्शित नहीं किया जाना चाहिए। अभिव्यक्ति एक रेगुलर एक्सप्रेशन होनी चाहिए जो / से शुरू और / पर समाप्त हो। यह खाली नहीं हो सकती। यदि कुछ भी फ़िल्टर नहीं करना है, तो यहाँ ऐसी रेगुलर एक्सप्रेशन होनी चाहिए जो किसी भी प्रविष्टि से मेल न खाए।\n\nउदाहरण:\nकोई प्रविष्टि नहीं: /^none$/\n'Garage' को फ़िल्टर करें: /^Garage$/\n'Garage' और 'Stellplatz' को फ़िल्टर करें: /^Garage$|^Stellplatz$/\n'foo' से शुरू होने वाली हर चीज़ को फ़िल्टर करें: /^foo.*$/",
         "hide": 2,
-        "label": "Blocklist für Loadpoints",
+        "label": "चार्जिंग पॉइंट ब्लॉकलिस्ट",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
@@ -4230,7 +4230,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "EVCC: Month",
+  "title": "EVCC: माह",
   "uid": "adz6thx",
   "version": 6,
   "weekStart": ""

@@ -11,7 +11,7 @@
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Maximum power limit / W",
+      "label": "Límite de potencia máxima / W",
       "value": "25000",
       "description": ""
     },
@@ -25,7 +25,7 @@
     {
       "name": "VAR_INVERTERPORTALTITLE",
       "type": "constant",
-      "label": "Inverter portal label",
+      "label": "Etiqueta del portal del inversor",
       "value": "Sofar Cloud",
       "description": ""
     },
@@ -39,49 +39,49 @@
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded loadpoints",
+      "label": "Puntos de carga excluidos",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_VEHICLEBLOCKLIST",
       "type": "constant",
-      "label": "Excluded vehicles",
+      "label": "Vehículos excluidos",
       "value": "^Mr White.*$|^.*\\(offline\\)$",
       "description": ""
     },
     {
       "name": "VAR_EXTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded EXT devices",
+      "label": "Dispositivos EXT excluidos",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_AUXBLOCKLIST",
       "type": "constant",
-      "label": "Excluded  AUX devices",
+      "label": "Dispositivos AUX excluidos",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_ENERGYSAMPLEINTERVAL",
       "type": "constant",
-      "label": "Sampling interval",
+      "label": "Intervalo de muestreo",
       "value": "30s",
       "description": ""
     },
     {
       "name": "VAR_TARIFFPRICEINTERVAL",
       "type": "constant",
-      "label": "Pricing interval",
+      "label": "Intervalo de precios",
       "value": "15m",
       "description": ""
     }
   ],
   "__elements": {
     "afc1nq1oy29s0a": {
-      "name": "EVCC: VM: Power trend",
+      "name": "EVCC: VM: Tendencia de potencia",
       "uid": "afc1nq1oy29s0a",
       "kind": 1,
       "model": {
@@ -398,7 +398,7 @@
       }
     },
     "afc1njs05twqoc": {
-      "name": "EVCC: VM: KPI Gauges",
+      "name": "EVCC: VM: Medidores KPI",
       "uid": "afc1njs05twqoc",
       "kind": 1,
       "model": {
@@ -452,7 +452,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Autonomy"
+                  "value": "Autonomía"
                 }
               ]
             },
@@ -480,7 +480,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Self consumption"
+                  "value": "Autoconsumo"
                 }
               ]
             }
@@ -602,7 +602,7 @@
       }
     },
     "ffc1nfxu4it4wd": {
-      "name": "EVCC: VM: Battery levels",
+      "name": "EVCC: VM: Niveles de batería",
       "uid": "ffc1nfxu4it4wd",
       "kind": 1,
       "model": {
@@ -610,7 +610,7 @@
           "type": "victoriametrics-metrics-datasource",
           "uid": "${DS_VM-EVCC}"
         },
-        "description": "Black: Priority SoC threshold for EVCC",
+        "description": "Negro: umbral de SoC prioritario para EVCC",
         "fieldConfig": {
           "defaults": {
             "color": {
@@ -741,7 +741,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Priority SoC"
+                  "value": "SoC prioritario"
                 },
                 {
                   "id": "custom.fillOpacity",
@@ -855,7 +855,7 @@
       }
     },
     "bfg2x6jhfr75sf": {
-      "name": "EVCC: VM: Current battery levels",
+      "name": "EVCC: VM: Niveles actuales de batería",
       "uid": "bfg2x6jhfr75sf",
       "kind": 1,
       "model": {
@@ -988,7 +988,7 @@
       }
     },
     "dfc1nml5oazuoc": {
-      "name": "EVCC: VM: Energy",
+      "name": "EVCC: VM: Energía",
       "uid": "dfc1nml5oazuoc",
       "kind": 1,
       "model": {
@@ -1053,7 +1053,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Grid consumption"
+                  "value": "Consumo de red"
                 }
               ]
             },
@@ -1072,7 +1072,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Grid feed-in"
+                  "value": "Inyección a red"
                 }
               ]
             },
@@ -1402,7 +1402,7 @@
       }
     },
     "afc1nrf3k9hc0e": {
-      "name": "EVCC: VM: Power distribution",
+      "name": "EVCC: VM: Distribución de potencia",
       "uid": "afc1nrf3k9hc0e",
       "kind": 1,
       "model": {
@@ -1508,7 +1508,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "Consumo de red"
               },
               "properties": [
                 {
@@ -1568,7 +1568,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "Inyección a red"
               },
               "properties": [
                 {
@@ -1634,7 +1634,7 @@
             "expr": "clamp_min(avg(gridPower_value) < $peakPowerLimit,0)",
             "format": "time_series",
             "interval": "$energySampleInterval",
-            "legendFormat": "Grid consumption",
+            "legendFormat": "Consumo de red",
             "range": true,
             "refId": "gridPowerIn"
           },
@@ -1673,7 +1673,7 @@
             "expr": "clamp_max(avg(gridPower_value) < $peakPowerLimit,0)",
             "format": "time_series",
             "interval": "$energySampleInterval",
-            "legendFormat": "Grid feed-in",
+            "legendFormat": "Inyección a red",
             "range": true,
             "refId": "gridPowerOut"
           },
@@ -1722,7 +1722,7 @@
       }
     },
     "efetnshtos0zkf": {
-      "name": "EVCC:VM: Distribution home consumption",
+      "name": "EVCC: VM: Distribución del consumo doméstico",
       "uid": "efetnshtos0zkf",
       "kind": 1,
       "model": {
@@ -1759,7 +1759,7 @@
             },
             "links": [
               {
-                "title": "Mehr details",
+                "title": "Más detalles",
                 "url": "/d/adddvtj?$__url_time_range"
               }
             ],
@@ -1795,7 +1795,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Other consumers"
+                  "value": "Otros consumidores"
                 }
               ]
             }
@@ -1872,7 +1872,7 @@
       }
     },
     "afc1no2uz7u9sf": {
-      "name": "EVCC: VM: Costs",
+      "name": "EVCC: VM: Costes",
       "uid": "afc1no2uz7u9sf",
       "kind": 1,
       "model": {
@@ -1889,7 +1889,7 @@
             "decimals": 2,
             "links": [
               {
-                "title": "Mehr Details",
+                "title": "Más detalles",
                 "url": "/d/adddvtj?$__url_time_range"
               }
             ],
@@ -1975,7 +1975,7 @@
                 },
                 {
                   "id": "displayName",
-                  "value": "Daily total"
+                  "value": "Total diario"
                 }
               ]
             }
@@ -2123,7 +2123,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Two days ago",
+      "title": "Anteayer",
       "tooltip": "",
       "type": "link",
       "url": "/d/adsmz7v?orgId=1&from=now-2d%2Fd&to=now-2d%2Fd"
@@ -2137,7 +2137,7 @@
         "EVCC"
       ],
       "targetBlank": false,
-      "title": "Paneles de control",
+      "title": "Paneles",
       "tooltip": "",
       "type": "dashboards",
       "url": ""
@@ -2556,7 +2556,7 @@
           "refId": "loadpointPowers"
         }
       ],
-      "title": "Powers",
+      "title": "Potencias",
       "transparent": true,
       "type": "gauge"
     },
@@ -2570,7 +2570,7 @@
       "id": 2,
       "libraryPanel": {
         "uid": "afc1nq1oy29s0a",
-        "name": "EVCC: VM: Power trend"
+        "name": "EVCC: VM: Tendencia de potencia"
       }
     },
     {
@@ -2583,7 +2583,7 @@
       "id": 64,
       "libraryPanel": {
         "uid": "afc1njs05twqoc",
-        "name": "EVCC: VM: KPI Gauges"
+        "name": "EVCC: VM: Medidores KPI"
       }
     },
     {
@@ -2596,7 +2596,7 @@
       "id": 66,
       "libraryPanel": {
         "uid": "ffc1nfxu4it4wd",
-        "name": "EVCC: VM: Battery levels"
+        "name": "EVCC: VM: Niveles de batería"
       }
     },
     {
@@ -2609,7 +2609,7 @@
       "id": 79,
       "libraryPanel": {
         "uid": "bfg2x6jhfr75sf",
-        "name": "EVCC: VM: Current battery levels"
+        "name": "EVCC: VM: Niveles actuales de batería"
       }
     },
     {
@@ -2622,7 +2622,7 @@
       "id": 77,
       "libraryPanel": {
         "uid": "dfc1nml5oazuoc",
-        "name": "EVCC: VM: Energy"
+        "name": "EVCC: VM: Energía"
       }
     },
     {
@@ -2635,7 +2635,7 @@
       "id": 75,
       "libraryPanel": {
         "uid": "afc1nrf3k9hc0e",
-        "name": "EVCC: VM: Power distribution"
+        "name": "EVCC: VM: Distribución de potencia"
       }
     },
     {
@@ -2648,7 +2648,7 @@
       "id": 78,
       "libraryPanel": {
         "uid": "efetnshtos0zkf",
-        "name": "EVCC:VM: Distribution home consumption"
+        "name": "EVCC: VM: Distribución del consumo doméstico"
       }
     },
     {
@@ -2661,7 +2661,7 @@
       "id": 73,
       "libraryPanel": {
         "uid": "afc1no2uz7u9sf",
-        "name": "EVCC: VM: Costs"
+        "name": "EVCC: VM: Costes"
       }
     }
   ],
@@ -2674,9 +2674,9 @@
   "templating": {
     "list": [
       {
-        "description": "Values exceeding this power limit (W) will be ignored as outliers to ensure data accuracy.",
+        "description": "Los valores que superen este límite de potencia (W) se ignorarán como atípicos para garantizar la precisión de los datos.",
         "hide": 2,
-        "label": "Maximum power limit / W",
+        "label": "Límite de potencia máxima / W",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -2695,7 +2695,7 @@
         ]
       },
       {
-        "description": "URL to open the EVCC UI.",
+        "description": "URL para abrir la interfaz de EVCC.",
         "hide": 2,
         "label": "URL de EVCC",
         "name": "evccUrl",
@@ -2716,9 +2716,9 @@
         ]
       },
       {
-        "description": "Display label of the link to the inverter portal.",
+        "description": "Etiqueta visible del enlace al portal del inversor.",
         "hide": 2,
-        "label": "Inverter portal label",
+        "label": "Etiqueta del portal del inversor",
         "name": "inverterPortalTitle",
         "query": "${VAR_INVERTERPORTALTITLE}",
         "skipUrlSync": true,
@@ -2737,7 +2737,7 @@
         ]
       },
       {
-        "description": "URL to reach the inverter portal",
+        "description": "URL para acceder al portal del inversor",
         "hide": 2,
         "label": "URL del portal del inversor",
         "name": "inverterPortalUrl",
@@ -2758,9 +2758,9 @@
         ]
       },
       {
-        "description": "List of loadpoints that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any entries, you must provide a regex that does not match any existing loadpoint.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out everything starting with 'foo': ^foo.*$",
+        "description": "Lista de puntos de carga que NO deben mostrarse. Este campo requiere una expresión regular y no puede quedar vacío. Si no quieres filtrar ninguna entrada, debes proporcionar una regex que no coincida con ningún punto de carga existente.\n\nEjemplos:\n\nSin entradas: ^none$\nFiltrar 'Garage': ^Garage$\nFiltrar 'Garage' y 'Parking Spot': ^Garage$|^Parking Spot$\nFiltrar todo lo que empiece por 'foo': ^foo.*$",
         "hide": 2,
-        "label": "Excluded loadpoints",
+        "label": "Puntos de carga excluidos",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
@@ -2779,9 +2779,9 @@
         ]
       },
       {
-        "description": "List of vehicles that should NOT be displayed. This field must contain a regular expression and cannot be left empty. If you do not want to filter any vehicles, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out vehicles ending with '(offline)': ^.*\\(offline\\)$",
+        "description": "Lista de vehículos que NO deben mostrarse. Este campo debe contener una expresión regular y no puede quedar vacío. Si no quieres filtrar ningún vehículo, debes proporcionar una regex que no coincida con ninguna de las entradas.\n\nEjemplos:\n\nSin entradas: ^none$\nFiltrar 'Garage': ^Garage$\nFiltrar 'Garage' y 'Parking Spot': ^Garage$|^Parking Spot$\nFiltrar vehículos que terminen en '(offline)': ^.*\\(offline\\)$",
         "hide": 2,
-        "label": "Excluded vehicles",
+        "label": "Vehículos excluidos",
         "name": "vehicleBlocklist",
         "query": "${VAR_VEHICLEBLOCKLIST}",
         "skipUrlSync": true,
@@ -2800,9 +2800,9 @@
         ]
       },
       {
-        "description": "List of EXT devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "Lista de dispositivos EXT que NO deben mostrarse. Este campo requiere una expresión regular y no puede quedar vacío. Si no quieres filtrar ningún dispositivo, debes proporcionar una regex que no coincida con ninguna de las entradas.\n\nEjemplos:\n\nSin entradas: /^none$/\nFiltrar 'Ground Floor': /^Ground Floor$/\nFiltrar 'Ground Floor' y 'First Floor': /^Ground Floor$|^First Floor$/\nFiltrar todo lo que empiece por 'Distributor': /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded EXT devices",
+        "label": "Dispositivos EXT excluidos",
         "name": "extBlocklist",
         "query": "${VAR_EXTBLOCKLIST}",
         "skipUrlSync": true,
@@ -2821,9 +2821,9 @@
         ]
       },
       {
-        "description": "List of AUX devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "Lista de dispositivos AUX que NO deben mostrarse. Este campo requiere una expresión regular y no puede quedar vacío. Si no quieres filtrar ningún dispositivo, debes proporcionar una regex que no coincida con ninguna de las entradas.\n\nEjemplos:\n\nSin entradas: /^none$/\nFiltrar 'Ground Floor': /^Ground Floor$/\nFiltrar 'Ground Floor' y 'First Floor': /^Ground Floor$|^First Floor$/\nFiltrar todo lo que empiece por 'Distributor': /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded  AUX devices",
+        "label": "Dispositivos AUX excluidos",
         "name": "auxBlocklist",
         "query": "${VAR_AUXBLOCKLIST}",
         "skipUrlSync": true,
@@ -2842,9 +2842,9 @@
         ]
       },
       {
-        "description": "Energy calculation sampling interval. Recommended to be at least twice the EVCC polling interval. E.g. a value of 30s would match an EVCC polling interval of 15s.",
+        "description": "Intervalo de muestreo para el cálculo de energía. Se recomienda al menos el doble del intervalo de sondeo de EVCC. Por ejemplo, un valor de 30s coincidiría con un intervalo de EVCC de 15s.",
         "hide": 2,
-        "label": "Sampling interval",
+        "label": "Intervalo de muestreo",
         "name": "energySampleInterval",
         "query": "${VAR_ENERGYSAMPLEINTERVAL}",
         "skipUrlSync": true,
@@ -2863,9 +2863,9 @@
         ]
       },
       {
-        "description": "The billing interval determines how often electricity price updates are processed (e.g., every 15 or 60 minutes).",
+        "description": "El intervalo de facturación determina con qué frecuencia se procesan las actualizaciones del precio de la electricidad, por ejemplo cada 15 o 60 minutos.",
         "hide": 2,
-        "label": "Pricing interval",
+        "label": "Intervalo de precios",
         "name": "tariffPriceInterval",
         "query": "${VAR_TARIFFPRICEINTERVAL}",
         "skipUrlSync": true,
@@ -2891,7 +2891,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "EVCC: Today",
+  "title": "EVCC: Hoy",
   "uid": "adsmz7v",
   "version": 95,
   "weekStart": ""

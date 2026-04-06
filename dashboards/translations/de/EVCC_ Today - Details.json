@@ -10,7 +10,7 @@
     },
     {
       "name": "DS_EXPRESSION",
-      "label": "Expression",
+      "label": "Ausdruck",
       "description": "",
       "type": "datasource",
       "pluginId": "__expr__"
@@ -18,42 +18,42 @@
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Maximum power limit / W",
+      "label": "Maximale Leistungsgrenze / W",
       "value": "25000",
       "description": ""
     },
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded loadpoints",
+      "label": "Ausgeschlossene Loadpoints",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_EXTBLOCKLIST",
       "type": "constant",
-      "label": "Excluded EXT devices",
+      "label": "Ausgeschlossene EXT-Geräte",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_AUXBLOCKLIST",
       "type": "constant",
-      "label": "Excluded  AUX devices",
+      "label": "Ausgeschlossene AUX-Geräte",
       "value": "^none$",
       "description": ""
     },
     {
       "name": "VAR_ENERGYSAMPLEINTERVAL",
       "type": "constant",
-      "label": "Sampling interval",
+      "label": "Abtastintervall",
       "value": "30s",
       "description": ""
     },
     {
       "name": "VAR_TARIFFPRICEINTERVAL",
       "type": "constant",
-      "label": "Pricing interval",
+      "label": "Preisintervall",
       "value": "15m",
       "description": ""
     }
@@ -153,7 +153,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Two days ago",
+      "title": "Vorgestern",
       "tooltip": "",
       "type": "link",
       "url": "/d/adddvtj?orgId=1&from=now-2d%2Fd&to=now-2d%2Fd&timezone=browser"
@@ -343,7 +343,7 @@
           "refId": "pvEnergy"
         }
       ],
-      "title": "Solar energy",
+      "title": "Solarenergie",
       "transformations": [
         {
           "id": "reduce",
@@ -493,7 +493,7 @@
           "refId": "pvPowerPerString"
         }
       ],
-      "title": "Solar power",
+      "title": "Solarleistung",
       "type": "timeseries"
     },
     {
@@ -559,7 +559,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Total state of charge"
+                "value": "Gesamter Ladezustand"
               }
             ]
           }
@@ -632,7 +632,7 @@
           "refId": "totalSoc"
         }
       ],
-      "title": "Battery state of charge",
+      "title": "Speicherladezustand",
       "transparent": true,
       "type": "barchart"
     },
@@ -799,7 +799,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Forecasted energy"
+                "value": "Prognostizierte Energie"
               }
             ]
           },
@@ -818,7 +818,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Actual energy"
+                "value": "Aktuelle Energie"
               }
             ]
           },
@@ -1019,7 +1019,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Actual PV power"
+                "value": "Aktuelle PV-Leistung"
               }
             ]
           },
@@ -1046,7 +1046,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Forecasted PV power"
+                "value": "Prognostizierte PV-Leistung"
               }
             ]
           }
@@ -1154,7 +1154,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Other consumers"
+                "value": "Sonstige Verbraucher"
               }
             ]
           }
@@ -1237,7 +1237,7 @@
           "refId": "otherPowers"
         }
       ],
-      "title": "Home: current powers",
+      "title": "Haus: aktuelle Leistungen",
       "transparent": true,
       "type": "piechart"
     },
@@ -1319,7 +1319,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Other consumers"
+                "value": "Sonstige Verbraucher"
               }
             ]
           }
@@ -1388,7 +1388,7 @@
           "refId": "otherPowers"
         }
       ],
-      "title": "Home: powers",
+      "title": "Haus: Leistungen",
       "type": "timeseries"
     },
     {
@@ -1428,7 +1428,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Other consumers"
+                "value": "Sonstige Verbraucher"
               }
             ]
           }
@@ -1512,7 +1512,7 @@
           "refId": "otherEnergies"
         }
       ],
-      "title": "Home: energy distribution ",
+      "title": "Haus: Energieverteilung",
       "transparent": true,
       "type": "piechart"
     },
@@ -1594,7 +1594,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Other consumers"
+                "value": "Sonstige Verbraucher"
               }
             ]
           }
@@ -1664,7 +1664,7 @@
           "refId": "otherEnergies"
         }
       ],
-      "title": "Home: hourly energy distribution",
+      "title": "Haus: stündliche Energieverteilung",
       "type": "timeseries"
     },
     {
@@ -1805,7 +1805,7 @@
           "refId": "loadpointEnergy"
         }
       ],
-      "title": "Total: energy distribution",
+      "title": "Gesamt: Energieverteilung",
       "transparent": true,
       "type": "piechart"
     },
@@ -1974,7 +1974,7 @@
           "refId": "loadpointEnergies"
         }
       ],
-      "title": "Total: hourly energy distribution",
+      "title": "Gesamt: stündliche Energieverteilung",
       "type": "timeseries"
     },
     {
@@ -1987,7 +1987,7 @@
       },
       "id": 17,
       "panels": [],
-      "title": "Tarifs",
+      "title": "Tarife",
       "type": "row"
     },
     {
@@ -2146,7 +2146,7 @@
           "refId": "minPrice"
         }
       ],
-      "title": "Tarif price",
+      "title": "Tarifpreis",
       "transparent": true,
       "type": "stat"
     },
@@ -2253,7 +2253,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Grid consumption"
+                "value": "Netzbezug"
               }
             ]
           },
@@ -2273,7 +2273,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Price"
+                "value": "Preis"
               }
             ]
           }
@@ -2327,7 +2327,7 @@
           "refId": "gridPowerImport"
         }
       ],
-      "title": "Tarif price",
+      "title": "Tarifpreis",
       "type": "timeseries"
     },
     {
@@ -2423,7 +2423,7 @@
               },
               {
                 "id": "displayName",
-                "value": "Daily total"
+                "value": "Tagessumme"
               }
             ]
           }
@@ -2495,7 +2495,7 @@
           "type": "math"
         }
       ],
-      "title": "Energy costs",
+      "title": "Energiekosten",
       "transparent": true,
       "type": "stat"
     },
@@ -2652,7 +2652,7 @@
           "refId": "sold"
         }
       ],
-      "title": "Energy costs",
+      "title": "Energiekosten",
       "type": "timeseries"
     },
     {
@@ -3024,7 +3024,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L1 current"
+                "value": "L1 Strom"
               }
             ]
           },
@@ -3036,7 +3036,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L2 current"
+                "value": "L2 Strom"
               }
             ]
           },
@@ -3048,7 +3048,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L3 current"
+                "value": "L3 Strom"
               }
             ]
           }
@@ -3130,7 +3130,7 @@
           "refId": "currentL3"
         }
       ],
-      "title": "Current per phase",
+      "title": "Strom pro Phase",
       "transparent": true,
       "type": "stat"
     },
@@ -3205,7 +3205,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L1 current"
+                "value": "L1 Strom"
               }
             ]
           },
@@ -3217,7 +3217,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L2 current"
+                "value": "L2 Strom"
               }
             ]
           },
@@ -3229,7 +3229,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L3 current"
+                "value": "L3 Strom"
               }
             ]
           }
@@ -3294,7 +3294,7 @@
           "refId": "currentL3"
         }
       ],
-      "title": "Current per phase",
+      "title": "Strom pro Phase",
       "type": "timeseries"
     },
     {
@@ -3333,7 +3333,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L1 power"
+                "value": "L1 Leistung"
               }
             ]
           },
@@ -3345,7 +3345,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L2 power"
+                "value": "L2 Leistung"
               }
             ]
           },
@@ -3357,7 +3357,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L3 power"
+                "value": "L3 Leistung"
               }
             ]
           }
@@ -3439,7 +3439,7 @@
           "refId": "powerL3"
         }
       ],
-      "title": "Power per phase",
+      "title": "Leistung pro Phase",
       "transparent": true,
       "type": "stat"
     },
@@ -3514,7 +3514,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L1 power"
+                "value": "L1 Leistung"
               }
             ]
           },
@@ -3526,7 +3526,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L2 power"
+                "value": "L2 Leistung"
               }
             ]
           },
@@ -3538,7 +3538,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L3 power"
+                "value": "L3 Leistung"
               }
             ]
           }
@@ -3603,7 +3603,7 @@
           "refId": "powerL3"
         }
       ],
-      "title": "Power per phase",
+      "title": "Leistung pro Phase",
       "type": "timeseries"
     },
     {
@@ -3656,7 +3656,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L1 current"
+                "value": "L1 Strom"
               }
             ]
           },
@@ -3668,7 +3668,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L2 current"
+                "value": "L2 Strom"
               }
             ]
           },
@@ -3680,7 +3680,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L3 current"
+                "value": "L3 Strom"
               }
             ]
           }
@@ -3762,7 +3762,7 @@
           "refId": "currentL3"
         }
       ],
-      "title": "Charge current per phase: $loadpoint",
+      "title": "Ladestrom pro Phase: $loadpoint",
       "transparent": true,
       "type": "stat"
     },
@@ -3837,7 +3837,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L1 current"
+                "value": "L1 Strom"
               }
             ]
           },
@@ -3849,7 +3849,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L2 current"
+                "value": "L2 Strom"
               }
             ]
           },
@@ -3861,7 +3861,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "L3 current"
+                "value": "L3 Strom"
               }
             ]
           }
@@ -3926,7 +3926,7 @@
           "refId": "currentL3"
         }
       ],
-      "title": "Charge current per phase: $loadpoint",
+      "title": "Ladestrom pro Phase: $loadpoint",
       "type": "timeseries"
     },
     {
@@ -3998,7 +3998,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Single-phase"
+                "value": "Einphasig"
               },
               {
                 "id": "color",
@@ -4017,7 +4017,7 @@
             "properties": [
               {
                 "id": "displayName",
-                "value": "Three-phase"
+                "value": "Dreiphasig"
               },
               {
                 "id": "color",
@@ -4079,7 +4079,7 @@
           "refId": "3P"
         }
       ],
-      "title": "Number of active phases: $loadpoint",
+      "title": "Anzahl aktiver Phasen: $loadpoint",
       "type": "timeseries"
     },
     {
@@ -4204,9 +4204,9 @@
   "templating": {
     "list": [
       {
-        "description": "Values exceeding this power limit (W) will be ignored as outliers to ensure data accuracy.",
+        "description": "Werte oberhalb dieser Leistungsgrenze (W) werden als Ausreißer ignoriert, um die Datengenauigkeit sicherzustellen.",
         "hide": 2,
-        "label": "Maximum power limit / W",
+        "label": "Maximale Leistungsgrenze / W",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -4225,9 +4225,9 @@
         ]
       },
       {
-        "description": "List of loadpoints that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any entries, you must provide a regex that does not match any existing loadpoint.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out everything starting with 'foo': ^foo.*$",
+        "description": "Liste der Loadpoints, die NICHT angezeigt werden sollen. Dieses Feld erfordert einen regulären Ausdruck und darf nicht leer sein. Wenn keine Einträge gefiltert werden sollen, muss hier ein Regex angegeben werden, das auf keinen vorhandenen Loadpoint passt.\n\nBeispiele:\n\nKeine Einträge: ^none$\n'Garage' ausblenden: ^Garage$\n'Garage' und 'Parking Spot' ausblenden: ^Garage$|^Parking Spot$\nAlles ausblenden, was mit 'foo' beginnt: ^foo.*$",
         "hide": 2,
-        "label": "Excluded loadpoints",
+        "label": "Ausgeschlossene Loadpoints",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,
@@ -4246,9 +4246,9 @@
         ]
       },
       {
-        "description": "List of EXT devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "Liste der EXT-Geräte, die NICHT angezeigt werden sollen. Dieses Feld erfordert einen regulären Ausdruck und darf nicht leer sein. Wenn keine Geräte gefiltert werden sollen, muss hier ein Regex angegeben werden, das auf keinen der Einträge passt.\n\nBeispiele:\n\nKeine Einträge: /^none$/\n'Ground Floor' ausblenden: /^Ground Floor$/\n'Ground Floor' und 'First Floor' ausblenden: /^Ground Floor$|^First Floor$/\nAlles ausblenden, was mit 'Distributor' beginnt: /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded EXT devices",
+        "label": "Ausgeschlossene EXT-Geräte",
         "name": "extBlocklist",
         "query": "${VAR_EXTBLOCKLIST}",
         "skipUrlSync": true,
@@ -4267,9 +4267,9 @@
         ]
       },
       {
-        "description": "List of AUX devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/",
+        "description": "Liste der AUX-Geräte, die NICHT angezeigt werden sollen. Dieses Feld erfordert einen regulären Ausdruck und darf nicht leer sein. Wenn keine Geräte gefiltert werden sollen, muss hier ein Regex angegeben werden, das auf keinen der Einträge passt.\n\nBeispiele:\n\nKeine Einträge: /^none$/\n'Ground Floor' ausblenden: /^Ground Floor$/\n'Ground Floor' und 'First Floor' ausblenden: /^Ground Floor$|^First Floor$/\nAlles ausblenden, was mit 'Distributor' beginnt: /^Distributor.*$/",
         "hide": 2,
-        "label": "Excluded  AUX devices",
+        "label": "Ausgeschlossene AUX-Geräte",
         "name": "auxBlocklist",
         "query": "${VAR_AUXBLOCKLIST}",
         "skipUrlSync": true,
@@ -4310,9 +4310,9 @@
         "type": "query"
       },
       {
-        "description": "Energy calculation sampling interval. Recommended to be at least twice the EVCC polling interval. E.g. a value of 30s would match an EVCC polling interval of 15s.",
+        "description": "Abtastintervall für die Energieberechnung. Empfohlen wird mindestens das Doppelte des EVCC-Abfrageintervalls. Ein Wert von 30s passt z. B. zu einem EVCC-Abfrageintervall von 15s.",
         "hide": 2,
-        "label": "Sampling interval",
+        "label": "Abtastintervall",
         "name": "energySampleInterval",
         "query": "${VAR_ENERGYSAMPLEINTERVAL}",
         "skipUrlSync": true,
@@ -4331,9 +4331,9 @@
         ]
       },
       {
-        "description": "The billing interval determines how often electricity price updates are processed (e.g., every 15 or 60 minutes).",
+        "description": "Das Abrechnungsintervall bestimmt, wie oft Strompreisaktualisierungen verarbeitet werden, zum Beispiel alle 15 oder 60 Minuten.",
         "hide": 2,
-        "label": "Pricing interval",
+        "label": "Preisintervall",
         "name": "tariffPriceInterval",
         "query": "${VAR_TARIFFPRICEINTERVAL}",
         "skipUrlSync": true,
@@ -4359,7 +4359,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "EVCC: Today - Details",
+  "title": "EVCC: Heute - Details",
   "uid": "adddvtj",
   "version": 76,
   "weekStart": ""

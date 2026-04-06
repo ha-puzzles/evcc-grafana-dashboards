@@ -10,12 +10,22 @@ Important:
 - `dashboards/src/en` is the maintainer-owned source set and is never regenerated
 - generated dashboards are written only under `dashboards/translations/`
 - run the mapping prune step after source dashboard changes so stale keys are removed before regenerating
+- a human or AI must provide the actual target-language text in the mapping files; the scripts do not perform textual translation themselves
+- the scripts only find untranslated candidates and regenerate the target dashboards from the mapping files
 
 Rebuild mapping files against the current source dashboards:
 
 ```bash
 node scripts/localization/prune-mappings-to-source.mjs --family=vm
 ```
+
+If you intentionally want to accept every current audit candidate as-is, copy all `missing-*.exact.json` keys into the real mapping files automatically:
+
+```bash
+node scripts/localization/adopt-missing-into-mappings.mjs --family=vm --target=all
+```
+
+This does not translate text. It copies each missing source string into `exact` with the same value so the current source string is treated as accepted coverage. The final wording still has to be written by a human or AI in the target language.
 
 Generate localized dashboard files for all configured target languages:
 
@@ -41,4 +51,4 @@ Audit one specific target language:
 node scripts/localization/audit-localization.mjs --family=vm --target=de
 ```
 
-The audit writes `missing-<source>_to_<target>.exact.json` with candidate keys that still need translations.
+The audit writes `missing-<source>_to_<target>.exact.json` with candidate keys that still need translations and an `exactSources` section that lists the `src/en` dashboard file names where each candidate appears. The audit does not translate them; it only reports what still needs translation.
