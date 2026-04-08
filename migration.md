@@ -36,7 +36,7 @@ For installation details, see [vm-installation.md](./vm-installation.md)
    influx -database evcc -execute 'drop measurement batteryControllable'
    ```
    You may need to adjust the database name, and the parameters `-username <user>` and `-password <password>` may also be required.
-1. Start importing data from Influx DB using the following commands:
+1. Start importing data from Influx DB using the following commands assuming that you have given the Influx database for storing the data from EVCC the name `evcc`. Change the database name in the following commands in case you have used a different database name:
    - Docker installation
       ```bash
       sudo docker run -it --rm victoriametrics/vmctl:latest influx --influx-addr=http://127.0.0.1:8086 --influx-database=evcc --vm-addr=http://127.0.0.1:8428 --influx-skip-database-label
