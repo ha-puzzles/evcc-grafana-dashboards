@@ -1,3 +1,9 @@
+/**
+ * Script: prune-mappings-to-source.mjs
+ * Purpose: Removes mapping entries that no longer occur in the current source dashboards.
+ * Version: 2026.04.11.2
+ * Last modified: 2026-04-11
+ */
 import fs from "node:fs";
 import path from "node:path";
 import {
@@ -8,6 +14,27 @@ import {
   resolveDashboardFamily,
 } from "../helper/_dashboard-family.mjs";
 
+function hasFlag(name) {
+  return process.argv.includes(`--${name}`);
+}
+
+function printUsage() {
+  console.log(`Usage: node scripts/localization/prune-mappings-to-source.mjs [--family=vm] [--write]
+
+Removes mapping entries that no longer occur in the current source dashboards.
+
+Options:
+  --family=vm  Dashboard family to process. Defaults to vm.
+  --write      Write the pruned mapping files. Without this flag the script runs in dry-run mode.
+  --help       Show this help text and exit without reading or writing mappings.`);
+}
+
+if (hasFlag("help")) {
+  printUsage();
+  process.exit(0);
+}
+
+const writeMode = hasFlag("write");
 const family = resolveDashboardFamily(parseFamilyArg());
 const translatableKeys = new Set([
   "title",
@@ -149,7 +176,9 @@ function rebuildMapping(sourceLanguage, targetLanguage, sourceValues) {
     delete output.meta;
   }
 
-  writeJson(mappingFile, output);
+  if (writeMode) {
+    writeJson(mappingFile, output);
+  }
 
   return {
     targetLanguage,
@@ -169,6 +198,10 @@ function main() {
   }
 
   const { files, values } = collectSourceStrings(sourceDir);
+  console.log(`Mode: ${writeMode ? "write" : "dry-run"}`);
+  if (!writeMode) {
+    console.log("No files will be changed. Re-run with --write to prune mappings.");
+  }
   console.log(`Scanned ${files.length} source dashboard files.`);
   console.log(`Found ${values.size} unique translatable source strings.`);
 
@@ -185,6 +218,8 @@ function main() {
       `${targetLanguage}: exact ${result.beforeExact} -> ${result.afterExact}, contains ${result.beforeContains} -> ${result.afterContains}`,
     );
   }
+
+  console.log(writeMode ? "Result: mappings pruned." : "Result: dry-run complete; no files changed.");
 }
 
 main();

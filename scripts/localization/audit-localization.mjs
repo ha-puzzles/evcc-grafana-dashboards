@@ -1,3 +1,9 @@
+/**
+ * Script: audit-localization.mjs
+ * Purpose: Scans source dashboards for untranslated texts and writes missing translation reports per language.
+ * Version: 2026.04.11.1
+ * Last modified: 2026-04-11
+ */
 import fs from "node:fs";
 import path from "node:path";
 import {

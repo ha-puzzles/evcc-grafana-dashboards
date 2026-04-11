@@ -1,3 +1,9 @@
+/**
+ * Script: adopt-missing-into-mappings.mjs
+ * Purpose: Copies open audit findings from missing reports into the real mapping files as exact entries.
+ * Version: 2026.04.11.3
+ * Last modified: 2026-04-11
+ */
 import fs from "node:fs";
 import path from "node:path";
 import {
@@ -9,6 +15,29 @@ import {
 } from "../helper/_dashboard-family.mjs";
 
 const repoRoot = process.cwd();
+
+function hasFlag(name) {
+  return process.argv.includes(`--${name}`);
+}
+
+function printUsage() {
+  console.log(`Usage: node scripts/localization/adopt-missing-into-mappings.mjs [--family=vm] [--target=all|de,fr] [--write]
+
+Copies open audit findings from missing reports into real mapping files as source -> source placeholders.
+
+Options:
+  --family=vm        Dashboard family to process. Defaults to vm.
+  --target=all|list  Target languages to process. Defaults to all configured target languages.
+  --write            Write the adopted mapping entries. Without this flag the script runs in dry-run mode.
+  --help             Show this help text and exit without reading or writing mappings.`);
+}
+
+if (hasFlag("help")) {
+  printUsage();
+  process.exit(0);
+}
+
+const writeMode = hasFlag("write");
 const family = resolveDashboardFamily(parseFamilyArg());
 
 function parseArg(name, fallback = "") {
@@ -87,7 +116,9 @@ function adoptMissing(sourceLanguage, targetLanguage) {
     output.meta = nextMeta;
   }
 
-  writeJson(familyMappingPath(family, sourceLanguage, targetLanguage), output);
+  if (writeMode) {
+    writeJson(familyMappingPath(family, sourceLanguage, targetLanguage), output);
+  }
   return {
     targetLanguage,
     adopted,
@@ -113,6 +144,11 @@ function main() {
     return;
   }
 
+  console.log(`Mode: ${writeMode ? "write" : "dry-run"}`);
+  if (!writeMode) {
+    console.log("No files will be changed. Re-run with --write to adopt missing candidates.");
+  }
+
   for (const targetLanguage of requestedTargets) {
     if (!configuredTargets.includes(targetLanguage)) {
       throw new Error(
@@ -129,10 +165,15 @@ function main() {
       continue;
     }
     totalAdopted += result.adopted;
-    console.log(`${targetLanguage}: adopted ${result.adopted} of ${result.total} missing candidates into exact.`);
+    const action = writeMode ? "adopted" : "would adopt";
+    console.log(`${targetLanguage}: ${action} ${result.adopted} of ${result.total} missing candidates into exact.`);
   }
 
-  console.log(`Adoption finished. Total newly adopted candidates: ${totalAdopted}`);
+  console.log(
+    writeMode
+      ? `Adoption finished. Total newly adopted candidates: ${totalAdopted}`
+      : `Dry-run finished. Candidates that would be adopted: ${totalAdopted}`,
+  );
 }
 
 main();

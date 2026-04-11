@@ -1,3 +1,9 @@
+/**
+ * Script: _dashboard-family.mjs
+ * Purpose: Shared helper for resolving dashboard family paths, language config, and workflow directories.
+ * Version: 2026.04.11.1
+ * Last modified: 2026-04-11
+ */
 import fs from "node:fs";
 import path from "node:path";
 

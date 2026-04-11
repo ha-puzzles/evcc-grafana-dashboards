@@ -1,3 +1,9 @@
+/**
+ * Script: apply-safe-display-translations.mjs
+ * Purpose: Applies safe display-only translations to the already generated localized dashboards.
+ * Version: 2026.04.11.1
+ * Last modified: 2026-04-11
+ */
 import fs from "node:fs";
 import path from "node:path";
 import {

@@ -13,19 +13,21 @@ Important:
 - a human or AI must provide the actual target-language text in the mapping files; the scripts do not perform textual translation themselves
 - the scripts only find untranslated candidates and regenerate the target dashboards from the mapping files
 
-Rebuild mapping files against the current source dashboards:
+Rebuild mapping files against the current source dashboards. The first command is a dry-run; add `--write` to modify mapping files:
 
 ```bash
 node scripts/localization/prune-mappings-to-source.mjs --family=vm
+node scripts/localization/prune-mappings-to-source.mjs --family=vm --write
 ```
 
-If you intentionally want to accept every current audit candidate as-is, copy all `missing-*.exact.json` keys into the real mapping files automatically:
+If you intentionally want to accept every current audit candidate as-is, copy all `missing-*.exact.json` keys into the real mapping files automatically. The first command is a dry-run; add `--write` to modify mapping files:
 
 ```bash
 node scripts/localization/adopt-missing-into-mappings.mjs --family=vm --target=all
+node scripts/localization/adopt-missing-into-mappings.mjs --family=vm --target=all --write
 ```
 
-This does not translate text. It copies each missing source string into `exact` with the same value so the current source string is treated as accepted coverage. The final wording still has to be written by a human or AI in the target language.
+This does not translate text. With `--write`, it copies each missing source string into `exact` with the same value so the current source string is treated as accepted coverage. The final wording still has to be written by a human or AI in the target language.
 
 Generate localized dashboard files for all configured target languages:
 

@@ -17,9 +17,10 @@ This repository uses the maintainer-managed VictoriaMetrics dashboards under `da
 
 ```bash
 node scripts/localization/prune-mappings-to-source.mjs --family=vm
+node scripts/localization/prune-mappings-to-source.mjs --family=vm --write
 ```
 
-This keeps the mapping files trimmed to the strings that still exist in `src/en` and removes verbose source-tracking metadata from the mapping files so they stay readable.
+The first command is a dry-run. With `--write`, this keeps the mapping files trimmed to the strings that still exist in `src/en` and removes verbose source-tracking metadata from the mapping files so they stay readable.
 
 3. Update mappings.
 
@@ -34,9 +35,10 @@ Bulk-accept path:
 
 ```bash
 node scripts/localization/adopt-missing-into-mappings.mjs --family=vm --target=all
+node scripts/localization/adopt-missing-into-mappings.mjs --family=vm --target=all --write
 ```
 
-This bulk step only marks current source strings as accepted by copying them into `exact` with the same value. It is useful when you intentionally want full audit coverage first and translation quality refinement later. A human or AI still has to replace those placeholder values with real target-language translations.
+The first command is a dry-run. With `--write`, this bulk step only marks current source strings as accepted by copying them into `exact` with the same value. It is useful when you intentionally want full audit coverage first and translation quality refinement later. A human or AI still has to replace those placeholder values with real target-language translations.
 
 4. Generate translated dashboards:
 
