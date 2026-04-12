@@ -4,10 +4,12 @@
 - `../src/<sourceLanguage>`: source of truth for VM dashboards
 - `../translations/<language>`: generated output per configured target language
 - `<source>_to_<target>.json`: translation mapping per language pair
+- contributor setup guide: `../../docs/translation-contributor-setup.md`
 
 Important:
 
 - `dashboards/src/en` is the maintainer-owned source set and is never regenerated
+- source-only corrections may be committed without regenerating `dashboards/translations/`; run the full workflow only when generated outputs or mappings should be refreshed
 - generated dashboards are written only under `dashboards/translations/`
 - run the mapping prune step after source dashboard changes so stale keys are removed before regenerating
 - a human or AI must provide the actual target-language text in the mapping files; the scripts do not perform textual translation themselves

@@ -2,6 +2,8 @@
 
 This repository uses the maintainer-managed VictoriaMetrics dashboards under `dashboards/src/` as the source for localization work.
 
+For translation-only contributor setup, see `docs/translation-contributor-setup.md`.
+
 ## Repository scope
 
 - source of truth: `dashboards/src/en`
@@ -13,6 +15,8 @@ This repository uses the maintainer-managed VictoriaMetrics dashboards under `da
 ## Standard workflow
 
 1. Update source dashboards only in `dashboards/src/en`.
+
+   Source-only corrections may be committed without regenerating `dashboards/translations/`. Run the full workflow only when generated outputs or mapping files should be refreshed.
 2. Rebuild mapping files against the current source set:
 
 ```bash
