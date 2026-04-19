@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-11T11:23:43.448Z",
+  "sourceLanguage": "en",
+  "targetLanguage": "es",
+  "sourceDir": "dashboards\\src\\en",
+  "mappingFile": "dashboards\\localization\\en_to_es.json",
+  "notes": [
+    "Fill each value with the final target-language translation.",
+    "Then merge into dashboards\\localization\\en_to_es.json under exact.",
+    "Use exactSources to see which source dashboard file names produced each candidate.",
+    "This audit includes displayName/displayNameFromDS override values.",
+    "This is a candidate list; some entries can be intentionally unchanged."
+  ],
+  "exact": {},
+  "exactSources": {}
+}
