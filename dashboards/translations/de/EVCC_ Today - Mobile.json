@@ -489,7 +489,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Haus"
+                "options": "Home"
               },
               "properties": [
                 {
@@ -504,7 +504,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Netzbezug"
+                "options": "Grid consumption"
               },
               "properties": [
                 {
@@ -534,7 +534,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher entladen"
+                "options": "Battery discharge"
               },
               "properties": [
                 {
@@ -564,7 +564,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Netzeinspeisung"
+                "options": "Grid feed-in"
               },
               "properties": [
                 {
@@ -579,7 +579,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher laden"
+                "options": "Battery charge"
               },
               "properties": [
                 {
@@ -1556,7 +1556,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "Energie",
+          "xField": "Energy",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },

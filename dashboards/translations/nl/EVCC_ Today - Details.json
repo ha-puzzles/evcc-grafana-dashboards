@@ -2700,7 +2700,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Gemiddelde"
+              "options": "Durchschnitt"
             },
             "properties": [
               {
@@ -2870,7 +2870,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netafname"
+              "options": "Netzbezug"
             },
             "properties": [
               {

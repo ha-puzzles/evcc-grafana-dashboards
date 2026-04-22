@@ -474,7 +474,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "光伏发电"
+                "options": "PV"
               },
               "properties": [
                 {
@@ -489,7 +489,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "家庭"
+                "options": "Home"
               },
               "properties": [
                 {
@@ -504,7 +504,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "电网用电"
+                "options": "Grid consumption"
               },
               "properties": [
                 {
@@ -534,7 +534,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "电池放电"
+                "options": "Battery discharge"
               },
               "properties": [
                 {
@@ -564,7 +564,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "电网馈入"
+                "options": "Grid feed-in"
               },
               "properties": [
                 {
@@ -579,7 +579,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "电池充电"
+                "options": "Battery charge"
               },
               "properties": [
                 {
@@ -1556,7 +1556,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "能源",
+          "xField": "Energy",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
@@ -2200,7 +2200,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "光伏发电"
+              "options": "PV"
             },
             "properties": [
               {
@@ -2246,7 +2246,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "电网"
+              "options": "Netz"
             },
             "properties": [
               {
@@ -2291,7 +2291,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "电池"
+              "options": "Speicher"
             },
             "properties": [
               {
@@ -2327,7 +2327,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "家庭"
+              "options": "Haus"
             },
             "properties": [
               {

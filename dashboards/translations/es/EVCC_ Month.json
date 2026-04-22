@@ -26,35 +26,35 @@
     {
       "name": "VAR_TIMEZONE",
       "type": "constant",
-      "label": "Zona horaria",
+      "label": "Time zone",
       "value": "Europe/Berlin",
       "description": ""
     },
     {
       "name": "VAR_PEAKPOWERLIMIT",
       "type": "constant",
-      "label": "Filtro de potencia máxima / W",
+      "label": "Maximum power filter / W",
       "value": "25000",
       "description": ""
     },
     {
       "name": "VAR_INSTALLEDWATTPEAK",
       "type": "constant",
-      "label": "Capacidad instalada en Wp",
+      "label": "Installed capacity in Wp",
       "value": "9840",
       "description": ""
     },
     {
       "name": "VAR_LOADPOINTBLOCKLIST",
       "type": "constant",
-      "label": "Lista de bloqueo de puntos de carga",
+      "label": "Loadpoint blocklist",
       "value": "/^none$/",
       "description": ""
     }
   ],
   "__elements": {
     "f5f62a1c-c847-493c-89f7-06bd383a2025": {
-      "name": "EVCC: Energías acumuladas en el tiempo",
+      "name": "EVCC: Cumulative energies over time",
       "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
       "kind": 1,
       "model": {
@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Consumo de red"
+                "options": "Grid consumption"
               },
               "properties": [
                 {
@@ -121,7 +121,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Einspeisung"
+                "options": "Grid feed-in"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Casa"
+                "options": "Home"
               },
               "properties": [
                 {
@@ -181,7 +181,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "fotovoltaica"
+                "options": "PV"
               },
               "properties": [
                 {
@@ -220,7 +220,7 @@
         "pluginVersion": "12.2.1",
         "targets": [
           {
-            "alias": "Netzbezug",
+            "alias": "Grid consumption",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -228,7 +228,7 @@
             "hide": false,
             "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter  tz('$timezone')",
             "rawQuery": true,
-            "refId": "Netzbezug",
+            "refId": "gridConsumption",
             "resultFormat": "time_series"
           },
           {
@@ -275,7 +275,7 @@
             "tags": []
           },
           {
-            "alias": "Haus",
+            "alias": "Home",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -361,7 +361,7 @@
             "tags": []
           },
           {
-            "alias": "Einspeisung",
+            "alias": "Grid feed-in",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -369,7 +369,7 @@
             "hide": false,
             "query": "SELECT sum(\"value\") /1000 from feedInDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
-            "refId": "Einspeisung",
+            "refId": "gridFeedIn",
             "resultFormat": "time_series"
           }
         ],
@@ -379,7 +379,7 @@
       }
     },
     "c872420b-86a9-4544-9e33-f367a07f9e40": {
-      "name": "EVCC: Medidores KPI",
+      "name": "EVCC: Key figure gauges",
       "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
       "kind": 1,
       "model": {
@@ -412,7 +412,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Autonomía"
+                "options": "autonomy"
               },
               "properties": [
                 {
@@ -440,7 +440,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Autoconsumo"
+                "options": "selfConsumption"
               },
               "properties": [
                 {
@@ -489,7 +489,7 @@
         "pluginVersion": "11.5.2",
         "targets": [
           {
-            "alias": "fotovoltaica",
+            "alias": "PV",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -540,7 +540,7 @@
             "hide": true,
             "query": "SELECT sum(\"value\") from gridDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
-            "refId": "Netzbezug",
+            "refId": "gridConsumption",
             "resultFormat": "time_series"
           },
           {
@@ -551,11 +551,11 @@
             "hide": true,
             "query": "SELECT sum(\"value\") from feedInDailyEnergy WHERE $timeFilter tz('$timezone')",
             "rawQuery": true,
-            "refId": "Einspeisung",
+            "refId": "gridFeedIn",
             "resultFormat": "time_series"
           },
           {
-            "alias": "Haus",
+            "alias": "Home",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -646,9 +646,9 @@
               "type": "__expr__",
               "uid": "__expr__"
             },
-            "expression": "1 - $Netzbezug/($energieHaus + $energieLadepunkte)",
+            "expression": "1 - $gridConsumption/($energieHaus + $energieLadepunkte)",
             "hide": false,
-            "refId": "Autarkie",
+            "refId": "autonomy",
             "type": "math"
           },
           {
@@ -657,19 +657,19 @@
               "type": "__expr__",
               "uid": "__expr__"
             },
-            "expression": "($energyPV - $Einspeisung) / $energyPV",
+            "expression": "($energyPV - $gridFeedIn) / $energyPV",
             "hide": false,
-            "refId": "Eigenverbrauch",
+            "refId": "selfConsumption",
             "type": "math"
           }
         ],
-        "title": "Indicadores",
+        "title": "Key figures",
         "transparent": true,
         "type": "gauge"
       }
     },
     "feio30f3nm0owe": {
-      "name": "EVCC: Balance eléctrico",
+      "name": "EVCC: Electricity balance",
       "uid": "feio30f3nm0owe",
       "kind": 1,
       "model": {
@@ -710,7 +710,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Precio de la electricidad: media aritmética"
+                  "value": "Electricity price: arithmetic mean"
                 },
                 {
                   "id": "color",
@@ -733,7 +733,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Precio efectivo de la electricidad, dinámico"
+                  "value": "Effective electricity price, dynamic"
                 },
                 {
                   "id": "color",
@@ -756,7 +756,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Precio de electricidad ahorrado gracias a la tarifa dinámica"
+                  "value": "Electricity cost saved through dynamic tariff"
                 },
                 {
                   "id": "unit",
@@ -772,7 +772,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Ahorro gracias a la tarifa dinámica"
+                  "value": "Savings through dynamic tariff"
                 }
               ]
             },
@@ -784,7 +784,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Compra potencial al precio aritmético"
+                  "value": "Potential purchase at arithmetic price"
                 }
               ]
             }
@@ -932,7 +932,7 @@
             "type": "math"
           },
           {
-            "alias": "Einkauf, dynamisch",
+            "alias": "Purchase, dynamic",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -986,7 +986,7 @@
             "type": "math"
           },
           {
-            "alias": "Verkauf (Einspeisung)",
+            "alias": "Sale (feed-in)",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1037,17 +1037,17 @@
             },
             "expression": "$purchased + $sold",
             "hide": false,
-            "refId": "Bilanz",
+            "refId": "balance",
             "type": "math"
           }
         ],
-        "title": "Balance eléctrico",
+        "title": "Electricity balance",
         "transparent": true,
         "type": "stat"
       }
     },
     "ae8zwbjv24kqof": {
-      "name": "EVCC: Precio dinámico de la electricidad: Diario",
+      "name": "EVCC: Dynamic electricity price: daily",
       "uid": "ae8zwbjv24kqof",
       "kind": 1,
       "model": {
@@ -1132,7 +1132,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Promedio"
+                "options": "Average"
               },
               "properties": [
                 {
@@ -1167,7 +1167,7 @@
               "properties": [
                 {
                   "id": "displayName",
-                  "value": "Precio efectivo de la electricidad"
+                  "value": "Effective electricity price"
                 },
                 {
                   "id": "color",
@@ -1207,7 +1207,7 @@
             "resultFormat": "time_series"
           },
           {
-            "alias": "Durchschnitt",
+            "alias": "Average",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1357,12 +1357,12 @@
             "resultFormat": "time_series"
           }
         ],
-        "title": "Precio dinámico de la electricidad (ct/kWh)",
+        "title": "Dynamic electricity price (ct/kWh)",
         "type": "timeseries"
       }
     },
     "b8787739-953e-4188-9507-0cc12b6ed91b": {
-      "name": "EVCC: Eficiencia de la batería",
+      "name": "EVCC: Battery efficiency",
       "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
       "kind": 1,
       "model": {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Carga de batería"
+                "options": "Battery charge"
               },
               "properties": [
                 {
@@ -1416,7 +1416,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Descarga de batería"
+                "options": "Battery discharge"
               },
               "properties": [
                 {
@@ -1435,7 +1435,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Speicher Effizienz"
+                "options": "batteryEfficiency"
               },
               "properties": [
                 {
@@ -1448,6 +1448,10 @@
                     "fixedColor": "text",
                     "mode": "fixed"
                   }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Battery efficiency"
                 }
               ]
             },
@@ -1516,7 +1520,7 @@
         "pluginVersion": "11.5.2",
         "targets": [
           {
-            "alias": "Speicher laden",
+            "alias": "Battery charge",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1528,7 +1532,7 @@
             "resultFormat": "time_series"
           },
           {
-            "alias": "Speicher entladen",
+            "alias": "Battery discharge",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1547,7 +1551,7 @@
             },
             "expression": "$entladen/$laden",
             "hide": false,
-            "refId": "Speicher Effizienz",
+            "refId": "batteryEfficiency",
             "type": "math"
           },
           {
@@ -1662,7 +1666,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Mes actual",
+      "title": "Current month",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now%2FM&to=now%2FM"
@@ -1674,7 +1678,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Mes pasado",
+      "title": "Last month",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-1M%2FM&to=now-1M%2FM"
@@ -1686,7 +1690,7 @@
       "keepTime": false,
       "tags": [],
       "targetBlank": false,
-      "title": "Hace dos meses",
+      "title": "Month before last",
       "tooltip": "",
       "type": "link",
       "url": "/d/4iQda7igz/monat?from=now-2M%2FM&to=now-2M%2FM"
@@ -2449,7 +2453,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "fotovoltaica",
+          "alias": "PV",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2502,7 +2506,7 @@
           "type": "math"
         }
       ],
-      "title": "Rendimiento específico",
+      "title": "Specific yield",
       "transparent": true,
       "type": "stat"
     },
@@ -2563,7 +2567,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Autoconsumo"
+              "options": "selfConsumption"
             },
             "properties": [
               {
@@ -2582,7 +2586,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Autonomía"
+              "options": "autonomy"
             },
             "properties": [
               {
@@ -2733,7 +2737,7 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "1-$zugekaufteEnergie/($energieLoadpoints + $energieHaus)",
-          "refId": "Autarkie",
+          "refId": "autonomy",
           "type": "math"
         },
         {
@@ -2795,11 +2799,11 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "($energiePV - $eingespeisteEnergie)/$energiePV",
-          "refId": "Eigenverbrauch",
+          "refId": "selfConsumption",
           "type": "math"
         }
       ],
-      "title": "Indicadores",
+      "title": "Key figures",
       "type": "barchart"
     },
     {
@@ -2812,7 +2816,7 @@
       "id": 19,
       "libraryPanel": {
         "uid": "f5f62a1c-c847-493c-89f7-06bd383a2025",
-        "name": "EVCC: Energías acumuladas en el tiempo"
+        "name": "EVCC: Cumulative energies over time"
       }
     },
     {
@@ -2825,7 +2829,7 @@
       "id": 24,
       "libraryPanel": {
         "uid": "c872420b-86a9-4544-9e33-f367a07f9e40",
-        "name": "EVCC: Medidores KPI"
+        "name": "EVCC: Key figure gauges"
       }
     },
     {
@@ -2846,7 +2850,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "La fórmula para 'Otros' debe ajustarse según la disponibilidad de medidores AUX y EXT. Consulta https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen para más información.",
+      "description": "The formula for 'Other' must be adjusted depending on the availability of AUX and EXT meters. See https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards for more information.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2874,7 +2878,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Sonstige"
+              "options": "other"
             },
             "properties": [
               {
@@ -2883,6 +2887,10 @@
                   "fixedColor": "#808080",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Other"
               }
             ]
           }
@@ -2922,7 +2930,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Casa",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2963,7 +2971,7 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "$homeTotal - $extEnergiesSum",
-          "refId": "Sonstige",
+          "refId": "other",
           "type": "math"
         },
         {
@@ -2989,7 +2997,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Casa: distribución de energía",
+      "title": "Home: energy distribution",
       "transparent": true,
       "type": "piechart"
     },
@@ -2998,7 +3006,7 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_AGGREGRATIONS}"
       },
-      "description": "La fórmula para 'Otros' debe ajustarse según la disponibilidad de medidores AUX y EXT. Consulta https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen para más información.",
+      "description": "The formula for 'Other' must be adjusted depending on the availability of AUX and EXT meters. See https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards for more information.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3053,7 +3061,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Sonstige"
+              "options": "other"
             },
             "properties": [
               {
@@ -3062,6 +3070,10 @@
                   "fixedColor": "#808080",
                   "mode": "fixed"
                 }
+              },
+              {
+                "id": "displayName",
+                "value": "Other"
               }
             ]
           }
@@ -3102,7 +3114,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Casa",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3143,7 +3155,7 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "$homeTotal - $extEnergiesSum",
-          "refId": "Sonstige",
+          "refId": "other",
           "type": "math"
         },
         {
@@ -3169,7 +3181,7 @@
           "resultFormat": "time_series"
         }
       ],
-      "title": "Casa: consumo de energía",
+      "title": "Home: energy consumption",
       "type": "barchart"
     },
     {
@@ -3204,7 +3216,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Casa"
+              "options": "Home"
             },
             "properties": [
               {
@@ -3301,7 +3313,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3323,7 +3335,7 @@
           "resultFormat": "time_series"
         },
         {
-          "alias": "Haus",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3335,7 +3347,7 @@
           "resultFormat": "time_series"
         },
         {
-          "alias": "Haus",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3419,7 +3431,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Casa"
+              "options": "Home"
             },
             "properties": [
               {
@@ -3514,7 +3526,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Haus",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3557,7 +3569,7 @@
           "tags": []
         },
         {
-          "alias": "Haus",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3609,7 +3621,7 @@
           "type": "math"
         },
         {
-          "alias": "Haus",
+          "alias": "Home",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3644,7 +3656,7 @@
       "id": 30,
       "libraryPanel": {
         "uid": "feio30f3nm0owe",
-        "name": "EVCC: Balance eléctrico"
+        "name": "EVCC: Electricity balance"
       }
     },
     {
@@ -3657,7 +3669,7 @@
       "id": 26,
       "libraryPanel": {
         "uid": "ae8zwbjv24kqof",
-        "name": "EVCC: Precio dinámico de la electricidad: Diario"
+        "name": "EVCC: Dynamic electricity price: daily"
       }
     },
     {
@@ -3719,7 +3731,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Einkauf"
+              "options": "Purchase"
             },
             "properties": [
               {
@@ -3734,7 +3746,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Verkauf"
+              "options": "Sale"
             },
             "properties": [
               {
@@ -3799,7 +3811,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "alias": "Einkauf",
+          "alias": "Purchase",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3842,7 +3854,7 @@
           "tags": []
         },
         {
-          "alias": "Verkauf",
+          "alias": "Sale",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3895,7 +3907,7 @@
           "type": "math"
         }
       ],
-      "title": "Costes de electricidad",
+      "title": "Electricity costs",
       "type": "barchart"
     },
     {
@@ -3921,7 +3933,7 @@
       "id": 16,
       "libraryPanel": {
         "uid": "b8787739-953e-4188-9507-0cc12b6ed91b",
-        "name": "EVCC: Eficiencia de la batería"
+        "name": "EVCC: Battery efficiency"
       }
     },
     {
@@ -3981,7 +3993,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Speicher max"
+              "options": "Battery max"
             },
             "properties": [
               {
@@ -3996,7 +4008,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Speicher min"
+              "options": "Battery min"
             },
             "properties": [
               {
@@ -4042,7 +4054,7 @@
       "pluginVersion": "12.3.1",
       "targets": [
         {
-          "alias": "Speicher max",
+          "alias": "Battery max",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -4085,7 +4097,7 @@
           "tags": []
         },
         {
-          "alias": "Speicher min",
+          "alias": "Battery min",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -4128,7 +4140,7 @@
           "tags": []
         }
       ],
-      "title": "Niveles de la batería doméstica",
+      "title": "Home battery levels",
       "type": "barchart"
     }
   ],
@@ -4139,9 +4151,9 @@
   "templating": {
     "list": [
       {
-        "description": "Zona horaria: identificador TZ como se muestra aquí: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
+        "description": "Time zone: TZ identifier as listed here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List",
         "hide": 2,
-        "label": "Zona horaria",
+        "label": "Time zone",
         "name": "timezone",
         "query": "${VAR_TIMEZONE}",
         "skipUrlSync": true,
@@ -4160,9 +4172,9 @@
         ]
       },
       {
-        "description": "Límite de potencia máxima en W por encima del cual los valores se ignoran como atípicos.",
+        "description": "Maximum power limit in W; power values above this limit are ignored as outliers.",
         "hide": 2,
-        "label": "Filtro de potencia máxima / W",
+        "label": "Maximum power filter / W",
         "name": "peakPowerLimit",
         "query": "${VAR_PEAKPOWERLIMIT}",
         "skipUrlSync": true,
@@ -4181,9 +4193,9 @@
         ]
       },
       {
-        "description": "Capacidad instalada de los paneles solares en Wp",
+        "description": "Installed capacity of the solar panels in Wp",
         "hide": 2,
-        "label": "Capacidad instalada en Wp",
+        "label": "Installed capacity in Wp",
         "name": "installedWattPeak",
         "query": "${VAR_INSTALLEDWATTPEAK}",
         "skipUrlSync": true,
@@ -4202,9 +4214,9 @@
         ]
       },
       {
-        "description": "Lista de puntos de carga que NO deben mostrarse. La expresión debe ser una expresión regular que empiece y termine con /. No puede estar vacía. Si no se debe filtrar nada, aquí debe figurar una expresión regular que no coincida con ninguna de las entradas.\n\nEjemplos:\nSin entradas: /^none$/\nFiltrar 'Garage': /^Garage$/\nFiltrar 'Garage' y 'Stellplatz': /^Garage$|^Stellplatz$/\nFiltrar todo lo que empiece por 'foo': /^foo.*$/",
+        "description": "List of loadpoints that should NOT be displayed. The expression is a regular expression that must start and end with /. It must not be empty; if nothing should be filtered, provide a regular expression that matches none of the entries.\n\nExamples:\nNo entries: /^none$/\nFilter out 'Garage': /^Garage$/\nFilter out 'Garage' and 'Parking Spot': /^Garage$|^Parking Spot$/\nFilter out everything that starts with 'foo': /^foo.*$/",
         "hide": 2,
-        "label": "Lista de bloqueo de puntos de carga",
+        "label": "Loadpoint blocklist",
         "name": "loadpointBlocklist",
         "query": "${VAR_LOADPOINTBLOCKLIST}",
         "skipUrlSync": true,

@@ -2700,7 +2700,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Media"
+              "options": "Durchschnitt"
             },
             "properties": [
               {
@@ -2870,7 +2870,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Prelievo da rete"
+              "options": "Netzbezug"
             },
             "properties": [
               {

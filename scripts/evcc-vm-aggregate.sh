@@ -227,6 +227,8 @@ deleteAggregations() {
         deleteMetric "batteryEnergyChargedDaily"
         deleteMetric "batteryEnergyDischargedDaily"
         deleteMetric "loadpointEnergyDaily"
+        deleteMetric "auxEnergyDaily"
+        deleteMetric "extEnergyDaily"
     else
         logInfo "Deletion of aggregated metrics aborted."
     fi
@@ -316,12 +318,14 @@ aggregate() {
     logDebug "Aggregating from $(date -d @$starttime) ($starttime) to $(date -d @$endtime) ($endtime)"
 
     aggregateQuery "sum(integrate(((pvPower_value{id=\"\"}) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)/3600)" "pvEnergyDaily" "$starttime" "$endtime"
-    aggregateQuery "sum(integrate(((homePower_value) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)/-3600)" "homeEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery "sum(integrate(((homePower_value) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)/ 3600)" "homeEnergyDaily" "$starttime" "$endtime"
     aggregateQuery "integrate(((gridPower_value > 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "gridEnergyImportDaily" "$starttime" "$endtime"
-    aggregateQuery "integrate(((gridPower_value < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "gridEnergyExportDaily" "$starttime" "$endtime"
-    aggregateQuery "integrate(((batteryPower_value{id=\"\"} < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "batteryEnergyChargedDaily" "$starttime" "$endtime"
+    aggregateQuery "integrate(((gridPower_value < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / -3600" "gridEnergyExportDaily" "$starttime" "$endtime"
     aggregateQuery "integrate(((batteryPower_value{id=\"\"} > 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "batteryEnergyDischargedDaily" "$starttime" "$endtime"
-    aggregateQueryByTag "sum by (loadpoint)(sort_by_label(integrate(((chargePower_value{loadpoint!=\"\", vehicle!=\"\", loadpoint !~ \"\$loadpointBlocklist\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / -3600, \"loadpoint\"))" "loadpoint" "loadpointEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery "integrate(((batteryPower_value{id=\"\"} < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / -3600" "batteryEnergyChargedDaily" "$starttime" "$endtime"
+    aggregateQueryByTag "sum by (loadpoint)(integrate(((chargePower_value{loadpoint!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "loadpoint" "loadpointEnergyDaily" "$starttime" "$endtime"
+    aggregateQueryByTag "sum by (title)(integrate(((auxPower_value{title!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "title" "auxEnergyDaily" "$starttime" "$endtime"
+    aggregateQueryByTag "sum by (title)(integrate(((extPower_value{title!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "title" "extEnergyDaily" "$starttime" "$endtime"
 }
 
 ###############################################################################

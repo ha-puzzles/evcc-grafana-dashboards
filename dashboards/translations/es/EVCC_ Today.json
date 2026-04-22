@@ -1236,7 +1236,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "Energía",
+          "xField": "Energy",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
@@ -1478,7 +1478,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "fotovoltaica"
+                "options": "PV"
               },
               "properties": [
                 {
@@ -1493,7 +1493,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Casa"
+                "options": "Home"
               },
               "properties": [
                 {
@@ -1508,7 +1508,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Consumo de red"
+                "options": "Grid consumption"
               },
               "properties": [
                 {
@@ -1538,7 +1538,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Descarga de batería"
+                "options": "Battery discharge"
               },
               "properties": [
                 {
@@ -1568,7 +1568,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Inyección a red"
+                "options": "Grid feed-in"
               },
               "properties": [
                 {
@@ -1583,7 +1583,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Carga de batería"
+                "options": "Battery charge"
               },
               "properties": [
                 {

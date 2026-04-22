@@ -2700,7 +2700,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "平均值"
+              "options": "Durchschnitt"
             },
             "properties": [
               {
@@ -2870,7 +2870,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "电网用电"
+              "options": "Netzbezug"
             },
             "properties": [
               {
@@ -2913,7 +2913,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "二氧化碳"
+              "options": "CO2"
             },
             "properties": [
               {
