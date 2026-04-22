@@ -1236,7 +1236,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "Energy",
+          "xField": "Énergie",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
@@ -1493,7 +1493,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "Maison"
               },
               "properties": [
                 {
@@ -1508,7 +1508,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "Consommation réseau"
               },
               "properties": [
                 {
@@ -1538,7 +1538,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "Décharge batterie"
               },
               "properties": [
                 {
@@ -1568,7 +1568,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "Injection réseau"
               },
               "properties": [
                 {
@@ -1583,7 +1583,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "Charge batterie"
               },
               "properties": [
                 {

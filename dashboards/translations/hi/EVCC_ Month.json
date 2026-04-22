@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "ग्रिड खपत"
               },
               "properties": [
                 {
@@ -121,7 +121,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "ग्रिड में आपूर्ति"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "घर"
               },
               "properties": [
                 {
@@ -181,7 +181,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "PV"
+                "options": "पीवी"
               },
               "properties": [
                 {
@@ -489,7 +489,7 @@
         "pluginVersion": "11.5.2",
         "targets": [
           {
-            "alias": "PV",
+            "alias": "पीवी",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -555,7 +555,7 @@
             "resultFormat": "time_series"
           },
           {
-            "alias": "Home",
+            "alias": "घर",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1132,7 +1132,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Average"
+                "options": "औसत"
               },
               "properties": [
                 {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "बैटरी चार्ज"
               },
               "properties": [
                 {
@@ -1416,7 +1416,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "बैटरी डिस्चार्ज"
               },
               "properties": [
                 {
@@ -2453,7 +2453,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "PV",
+          "alias": "पीवी",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2930,7 +2930,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "घर",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3114,7 +3114,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "घर",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3216,7 +3216,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "घर"
             },
             "properties": [
               {
@@ -3431,7 +3431,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "घर"
             },
             "properties": [
               {

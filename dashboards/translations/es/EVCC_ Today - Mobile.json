@@ -474,7 +474,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "PV"
+                "options": "fotovoltaica"
               },
               "properties": [
                 {
@@ -489,7 +489,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "Casa"
               },
               "properties": [
                 {
@@ -504,7 +504,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "Consumo de red"
               },
               "properties": [
                 {
@@ -534,7 +534,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "Descarga de batería"
               },
               "properties": [
                 {
@@ -564,7 +564,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "Inyección a red"
               },
               "properties": [
                 {
@@ -579,7 +579,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "Carga de batería"
               },
               "properties": [
                 {
@@ -1556,7 +1556,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "Energy",
+          "xField": "Energía",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
@@ -2200,7 +2200,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "PV"
+              "options": "fotovoltaica"
             },
             "properties": [
               {
@@ -2246,7 +2246,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netz"
+              "options": "Red"
             },
             "properties": [
               {
@@ -2291,7 +2291,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Speicher"
+              "options": "Batería"
             },
             "properties": [
               {
@@ -2327,7 +2327,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "Casa"
             },
             "properties": [
               {

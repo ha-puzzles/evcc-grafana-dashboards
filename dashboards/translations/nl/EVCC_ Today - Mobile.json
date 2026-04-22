@@ -489,7 +489,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "Thuis"
               },
               "properties": [
                 {
@@ -504,7 +504,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "Netafname"
               },
               "properties": [
                 {
@@ -534,7 +534,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "Batterij ontladen"
               },
               "properties": [
                 {
@@ -564,7 +564,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "Teruglevering aan het net"
               },
               "properties": [
                 {
@@ -579,7 +579,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "Batterij laden"
               },
               "properties": [
                 {
@@ -1556,7 +1556,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "Energy",
+          "xField": "Energie",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
@@ -2246,7 +2246,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netz"
+              "options": "Net"
             },
             "properties": [
               {
@@ -2291,7 +2291,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Speicher"
+              "options": "Batterij"
             },
             "properties": [
               {
@@ -2327,7 +2327,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "Huis"
             },
             "properties": [
               {

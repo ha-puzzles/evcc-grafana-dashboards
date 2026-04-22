@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "Prelievo da rete"
               },
               "properties": [
                 {
@@ -121,7 +121,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "Immissione in rete"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "Casa"
               },
               "properties": [
                 {
@@ -555,7 +555,7 @@
             "resultFormat": "time_series"
           },
           {
-            "alias": "Home",
+            "alias": "Casa",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1132,7 +1132,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Average"
+                "options": "Media"
               },
               "properties": [
                 {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "Carica batteria"
               },
               "properties": [
                 {
@@ -1416,7 +1416,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "Scarica batteria"
               },
               "properties": [
                 {
@@ -2930,7 +2930,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "Casa",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3114,7 +3114,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "Casa",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3216,7 +3216,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "Casa"
             },
             "properties": [
               {
@@ -3431,7 +3431,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "Casa"
             },
             "properties": [
               {

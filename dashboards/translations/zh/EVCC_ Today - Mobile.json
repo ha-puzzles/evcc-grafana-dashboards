@@ -474,7 +474,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "PV"
+                "options": "光伏发电"
               },
               "properties": [
                 {
@@ -489,7 +489,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "家庭"
               },
               "properties": [
                 {
@@ -504,7 +504,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "电网用电"
               },
               "properties": [
                 {
@@ -534,7 +534,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "电池放电"
               },
               "properties": [
                 {
@@ -564,7 +564,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "电网馈入"
               },
               "properties": [
                 {
@@ -579,7 +579,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "电池充电"
               },
               "properties": [
                 {
@@ -1556,7 +1556,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "Energy",
+          "xField": "能源",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
@@ -2200,7 +2200,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "PV"
+              "options": "光伏发电"
             },
             "properties": [
               {
@@ -2246,7 +2246,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netz"
+              "options": "电网"
             },
             "properties": [
               {
@@ -2291,7 +2291,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Speicher"
+              "options": "电池"
             },
             "properties": [
               {
@@ -2327,7 +2327,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "家庭"
             },
             "properties": [
               {

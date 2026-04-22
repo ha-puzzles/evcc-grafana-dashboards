@@ -2700,7 +2700,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Durchschnitt"
+              "options": "Promedio"
             },
             "properties": [
               {
@@ -2870,7 +2870,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netzbezug"
+              "options": "Consumo de red"
             },
             "properties": [
               {

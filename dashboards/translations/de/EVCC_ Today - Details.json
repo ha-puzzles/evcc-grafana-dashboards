@@ -2380,7 +2380,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "sold"
+              "options": "Verkauf"
             },
             "properties": [
               {
@@ -2585,7 +2585,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "sold"
+              "options": "Verkauf"
             },
             "properties": [
               {

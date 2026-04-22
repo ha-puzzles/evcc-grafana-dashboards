@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "电网用电"
               },
               "properties": [
                 {
@@ -121,7 +121,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "电网馈入"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "家庭"
               },
               "properties": [
                 {
@@ -181,7 +181,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "PV"
+                "options": "光伏发电"
               },
               "properties": [
                 {
@@ -489,7 +489,7 @@
         "pluginVersion": "11.5.2",
         "targets": [
           {
-            "alias": "PV",
+            "alias": "光伏发电",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -555,7 +555,7 @@
             "resultFormat": "time_series"
           },
           {
-            "alias": "Home",
+            "alias": "家庭",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1132,7 +1132,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Average"
+                "options": "平均值"
               },
               "properties": [
                 {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "电池充电"
               },
               "properties": [
                 {
@@ -1416,7 +1416,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "电池放电"
               },
               "properties": [
                 {
@@ -2453,7 +2453,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "PV",
+          "alias": "光伏发电",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -2930,7 +2930,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "家庭",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3114,7 +3114,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "家庭",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3216,7 +3216,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "家庭"
             },
             "properties": [
               {
@@ -3431,7 +3431,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "家庭"
             },
             "properties": [
               {

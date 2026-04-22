@@ -2700,7 +2700,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Durchschnitt"
+              "options": "औसत"
             },
             "properties": [
               {
@@ -2870,7 +2870,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netzbezug"
+              "options": "ग्रिड खपत"
             },
             "properties": [
               {
@@ -2913,7 +2913,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "CO2"
+              "options": "सीओ 2"
             },
             "properties": [
               {

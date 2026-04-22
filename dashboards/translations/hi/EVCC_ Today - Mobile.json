@@ -474,7 +474,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "PV"
+                "options": "पीवी"
               },
               "properties": [
                 {
@@ -489,7 +489,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "घर"
               },
               "properties": [
                 {
@@ -504,7 +504,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "ग्रिड खपत"
               },
               "properties": [
                 {
@@ -534,7 +534,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "बैटरी डिस्चार्ज"
               },
               "properties": [
                 {
@@ -564,7 +564,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "ग्रिड में आपूर्ति"
               },
               "properties": [
                 {
@@ -579,7 +579,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "बैटरी चार्ज"
               },
               "properties": [
                 {
@@ -1556,7 +1556,7 @@
             "mode": "single",
             "sort": "none"
           },
-          "xField": "Energy",
+          "xField": "ऊर्जा",
           "xTickLabelRotation": 0,
           "xTickLabelSpacing": 0
         },
@@ -2200,7 +2200,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "PV"
+              "options": "पीवी"
             },
             "properties": [
               {
@@ -2246,7 +2246,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Netz"
+              "options": "ग्रिड"
             },
             "properties": [
               {
@@ -2291,7 +2291,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Speicher"
+              "options": "बैटरी"
             },
             "properties": [
               {
@@ -2327,7 +2327,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Haus"
+              "options": "घर"
             },
             "properties": [
               {

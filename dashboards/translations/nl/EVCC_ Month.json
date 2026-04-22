@@ -106,7 +106,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid consumption"
+                "options": "Netafname"
               },
               "properties": [
                 {
@@ -121,7 +121,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Grid feed-in"
+                "options": "Teruglevering aan het net"
               },
               "properties": [
                 {
@@ -136,7 +136,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Home"
+                "options": "Thuis"
               },
               "properties": [
                 {
@@ -555,7 +555,7 @@
             "resultFormat": "time_series"
           },
           {
-            "alias": "Home",
+            "alias": "Thuis",
             "datasource": {
               "type": "influxdb",
               "uid": "fe8sr664fohz4a"
@@ -1132,7 +1132,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Average"
+                "options": "Gemiddelde"
               },
               "properties": [
                 {
@@ -1397,7 +1397,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery charge"
+                "options": "Batterij laden"
               },
               "properties": [
                 {
@@ -1416,7 +1416,7 @@
             {
               "matcher": {
                 "id": "byName",
-                "options": "Battery discharge"
+                "options": "Batterij ontladen"
               },
               "properties": [
                 {
@@ -2930,7 +2930,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "Thuis",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3114,7 +3114,7 @@
       "pluginVersion": "12.4.2",
       "targets": [
         {
-          "alias": "Home",
+          "alias": "Thuis",
           "datasource": {
             "type": "influxdb",
             "uid": "${DS_EVCC_AGGREGRATIONS}"
@@ -3216,7 +3216,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "Thuis"
             },
             "properties": [
               {
@@ -3431,7 +3431,7 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Home"
+              "options": "Thuis"
             },
             "properties": [
               {
