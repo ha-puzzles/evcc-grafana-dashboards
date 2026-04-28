@@ -1,0 +1,154 @@
+{
+  "generatedAt": "2026-04-22T16:47:28.292Z",
+  "sourceLanguage": "en",
+  "targetLanguage": "nl",
+  "sourceDir": "dashboards/src/en",
+  "mappingFile": "dashboards/localization/en_to_nl.json",
+  "notes": [
+    "Fill each value with the final target-language translation.",
+    "Then merge into dashboards/localization/en_to_nl.json under exact.",
+    "Use exactSources to see which source dashboard file names produced each candidate.",
+    "This audit includes displayName/displayNameFromDS override values.",
+    "This is a candidate list; some entries can be intentionally unchanged."
+  ],
+  "exact": {
+    "Balance": "",
+    "Battery efficiency": "",
+    "Current month": "",
+    "Dynamic electricity price (ct/kWh)": "",
+    "Effective electricity price": "",
+    "Effective electricity price, dynamic": "",
+    "Electricity balance": "",
+    "Electricity cost saved through dynamic tariff": "",
+    "Electricity costs": "",
+    "Electricity price: arithmetic mean": "",
+    "EVCC: Battery efficiency": "",
+    "EVCC: Cumulative energies over time": "",
+    "EVCC: Dynamic electricity price: daily": "",
+    "EVCC: Electricity balance": "",
+    "EVCC: Key figure gauges": "",
+    "Home battery levels": "",
+    "Home: energy consumption": "",
+    "Home: energy distribution": "",
+    "Installed capacity in Wp": "",
+    "Installed capacity of the solar panels in Wp": "",
+    "Key figures": "",
+    "Last month": "",
+    "List of loadpoints that should NOT be displayed. The expression is a regular expression that must start and end with /. It must not be empty; if nothing should be filtered, provide a regular expression that matches none of the entries.\n\nExamples:\nNo entries: /^none$/\nFilter out 'Garage': /^Garage$/\nFilter out 'Garage' and 'Parking Spot': /^Garage$|^Parking Spot$/\nFilter out everything that starts with 'foo': /^foo.*$/": "",
+    "Loadpoint blocklist": "",
+    "Maximum power filter / W": "",
+    "Maximum power limit in W; power values above this limit are ignored as outliers.": "",
+    "Month before last": "",
+    "Other": "",
+    "Potential purchase at arithmetic price": "",
+    "Savings through dynamic tariff": "",
+    "Specific yield": "",
+    "The formula for 'Other' must be adjusted depending on the availability of AUX and EXT meters. See https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards for more information.": "",
+    "Time zone": "",
+    "Time zone: TZ identifier as listed here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List": ""
+  },
+  "exactSources": {
+    "Balance": [
+      "EVCC_ Month.json"
+    ],
+    "Battery efficiency": [
+      "EVCC_ Month.json"
+    ],
+    "Current month": [
+      "EVCC_ Month.json"
+    ],
+    "Dynamic electricity price (ct/kWh)": [
+      "EVCC_ Month.json"
+    ],
+    "Effective electricity price": [
+      "EVCC_ Month.json"
+    ],
+    "Effective electricity price, dynamic": [
+      "EVCC_ Month.json"
+    ],
+    "Electricity balance": [
+      "EVCC_ Month.json"
+    ],
+    "Electricity cost saved through dynamic tariff": [
+      "EVCC_ Month.json"
+    ],
+    "Electricity costs": [
+      "EVCC_ Month.json"
+    ],
+    "Electricity price: arithmetic mean": [
+      "EVCC_ Month.json"
+    ],
+    "EVCC: Battery efficiency": [
+      "EVCC_ Month.json"
+    ],
+    "EVCC: Cumulative energies over time": [
+      "EVCC_ Month.json"
+    ],
+    "EVCC: Dynamic electricity price: daily": [
+      "EVCC_ Month.json"
+    ],
+    "EVCC: Electricity balance": [
+      "EVCC_ Month.json"
+    ],
+    "EVCC: Key figure gauges": [
+      "EVCC_ Month.json"
+    ],
+    "Home battery levels": [
+      "EVCC_ Month.json"
+    ],
+    "Home: energy consumption": [
+      "EVCC_ Month.json"
+    ],
+    "Home: energy distribution": [
+      "EVCC_ Month.json"
+    ],
+    "Installed capacity in Wp": [
+      "EVCC_ Month.json"
+    ],
+    "Installed capacity of the solar panels in Wp": [
+      "EVCC_ Month.json"
+    ],
+    "Key figures": [
+      "EVCC_ Month.json"
+    ],
+    "Last month": [
+      "EVCC_ Month.json"
+    ],
+    "List of loadpoints that should NOT be displayed. The expression is a regular expression that must start and end with /. It must not be empty; if nothing should be filtered, provide a regular expression that matches none of the entries.\n\nExamples:\nNo entries: /^none$/\nFilter out 'Garage': /^Garage$/\nFilter out 'Garage' and 'Parking Spot': /^Garage$|^Parking Spot$/\nFilter out everything that starts with 'foo': /^foo.*$/": [
+      "EVCC_ Month.json"
+    ],
+    "Loadpoint blocklist": [
+      "EVCC_ Month.json"
+    ],
+    "Maximum power filter / W": [
+      "EVCC_ Month.json"
+    ],
+    "Maximum power limit in W; power values above this limit are ignored as outliers.": [
+      "EVCC_ Month.json"
+    ],
+    "Month before last": [
+      "EVCC_ Month.json"
+    ],
+    "Other": [
+      "EVCC_ Month.json"
+    ],
+    "Potential purchase at arithmetic price": [
+      "EVCC_ Month.json"
+    ],
+    "Savings through dynamic tariff": [
+      "EVCC_ Month.json"
+    ],
+    "Specific yield": [
+      "EVCC_ Month.json"
+    ],
+    "The formula for 'Other' must be adjusted depending on the availability of AUX and EXT meters. See https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards for more information.": [
+      "EVCC_ Month.json"
+    ],
+    "Time zone": [
+      "EVCC_ Month.json"
+    ],
+    "Time zone: TZ identifier as listed here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List": [
+      "EVCC_ Month.json"
+    ]
+  }
+}
