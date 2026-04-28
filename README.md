@@ -70,15 +70,9 @@ Dieser Thread ["InfluxDB und Grafana"](https://github.com/evcc-io/evcc/discussio
 3. Dashboards über den Grafana.com Community Store installieren:
    1. In Grafana unter 'Dashboards' auf 'New/Import' clicken:
       ![Import dashboard](./img/import.png)
-   2. Unter "Find and import dashboards..." folgende Dashboards mit folgenden IDs importieren:
-      | Dashboard                | ID        |
-      | ------------------------ | --------- |
-      | EVCC: PV All-time:       | **22024** |
-      | EVCC: PV Jahr:           | **22025** |
-      | EVCC: PV Monat:          | **22026** |
-      | EVCC: PV Today (Mobile): | **22027** |
-      | EVCC: PV Today:          | **22028** |
-      | EVCC: PV Today Details:  | **22956** |
+   2. Die Dashboards von folgenden Unterordnern als JSON Dateien herunterladen und importieren:
+      - Für Grafana 12.3.4 oder älter aus [./dashboards/dashboards/grafana12-/](./dashboards/dashboards/grafana12-/)
+      - Für Grafana 13.0.1 oder neuer aus [./dashboards/dashboards/grafana13+/](./dashboards/dashboards/grafana13+/)
 
 4. Die Werte des Dashboards anpassen:
    1. Data Source auswählen. 'EVCC Influx DB' steht für die Datenbank, in die EVCC direkt schreibt. 'EVCC Aggregation' ist die Datenbank, in die das Aggregationsscript die aggregierten Daten schreibt. Weitere Variablen wie abgefragt ausfüllen. Diese können aber auch noch nach dem Import angepasst werden. Die Blockist Variablen würde ich nur bei Bedarf später ändern.
