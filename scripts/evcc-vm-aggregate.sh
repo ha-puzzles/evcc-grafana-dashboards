@@ -224,11 +224,16 @@ deleteAggregations() {
         deleteMetric "homeEnergyDaily"
         deleteMetric "gridEnergyImportDaily"
         deleteMetric "gridEnergyExportDaily"
-        deleteMetric "batteryEnergyChargedDaily"
         deleteMetric "batteryEnergyDischargedDaily"
+        deleteMetric "batteryEnergyChargedDaily"
         deleteMetric "loadpointEnergyDaily"
         deleteMetric "auxEnergyDaily"
         deleteMetric "extEnergyDaily"
+        deleteMetric "energyPriceBoughtDaily"
+        deleteMetric "energyPriceSoldDaily"
+        deleteMetric "energyPriceMaxDaily"
+        deleteMetric "energyPriceMinDaily"
+        deleteMetric "energyPriceAvgDaily"
     else
         logInfo "Deletion of aggregated metrics aborted."
     fi
@@ -260,6 +265,7 @@ aggregateQuery() {
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
     logInfo "Creating aggregated metric $metric"
+    logDebug "Executing query: $query"
 
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
@@ -291,6 +297,7 @@ aggregateQueryByTag() {
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
     logInfo "Creating aggregated metric $metric"
+    logDebug "Executing query: $query"
 
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
@@ -326,6 +333,11 @@ aggregate() {
     aggregateQueryByTag "sum by (loadpoint)(integrate(((chargePower_value{loadpoint!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "loadpoint" "loadpointEnergyDaily" "$starttime" "$endtime"
     aggregateQueryByTag "sum by (title)(integrate(((auxPower_value{title!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "title" "auxEnergyDaily" "$starttime" "$endtime"
     aggregateQueryByTag "sum by (title)(integrate(((extPower_value{title!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "title" "extEnergyDaily" "$starttime" "$endtime"
+    aggregateQuery "sum_over_time(( avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL) * integrate((avg(gridPower_value > 0) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceBoughtDaily" "$starttime" "$endtime"
+    aggregateQuery "sum_over_time(( keep_last_value(tariffFeedIn_value[30d:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL) * integrate((avg(gridPower_value < 0) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000)[1d:$TARIFF_PRICE_INTERVAL] offset -1d) * (-1)" "energyPriceSoldDaily" "$starttime" "$endtime"
+    aggregateQuery "max_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceMaxDaily" "$starttime" "$endtime"
+    aggregateQuery "min_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceMinDaily" "$starttime" "$endtime"
+    aggregateQuery "avg_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceAvgDaily" "$starttime" "$endtime"
 }
 
 ###############################################################################
