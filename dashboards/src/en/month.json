@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "adz6thx",
-    "generation": 24,
+    "generation": 29,
     "creationTimestamp": "2026-04-04T16:45:40Z",
     "labels": {},
     "annotations": {}
@@ -3863,11 +3863,11 @@
     },
     "links": [
       {
-        "title": "Aktueller Monat",
+        "title": "Current month",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/4iQda7igz/monat?from=now%2FM&to=now%2FM",
+        "url": "/d/adz6thx/?from=now%2FM&to=now%2FM",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,
@@ -3875,11 +3875,11 @@
         "keepTime": false
       },
       {
-        "title": "Letzter Monat",
+        "title": "Last month",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/4iQda7igz/monat?from=now-1M%2FM&to=now-1M%2FM",
+        "url": "/d/adz6thx/evcc3a-month?from=now-1M%2FM&to=now-1M%2FM",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,
@@ -3887,11 +3887,11 @@
         "keepTime": false
       },
       {
-        "title": "Vorletzter Monat",
+        "title": "Month before last",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/4iQda7igz/monat?from=now-2M%2FM&to=now-2M%2FM",
+        "url": "/d/adz6thx/evcc3a-month?from=now-2M%2FM&to=now-2M%2FM",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,
