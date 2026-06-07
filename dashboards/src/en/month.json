@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "adz6thx",
-    "generation": 29,
+    "generation": 40,
     "creationTimestamp": "2026-04-04T16:45:40Z",
     "labels": {},
     "annotations": {}
@@ -42,7 +42,7 @@
         "kind": "Panel",
         "spec": {
           "id": 11,
-          "title": "Hausspeicher Stände",
+          "title": "Battery levels",
           "description": "",
           "links": [],
           "data": {
@@ -54,51 +54,21 @@
                   "spec": {
                     "query": {
                       "kind": "DataQuery",
-                      "group": "influxdb",
+                      "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
                       "spec": {
-                        "alias": "Speicher max",
-                        "groupBy": [
-                          {
-                            "params": [
-                              "10m"
-                            ],
-                            "type": "time"
-                          },
-                          {
-                            "params": [
-                              "none"
-                            ],
-                            "type": "fill"
-                          }
-                        ],
-                        "measurement": "batterySoc",
-                        "orderByTime": "ASC",
-                        "policy": "default",
-                        "query": "SELECT \"value\" FROM \"batteryMaxSoc\" WHERE $timeFilter tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series",
-                        "select": [
-                          [
-                            {
-                              "params": [
-                                "value"
-                              ],
-                              "type": "field"
-                            },
-                            {
-                              "params": [],
-                              "type": "max"
-                            }
-                          ]
-                        ],
-                        "tags": []
+                        "editorMode": "code",
+                        "expr": "avg(batterySocMaxDaily[1d])",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "maxBattery",
+                        "range": true
                       },
                       "labels": {
-                        "grafana.app/export-label": "influxdb-1"
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
-                    "refId": "soc_max",
+                    "refId": "maxBattery",
                     "hidden": false
                   }
                 },
@@ -107,51 +77,21 @@
                   "spec": {
                     "query": {
                       "kind": "DataQuery",
-                      "group": "influxdb",
+                      "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
                       "spec": {
-                        "alias": "Speicher min",
-                        "groupBy": [
-                          {
-                            "params": [
-                              "10m"
-                            ],
-                            "type": "time"
-                          },
-                          {
-                            "params": [
-                              "none"
-                            ],
-                            "type": "fill"
-                          }
-                        ],
-                        "measurement": "batterySoc",
-                        "orderByTime": "ASC",
-                        "policy": "default",
-                        "query": "SELECT \"value\" FROM \"batteryMinSoc\" WHERE $timeFilter tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series",
-                        "select": [
-                          [
-                            {
-                              "params": [
-                                "value"
-                              ],
-                              "type": "field"
-                            },
-                            {
-                              "params": [],
-                              "type": "max"
-                            }
-                          ]
-                        ],
-                        "tags": []
+                        "editorMode": "code",
+                        "expr": "avg(batterySocMinDaily[1d])",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "minBattery",
+                        "range": true
                       },
                       "labels": {
-                        "grafana.app/export-label": "influxdb-1"
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
-                    "refId": "soc_min",
+                    "refId": "minBattery",
                     "hidden": false
                   }
                 }
@@ -238,7 +178,8 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "Speicher max"
+                      "scope": "series",
+                      "options": "maxBattery"
                     },
                     "properties": [
                       {
@@ -247,20 +188,45 @@
                           "fixedColor": "blue",
                           "mode": "fixed"
                         }
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "SoC max"
                       }
                     ]
                   },
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "Speicher min"
+                      "scope": "series",
+                      "options": "minBattery"
                     },
                     "properties": [
                       {
                         "id": "color",
                         "value": {
                           "fixedColor": "#686868",
-                          "mode": "fixed"
+                          "mode": "thresholds"
+                        }
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "SoC min"
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "red",
+                              "value": 0
+                            },
+                            {
+                              "color": "#808080",
+                              "value": 10
+                            }
+                          ]
                         }
                       }
                     ]
@@ -274,133 +240,137 @@
       "panel-16": {
         "kind": "Panel",
         "spec": {
-          "title": "",
+          "id": 16,
+          "title": "Battery",
           "description": "",
-          "transparent": true,
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_sum(avg(batteryEnergyChargedDaily[1d]))",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "totalCharged",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "totalCharged",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_sum(avg(batteryEnergyDischargedDaily[1d]))",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "totalDischarged",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "totalDischarged",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "spec": {
+                        "expression": "$totalDischarged/$totalCharged",
+                        "type": "math"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "__expr__-1"
+                      }
+                    },
+                    "refId": "batteryEfficiency",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_avg(avg(batterySocMaxDaily[1d]))",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "avgMaxSoc",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "avgMaxSoc",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_avg(avg(batterySocMinDaily[1d]))",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "avgMinSoc",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "avgMinSoc",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {
+                "maxDataPoints": 50000
+              }
+            }
+          },
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "11.5.2",
+            "version": "13.0.2",
             "spec": {
-              "fieldConfig": {
-                "defaults": {
-                  "color": {
-                    "fixedColor": "light-blue",
-                    "mode": "fixed"
-                  },
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": null
-                      },
-                      {
-                        "color": "red",
-                        "value": 80
-                      }
-                    ]
-                  },
-                  "unit": "watth"
-                },
-                "overrides": [
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Speicher laden"
-                    },
-                    "properties": [
-                      {
-                        "id": "color",
-                        "value": {
-                          "fixedColor": "light-blue",
-                          "mode": "fixed"
-                        }
-                      },
-                      {
-                        "id": "displayName",
-                        "value": "Speicher laden"
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Speicher entladen"
-                    },
-                    "properties": [
-                      {
-                        "id": "color",
-                        "value": {
-                          "fixedColor": "dark-blue",
-                          "mode": "fixed"
-                        }
-                      },
-                      {
-                        "id": "displayName",
-                        "value": "Speicher entladen"
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Speicher Effizienz"
-                    },
-                    "properties": [
-                      {
-                        "id": "unit",
-                        "value": "percentunit"
-                      },
-                      {
-                        "id": "color",
-                        "value": {
-                          "fixedColor": "text",
-                          "mode": "fixed"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Max SOC Ø"
-                    },
-                    "properties": [
-                      {
-                        "id": "color",
-                        "value": {
-                          "fixedColor": "light-blue",
-                          "mode": "fixed"
-                        }
-                      },
-                      {
-                        "id": "unit",
-                        "value": "percent"
-                      }
-                    ]
-                  },
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "Min SOC Ø"
-                    },
-                    "properties": [
-                      {
-                        "id": "color",
-                        "value": {
-                          "fixedColor": "dark-blue",
-                          "mode": "fixed"
-                        }
-                      },
-                      {
-                        "id": "unit",
-                        "value": "percent"
-                      }
-                    ]
-                  }
-                ]
-              },
               "options": {
                 "colorMode": "value",
                 "graphMode": "none",
@@ -421,125 +391,146 @@
                 },
                 "textMode": "auto",
                 "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "watth",
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "fixed",
+                    "fixedColor": "light-blue"
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "totalCharged"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "light-blue",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Total energy charged"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "totalDischarged"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-blue",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Total energy discharged"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "batteryEfficiency"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "percentunit"
+                      },
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "text",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Battery efficiency"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "avgMaxSoc"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "light-blue",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "unit",
+                        "value": "percent"
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Average maximum SoC"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "avgMinSoc"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-blue",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "unit",
+                        "value": "percent"
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Average minimum SoC"
+                      }
+                    ]
+                  }
+                ]
               }
             }
           },
-          "links": [],
-          "id": 16,
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "laden",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "influxdb",
-                      "spec": {
-                        "alias": "Speicher laden",
-                        "query": "SELECT sum(\"value\") from chargeDailyEnergy WHERE $timeFilter tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "influxdb-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "entladen",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "influxdb",
-                      "spec": {
-                        "alias": "Speicher entladen",
-                        "query": "SELECT sum(\"value\") from dischargeDailyEnergy WHERE $timeFilter tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "influxdb-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "Speicher Effizienz",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "__expr__",
-                      "spec": {
-                        "expression": "$entladen/$laden",
-                        "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "avgMaxSoc",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "influxdb",
-                      "spec": {
-                        "alias": "Max SOC Ø",
-                        "query": "SELECT \"value\" FROM \"batteryMaxSoc\" WHERE $timeFilter tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "influxdb-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "avgMinSoc",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "influxdb",
-                      "spec": {
-                        "alias": "Min SOC Ø",
-                        "query": "SELECT \"value\" FROM \"batteryMinSoc\" WHERE $timeFilter tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "influxdb-1"
-                      }
-                    }
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {
-                "maxDataPoints": 50000
-              }
-            }
-          }
+          "transparent": true
         }
       },
       "panel-22": {
@@ -691,6 +682,29 @@
                     "refId": "selfSufficiency",
                     "hidden": false
                   }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_avg(avg(greenShareHomeDaily[1d]))",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "greenShare",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "greenShare",
+                    "hidden": false
+                  }
                 }
               ],
               "transformations": [],
@@ -765,7 +779,7 @@
                           "mode": "absolute",
                           "steps": [
                             {
-                              "color": "green",
+                              "color": "blue",
                               "value": 0
                             }
                           ]
@@ -800,6 +814,31 @@
                         "value": "Self-sufficiency"
                       }
                     ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "greenShare"
+                    },
+                    "properties": [
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "text",
+                              "value": 0
+                            },
+                            {
+                              "color": "green",
+                              "value": 0.8
+                            }
+                          ]
+                        }
+                      }
+                    ]
                   }
                 ]
               }
@@ -812,7 +851,7 @@
         "kind": "Panel",
         "spec": {
           "id": 26,
-          "title": "Strompreis",
+          "title": "Electricity prices",
           "description": "",
           "links": [],
           "data": {
@@ -1126,7 +1165,7 @@
         "kind": "Panel",
         "spec": {
           "id": 28,
-          "title": "Stromkosten",
+          "title": "Electricity costs",
           "description": "",
           "links": [],
           "data": {
@@ -1336,47 +1375,266 @@
       "panel-30": {
         "kind": "Panel",
         "spec": {
-          "title": "Strombilanz",
+          "id": 30,
+          "title": "Electricity cost balance",
           "description": "",
-          "transparent": true,
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "range_sum(avg(gridEnergyImportDaily[1d]))/1000",
+                        "format": "time_series",
+                        "instant": false,
+                        "interval": "1d",
+                        "legendFormat": "__auto",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "gridEnergyImport",
+                    "hidden": true
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_avg(avg(energyPriceAvgDaily[1d])) * 100",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "averagePrice",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "averagePrice",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "spec": {
+                        "expression": "($purchased * -100 )/ $gridEnergyImport",
+                        "type": "math"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "__expr__-1"
+                      }
+                    },
+                    "refId": "weightedAveragePrice",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "spec": {
+                        "expression": "$averagePrice - $weightedAveragePrice",
+                        "type": "math"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "__expr__-1"
+                      }
+                    },
+                    "refId": "savedPrice",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "spec": {
+                        "expression": "$averagePrice * $gridEnergyImport / -100",
+                        "type": "math"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "__expr__-1"
+                      }
+                    },
+                    "refId": "potentialPurchased",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_sum(avg(energyPriceBoughtDaily[1d])) * (-1)",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "purchased",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "purchased",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "spec": {
+                        "expression": "$purchased  - $potentialPurchased ",
+                        "type": "math"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "__expr__-1"
+                      }
+                    },
+                    "refId": "totalSavings",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_sum(avg(energyPriceSoldDaily[1d]))",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "sold",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "sold",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "spec": {
+                        "expression": "$purchased + $sold",
+                        "type": "math"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "__expr__-1"
+                      }
+                    },
+                    "refId": "totalCost",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
             "version": "13.0.2",
             "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "text": {
+                  "titleSize": 12,
+                  "valueSize": 20
+                },
+                "textMode": "auto",
+                "wideLayout": true
+              },
               "fieldConfig": {
                 "defaults": {
-                  "color": {
-                    "mode": "thresholds"
-                  },
+                  "unit": "€",
                   "decimals": 2,
-                  "links": [],
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
                       {
-                        "color": "red",
-                        "value": null
+                        "value": 0,
+                        "color": "red"
                       },
                       {
-                        "color": "green",
-                        "value": 0
+                        "value": 0,
+                        "color": "green"
                       }
                     ]
                   },
-                  "unit": "€"
+                  "color": {
+                    "mode": "thresholds"
+                  }
                 },
                 "overrides": [
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "averagePrice",
-                      "scope": "series"
+                      "scope": "series",
+                      "options": "averagePrice"
                     },
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Average energy price"
+                        "value": "Average electricity price"
                       },
                       {
                         "id": "color",
@@ -1399,7 +1657,7 @@
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Efficient energy price"
+                        "value": "Efficient electricity price"
                       },
                       {
                         "id": "color",
@@ -1422,7 +1680,7 @@
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Saved energy price due to dynamic tariff"
+                        "value": "Saved electricity price due to dynamic tariff"
                       },
                       {
                         "id": "unit",
@@ -1457,8 +1715,8 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "purchased",
-                      "scope": "series"
+                      "scope": "series",
+                      "options": "purchased"
                     },
                     "properties": [
                       {
@@ -1470,8 +1728,8 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "sold",
-                      "scope": "series"
+                      "scope": "series",
+                      "options": "sold"
                     },
                     "properties": [
                       {
@@ -1483,8 +1741,8 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "totalCost",
-                      "scope": "series"
+                      "scope": "series",
+                      "options": "totalCost"
                     },
                     "properties": [
                       {
@@ -1494,230 +1752,10 @@
                     ]
                   }
                 ]
-              },
-              "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "text": {
-                  "titleSize": 12,
-                  "valueSize": 20
-                },
-                "textMode": "auto",
-                "wideLayout": true
               }
             }
           },
-          "links": [],
-          "id": 30,
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "gridEnergyImport",
-                    "hidden": true,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "victoriametrics-metrics-datasource",
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": false,
-                        "expr": "range_sum(avg(gridEnergyImportDaily[1d]))/1000",
-                        "format": "time_series",
-                        "instant": false,
-                        "interval": "1d",
-                        "legendFormat": "__auto",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "averagePrice",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "victoriametrics-metrics-datasource",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "range_avg(avg(energyPriceAvgDaily[1d])) * 100",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "averagePrice",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "weightedAveragePrice",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "__expr__",
-                      "spec": {
-                        "expression": "($purchased * -100 )/ $gridEnergyImport",
-                        "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "savedPrice",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "__expr__",
-                      "spec": {
-                        "expression": "$averagePrice - $weightedAveragePrice",
-                        "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "potentialPurchased",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "__expr__",
-                      "spec": {
-                        "expression": "$averagePrice * $gridEnergyImport / -100",
-                        "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "purchased",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "victoriametrics-metrics-datasource",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "range_sum(avg(energyPriceBoughtDaily[1d])) * (-1)",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "purchased",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "totalSavings",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "__expr__",
-                      "spec": {
-                        "expression": "$purchased  - $potentialPurchased ",
-                        "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "sold",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "victoriametrics-metrics-datasource",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "range_sum(avg(energyPriceSoldDaily[1d]))",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "sold",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    }
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "refId": "totalCost",
-                    "hidden": false,
-                    "query": {
-                      "kind": "DataQuery",
-                      "version": "v0",
-                      "group": "__expr__",
-                      "spec": {
-                        "expression": "$purchased + $sold",
-                        "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
-                      }
-                    }
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          }
+          "transparent": true
         }
       },
       "panel-31": {
@@ -3233,7 +3271,8 @@
                 ]
               }
             }
-          }
+          },
+          "transparent": true
         }
       },
       "panel-40": {
@@ -3444,7 +3483,8 @@
                 ]
               }
             }
-          }
+          },
+          "transparent": true
         }
       },
       "panel-6": {
@@ -3503,6 +3543,29 @@
                     "refId": "selfSufficiency",
                     "hidden": false
                   }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "avg(greenShareHomeDaily[1d])",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "greenShare",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "greenShare",
+                    "hidden": false
+                  }
                 }
               ],
               "transformations": [],
@@ -3540,6 +3603,7 @@
               "fieldConfig": {
                 "defaults": {
                   "unit": "percentunit",
+                  "decimals": 0,
                   "min": 0,
                   "max": 1,
                   "thresholds": {
@@ -3613,13 +3677,33 @@
                       {
                         "id": "color",
                         "value": {
-                          "fixedColor": "green",
+                          "fixedColor": "blue",
                           "mode": "fixed"
                         }
                       },
                       {
                         "id": "displayName",
                         "value": "Autonomy"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "greenShare"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "green",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Green share"
                       }
                     ]
                   }
@@ -3631,14 +3715,13 @@
       }
     },
     "layout": {
-      "kind": "RowsLayout",
+      "kind": "TabsLayout",
       "spec": {
-        "rows": [
+        "tabs": [
           {
-            "kind": "RowsLayoutRow",
+            "kind": "TabsLayoutTab",
             "spec": {
               "title": "PV",
-              "collapse": false,
               "layout": {
                 "kind": "GridLayout",
                 "spec": {
@@ -3649,7 +3732,7 @@
                         "x": 0,
                         "y": 0,
                         "width": 5,
-                        "height": 13,
+                        "height": 16,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-39"
@@ -3662,7 +3745,7 @@
                         "x": 5,
                         "y": 0,
                         "width": 19,
-                        "height": 13,
+                        "height": 16,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-38"
@@ -3673,9 +3756,9 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 13,
+                        "y": 16,
                         "width": 5,
-                        "height": 6,
+                        "height": 8,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-24"
@@ -3686,9 +3769,9 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 5,
-                        "y": 13,
+                        "y": 16,
                         "width": 19,
-                        "height": 9,
+                        "height": 11,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-6"
@@ -3699,7 +3782,7 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 19,
+                        "y": 24,
                         "width": 5,
                         "height": 3,
                         "element": {
@@ -3714,10 +3797,9 @@
             }
           },
           {
-            "kind": "RowsLayoutRow",
+            "kind": "TabsLayoutTab",
             "spec": {
-              "title": "Haus",
-              "collapse": false,
+              "title": "Home",
               "layout": {
                 "kind": "GridLayout",
                 "spec": {
@@ -3728,7 +3810,7 @@
                         "x": 0,
                         "y": 0,
                         "width": 5,
-                        "height": 11,
+                        "height": 14,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-32"
@@ -3741,7 +3823,7 @@
                         "x": 5,
                         "y": 0,
                         "width": 19,
-                        "height": 11,
+                        "height": 14,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-31"
@@ -3752,9 +3834,9 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 11,
+                        "y": 14,
                         "width": 5,
-                        "height": 11,
+                        "height": 13,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-40"
@@ -3765,22 +3847,35 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 5,
-                        "y": 11,
+                        "y": 14,
                         "width": 19,
-                        "height": 11,
+                        "height": 13,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-37"
                         }
                       }
-                    },
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Costs",
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 22,
+                        "y": 0,
                         "width": 5,
-                        "height": 18,
+                        "height": 27,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-30"
@@ -3791,9 +3886,9 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 5,
-                        "y": 22,
+                        "y": 0,
                         "width": 19,
-                        "height": 11,
+                        "height": 15,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-26"
@@ -3804,9 +3899,9 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 5,
-                        "y": 33,
+                        "y": 15,
                         "width": 19,
-                        "height": 7,
+                        "height": 12,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-28"
@@ -3819,10 +3914,9 @@
             }
           },
           {
-            "kind": "RowsLayoutRow",
+            "kind": "TabsLayoutTab",
             "spec": {
-              "title": "Speicher",
-              "collapse": false,
+              "title": "Battery",
               "layout": {
                 "kind": "GridLayout",
                 "spec": {
@@ -3833,7 +3927,7 @@
                         "x": 0,
                         "y": 0,
                         "width": 5,
-                        "height": 7,
+                        "height": 14,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-16"
@@ -3846,7 +3940,7 @@
                         "x": 5,
                         "y": 0,
                         "width": 19,
-                        "height": 7,
+                        "height": 14,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-11"
@@ -3905,7 +3999,7 @@
         "tooltip": "",
         "url": "",
         "tags": [
-          "PV"
+          "EVCC"
         ],
         "asDropdown": true,
         "targetBlank": false,
@@ -3915,7 +4009,9 @@
     ],
     "liveNow": false,
     "preload": false,
-    "tags": [],
+    "tags": [
+      "EVCC"
+    ],
     "timeSettings": {
       "timezone": "browser",
       "from": "now/M",

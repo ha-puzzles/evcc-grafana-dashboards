@@ -234,6 +234,9 @@ deleteAggregations() {
         deleteMetric "energyPriceMaxDaily"
         deleteMetric "energyPriceMinDaily"
         deleteMetric "energyPriceAvgDaily"
+        deleteMetric "greenShareHomeDaily"
+        deleteMetric "batterySocMaxDaily"
+        deleteMetric "batterySocMinDaily"
     else
         logInfo "Deletion of aggregated metrics aborted."
     fi
@@ -264,7 +267,7 @@ aggregateQuery() {
     local encoded_query
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
-    logInfo "Creating aggregated metric $metric"
+    logInfo "Aggregating $metric"
     logDebug "Executing query: $query"
 
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
@@ -296,7 +299,7 @@ aggregateQueryByTag() {
     local encoded_query
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
-    logInfo "Creating aggregated metric $metric"
+    logInfo "Aggregating $metric"
     logDebug "Executing query: $query"
 
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
@@ -338,6 +341,10 @@ aggregate() {
     aggregateQuery "max_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceMaxDaily" "$starttime" "$endtime"
     aggregateQuery "min_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceMinDaily" "$starttime" "$endtime"
     aggregateQuery "avg_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceAvgDaily" "$starttime" "$endtime"
+    aggregateQuery "avg_over_time(avg(greenShareHome_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "greenShareHomeDaily" "$starttime" "$endtime"
+    aggregateQuery "max_over_time(avg(batterySoc_value)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)" "batterySocMaxDaily" "$starttime" "$endtime"
+    # > 0 as read errors may return 0, which is extremely unlikely for a home battery.
+    aggregateQuery "min_over_time(avg(batterySoc_value > 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)" "batterySocMinDaily" "$starttime" "$endtime"
 }
 
 ###############################################################################
