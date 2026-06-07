@@ -289,7 +289,7 @@ aggregateQuery() {
             day_padded=$(printf "%02d" "$day")
             month_str="${year}-${month_padded}"
             date_str="${year}-${month_padded}-${day_padded}"
-            line="${metric}{${tag}=\"${tagValue}\",year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
+            line="${metric}{year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
         done
 }
@@ -323,7 +323,7 @@ aggregateQueryByTag() {
             day_padded=$(printf "%02d" "$day")
             month_str="${year}-${month_padded}"
             date_str="${year}-${month_padded}-${day_padded}"
-            line="${metric}{${tag}=\"${tagValue}\",year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
+            line="${metric}{$tag=${tagValue},year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
             logDebug "Inserting line: $line"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
         done
