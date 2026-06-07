@@ -405,7 +405,8 @@ elif [ "$AGGREGATE_FROM_YEAR" -ne 0 ]; then
             agg_start=$chunk_start
             [ $agg_start -lt $starttime ] && agg_start=$starttime
             agg_end=$chunk_end
-            logInfo "Aggregating $current_year-$(printf "%02d" $current_month) from $(date -d @$agg_start) to $(date -d @$agg_end)"
+            logInfo "Aggregating $current_year-$(printf "%02d" $current_month)"
+            logDebug "Aggregating from $(date -d @$agg_start) to $(date -d @$agg_end)"
             aggregate "$agg_start" "$agg_end"
         fi
 

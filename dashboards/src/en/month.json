@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "adz6thx",
-    "generation": 40,
+    "generation": 44,
     "creationTimestamp": "2026-04-04T16:45:40Z",
     "labels": {},
     "annotations": {}
@@ -148,7 +148,7 @@
                   "links": [
                     {
                       "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                      "url": "/d/adsmz7v/?orgId=1&time=${__value.time}&time.window=86400000"
                     }
                   ],
                   "custom": {
@@ -1268,7 +1268,7 @@
                   "links": [
                     {
                       "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                      "url": "/d/adsmz7v/?orgId=1&time=${__value.time}&time.window=86400000"
                     }
                   ],
                   "custom": {
@@ -1931,7 +1931,7 @@
                   "links": [
                     {
                       "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                      "url": "/d/adsmz7v/?orgId=1&time=${__value.time}&time.window=86400000"
                     }
                   ],
                   "custom": {
@@ -2163,12 +2163,6 @@
                     "mode": "palette-classic",
                     "fixedColor": "orange"
                   },
-                  "links": [
-                    {
-                      "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                    }
-                  ],
                   "custom": {
                     "hideFrom": {
                       "legend": false,
@@ -2335,7 +2329,7 @@
                   "links": [
                     {
                       "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                      "url": "/d/adsmz7v/?orgId=1&time=${__value.time}&time.window=86400000"
                     }
                   ],
                   "custom": {
@@ -2633,7 +2627,7 @@
                   "links": [
                     {
                       "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                      "url": "/d/adsmz7v/?orgId=1&time=${__value.time}&time.window=86400000"
                     }
                   ],
                   "custom": {
@@ -3397,12 +3391,6 @@
                     "mode": "palette-classic-by-name",
                     "fixedColor": "orange"
                   },
-                  "links": [
-                    {
-                      "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
-                    }
-                  ],
                   "custom": {
                     "hideFrom": {
                       "legend": false,
@@ -3622,7 +3610,7 @@
                   "links": [
                     {
                       "title": "PV Today",
-                      "url": "/d/7Ou-Y1Rgk/pv-today-tablet?orgId=1&time=${__value.time}&time.window=86400000"
+                      "url": "/d/adsmz7v/?orgId=1&time=${__value.time}&time.window=86400000"
                     }
                   ],
                   "custom": {
@@ -4055,8 +4043,8 @@
           "name": "loadpointBlocklist",
           "query": "^none$",
           "current": {
-            "text": "/^none$/",
-            "value": "/^none$/"
+            "text": "^none$",
+            "value": "^none$"
           },
           "label": "Excluded loadpoints",
           "hide": "hideVariable",
