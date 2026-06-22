@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "adz6thx",
-    "generation": 44,
+    "generation": 47,
     "creationTimestamp": "2026-04-04T16:45:40Z",
     "labels": {},
     "annotations": {}
@@ -1778,7 +1778,7 @@
                       "version": "v0",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sort_by_label(avg by (title)(extEnergyDaily{title !~ \"$extBlocklist\"} [1d]), \"title\") !=0",
+                        "expr": "sort_by_label(\n    (sum by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0)\n, \"title\") != 0",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "{{title}}",
@@ -1801,30 +1801,7 @@
                       "version": "v0",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sort_by_label(avg by (title)(auxEnergyDaily{title !~ \"$auxBlocklist\"} [1d]), \"title\") !=0",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "{{title}}",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "auxEnergies",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) - (sum(avg by (title)(auxEnergyDaily{title !~ \"$auxBlocklist\"} [1d]) !=0))",
+                        "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0)\n  +\n  (sum(avg by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0)\n  + \n  (sum(avg by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0)\n)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "otherEnergy",
@@ -1834,53 +1811,7 @@
                         "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
-                    "refId": "otherEnergyAux",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) - (sum(avg by (title)(extEnergyDaily{title !~ \"$extBlocklist\"} [1d])) !=0 )",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "otherEnergy",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "otherEnergyExt",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) - (sum(avg by (title)(extEnergyDaily{title !~ \"$extBlocklist\"} [1d]) !=0) - (sum(avg by (title)(auxEnergyDaily{title !~ \"$auxBlocklist\"} <0 [1d]) !=0)))",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "otherEnergy",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "otherEnergyExtAux",
+                    "refId": "otherEnergy",
                     "hidden": false
                   }
                 }
@@ -2015,7 +1946,7 @@
                       "version": "v0",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sort_by_label(avg by (title)(extEnergyDaily{title !~ \"$extBlocklist\"} [1d]), \"title\") !=0",
+                        "expr": "sort_by_label(\n    (sum by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0)\n, \"title\") != 0",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "__auto",
@@ -2025,7 +1956,7 @@
                         "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
-                    "refId": "extEnergies",
+                    "refId": "energies",
                     "hidden": false
                   }
                 },
@@ -2038,30 +1969,7 @@
                       "version": "v0",
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sort_by_label(avg by (title)(auxEnergyDaily{title !~ \"$auxBlocklist\"} [1d]), \"title\") !=0",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "__auto",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "auxEnergies",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) - (sum(avg by (title)(auxEnergyDaily{title !~ \"$auxBlocklist\"} [1d]) !=0))",
+                        "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0)\n  +\n  (sum(avg by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0)\n  + \n  (sum(avg by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0)\n)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "otherEnergy",
@@ -2071,53 +1979,7 @@
                         "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
-                    "refId": "otherEnergyAux",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) - (sum(avg by (title)(extEnergyDaily{title !~ \"$extBlocklist\"} [1d])) !=0 )",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "otherEnergy",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "otherEnergyExt",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) - (sum(avg by (title)(extEnergyDaily{title !~ \"$extBlocklist\"} [1d]) !=0) - (sum(avg by (title)(auxEnergyDaily{title !~ \"$auxBlocklist\"} <0 [1d]) !=0)))",
-                        "format": "time_series",
-                        "interval": "1d",
-                        "legendFormat": "otherEnergy",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "otherEnergyExtAux",
+                    "refId": "otherEnergy",
                     "hidden": false
                   }
                 }
@@ -2187,7 +2049,7 @@
                       },
                       {
                         "id": "displayName",
-                        "value": "otherConsumers"
+                        "value": "Other consumers"
                       }
                     ]
                   }
@@ -4050,6 +3912,21 @@
           "hide": "hideVariable",
           "skipUrlSync": true,
           "description": "List of loadpoints that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any entries, you must provide a regex that does not match any existing loadpoint.\n\nExamples:\n\nNo entries: ^none$\nFilter out 'Garage': ^Garage$\nFilter out 'Garage' and 'Parking Spot': ^Garage$|^Parking Spot$\nFilter out everything starting with 'foo': ^foo.*$"
+        }
+      },
+      {
+        "kind": "ConstantVariable",
+        "spec": {
+          "name": "consumerBlocklist",
+          "query": "^none$",
+          "current": {
+            "text": "^none$",
+            "value": "^none$"
+          },
+          "label": "Excluded consumer devices",
+          "hide": "hideVariable",
+          "skipUrlSync": true,
+          "description": "List of consumer devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/"
         }
       },
       {

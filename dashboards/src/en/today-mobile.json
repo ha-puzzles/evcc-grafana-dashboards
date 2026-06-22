@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "ad5ks8d",
-    "generation": 11,
+    "generation": 17,
     "creationTimestamp": "2026-06-07T17:09:16Z",
     "labels": {},
     "annotations": {}
@@ -425,14 +425,15 @@
                 ]
               }
             }
-          }
+          },
+          "transparent": true
         }
       },
       "panel-64": {
         "kind": "Panel",
         "spec": {
           "id": 64,
-          "title": "",
+          "title": "KPIs",
           "description": "",
           "links": [],
           "data": {
@@ -770,7 +771,7 @@
         "kind": "Panel",
         "spec": {
           "id": 66,
-          "title": "Battery levels",
+          "title": "",
           "description": "Black: Priority SoC threshold for EVCC",
           "links": [],
           "data": {
@@ -2175,7 +2176,7 @@
         "kind": "Panel",
         "spec": {
           "id": 77,
-          "title": "Energy (kWh)",
+          "title": "Energy",
           "description": "",
           "links": [],
           "data": {
@@ -2469,6 +2470,7 @@
               },
               "fieldConfig": {
                 "defaults": {
+                  "unit": "kwatth",
                   "decimals": 1,
                   "thresholds": {
                     "mode": "absolute",
@@ -2687,199 +2689,11 @@
           "transparent": true
         }
       },
-      "panel-78": {
-        "kind": "Panel",
-        "spec": {
-          "id": 78,
-          "title": "",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "range_last (\n    sort_by_label(\n        integrate(\n            ((extPower_value{title!=\"\", title !~ \"$extBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    , \"title\")\n)",
-                        "format": "time_series",
-                        "interval": "",
-                        "legendFormat": "{{title}}",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "extEnergies",
-                    "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "range_last (\n    sort_by_label(\n        integrate(\n            ((auxPower_value{title!=\"\", title !~ \"$auxBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    , \"title\")\n)",
-                        "format": "time_series",
-                        "interval": "$energySampleInterval",
-                        "legendFormat": "{{title}}",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "auxEnergies",
-                    "hidden": true
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "victoriametrics-metrics-datasource",
-                      "version": "v0",
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "range_last(\n    sum(\n        integrate(\n            ((homePower_value < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n-\nrange_last(\n    sum(\n        integrate(\n            ((extPower_value{title!=\"\", title !~ \"$extBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n-\nrange_last(\n    sum(\n        integrate(\n            ((auxPower_value{title!=\"\", title !~ \"$auxBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)",
-                        "format": "time_series",
-                        "interval": "$energySampleInterval",
-                        "legendFormat": "otherEnergies",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
-                      }
-                    },
-                    "refId": "otherEnergies",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {
-                "maxDataPoints": 1400
-              }
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "barchart",
-            "version": "13.0.2",
-            "spec": {
-              "options": {
-                "barRadius": 0,
-                "barWidth": 1,
-                "fullHighlight": false,
-                "groupWidth": 0.7,
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "orientation": "horizontal",
-                "showValue": "never",
-                "stacking": "percent",
-                "tooltip": {
-                  "hideZeros": false,
-                  "mode": "single",
-                  "sort": "none"
-                },
-                "xTickLabelRotation": 0,
-                "xTickLabelSpacing": 0
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "watth",
-                  "min": 0,
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "value": 0,
-                        "color": "green"
-                      },
-                      {
-                        "value": 80,
-                        "color": "red"
-                      }
-                    ]
-                  },
-                  "color": {
-                    "mode": "palette-classic"
-                  },
-                  "links": [
-                    {
-                      "title": "More details: Home consumption",
-                      "url": "/d/adddvtj?$__url_time_range&dtab=consumption"
-                    }
-                  ],
-                  "custom": {
-                    "axisBorderShow": false,
-                    "axisCenteredZero": false,
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "hidden",
-                    "fillOpacity": 100,
-                    "gradientMode": "none",
-                    "hideFrom": {
-                      "legend": false,
-                      "tooltip": false,
-                      "viz": false
-                    },
-                    "lineWidth": 1,
-                    "scaleDistribution": {
-                      "type": "linear"
-                    },
-                    "thresholdsStyle": {
-                      "mode": "off"
-                    }
-                  }
-                },
-                "overrides": [
-                  {
-                    "matcher": {
-                      "id": "byName",
-                      "options": "otherEnergies"
-                    },
-                    "properties": [
-                      {
-                        "id": "color",
-                        "value": {
-                          "mode": "fixed"
-                        }
-                      },
-                      {
-                        "id": "displayName",
-                        "value": "Other consumers"
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
-          },
-          "transparent": true
-        }
-      },
       "panel-79": {
         "kind": "Panel",
         "spec": {
           "id": 79,
-          "title": "",
+          "title": "Battery levels",
           "description": "",
           "links": [],
           "data": {
@@ -3066,6 +2880,171 @@
           },
           "transparent": true
         }
+      },
+      "panel-80": {
+        "kind": "Panel",
+        "spec": {
+          "id": 80,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_last(\n    sort_by_label (\n        sum by (title)(\n            (\n                integrate(\n                    ((consumersPower_value{title !~ \"$consumerBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n                ) / 3600\n                or\n                integrate(\n                    ((extPower_value{title !~ \"$extBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n                ) / 3600\n                or\n                integrate(\n                    ((auxPower_value{title !~ \"$auxBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n                ) / 3600\n            )\n        )\n    , \"title\")\n\n    and ON(title) \n    (consumersPower_value{title=~\".+\"} or extPower_value{title=~\".+\"} or auxPower_value{title=~\".+\"})\n)",
+                        "format": "time_series",
+                        "interval": "",
+                        "legendFormat": "{{title}}",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "energies",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "range_last(\n    sum(\n        integrate(\n            ((homePower_value < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n- range_last(\n    sum(\n        integrate(\n            ((consumersPower_value{title!=\"\", title !~ \"$consumerBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n- range_last(\n    sum(\n        integrate(\n            ((extPower_value{title!=\"\", title !~ \"$extBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n- range_last(\n    sum(\n        integrate(\n            ((auxPower_value{title!=\"\", title !~ \"$auxBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)",
+                        "format": "time_series",
+                        "interval": "$energySampleInterval",
+                        "legendFormat": "otherEnergies",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
+                      }
+                    },
+                    "refId": "otherEnergies",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {
+                "maxDataPoints": 1400
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "barchart",
+            "version": "13.0.2",
+            "spec": {
+              "options": {
+                "barRadius": 0,
+                "barWidth": 1,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "orientation": "horizontal",
+                "showValue": "never",
+                "stacking": "percent",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                },
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "watth",
+                  "min": 0,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "links": [
+                    {
+                      "title": "More details: Home consumption",
+                      "url": "/d/adddvtj?$__url_time_range&dtab=consumption"
+                    }
+                  ],
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "hidden",
+                    "fillOpacity": 100,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "otherEnergies"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Other consumers"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "transparent": true
+        }
       }
     },
     "layout": {
@@ -3117,10 +3096,10 @@
               "x": 0,
               "y": 19,
               "width": 24,
-              "height": 3,
+              "height": 4,
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-64"
+                "name": "panel-79"
               }
             }
           },
@@ -3128,7 +3107,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 22,
+              "y": 23,
               "width": 24,
               "height": 4,
               "element": {
@@ -3141,12 +3120,12 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 26,
+              "y": 27,
               "width": 24,
-              "height": 3,
+              "height": 4,
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-79"
+                "name": "panel-64"
               }
             }
           },
@@ -3154,7 +3133,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 29,
+              "y": 31,
               "width": 24,
               "height": 9,
               "element": {
@@ -3167,12 +3146,12 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 38,
+              "y": 40,
               "width": 24,
               "height": 1,
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-78"
+                "name": "panel-80"
               }
             }
           },
@@ -3180,7 +3159,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 39,
+              "y": 41,
               "width": 24,
               "height": 2,
               "element": {
@@ -3238,7 +3217,7 @@
         "tags": [
           "EVCC"
         ],
-        "asDropdown": true,
+        "asDropdown": false,
         "targetBlank": false,
         "includeVars": false,
         "keepTime": false,
@@ -3401,6 +3380,21 @@
           "hide": "hideVariable",
           "skipUrlSync": true,
           "description": "List of EXT devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/"
+        }
+      },
+      {
+        "kind": "ConstantVariable",
+        "spec": {
+          "name": "consumerBlocklist",
+          "query": "^none$",
+          "current": {
+            "text": "^none$",
+            "value": "^none$"
+          },
+          "label": "Excluded consumer devices",
+          "hide": "hideVariable",
+          "skipUrlSync": true,
+          "description": "List of consumer devices that should NOT be displayed. This field requires a regular expression and cannot be left empty. If you do not want to filter any devices, you must provide a regex that matches none of the entries.\n\nExamples:\n\nNo entries: /^none$/\nFilter out 'Ground Floor': /^Ground Floor$/\nFilter out 'Ground Floor' and 'First Floor': /^Ground Floor$|^First Floor$/\nFilter out everything starting with 'Distributor': /^Distributor.*$/"
         }
       },
       {
