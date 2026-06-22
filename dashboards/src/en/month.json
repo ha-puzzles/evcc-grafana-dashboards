@@ -1,12 +1,23 @@
 {
-  "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
+  "apiVersion": "dashboard.grafana.app/v2",
   "metadata": {
     "name": "adz6thx",
+    "namespace": "default",
+    "uid": "w8uCYfU0CcsyA7GvP0oLMPZAE7cle5e6dgrgVPgL9DAX",
+    "resourceVersion": "1782154881211012",
     "generation": 47,
     "creationTimestamp": "2026-04-04T16:45:40Z",
-    "labels": {},
-    "annotations": {}
+    "labels": {
+      "grafana.app/deprecatedInternalID": "34"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:u000000001",
+      "grafana.app/folder": "afc1n53if7rwgc",
+      "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
+      "grafana.app/updatedBy": "user:u000000001",
+      "grafana.app/updatedTimestamp": "2026-06-22T19:01:21Z"
+    }
   },
   "spec": {
     "annotations": [
@@ -17,14 +28,14 @@
             "kind": "DataQuery",
             "group": "grafana",
             "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
             "spec": {
               "limit": 100,
               "matchAny": false,
               "tags": [],
               "type": "dashboard"
-            },
-            "labels": {
-              "grafana.app/export-label": "grafana-1"
             }
           },
           "enable": true,
@@ -56,6 +67,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(batterySocMaxDaily[1d])",
@@ -63,9 +77,6 @@
                         "interval": "1d",
                         "legendFormat": "maxBattery",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "maxBattery",
@@ -79,6 +90,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(batterySocMinDaily[1d])",
@@ -86,9 +100,6 @@
                         "interval": "1d",
                         "legendFormat": "minBattery",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "minBattery",
@@ -255,6 +266,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(batteryEnergyChargedDaily[1d]))",
@@ -262,9 +276,6 @@
                         "interval": "1d",
                         "legendFormat": "totalCharged",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "totalCharged",
@@ -278,6 +289,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(batteryEnergyDischargedDaily[1d]))",
@@ -285,9 +299,6 @@
                         "interval": "1d",
                         "legendFormat": "totalDischarged",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "totalDischarged",
@@ -301,12 +312,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "$totalDischarged/$totalCharged",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "batteryEfficiency",
@@ -320,6 +331,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_avg(avg(batterySocMaxDaily[1d]))",
@@ -327,9 +341,6 @@
                         "interval": "1d",
                         "legendFormat": "avgMaxSoc",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "avgMaxSoc",
@@ -343,6 +354,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_avg(avg(batterySocMinDaily[1d]))",
@@ -350,9 +364,6 @@
                         "interval": "1d",
                         "legendFormat": "avgMinSoc",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "avgMinSoc",
@@ -551,6 +562,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
@@ -560,9 +574,6 @@
                         "interval": "1d",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "A",
@@ -645,15 +656,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "1 - ( range_sum(avg(gridEnergyImportDaily[1d])) / (range_sum(avg(homeEnergyDaily[1d])) + range_sum(sum(loadpointEnergyDaily[1d]))) )",
                         "format": "time_series",
                         "legendFormat": "autonomy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "autonomy",
@@ -667,6 +678,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "(range_sum(avg(pvEnergyDaily[1d])) - range_sum(avg(gridEnergyExportDaily[1d]))) / range_sum(avg(pvEnergyDaily[1d]))",
@@ -674,9 +688,6 @@
                         "interval": "1d",
                         "legendFormat": "selfSufficiency",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "selfSufficiency",
@@ -690,6 +701,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_avg(avg(greenShareHomeDaily[1d]))",
@@ -697,9 +711,6 @@
                         "interval": "1d",
                         "legendFormat": "greenShare",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "greenShare",
@@ -865,6 +876,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(energyPriceMaxDaily[1d]) * 100",
@@ -872,9 +886,6 @@
                         "interval": "1d",
                         "legendFormat": "energyPriceMax",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "energyPriceMax",
@@ -888,6 +899,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(energyPriceAvgDaily[1d]) * 100",
@@ -895,9 +909,6 @@
                         "interval": "1d",
                         "legendFormat": "energyPriceAvg",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "energyPriceAvg",
@@ -911,6 +922,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(energyPriceBoughtDaily[1d])",
@@ -918,9 +932,6 @@
                         "interval": "1d",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "purchased",
@@ -934,6 +945,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(gridEnergyImportDaily[1d])/1000",
@@ -941,9 +955,6 @@
                         "interval": "1d",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyImport",
@@ -957,12 +968,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "($purchased * 100 )/ $gridEnergyImport",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "weightedAveragePrice",
@@ -976,6 +987,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(energyPriceMinDaily[1d]) * 100",
@@ -983,9 +997,6 @@
                         "interval": "1d",
                         "legendFormat": "energyPriceMin",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "energyPriceMin",
@@ -1179,6 +1190,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(energyPriceBoughtDaily[1d])",
@@ -1186,9 +1200,6 @@
                         "interval": "1d",
                         "legendFormat": "energyPriceBought",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "energyPriceBought",
@@ -1202,6 +1213,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(energyPriceSoldDaily[1d]) * (-1)",
@@ -1209,9 +1223,6 @@
                         "interval": "1d",
                         "legendFormat": "energyPriceSold",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "energyPriceSold",
@@ -1390,6 +1401,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
@@ -1399,9 +1413,6 @@
                         "interval": "1d",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyImport",
@@ -1415,6 +1426,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_avg(avg(energyPriceAvgDaily[1d])) * 100",
@@ -1422,9 +1436,6 @@
                         "interval": "1d",
                         "legendFormat": "averagePrice",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "averagePrice",
@@ -1438,12 +1449,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "($purchased * -100 )/ $gridEnergyImport",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "weightedAveragePrice",
@@ -1457,12 +1468,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "$averagePrice - $weightedAveragePrice",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "savedPrice",
@@ -1476,12 +1487,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "$averagePrice * $gridEnergyImport / -100",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "potentialPurchased",
@@ -1495,6 +1506,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(energyPriceBoughtDaily[1d])) * (-1)",
@@ -1502,9 +1516,6 @@
                         "interval": "1d",
                         "legendFormat": "purchased",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "purchased",
@@ -1518,12 +1529,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "$purchased  - $potentialPurchased ",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "totalSavings",
@@ -1537,6 +1548,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(energyPriceSoldDaily[1d]))",
@@ -1544,9 +1558,6 @@
                         "interval": "1d",
                         "legendFormat": "sold",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "sold",
@@ -1560,12 +1571,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "$purchased + $sold",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "totalCost",
@@ -1776,6 +1787,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sort_by_label(\n    (sum by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0)\n, \"title\") != 0",
@@ -1783,9 +1797,6 @@
                         "interval": "1d",
                         "legendFormat": "{{title}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "extEnergies",
@@ -1799,6 +1810,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0)\n  +\n  (sum(avg by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0)\n  + \n  (sum(avg by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0)\n)",
@@ -1806,9 +1820,6 @@
                         "interval": "1d",
                         "legendFormat": "otherEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "otherEnergy",
@@ -1944,6 +1955,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sort_by_label(\n    (sum by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0)\n, \"title\") != 0",
@@ -1951,9 +1965,6 @@
                         "interval": "1d",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "energies",
@@ -1967,6 +1978,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0)\n  +\n  (sum(avg by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0)\n  + \n  (sum(avg by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0)\n)",
@@ -1974,9 +1988,6 @@
                         "interval": "1d",
                         "legendFormat": "otherEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "otherEnergy",
@@ -2078,6 +2089,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(batteryEnergyChargedDaily[1d]) - avg(batteryEnergyDischargedDaily[1d])",
@@ -2085,9 +2099,6 @@
                         "interval": "1d",
                         "legendFormat": "batteryEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryEnergy",
@@ -2101,6 +2112,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(homeEnergyDaily[1d])",
@@ -2108,9 +2122,6 @@
                         "interval": "1d",
                         "legendFormat": "homeEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homeEnergy",
@@ -2124,6 +2135,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg by (loadpoint)(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d])",
@@ -2131,9 +2145,6 @@
                         "interval": "1d",
                         "legendFormat": "{{loadpoint}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointsEnergy",
@@ -2322,6 +2333,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(pvEnergyDaily[1d])",
@@ -2330,9 +2344,6 @@
                         "legendFormat": "pvEnergy",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "pvEnergy",
@@ -2346,6 +2357,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(gridEnergyImportDaily[1d])",
@@ -2354,9 +2368,6 @@
                         "legendFormat": "gridEnergyImport",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyImport",
@@ -2370,6 +2381,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(homeEnergyDaily[1d]) * (-1)",
@@ -2378,9 +2392,6 @@
                         "legendFormat": "homeEnergy",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homeEnergy",
@@ -2394,6 +2405,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg by (loadpoint)(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d]) * (-1)",
@@ -2402,9 +2416,6 @@
                         "legendFormat": "{{loadpoint}}",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointsEnergy",
@@ -2418,6 +2429,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(gridEnergyExportDaily[1d]) * (-1)",
@@ -2426,9 +2440,6 @@
                         "legendFormat": "gridEnergyExport",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyExport",
@@ -2664,6 +2675,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(pvEnergyDaily[1d]))",
@@ -2672,9 +2686,6 @@
                         "legendFormat": "pvEnergy",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "pvEnergy",
@@ -2688,6 +2699,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(gridEnergyImportDaily[1d]))",
@@ -2696,9 +2710,6 @@
                         "legendFormat": "gridEnergyImport",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyImport",
@@ -2712,6 +2723,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(gridEnergyExportDaily[1d])) * (-1)",
@@ -2720,9 +2734,6 @@
                         "legendFormat": "gridEnergyExport",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyExport",
@@ -2736,6 +2747,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(homeEnergyDaily[1d])) * (-1)",
@@ -2744,9 +2758,6 @@
                         "legendFormat": "homeEnergy",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homeEnergy",
@@ -2760,6 +2771,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(batteryEnergyDischargedDaily[1d])) * (-1)",
@@ -2768,9 +2782,6 @@
                         "legendFormat": "batteryEnergyDischarged",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryEnergyDischarged",
@@ -2784,6 +2795,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg(batteryEnergyChargedDaily[1d]))",
@@ -2792,9 +2806,6 @@
                         "legendFormat": "batteryEnergyCharged",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryEnergyCharged",
@@ -2808,6 +2819,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(avg by (loadpoint)(loadpointEnergyDaily[1d])) * (-1)",
@@ -2816,9 +2830,6 @@
                         "legendFormat": "{{loadpoint}}",
                         "range": true,
                         "trace": 1
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointsEnergy",
@@ -2832,15 +2843,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "0",
                         "format": "time_series",
                         "legendFormat": "workaround",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "workaround",
@@ -3149,6 +3160,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(batteryEnergyChargedDaily[1d]) - avg(batteryEnergyDischargedDaily[1d])",
@@ -3156,9 +3170,6 @@
                         "interval": "1d",
                         "legendFormat": "batteryEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryEnergy",
@@ -3172,6 +3183,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(homeEnergyDaily[1d])",
@@ -3179,9 +3193,6 @@
                         "interval": "1d",
                         "legendFormat": "homeEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homeEnergy",
@@ -3195,6 +3206,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg by (loadpoint)(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d])",
@@ -3202,9 +3216,6 @@
                         "interval": "1d",
                         "legendFormat": "{{loadpoint}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointsEnergy",
@@ -3355,6 +3366,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "1 - ( avg(gridEnergyImportDaily[1d]) / (avg(homeEnergyDaily[1d]) + sum(loadpointEnergyDaily[1d])) )",
@@ -3362,9 +3376,6 @@
                         "interval": "1d",
                         "legendFormat": "autonomy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "autonomy",
@@ -3378,6 +3389,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "(avg(pvEnergyDaily[1d]) - avg(gridEnergyExportDaily[1d])) / avg(pvEnergyDaily[1d])",
@@ -3385,9 +3399,6 @@
                         "interval": "1d",
                         "legendFormat": "selfSufficiency",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "selfSufficiency",
@@ -3401,6 +3412,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(greenShareHomeDaily[1d])",
@@ -3408,9 +3422,6 @@
                         "interval": "1d",
                         "legendFormat": "greenShare",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "greenShare",
@@ -3960,5 +3971,11 @@
         }
       }
     ]
+  },
+  "status": {
+    "conversion": {
+      "failed": false,
+      "storedVersion": "v1"
+    }
   }
 }

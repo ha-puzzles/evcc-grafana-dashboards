@@ -1,12 +1,23 @@
 {
-  "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
+  "apiVersion": "dashboard.grafana.app/v2",
   "metadata": {
     "name": "adsmz7v",
+    "namespace": "default",
+    "uid": "iu2QTVwFtLooO0AaM835pXF4NbhjI3RL3zTf0vDl05sX",
+    "resourceVersion": "1782154949682015",
     "generation": 119,
     "creationTimestamp": "2026-02-01T10:44:35Z",
-    "labels": {},
-    "annotations": {}
+    "labels": {
+      "grafana.app/deprecatedInternalID": "24"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:u000000001",
+      "grafana.app/folder": "afc1n53if7rwgc",
+      "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
+      "grafana.app/updatedBy": "user:u000000001",
+      "grafana.app/updatedTimestamp": "2026-06-22T19:02:29Z"
+    }
   },
   "spec": {
     "annotations": [
@@ -17,14 +28,14 @@
             "kind": "DataQuery",
             "group": "grafana",
             "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
             "spec": {
               "limit": 100,
               "matchAny": false,
               "tags": [],
               "type": "dashboard"
-            },
-            "labels": {
-              "grafana.app/export-label": "grafana-1"
             }
           },
           "enable": true,
@@ -56,6 +67,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "pvPower_value{id=\"\"} < $peakPowerLimit ",
@@ -63,9 +77,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "pvPower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "pvPower",
@@ -79,6 +90,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "gridPower_value < $peakPowerLimit",
@@ -86,9 +100,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "gridPower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridPower",
@@ -102,6 +113,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "homePower_value * (-1) > (-$peakPowerLimit)",
@@ -109,9 +123,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "homePower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homePower",
@@ -125,6 +136,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "batteryPower_value{id=\"\"} < $peakPowerLimit",
@@ -132,9 +146,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "batteryPower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryPower",
@@ -148,6 +159,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg by (loadpoint) (chargePower_value{id=\"\", loadpoint!~\"$loadpointBlocklist\"}) * (-1) > (-$peakPowerLimit)",
@@ -155,9 +169,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "{{loadpoint}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointPower",
@@ -171,6 +182,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(tariffSolar_value)",
@@ -178,9 +192,6 @@
                         "interval": "15m",
                         "legendFormat": "forecast",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "forecast",
@@ -446,6 +457,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(((pvPower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]) / 3600",
@@ -453,9 +467,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "pvEnergy",
@@ -469,6 +480,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n  ((gridPower_value > 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600",
@@ -476,9 +490,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyIn",
@@ -492,6 +503,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n  ((gridPower_value < 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / -3600",
@@ -499,9 +513,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyOut",
@@ -515,6 +526,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(((homePower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]) / 3600",
@@ -522,9 +536,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homeEnergy",
@@ -538,15 +549,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sum(integrate((avg by (loadpoint)(chargePower_value{loadpoint!=\"\"}) default 0)[1d:$energySampleInterval]) / 3600)",
                         "format": "time_series",
                         "legendFormat": "__auto",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointsEnergy",
@@ -560,12 +571,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "1 - $gridEnergyIn/($homeEnergy+$loadpointsEnergy)",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "autonomy",
@@ -579,12 +590,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "($pvEnergy - $gridEnergyOut) / $pvEnergy",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "selfConsumption",
@@ -598,15 +609,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_avg(greenShareHome_value)",
                         "format": "time_series",
                         "legendFormat": "greenShare",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "greenShare",
@@ -784,6 +795,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "batterySoc_value{id=\"\"} <= 100",
@@ -791,9 +805,6 @@
                         "interval": "5m",
                         "legendFormat": "batterySoc",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batterySoc",
@@ -807,6 +818,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sort_by_label(avg by(vehicle) (vehicleSoc_value{vehicle!=\"\", vehicle!~\"$vehicleBlocklist\"}), \"vehicle\")",
@@ -814,9 +828,6 @@
                         "interval": "5m",
                         "legendFormat": "{{vehicle}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "vehicleSocs",
@@ -830,6 +841,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "last_over_time(prioritySoc_value{db=\"\"}[30d])",
@@ -837,9 +851,6 @@
                         "interval": "5m",
                         "legendFormat": "prioritySoc",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "prioritySoc",
@@ -853,6 +864,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "last_over_time(bufferSoc_value{db=\"\"}[30d])",
@@ -860,9 +874,6 @@
                         "interval": "5m",
                         "legendFormat": "bufferSoc",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "bufferSoc",
@@ -1118,6 +1129,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(\n    avg(tariffGrid_value offset -$tariffPriceInterval)\n    *\n    integrate(\n        ((gridPower_value > 0 < $peakPowerLimit) default 0)[$tariffPriceInterval:$energySampleInterval] offset -$tariffPriceInterval\n    ) / 3600000\n)",
@@ -1125,9 +1139,6 @@
                         "interval": "$tariffPriceInterval",
                         "legendFormat": "boughtTotal",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "boughtTotal",
@@ -1141,6 +1152,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_sum(\n    avg(tariffFeedIn_value offset -$tariffPriceInterval)\n    *\n    integrate(\n        ((gridPower_value < 0 < $peakPowerLimit) default 0)[$tariffPriceInterval:$energySampleInterval] offset -$tariffPriceInterval\n    ) / 3600000\n)",
@@ -1148,9 +1162,6 @@
                         "interval": "$tariffPriceInterval",
                         "legendFormat": "soldTotal",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "soldTotal",
@@ -1164,12 +1175,12 @@
                       "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
                       "spec": {
                         "expression": "$boughtTotal + $soldTotal",
                         "type": "math"
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "__expr__-1"
                       }
                     },
                     "refId": "dailyTotal",
@@ -1329,15 +1340,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(pvPower_value{id=\"\"} / 1000)",
                         "format": "time_series",
                         "legendFormat": "pvPower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "pvPower",
@@ -1351,15 +1362,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(gridPower_value / 1000)",
                         "format": "time_series",
                         "legendFormat": "gridPower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridPower",
@@ -1373,15 +1384,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(homePower_value / -1000)",
                         "format": "time_series",
                         "legendFormat": "homePower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homePower",
@@ -1395,15 +1406,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(batteryPower_value{id=\"\"} / 1000)",
                         "format": "time_series",
                         "legendFormat": "batteryPower",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryPower",
@@ -1417,15 +1428,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sort_by_label(avg by(loadpoint) (chargePower_value / -1000),\"loadpoint\")",
                         "format": "time_series",
                         "legendFormat": "{{loadpoint}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointPowers",
@@ -1786,6 +1797,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "clamp_min(avg(gridPower_value) < $peakPowerLimit,0)",
@@ -1793,9 +1807,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "Grid consumption",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridPowerIn",
@@ -1809,6 +1820,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "clamp_max(avg(batteryPower_value{id=\"\"}) *(-1) > (-$peakPowerLimit),0) * (-1)",
@@ -1816,9 +1830,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "Battery discharge",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryPowerOut",
@@ -1832,6 +1843,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(pvPower_value{id=\"\"}) < $peakPowerLimit",
@@ -1839,9 +1853,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "PV",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "pvPower",
@@ -1855,6 +1866,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "clamp_max(avg(gridPower_value) < $peakPowerLimit,0)",
@@ -1862,9 +1876,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "Grid feed-in",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridPowerOut",
@@ -1878,6 +1889,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "clamp_min(avg(batteryPower_value{id=\"\"}) *(-1) > (-$peakPowerLimit),0) * (-1)",
@@ -1885,9 +1899,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "Battery charge",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryPowerIn",
@@ -1901,6 +1912,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg by (loadpoint) (chargePower_value{id=\"\"}) * (-1) > (-$peakPowerLimit)",
@@ -1908,9 +1922,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "{{loadpoint}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "loadpointPower",
@@ -1924,6 +1935,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg(homePower_value) * (-1) > (-$peakPowerLimit)",
@@ -1931,9 +1945,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "Home",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homePower",
@@ -2189,15 +2200,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n    ((pvPower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "pvEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "pvEnergy",
@@ -2211,15 +2222,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n  ((gridPower_value > 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "gridEnergyImport",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyImport",
@@ -2233,15 +2244,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n  ((gridPower_value < 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "gridEnergyExport",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "gridEnergyExport",
@@ -2255,15 +2266,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n    ((homePower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n) / -3600000",
                         "format": "time_series",
                         "legendFormat": "homeEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "homeEnergy",
@@ -2277,15 +2288,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n  ((batteryPower_value {id=\"\"} > 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "batDischargeEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryDischargeEnergy",
@@ -2299,15 +2310,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n  ((batteryPower_value {id=\"\"} < 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "batChargeEnergy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batteryChargeEnergy",
@@ -2321,15 +2332,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "sort_by_label(\n  integrate(\n    ((chargePower_value{vehicle!=\"\", vehicle !~ \"$vehicleBlocklist\"}) default 0) [1d:$energySampleInterval]\n  ) / -3600000\n, \"vehicle\")",
                         "format": "time_series",
                         "legendFormat": "{{vehicle}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "vehiclesEnergies",
@@ -2343,15 +2354,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "integrate(\n    (chargePower_value{vehicle=\"\", loadpoint !~ \"$loadpointBlocklist\"} default 0)[1d:$energySampleInterval]\n) / -3600000",
                         "format": "time_series",
                         "legendFormat": "{{loadpoint}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "guestVehicleEnergy",
@@ -2365,15 +2376,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "1",
                         "format": "time_series",
                         "legendFormat": "Energy",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "workaround",
@@ -2705,6 +2716,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_last(\n    sort_by_label (\n        sum by (title)(\n            (\n                integrate(\n                    ((consumersPower_value{title !~ \"$consumerBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n                ) / 3600\n                or\n                integrate(\n                    ((extPower_value{title !~ \"$extBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n                ) / 3600\n                or\n                integrate(\n                    ((auxPower_value{title !~ \"$auxBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n                ) / 3600\n            )\n        )\n    , \"title\")\n\n    and ON(title) \n    (consumersPower_value{title=~\".+\"} or extPower_value{title=~\".+\"} or auxPower_value{title=~\".+\"})\n)",
@@ -2712,9 +2726,6 @@
                         "interval": "",
                         "legendFormat": "{{title}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "energies",
@@ -2728,6 +2739,9 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "range_last(\n    sum(\n        integrate(\n            ((homePower_value < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n- range_last(\n    sum(\n        integrate(\n            ((consumersPower_value{title!=\"\", title !~ \"$consumerBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n- range_last(\n    sum(\n        integrate(\n            ((extPower_value{title!=\"\", title !~ \"$extBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)\n- range_last(\n    sum(\n        integrate(\n            ((auxPower_value{title!=\"\", title !~ \"$auxBlocklist\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n        ) / 3600\n    )\n)",
@@ -2735,9 +2749,6 @@
                         "interval": "$energySampleInterval",
                         "legendFormat": "otherEnergies",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "otherEnergies",
@@ -2870,15 +2881,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "last_over_time(batterySoc_value{id=\"\"})",
                         "format": "time_series",
                         "legendFormat": "batterySoc",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "batterySoc",
@@ -2892,15 +2903,15 @@
                       "kind": "DataQuery",
                       "group": "victoriametrics-metrics-datasource",
                       "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
                       "spec": {
                         "editorMode": "code",
                         "expr": "avg by (\"vehicle\")(vehicleSoc_value{vehicle !=\"\"})",
                         "format": "time_series",
                         "legendFormat": "{{vehicle}}",
                         "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     },
                     "refId": "vehiclesSoc",
@@ -3438,5 +3449,11 @@
         }
       }
     ]
+  },
+  "status": {
+    "conversion": {
+      "failed": false,
+      "storedVersion": "v1"
+    }
   }
 }
