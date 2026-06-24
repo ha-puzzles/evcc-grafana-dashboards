@@ -67,6 +67,9 @@ declare -A VEHICLES
 #Array of loadpoints
 declare -A LOADPOINTS
 
+#Array of consumer devices
+declare -A CONSUMER_DEVICES
+
 #Array of ext devices
 declare -A EXT_DEVICES
 
@@ -520,6 +523,12 @@ aggregateDay() {
         writeDailyAggregation "integral-positives" "value" "chargePower" "loadpointDailyEnergy" $ayear $amonth $aday "AND \"loadpoint\"::tag = '${loadpoint}' AND value < $PEAK_POWER_LIMIT" "true" "loadpoint=${escapedLoadpoint}"
     done
 
+    for consumer_device in "${CONSUMER_DEVICES[@]}"; do
+        logDebug "Aggregating consumer device $consumer_device"
+        escapedConsumerDevice=$(echo $consumer_device | sed 's/ /\\ /g')
+        writeDailyAggregation "integral-positives" "value" "consumersPower" "consumersDailyEnergy" $ayear $amonth $aday "AND \"title\"::tag = '${consumer_device}' AND value < $PEAK_POWER_LIMIT" "true" "title=${escapedConsumerDevice}"
+    done
+
     for ext_device in "${EXT_DEVICES[@]}"; do
         logDebug "Aggregating ext device $ext_device"
         escapedExtDevice=$(echo $ext_device | sed 's/ /\\ /g')
@@ -616,6 +625,12 @@ aggregateMonth() {
         writeMonthlyAggregations "sum" "value" "loadpointDailyEnergy" "loadpointMonthlyEnergy" $ayear $amonth "AND \"loadpoint\"::tag = '${loadpoint}'" "loadpoint=${escapedLoadpoint}"
     done
 
+    for consumer_device in "${CONSUMER_DEVICES[@]}"; do
+        logDebug "Aggregating consumer device $consumer_device"
+        escapedConsumerDevice=$(echo $consumer_device | sed 's/ /\\ /g')
+        writeMonthlyAggregations "sum" "value" "consumersDailyEnergy" "consumersMonthlyEnergy" $ayear $amonth "AND \"title\"::tag = '${consumer_device}'" "title=${escapedConsumerDevice}"
+    done
+
     for ext_device in "${EXT_DEVICES[@]}"; do
         logDebug "Aggregating ext device $ext_device"
         escapedExtDevice=$(echo $ext_device | sed 's/ /\\ /g')
@@ -670,6 +685,22 @@ dropAggregations() {
         dropMeasurement "vehicleMonthlyDrivenKm"
         dropMeasurement "loadpointDailyEnergy"
         dropMeasurement "loadpointMonthlyEnergy"
+        dropMeasurement "consumersDailyEnergy"
+        dropMeasurement "consumersMonthlyEnergy"
+        dropMeasurement "extDailyEnergy"
+        dropMeasurement "extMonthlyEnergy"
+        dropMeasurement "auxDailyEnergy"
+        dropMeasurement "auxMonthlyEnergy"
+        dropMeasurement "energyPurchasedDailyPrice"
+        dropMeasurement "energySoldDailyPrice"
+        dropMeasurement "potentialHomeDailyPrice"
+        dropMeasurement "potentialLoadpointDailyPrice"
+        dropMeasurement "energyDischargeDailyPrice"
+        dropMeasurement "energyChargeDailyPrice"
+        dropMeasurement "vehicleChargeDailyPrice"
+        dropMeasurement "potentialVehicleChargeDailyPrice"
+        dropMeasurement "energyPurchasedMonthlyPrice"
+        dropMeasurement "energySoldMonthlyPrice"
 
         # Legacy measurements
         dropMeasurement "loadpoint1DailyEnergy"
@@ -715,6 +746,17 @@ detectValues() {
             logInfo "Detected loadpoint $index: $loadpoint"
         fi
     done <<< "$loadpoint_list"
+
+    # Detecting consumer devices
+    index=0
+    consumer_device_list=$(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -execute "show tag values from consumersPower with key=title" | grep "^title " | sed 's/^title //' | sort)
+    while read consumer_device; do
+        if [ "$consumer_device" != "" ]; then
+            CONSUMER_DEVICES[${index}]=$consumer_device
+            index=$((index+1))
+            logInfo "Detected consumer device $index: $consumer_device"
+        fi
+    done <<< "$consumer_device_list"
 
     # Detecting ext devices
     index=0
