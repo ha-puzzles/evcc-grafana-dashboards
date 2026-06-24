@@ -249,7 +249,7 @@ checkDependencies() {
 
     # Checking if required commands are available
     local missing=0
-    for dep in curl jq vmctl; do
+    for dep in curl jq; do
         if ! command -v $dep > /dev/null 2>&1; then
             logError "This script requires the '$dep' command. Please install '$dep'."
             missing=1
