@@ -21,13 +21,18 @@ GRAFANA_NAMESPACE="${GRAFANA_NAMESPACE:-default}"
 OUTPUT_DIR="${OUTPUT_DIR:-${SCRIPT_DIR}/exported-dashboards}"
 CURL_OPTS="${CURL_OPTS:--s --fail --show-error}"
 
-# Dashboard mappings: UID -> filename
-declare -A DASHBOARDS=(
-    ["ad5ks8d"]="today-mobile.json"
-    ["adddvtj"]="today-details.json"
-    ["adsmz7v"]="today.json"
-    ["adz6thx"]="month.json"
-)
+# DASHBOARDS should be defined in .env as:
+#   declare -A DASHBOARDS=(
+#       ["ad5ks8d"]="today-mobile.json"
+#       ["adddvtj"]="today-details.json"
+#       ["adsmz7v"]="today.json"
+#       ["adz6thx"]="month.json"
+#   )
+if ! declare -p DASHBOARDS &>/dev/null; then
+    error "DASHBOARDS not defined. Please define it in your .env file."
+    exit 1
+fi
+
 
 # =============================================================================
 # Functions
