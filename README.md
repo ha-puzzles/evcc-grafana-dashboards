@@ -17,10 +17,10 @@ Please carefully review the next section, which lists the prerequisites, before 
 
 The following requirements must be met for these dashboards to work:
 
-- EVCC: https://evcc.io/ (version 0.300 or newer recommended)
-- Victoria Metrics (version v1.135 or higher recommended)
+- EVCC: https://evcc.io/ (version 0.309.2 or newer recommended)
+- Victoria Metrics (version v1.135 or higher recommended) as described in the [Victoria Metrics Installation Guideline](./vm-installation.md).
 - Victoria Metrics [configured as a database in EVCC](https://docs.evcc.io/docs/reference/configuration/influx#victoriametrics)
-- Grafana (version 12.3.0 or higher recommended)
+- Grafana (version 13.0.2 or higher recommended)
 - Basic Linux knowledge or willingness to learn
 - Ability to regularly run a Bash shell script via crontab (HAOS users, see [FAQ](#faq))
 - Willingness to learn a bit about Grafana

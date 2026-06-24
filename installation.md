@@ -2,17 +2,19 @@
 
 This guide describes how to install the Grafana dashboards.
 
-## EVCC
+## Prerequisites
+
+### EVCC
 
 If you've reached this point, you likely already have EVCC installed. For completeness, here is the [link to the installation guide](https://docs.evcc.io/docs/installation).
 
-## Victoria Metrics
+### Victoria Metrics
 
 There are several installation methods. Regardless of which you choose, it's important to increase the retention period.
 
 For detailed instructions, see [vm-installation.md](./vm-installation.md).
 
-## Grafana
+### Grafana
 
 Grafana can be easily installed using your Linux distribution's package manager.
 
@@ -27,3 +29,7 @@ Finally, [start the Grafana server](https://grafana.com/docs/grafana/latest/setu
 Now, proceed with the actual dashboard installation.
 
 TBD
+
+## EVCC Grafana aggregation script
+
+The dashboards require an aggregation script that regularly aggregates the data. See the [README.md in the scripts folder](./scripts/README.md) for more information on how to configure and install this.
