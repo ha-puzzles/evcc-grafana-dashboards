@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "fed98n901h0xsb",
-    "generation": 4,
+    "generation": 5,
     "creationTimestamp": "2026-02-02T12:15:22Z",
     "labels": {},
     "annotations": {}
@@ -26,10 +26,7 @@
           "hide": true,
           "iconColor": "rgba(0, 211, 255, 1)",
           "name": "Annotations & Alerts",
-          "builtIn": true,
-          "legacyOptions": {
-            "type": "dashboard"
-          }
+          "builtIn": true
         }
       }
     ],
@@ -414,7 +411,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -631,9 +628,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
@@ -1116,9 +1117,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
@@ -1326,7 +1331,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -1491,9 +1496,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
@@ -1750,7 +1759,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -1924,7 +1933,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -2661,9 +2670,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
@@ -3076,7 +3089,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -3285,7 +3298,7 @@
                         ],
                         "orderByTime": "ASC",
                         "policy": "default",
-                        "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"auxPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1d) fill(0) TZ('$timezone')\n) \nGROUP BY time(1d) fill(0) TZ('$timezone')",
+                        "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1d), \"title\"::tag fill(0) TZ('$timezone')\n) \nGROUP BY time(1d) fill(0) TZ('$timezone')",
                         "rawQuery": true,
                         "resultFormat": "time_series",
                         "select": [
@@ -3308,7 +3321,7 @@
                         "grafana.app/export-label": "influxdb-1"
                       }
                     },
-                    "refId": "auxEnergiesSum",
+                    "refId": "consumersEnergiesSum",
                     "hidden": true
                   }
                 },
@@ -3369,10 +3382,62 @@
                   "spec": {
                     "query": {
                       "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"auxPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1d) fill(0) TZ('$timezone')\n) \nGROUP BY time(1d) fill(0) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "auxEnergiesSum",
+                    "hidden": true
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
                       "group": "__expr__",
                       "version": "v0",
                       "spec": {
-                        "expression": "$totalHomeEnergy - $extEnergiesSum",
+                        "expression": "$totalHomeEnergy - $consumersEnergiesSum",
                         "type": "math"
                       },
                       "labels": {
@@ -3380,6 +3445,58 @@
                       }
                     },
                     "refId": "Sonstige",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "$tag_title",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT integral(\"value\") /3600 FROM \"consumersPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1d), \"title\"::tag fill(none) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersEnergies",
                     "hidden": false
                   }
                 },
@@ -3497,7 +3614,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "legend": {
@@ -3688,9 +3805,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
@@ -3877,6 +3998,58 @@
                         ],
                         "orderByTime": "ASC",
                         "policy": "default",
+                        "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1h) fill(none) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersEnergiesSum",
+                    "hidden": true
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
                         "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"extPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1h) fill(none) TZ('$timezone')",
                         "rawQuery": true,
                         "resultFormat": "time_series",
@@ -3964,7 +4137,7 @@
                       "group": "__expr__",
                       "version": "v0",
                       "spec": {
-                        "expression": "$totalHomeEnergy - $extEnergiesSum",
+                        "expression": "$totalHomeEnergy - $consumersEnergiesSum",
                         "type": "math"
                       },
                       "labels": {
@@ -3972,6 +4145,58 @@
                       }
                     },
                     "refId": "Sonstige",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "$tag_title",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT integral(\"value\") /3600 FROM \"consumersPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY \"title\"::tag, time(1h) fill(0) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersEnergies",
                     "hidden": false
                   }
                 },
@@ -4089,9 +4314,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "table",
@@ -4301,6 +4530,58 @@
                         ],
                         "orderByTime": "ASC",
                         "policy": "default",
+                        "query": "SELECT SUM(\"mean\") FROM\n(\n  SELECT mean(\"value\") FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1m) fill(0) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersPowersSum",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
                         "query": "SELECT SUM(\"mean\") FROM\n(\n  SELECT mean(\"value\") FROM \"extPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1m) fill(0) TZ('$timezone')",
                         "rawQuery": true,
                         "resultFormat": "time_series",
@@ -4388,7 +4669,7 @@
                       "group": "__expr__",
                       "version": "v0",
                       "spec": {
-                        "expression": "$totalHomePower-$extPowersSum",
+                        "expression": "$totalHomePower-$consumersPowersSum",
                         "type": "math"
                       },
                       "labels": {
@@ -4396,6 +4677,58 @@
                       }
                     },
                     "refId": "Sonstige",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "$tag_title",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean(\"value\")  FROM \"extPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersPowers",
                     "hidden": false
                   }
                 },
@@ -4513,9 +4846,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "table",
@@ -4939,6 +5276,58 @@
                         ],
                         "orderByTime": "ASC",
                         "policy": "default",
+                        "query": "SELECT SUM(\"mean\") FROM\n(\n  SELECT mean(\"value\") FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1m) fill(none) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersPowersSum",
+                    "hidden": true
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
                         "query": "SELECT SUM(\"mean\") FROM\n(\n  SELECT mean(\"value\") FROM \"extPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1m) fill(none) TZ('$timezone')",
                         "rawQuery": true,
                         "resultFormat": "time_series",
@@ -5026,7 +5415,7 @@
                       "group": "__expr__",
                       "version": "v0",
                       "spec": {
-                        "expression": "$totalHomePower-$extPowersSum",
+                        "expression": "$totalHomePower-$consumersPowersSum",
                         "type": "math"
                       },
                       "labels": {
@@ -5034,6 +5423,58 @@
                       }
                     },
                     "refId": "Sonstige",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "$tag_title",
+                        "groupBy": [
+                          {
+                            "params": [
+                              "$__interval"
+                            ],
+                            "type": "time"
+                          },
+                          {
+                            "params": [
+                              "null"
+                            ],
+                            "type": "fill"
+                          }
+                        ],
+                        "orderByTime": "ASC",
+                        "policy": "default",
+                        "query": "SELECT mean(\"value\")  FROM \"consumersPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series",
+                        "select": [
+                          [
+                            {
+                              "params": [
+                                "value"
+                              ],
+                              "type": "field"
+                            },
+                            {
+                              "params": [],
+                              "type": "mean"
+                            }
+                          ]
+                        ],
+                        "tags": []
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersPowers",
                     "hidden": false
                   }
                 },
@@ -5151,7 +5592,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "displayLabels": [],
@@ -5343,9 +5784,13 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
+                "annotations": {
+                  "clustering": -1,
+                  "multiLane": false
+                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "table",
@@ -5592,7 +6037,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "12.3.2",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "displayLabels": [],
@@ -7259,6 +7704,7 @@
             }
           },
           "regex": "",
+          "regexApplyTo": "value",
           "sort": "disabled",
           "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlocklist",
           "options": [],

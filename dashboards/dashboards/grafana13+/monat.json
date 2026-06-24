@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "4iQda7igz",
-    "generation": 261,
+    "generation": 262,
     "creationTimestamp": "2023-04-15T16:13:18Z",
     "labels": {},
     "annotations": {}
@@ -163,7 +163,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -1011,7 +1011,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1312,7 +1312,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barShape": "flat",
@@ -1645,7 +1645,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0,
@@ -2343,7 +2343,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -2481,7 +2481,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "12.3.0",
+            "version": "13.0.2",
             "spec": {
               "fieldConfig": {
                 "defaults": {
@@ -2509,12 +2509,13 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "tariffGridDailyMean.mean"
+                      "options": "averagePrice",
+                      "scope": "series"
                     },
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Strompreis: Arithmetisches Mittel"
+                        "value": "Average energy price"
                       },
                       {
                         "id": "color",
@@ -2537,7 +2538,7 @@
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Effektiver Strompreis, dynamisch"
+                        "value": "Efficient energy price"
                       },
                       {
                         "id": "color",
@@ -2560,7 +2561,7 @@
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Eingesparter Strompreis durch dynamischen Tarif"
+                        "value": "Saved energy price due to dynamic tariff"
                       },
                       {
                         "id": "unit",
@@ -2576,7 +2577,7 @@
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Einsparung durch dynamischen Tarif"
+                        "value": "Savings due to dynamic tariff"
                       }
                     ]
                   },
@@ -2588,7 +2589,46 @@
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Potentieller Einkauf nach arithmetischen Preis"
+                        "value": "Potential purchase due to average"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "purchased",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Purchased imported energy"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "sold",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Sold energy (feed in)"
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "totalCost",
+                      "scope": "series"
+                    },
+                    "properties": [
+                      {
+                        "id": "displayName",
+                        "value": "Total energy costs"
                       }
                     ]
                   }
@@ -2626,50 +2666,24 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
-                    "refId": "energyPurchased",
+                    "refId": "gridEnergyImport",
                     "hidden": true,
                     "query": {
                       "kind": "DataQuery",
                       "version": "v0",
-                      "group": "influxdb",
+                      "group": "victoriametrics-metrics-datasource",
                       "spec": {
-                        "groupBy": [
-                          {
-                            "params": [
-                              "$__interval"
-                            ],
-                            "type": "time"
-                          },
-                          {
-                            "params": [
-                              "null"
-                            ],
-                            "type": "fill"
-                          }
-                        ],
-                        "orderByTime": "ASC",
-                        "policy": "default",
-                        "query": "SELECT sum(\"value\") /1000 from gridDailyEnergy WHERE $timeFilter  tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series",
-                        "select": [
-                          [
-                            {
-                              "params": [
-                                "value"
-                              ],
-                              "type": "field"
-                            },
-                            {
-                              "params": [],
-                              "type": "mean"
-                            }
-                          ]
-                        ],
-                        "tags": []
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "range_sum(avg(gridEnergyImportDaily[1d]))/1000",
+                        "format": "time_series",
+                        "instant": false,
+                        "interval": "1d",
+                        "legendFormat": "__auto",
+                        "range": true
                       },
                       "labels": {
-                        "grafana.app/export-label": "influxdb-1"
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     }
                   }
@@ -2682,46 +2696,17 @@
                     "query": {
                       "kind": "DataQuery",
                       "version": "v0",
-                      "group": "influxdb",
+                      "group": "victoriametrics-metrics-datasource",
                       "spec": {
-                        "alias": "",
-                        "groupBy": [
-                          {
-                            "params": [
-                              "$__interval"
-                            ],
-                            "type": "time"
-                          },
-                          {
-                            "params": [
-                              "null"
-                            ],
-                            "type": "fill"
-                          }
-                        ],
-                        "orderByTime": "ASC",
-                        "policy": "default",
-                        "query": "SELECT mean(\"value\") * 100 FROM \"tariffGridDailyMean\" WHERE $timeFilter",
-                        "rawQuery": true,
-                        "resultFormat": "time_series",
-                        "select": [
-                          [
-                            {
-                              "params": [
-                                "value"
-                              ],
-                              "type": "field"
-                            },
-                            {
-                              "params": [],
-                              "type": "mean"
-                            }
-                          ]
-                        ],
-                        "tags": []
+                        "editorMode": "code",
+                        "expr": "range_avg(avg(energyPriceAvgDaily[1d])) * 100",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "averagePrice",
+                        "range": true
                       },
                       "labels": {
-                        "grafana.app/export-label": "influxdb-1"
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     }
                   }
@@ -2736,7 +2721,7 @@
                       "version": "v0",
                       "group": "__expr__",
                       "spec": {
-                        "expression": "($purchased * -100 )/ $energyPurchased",
+                        "expression": "($purchased * -100 )/ $gridEnergyImport",
                         "type": "math"
                       },
                       "labels": {
@@ -2774,7 +2759,7 @@
                       "version": "v0",
                       "group": "__expr__",
                       "spec": {
-                        "expression": "$averagePrice * $energyPurchased / -100",
+                        "expression": "$averagePrice * $gridEnergyImport / -100",
                         "type": "math"
                       },
                       "labels": {
@@ -2791,47 +2776,17 @@
                     "query": {
                       "kind": "DataQuery",
                       "version": "v0",
-                      "group": "influxdb",
+                      "group": "victoriametrics-metrics-datasource",
                       "spec": {
-                        "alias": "Einkauf, dynamisch",
-                        "groupBy": [
-                          {
-                            "params": [
-                              "1d"
-                            ],
-                            "type": "time"
-                          },
-                          {
-                            "params": [
-                              "null"
-                            ],
-                            "type": "fill"
-                          }
-                        ],
-                        "measurement": "pvPower",
-                        "orderByTime": "ASC",
-                        "policy": "default",
-                        "query": "SELECT sum(value) * (-1) FROM energyPurchasedDailyPrice WHERE $timeFilter  tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series",
-                        "select": [
-                          [
-                            {
-                              "params": [
-                                "value"
-                              ],
-                              "type": "field"
-                            },
-                            {
-                              "params": [],
-                              "type": "max"
-                            }
-                          ]
-                        ],
-                        "tags": []
+                        "editorMode": "code",
+                        "expr": "range_sum(avg(energyPriceBoughtDaily[1d])) * (-1)",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "purchased",
+                        "range": true
                       },
                       "labels": {
-                        "grafana.app/export-label": "influxdb-1"
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     }
                   }
@@ -2863,47 +2818,17 @@
                     "query": {
                       "kind": "DataQuery",
                       "version": "v0",
-                      "group": "influxdb",
+                      "group": "victoriametrics-metrics-datasource",
                       "spec": {
-                        "alias": "Verkauf (Einspeisung)",
-                        "groupBy": [
-                          {
-                            "params": [
-                              "1d"
-                            ],
-                            "type": "time"
-                          },
-                          {
-                            "params": [
-                              "null"
-                            ],
-                            "type": "fill"
-                          }
-                        ],
-                        "measurement": "pvPower",
-                        "orderByTime": "ASC",
-                        "policy": "default",
-                        "query": "SELECT sum(value) * (-1) FROM energySoldDailyPrice WHERE $timeFilter  tz('$timezone')",
-                        "rawQuery": true,
-                        "resultFormat": "time_series",
-                        "select": [
-                          [
-                            {
-                              "params": [
-                                "value"
-                              ],
-                              "type": "field"
-                            },
-                            {
-                              "params": [],
-                              "type": "max"
-                            }
-                          ]
-                        ],
-                        "tags": []
+                        "editorMode": "code",
+                        "expr": "range_sum(avg(energyPriceSoldDaily[1d]))",
+                        "format": "time_series",
+                        "interval": "1d",
+                        "legendFormat": "sold",
+                        "range": true
                       },
                       "labels": {
-                        "grafana.app/export-label": "influxdb-1"
+                        "grafana.app/export-label": "victoriametrics-metrics-datasource-1"
                       }
                     }
                   }
@@ -2911,7 +2836,7 @@
                 {
                   "kind": "PanelQuery",
                   "spec": {
-                    "refId": "Bilanz",
+                    "refId": "totalCost",
                     "hidden": false,
                     "query": {
                       "kind": "DataQuery",
@@ -2975,6 +2900,27 @@
                       "version": "v0",
                       "spec": {
                         "alias": "",
+                        "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM consumersDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersEnergiesSum",
+                    "hidden": true
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "",
                         "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM extDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
                         "rawQuery": true,
                         "resultFormat": "time_series"
@@ -3016,7 +2962,7 @@
                       "group": "__expr__",
                       "version": "v0",
                       "spec": {
-                        "expression": "$homeTotal - $extEnergiesSum",
+                        "expression": "$homeTotal - $consumersEnergiesSum",
                         "type": "math"
                       },
                       "labels": {
@@ -3024,6 +2970,27 @@
                       }
                     },
                     "refId": "Sonstige",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "$tag_title",
+                        "query": "SELECT value FROM consumersDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersEnergies",
                     "hidden": false
                   }
                 },
@@ -3077,7 +3044,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0,
@@ -3216,6 +3183,27 @@
                       "version": "v0",
                       "spec": {
                         "alias": "",
+                        "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM consumersDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersEnergiesSum",
+                    "hidden": true
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "",
                         "query": "SELECT SUM(value) FROM\n(\n  SELECT value FROM extDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')\n) GROUP BY time(1d) tz('$timezone')",
                         "rawQuery": true,
                         "resultFormat": "time_series"
@@ -3257,7 +3245,7 @@
                       "group": "__expr__",
                       "version": "v0",
                       "spec": {
-                        "expression": "$homeTotal - $extEnergiesSum",
+                        "expression": "$homeTotal - $consumersEnergiesSum",
                         "type": "math"
                       },
                       "labels": {
@@ -3265,6 +3253,27 @@
                       }
                     },
                     "refId": "Sonstige",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "influxdb",
+                      "version": "v0",
+                      "spec": {
+                        "alias": "$tag_title",
+                        "query": "SELECT value FROM consumersDailyEnergy WHERE $timeFilter AND \"title\"::tag !~ $loadpointBlocklist GROUP BY (\"title\"::tag) tz('$timezone')",
+                        "rawQuery": true,
+                        "resultFormat": "time_series"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "influxdb-1"
+                      }
+                    },
+                    "refId": "consumersEnergies",
                     "hidden": false
                   }
                 },
@@ -3318,7 +3327,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "legend": {
@@ -3511,7 +3520,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "legend": {
@@ -3815,7 +3824,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0,
@@ -4209,7 +4218,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.1",
+            "version": "13.0.2",
             "spec": {
               "options": {
                 "barRadius": 0.2,

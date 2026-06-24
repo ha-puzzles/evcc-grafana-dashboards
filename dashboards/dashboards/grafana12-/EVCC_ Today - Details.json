@@ -68,7 +68,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.3.2"
+      "version": "13.0.2"
     },
     {
       "type": "datasource",
@@ -166,6 +166,7 @@
       "url": ""
     }
   ],
+  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
@@ -175,8 +176,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 8,
-      "panels": [],
+      "id": 35,
       "title": "PV",
       "type": "row"
     },
@@ -185,7 +185,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -213,7 +212,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -280,7 +278,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -302,7 +300,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600000 FROM \"pvPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1d) tz('$timezone')",
@@ -345,7 +342,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600000 FROM \"pvPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1d), \"title\"::tag fill(none) TZ('$timezone')",
@@ -378,7 +374,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -424,7 +419,6 @@
               "mode": "dashed"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -471,6 +465,10 @@
       "id": 27,
       "maxDataPoints": 1400,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -483,7 +481,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -548,7 +546,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT max(\"value\") FROM \"pvPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '')\n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none)  tz('$timezone')",
@@ -580,7 +577,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -608,7 +604,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -675,7 +670,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -697,7 +692,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"batterySoc\" \nWHERE (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1d) tz('$timezone')",
@@ -740,7 +734,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"batterySoc\" \nWHERE (\"title\"::tag <> '')\n              AND $timeFilter \nGROUP BY time(1d), \"title\"::tag fill(none)  tz('$timezone')",
@@ -773,7 +766,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -814,7 +806,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -856,6 +847,10 @@
       "id": 13,
       "maxDataPoints": 1400,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -868,7 +863,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -933,7 +928,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT last(\"value\") FROM \"batteryPower\" \nWHERE (\"title\"::tag <> '')\n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none)  tz('$timezone')",
@@ -965,7 +959,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -992,7 +985,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1072,7 +1064,7 @@
         "xTickLabelRotation": 0,
         "xTickLabelSpacing": 0
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Vorhersage",
@@ -1080,7 +1072,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT integral(\"value\") / 3600000 FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
           "refId": "PV Vorhersage",
@@ -1106,7 +1097,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"subquery\") / 3600000 FROM (SELECT max(\"value\") AS \"subquery\" FROM \"pvPower\" WHERE $timeFilter and value >=0 AND value < $peakPowerLimit AND (\"id\"::tag = '') GROUP BY time($energySampleInterval) fill(0) tz('$timezone')) WHERE $timeFilter GROUP BY time(1d) fill(0)  tz('$timezone')",
@@ -1139,7 +1129,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1185,7 +1174,6 @@
               "mode": "dashed"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1247,6 +1235,10 @@
       "id": 16,
       "maxDataPoints": 1400,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -1259,7 +1251,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Vorhersage",
@@ -1267,7 +1259,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT max(\"value\") FROM \"tariffSolar\" WHERE $timeFilter GROUP BY time(1h) tz('$timezone')",
           "rawQuery": true,
           "refId": "PV Vorhersage",
@@ -1293,7 +1284,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT max(\"value\") FROM \"pvPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"id\"::tag = '')\n              AND $timeFilter \nGROUP BY time(1m) tz('$timezone')",
@@ -1328,15 +1318,14 @@
         "x": 0,
         "y": 24
       },
-      "id": 25,
-      "panels": [],
+      "id": 36,
       "title": "Verbrauch",
       "type": "row"
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -1352,7 +1341,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "min": 0,
           "unit": "watt"
         },
@@ -1408,7 +1396,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -1436,6 +1424,49 @@
           "query": "SELECT mean(\"value\")  FROM \"homePower\" \nWHERE  $timeFilter \nGROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "totalHomePower",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT SUM(\"mean\") FROM\n(\n  SELECT mean(\"value\") FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1m) fill(none) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "consumersPowersSum",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1544,8 +1575,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$totalHomePower-$extPowersSum",
-          "hide": false,
+          "expression": "$totalHomePower-$consumersPowersSum",
           "refId": "Sonstige",
           "type": "math"
         },
@@ -1569,7 +1599,48 @@
               "type": "fill"
             }
           ],
-          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  FROM \"consumersPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "consumersPowers",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(\"value\")  FROM \"extPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
@@ -1612,7 +1683,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(\"value\")  FROM \"auxPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
@@ -1642,8 +1712,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -1686,7 +1756,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -1759,6 +1828,10 @@
       "id": 29,
       "maxDataPoints": 1400,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "table",
@@ -1773,7 +1846,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -1795,12 +1868,53 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(\"value\")  FROM \"homePower\" \nWHERE  $timeFilter \nGROUP BY time(1m) tz('$timezone')",
           "rawQuery": true,
           "refId": "totalHomePower",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT SUM(\"mean\") FROM\n(\n  SELECT mean(\"value\") FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1m) fill(0) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "consumersPowersSum",
           "resultFormat": "time_series",
           "select": [
             [
@@ -1909,8 +2023,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$totalHomePower-$extPowersSum",
-          "hide": false,
+          "expression": "$totalHomePower-$consumersPowersSum",
           "refId": "Sonstige",
           "type": "math"
         },
@@ -1934,7 +2047,48 @@
               "type": "fill"
             }
           ],
-          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"value\")  FROM \"extPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "consumersPowers",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(\"value\")  FROM \"extPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
@@ -1977,7 +2131,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(\"value\")  FROM \"auxPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')",
@@ -2006,8 +2159,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -2023,7 +2176,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "min": 0,
           "unit": "watth"
         },
@@ -2078,7 +2230,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -2146,9 +2298,9 @@
           "hide": true,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"auxPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1d) fill(0) TZ('$timezone')\n) \nGROUP BY time(1d) fill(0) TZ('$timezone')",
+          "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1d), \"title\"::tag fill(0) TZ('$timezone')\n) \nGROUP BY time(1d) fill(0) TZ('$timezone')",
           "rawQuery": true,
-          "refId": "auxEnergiesSum",
+          "refId": "consumersEnergiesSum",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2210,12 +2362,54 @@
           "tags": []
         },
         {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"auxPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1d) fill(0) TZ('$timezone')\n) \nGROUP BY time(1d) fill(0) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "auxEnergiesSum",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
           "datasource": {
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$totalHomeEnergy - $extEnergiesSum",
-          "hide": false,
+          "expression": "$totalHomeEnergy - $consumersEnergiesSum",
           "refId": "Sonstige",
           "type": "math"
         },
@@ -2239,7 +2433,48 @@
               "type": "fill"
             }
           ],
-          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT integral(\"value\") /3600 FROM \"consumersPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1d), \"title\"::tag fill(none) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "consumersEnergies",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"extPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1d), \"title\"::tag fill(none) TZ('$timezone')",
@@ -2282,7 +2517,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"auxPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1d), \"title\"::tag fill(none) TZ('$timezone')",
@@ -2312,8 +2546,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
       "description": "Die Formel für 'Sonstige' muss je nach Verfügbarkeit von AUX und EXT Metern angepasst werden. Siehe https://github.com/ha-puzzles/evcc-grafana-dashboards/tree/main/dashboards#formel-für-sonstige-anpassen für mehr Informationen.",
       "fieldConfig": {
@@ -2356,7 +2590,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "min": 0,
           "thresholds": {
             "mode": "absolute",
@@ -2429,6 +2662,10 @@
       "id": 28,
       "maxDataPoints": 1400,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "table",
@@ -2443,7 +2680,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Gesamt",
@@ -2465,12 +2702,54 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"homePower\" \nWHERE  $timeFilter \nGROUP BY time(1h) tz('$timezone')",
           "rawQuery": true,
           "refId": "totalHomeEnergy",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT SUM(\"integral\") FROM\n(\n  SELECT integral(\"value\") /3600 FROM \"consumersPower\" \n  WHERE \"value\"::field < $peakPowerLimit\n                AND (\"title\"::tag <> '') \n                AND $timeFilter \n  GROUP BY time(1m), \"title\"::tag fill(none) TZ('$timezone')\n) \nGROUP BY time(1h) fill(none) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "consumersEnergiesSum",
           "resultFormat": "time_series",
           "select": [
             [
@@ -2579,8 +2858,7 @@
             "type": "__expr__",
             "uid": "${DS_EXPRESSION}"
           },
-          "expression": "$totalHomeEnergy - $extEnergiesSum",
-          "hide": false,
+          "expression": "$totalHomeEnergy - $consumersEnergiesSum",
           "refId": "Sonstige",
           "type": "math"
         },
@@ -2604,7 +2882,48 @@
               "type": "fill"
             }
           ],
-          "hide": false,
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT integral(\"value\") /3600 FROM \"consumersPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY \"title\"::tag, time(1h) fill(0) TZ('$timezone')",
+          "rawQuery": true,
+          "refId": "consumersEnergies",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "$tag_title",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_EVCC_INFLUXDB}"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"extPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY \"title\"::tag, time(1h) fill(0) TZ('$timezone')",
@@ -2647,7 +2966,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"auxPower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"title\"::tag <> '') \n              AND $timeFilter \nGROUP BY \"title\"::tag, time(1h) fill(0) TZ('$timezone')",
@@ -2679,7 +2997,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2693,7 +3010,6 @@
               "viz": false
             }
           },
-          "mappings": [],
           "min": 0,
           "unit": "watth"
         },
@@ -2780,7 +3096,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Haus",
@@ -2802,7 +3118,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"homePower\" \nWHERE  $timeFilter \nGROUP BY time(1d) tz('$timezone')",
@@ -2845,7 +3160,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"chargePower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"loadpoint\"::tag <> '') \n              AND $timeFilter \nGROUP BY time(1d), \"loadpoint\"::tag fill(none) TZ('$timezone')",
@@ -2878,7 +3192,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2919,7 +3232,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2992,6 +3304,10 @@
       "id": 33,
       "maxDataPoints": 1400,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "table",
@@ -3006,7 +3322,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Haus",
@@ -3028,7 +3344,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"homePower\" \nWHERE  $timeFilter \nGROUP BY time(1h) tz('$timezone')",
@@ -3071,7 +3386,6 @@
               "type": "fill"
             }
           ],
-          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT integral(\"value\") /3600 FROM \"chargePower\" \nWHERE \"value\"::field < $peakPowerLimit\n              AND (\"loadpoint\"::tag <> '') \n              AND $timeFilter \nGROUP BY \"loadpoint\"::tag, time(1h) fill(none) TZ('$timezone')",
@@ -3106,8 +3420,7 @@
         "x": 0,
         "y": 55
       },
-      "id": 17,
-      "panels": [],
+      "id": 37,
       "title": "Tarife",
       "type": "row"
     },
@@ -3116,13 +3429,11 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "continuous-GrYlRd"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3214,7 +3525,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Max",
@@ -3233,7 +3544,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT mean(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
           "refId": "Avg",
@@ -3245,7 +3555,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT min(\"value\") FROM \"tariffGrid\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
           "refId": "Min",
@@ -3261,7 +3570,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3305,7 +3613,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3386,6 +3693,10 @@
       },
       "id": 19,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -3398,7 +3709,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "Preis",
@@ -3417,7 +3728,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')",
           "rawQuery": true,
           "refId": "Netzbezug",
@@ -3429,17 +3739,15 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "continuous-GrYlRd"
           },
           "decimals": 2,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3555,7 +3863,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "",
@@ -3723,7 +4031,6 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "bought",
-          "hide": false,
           "reducer": "sum",
           "refId": "boughtTotal",
           "settings": {
@@ -3737,7 +4044,6 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "sold",
-          "hide": false,
           "reducer": "sum",
           "refId": "soldTotal",
           "settings": {
@@ -3751,7 +4057,6 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "$boughtTotal + $soldTotal",
-          "hide": false,
           "refId": "dailyTotal",
           "type": "math"
         }
@@ -3762,10 +4067,9 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "${DS_EVCC_INFLUXDB}"
+        "type": "mixed",
+        "uid": "-- Mixed --"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -3808,7 +4112,6 @@
             }
           },
           "decimals": 3,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -3873,6 +4176,10 @@
       },
       "id": 23,
       "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -3885,7 +4192,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "13.0.2",
       "targets": [
         {
           "alias": "",
@@ -4065,7 +4372,6 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "$tariffGrid * $grid",
-          "hide": false,
           "refId": "bought",
           "type": "math"
         },
@@ -4075,7 +4381,6 @@
             "uid": "${DS_EXPRESSION}"
           },
           "expression": "$feedIn * $tariffFeedIn",
-          "hide": false,
           "refId": "sold",
           "type": "math"
         }
@@ -4088,13 +4393,11 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "continuous-GrYlRd"
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -4205,7 +4508,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT mean(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
           "refId": "Avg",
@@ -4217,7 +4519,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT min(\"value\") FROM \"tariffCo2\" WHERE $timeFilter GROUP BY time(1d) tz('$timezone')",
           "rawQuery": true,
           "refId": "Min",
@@ -4233,7 +4534,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -4276,7 +4576,6 @@
               "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -4392,7 +4691,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT mean(\"value\") AS \"subquery\" FROM \"gridPower\" WHERE $timeFilter and value >=0 GROUP BY time($energySampleInterval) fill(0) tz('$timezone')",
           "rawQuery": true,
           "refId": "Netzbezug",
@@ -4410,8 +4708,7 @@
         "x": 0,
         "y": 83
       },
-      "id": 9,
-      "panels": [],
+      "id": 38,
       "title": "Netz",
       "type": "row"
     },
@@ -4426,7 +4723,6 @@
             "mode": "palette-classic"
           },
           "decimals": 1,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -4526,7 +4822,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -4565,7 +4860,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -4641,7 +4935,6 @@
             }
           },
           "decimals": 1,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -4733,7 +5026,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -4772,7 +5064,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -4812,7 +5103,6 @@
             "mode": "palette-classic"
           },
           "decimals": 1,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -4874,7 +5164,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "default",
@@ -4913,7 +5202,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "default",
@@ -4952,7 +5240,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "default",
@@ -5028,7 +5315,6 @@
             }
           },
           "decimals": 1,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -5082,7 +5368,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5120,7 +5405,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5158,7 +5442,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "gridPowers",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5194,8 +5477,7 @@
         "x": 0,
         "y": 100
       },
-      "id": 10,
-      "panels": [],
+      "id": 39,
       "repeat": "loadpoint",
       "title": "Ladepunkt $loadpoint",
       "type": "row"
@@ -5205,14 +5487,12 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "decimals": 1,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -5318,7 +5598,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5363,7 +5642,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5400,7 +5678,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT last(\"value\") FROM \"chargeCurrent\" WHERE (\"loadpoint\"::tag = '$loadpoint') AND $timeFilter tz('$timezone')",
           "rawQuery": true,
           "refId": "Strom",
@@ -5416,7 +5693,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -5458,7 +5734,6 @@
             }
           },
           "decimals": 1,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -5556,7 +5831,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5601,7 +5875,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5646,7 +5919,6 @@
               "type": "time"
             }
           ],
-          "hide": false,
           "measurement": "chargeCurrents",
           "orderByTime": "ASC",
           "policy": "autogen",
@@ -5686,7 +5958,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -5729,7 +6000,6 @@
             }
           },
           "decimals": 0,
-          "mappings": [],
           "max": 3,
           "min": 0,
           "thresholds": {
@@ -5803,7 +6073,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT max(\"value\") FROM \"phasesActive\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') AND value = 1 GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
           "rawQuery": true,
           "refId": "1P",
@@ -5815,7 +6084,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT max(\"value\") FROM \"phasesActive\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') AND value = 3 GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
           "rawQuery": true,
           "refId": "3P",
@@ -5830,7 +6098,6 @@
         "type": "influxdb",
         "uid": "${DS_EVCC_INFLUXDB}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -5872,7 +6139,6 @@
             }
           },
           "decimals": 1,
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -5934,7 +6200,6 @@
             "type": "influxdb",
             "uid": "${DS_EVCC_INFLUXDB}"
           },
-          "hide": false,
           "query": "SELECT max(\"value\") FROM \"chargePower\" WHERE $timeFilter AND (\"loadpoint\"::tag = '$loadpoint') GROUP BY time(1m), \"loadpoint\"::tag fill(none) tz('$timezone')",
           "rawQuery": true,
           "refId": "Ladeleistung",
@@ -6017,7 +6282,12 @@
         ]
       },
       {
+        "allowCustomValue": true,
         "current": {},
+        "datasource": {
+          "type": "influxdb",
+          "uid": "${DS_EVCC_INFLUXDB}"
+        },
         "definition": "show tag values from chargePower with key = \"loadpoint\" where \"loadpoint\" !~ $loadpointBlocklist",
         "includeAll": true,
         "label": "Ladepunkt",
@@ -6030,6 +6300,7 @@
         },
         "refresh": 1,
         "regex": "",
+        "regexApplyTo": "value",
         "type": "query"
       },
       {
@@ -6077,14 +6348,26 @@
     ]
   },
   "time": {
-    "from": "2026-01-29T23:00:00.000Z",
-    "to": "2026-01-30T22:59:59.000Z"
+    "from": "now/d",
+    "to": "now/d"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
   "timezone": "Europe/Berlin",
   "title": "EVCC: Today - Details",
   "uid": "fed98n901h0xsb",
-  "version": 4,
-  "weekStart": "",
-  "id": null
+  "version": 5,
+  "weekStart": ""
 }
