@@ -346,21 +346,13 @@ writeDailyPriceAggregation() {
     
 while read -r value; do
        if [ "$value" != "" ]; then
-  #          if [ "${prices[$row]}" == "" ]; then
-  #              logDebug "Price for index $row is empty. Using last known price $lastPrice."
-  #              totalPrice=$(echo "$totalPrice + $value * $lastPrice" | bc)
-  #          else
-  #              totalPrice=$(echo "$totalPrice + $value * ${prices[$row]}" | bc)
-  #              lastPrice=${prices[$row]}
-  #          fi
-# --- SICHERHEITS-FIX START ---
-            # Prüfen, ob value wirklich eine Zahl ist (Ganzzahl oder Kommazahl). Falls nein -> überspringen!
+            # Check, whether value is a number (integer or float). If no -> skip
             if ! [[ "$value" =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
                 row=$((row+1))
                 continue
             fi
 
-            # Aktuellen Preis bestimmen und absichern
+            # Get current price and check format
             currentPrice="${prices[$row]}"
             if [ "$currentPrice" == "" ] || ! [[ "$currentPrice" =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
                 logDebug "Price for index $row is empty or invalid. Using last known price $lastPrice."
@@ -369,18 +361,17 @@ while read -r value; do
                 lastPrice="$currentPrice"
             fi
             
-            # Absicherung für lastPrice selbst (falls der am Anfang auch leer war)
+            # Check last price
             [[ -z "$currentPrice" ]] && currentPrice=0
 
-            # Jetzt ist sichergestellt, dass beide Variablen echte Zahlen sind:
+            # Both values are actual numbers
             totalPrice=$(echo "$totalPrice + ($value * $currentPrice)" | bc)
-            # --- SICHERHEITS-FIX ENDE ---
             row=$((row+1))
         fi
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Total daily price: ${totalPrice}€"
 
-[[ -z "$totalPrice" || "$totalPrice" == "" ]] && totalPrice=0
+    [[ -z "$totalPrice" || "$totalPrice" == "" ]] && totalPrice=0
 
     if [ "$additionalTags" != "" ]; then
         insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay},${additionalTags} value=${totalPrice} ${timestamp}"
