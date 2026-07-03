@@ -268,7 +268,7 @@ aggregateQuery() {
     local encoded_query
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
-    logInfo "Aggregating $metric"
+    logInfo "  - Calculating $metric"
     logDebug "Executing query: $query"
 
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
@@ -304,7 +304,7 @@ aggregateQueryByTag() {
     local encoded_query
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
-    logInfo "Aggregating $metric"
+    logInfo "  - Calculating $metric"
     logDebug "Executing query: $query"
 
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
@@ -391,10 +391,12 @@ if [ "$AGGREGATE_YEAR" -ne 0 ]; then
 elif [ "$AGGREGATE_MONTH_YEAR" -ne 0 ]; then
     starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_MONTH_YEAR-$(printf "%02d" $AGGREGATE_MONTH_MONTH)-01 00:00:00" +%s)
     endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_MONTH_YEAR-$(printf "%02d" $AGGREGATE_MONTH_MONTH)-01 +1 month -1 day 23:59:59" +%s)
+    logInfo "Aggregating month $AGGREGATE_MONTH_YEAR-$(printf "%02d" $AGGREGATE_MONTH_MONTH)"
     aggregate "$starttime" "$endtime"
 elif [ "$AGGREGATE_DAY_YEAR" -ne 0 ]; then
     starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-01 00:00:00" +%s)
     endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-${AGGREGATE_DAY_DAY} 23:59:59" +%s)
+    logInfo "Aggregating day $AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-$(printf "%02d" $AGGREGATE_DAY_DAY)"
     aggregate "$starttime" "$endtime"
 elif [ "$AGGREGATE_FROM_YEAR" -ne 0 ]; then
     starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_FROM_YEAR-$(printf "%02d" $AGGREGATE_FROM_MONTH)-$(printf "%02d" $AGGREGATE_FROM_DAY) 00:00:00" +%s)
@@ -441,10 +443,12 @@ elif [ "$AGGREGATE_FROM_YEAR" -ne 0 ]; then
 elif [ "$AGGREGATE_YESTERDAY" == "true" ]; then
     starttime=$(TZ="$TIMEZONE" date -d "yesterday 00:00:00" +%s)
     endtime=$(TZ="$TIMEZONE" date -d "yesterday 23:59:59" +%s)
+    logInfo "Aggregating yesterday"
     aggregate "$starttime" "$endtime"
 elif [ "$AGGREGATE_TODAY" == "true" ]; then
     starttime=$(TZ="$TIMEZONE" date -d "today 00:00:00" +%s)
     endtime=$(TZ="$TIMEZONE" date -d "today 23:59:59" +%s)
+    logInfo "Aggregating today"
     aggregate "$starttime" "$endtime"
 elif [ "$DELETE_AGGREGATIONS" == "true" ]; then
     deleteAggregations
