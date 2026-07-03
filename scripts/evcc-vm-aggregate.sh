@@ -363,6 +363,11 @@ aggregate() {
 
 start_time=$(date +%s)
 
+if [ -d "/usr/local/bin" ]; then
+    export PATH="$PATH:/usr/local/bin"
+fi
+
+
 checkDependencies
 
 # Check if timezone is set
