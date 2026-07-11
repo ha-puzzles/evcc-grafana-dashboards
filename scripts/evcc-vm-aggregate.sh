@@ -203,13 +203,13 @@ printUsage() {
 
 deleteMetric() {
     local metric=$1
-    logDebug "Deleting metric $metric"
+    logInfo "  - Deleting $metric"
     curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" -d "match[]=${metric}"
 }
 
 
 deleteAggregations() {
-    logWarning "You are about to delete all aggregated metrics. You will lose all historical metrics for the times, where realtime data is no longer available."
+    logWarning "You are about to delete all aggregated metrics. You will lose all historical metrics for the time frames, where realtime data is no longer available."
     logWarning "Are you sure you want to delete all aggregated data? Type 'YES' to continue."
     local confirmation
     read confirmation
@@ -269,8 +269,15 @@ aggregateQuery() {
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
     logInfo "  - Calculating $metric"
-    logDebug "Executing query: $query"
 
+    # Delete existing metrics for the given time frame
+    logDebug "Deleting existing entries for metric $metric from $(date -d @$starttime) to $(date -d @$endtime)"
+    curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
+        -d "match[]=${metric}" \
+        -d "start=${starttime}" \
+        -d "end=${endtime}" > /dev/null
+
+    logDebug "Executing aggregation: $query"
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
         -d "start=${starttime}" \
@@ -305,8 +312,16 @@ aggregateQueryByTag() {
     encoded_query=$(jq -rn --arg v "$query" '$v|@uri')
 
     logInfo "  - Calculating $metric"
-    logDebug "Executing query: $query"
 
+    # Delete existing metrics for the given time frame
+    logDebug "Deleting existing entries for metric $metric from $(date -d @$starttime) to $(date -d @$endtime)"
+    curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
+        -d "match[]=${metric}" \
+        -d "start=${starttime}" \
+        -d "end=${endtime}" > /dev/null
+
+
+    logDebug "Executing aggregation: $query"
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
         -d "start=${starttime}" \
