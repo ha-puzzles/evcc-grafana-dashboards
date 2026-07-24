@@ -294,9 +294,9 @@ aggregateQuery() {
             | [
                 (.[0] | tonumber),
                 (.[1] | tonumber),
-                (.[0] | strftime("%Y") | tonumber),
-                (.[0] | strftime("%m") | tonumber),
-                (.[0] | strftime("%d") | tonumber)
+                (.[0] | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%Y") | tonumber),
+                (.[0] | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%m") | tonumber),
+                (.[0] | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%d") | tonumber)
             ]
             | @csv
         ' | while IFS=',' read -r timestamp value year month day; do
@@ -343,9 +343,9 @@ aggregateQueryByTag() {
             (.data.result[] | .metric[$tag_name] as $tag_value | .values[] | 
             (.[0] | tonumber) as $timestamp |
             (.[1] | tonumber) as $value |
-            ($timestamp | strftime("%Y") | tonumber) as $y |
-            ($timestamp | strftime("%m") | tonumber) as $m |
-            ($timestamp | strftime("%d") | tonumber) as $d |
+            ($timestamp | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%Y") | tonumber) as $y |
+            ($timestamp | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%m") | tonumber) as $m |
+            ($timestamp | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%d") | tonumber) as $d |
             [$tag_value, $timestamp, $value, $y, $m, $d]) | @csv
         ' | while IFS=',' read -r tagValue timestamp value year month day; do
             month_padded=$(printf "%02d" "$month")
@@ -403,6 +403,17 @@ if [ "$TIMEZONE" == "" ]; then
     logError "Timezone is not set. Please set the script variable TIMEZONE to your timezone."
     exit 1
 fi
+
+# Calculate timezone offset in seconds for jq
+export TZ_OFFSET=$(TZ="$TIMEZONE" date +%z | awk '{
+    sign = substr($0,1,1)
+    h = substr($0,2,2) + 0
+    m = substr($0,4,2) + 0
+    offset = (h * 3600) + (m * 60)
+    if (sign == "-") offset = -offset
+    print offset
+}')
+logDebug "Timezone offset: $TZ_OFFSET seconds"
 
 parseArguments $@
 
