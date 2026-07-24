@@ -270,12 +270,19 @@ aggregateQuery() {
 
     logInfo "  - Calculating $metric"
 
-    # Delete existing metrics for the given time frame
-    logDebug "Deleting existing entries for metric $metric from $(date -d @$starttime) to $(date -d @$endtime)"
-    curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
-        -d "match[]=${metric}" \
-        -d "start=${starttime}" \
-        -d "end=${endtime}" > /dev/null
+    # Iterate through each day in the range and delete by label
+    local ts=$starttime
+    while [ $ts -le $endtime ]; do
+        local d_year=$(TZ="$TIMEZONE" date -d @$ts +%Y)
+        local d_month_padded=$(TZ="$TIMEZONE" date -d @$ts +%m)
+        local d_day_padded=$(TZ="$TIMEZONE" date -d @$ts +%d)
+        local d_month_str="${d_year}-${d_month_padded}"
+        local d_day_str="${d_year}-${d_month_padded}-${d_day_padded}"
+        logDebug "Deleting series for metric $metric with labels year=\"$d_year\", month=\"$d_month_str\", day=\"$d_day_str\""
+        curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
+            -d "match[]=${metric}{year=\"${d_year}\",month=\"${d_month_str}\",day=\"${d_day_str}\"}" > /dev/null
+        ts=$(( ts + 86400 ))
+    done
 
     logDebug "Executing aggregation: $query"
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
@@ -313,13 +320,19 @@ aggregateQueryByTag() {
 
     logInfo "  - Calculating $metric"
 
-    # Delete existing metrics for the given time frame
-    logDebug "Deleting existing entries for metric $metric from $(date -d @$starttime) to $(date -d @$endtime)"
-    curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
-        -d "match[]=${metric}" \
-        -d "start=${starttime}" \
-        -d "end=${endtime}" > /dev/null
-
+    # Iterate through each day in the range and delete by label
+    local ts=$starttime
+    while [ $ts -le $endtime ]; do
+        local d_year=$(TZ="$TIMEZONE" date -d @$ts +%Y)
+        local d_month_padded=$(TZ="$TIMEZONE" date -d @$ts +%m)
+        local d_day_padded=$(TZ="$TIMEZONE" date -d @$ts +%d)
+        local d_month_str="${d_year}-${d_month_padded}"
+        local d_day_str="${d_year}-${d_month_padded}-${d_day_padded}"
+        logDebug "Deleting series for metric $metric with labels year=\"$d_year\", month=\"$d_month_str\", day=\"$d_day_str\""
+        curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
+            -d "match[]=${metric}{year=\"${d_year}\",month=\"${d_month_str}\",day=\"${d_day_str}\"}" > /dev/null
+        ts=$(( ts + 86400 ))
+    done
 
     logDebug "Executing aggregation: $query"
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \

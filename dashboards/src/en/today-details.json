@@ -5,8 +5,8 @@
     "name": "adddvtj",
     "namespace": "default",
     "uid": "LC2bYcRi7e50gSQMVAyvTU6sXjfvVj2ARjF6Lyj7fLkX",
-    "resourceVersion": "1782152922740002",
-    "generation": 106,
+    "resourceVersion": "1784299460724990",
+    "generation": 107,
     "creationTimestamp": "2026-02-02T17:11:20Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "32"
@@ -14,9 +14,9 @@
     "annotations": {
       "grafana.app/createdBy": "user:u000000001",
       "grafana.app/folder": "afc1n53if7rwgc",
-      "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
+      "grafana.app/saved-from-ui": "Grafana v13.1.0 (b309c9bb3b)",
       "grafana.app/updatedBy": "user:u000000001",
-      "grafana.app/updatedTimestamp": "2026-06-22T18:28:42Z"
+      "grafana.app/updatedTimestamp": "2026-07-17T14:44:20Z"
     }
   },
   "spec": {
@@ -298,7 +298,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -308,6 +308,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -438,7 +439,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -448,6 +449,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -880,14 +883,37 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "pvPower_value{id=\"\"}",
+                        "expr": "avg(pvPower_value{id=\"\"} [15m])",
                         "format": "time_series",
-                        "interval": "$energySampleInterval",
-                        "legendFormat": "pvPower",
+                        "interval": "15m",
+                        "legendFormat": "pvPower15m",
                         "range": true
                       }
                     },
-                    "refId": "pvPower",
+                    "refId": "pvPower15m",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "victoriametrics-metrics-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "bfbufhesv65fkc"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "expr": "avg(pvPower_value{id=\"\"} [1h])",
+                        "format": "time_series",
+                        "interval": "1h",
+                        "legendFormat": "pvPower1h",
+                        "range": true
+                      }
+                    },
+                    "refId": "pvPower1h",
                     "hidden": false
                   }
                 }
@@ -901,7 +927,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -911,6 +937,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -951,7 +979,7 @@
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
-                    "fillOpacity": 100,
+                    "fillOpacity": 0,
                     "gradientMode": "opacity",
                     "hideFrom": {
                       "legend": false,
@@ -959,11 +987,11 @@
                       "viz": false
                     },
                     "insertNulls": false,
-                    "lineInterpolation": "linear",
+                    "lineInterpolation": "smooth",
                     "lineStyle": {
                       "fill": "solid"
                     },
-                    "lineWidth": 1,
+                    "lineWidth": 2,
                     "pointSize": 3,
                     "scaleDistribution": {
                       "type": "linear"
@@ -984,19 +1012,20 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "pvPower"
+                      "scope": "series",
+                      "options": "pvPower15m"
                     },
                     "properties": [
                       {
                         "id": "color",
                         "value": {
-                          "fixedColor": "green",
+                          "fixedColor": "semi-dark-green",
                           "mode": "fixed"
                         }
                       },
                       {
                         "id": "displayName",
-                        "value": "Actual PV power"
+                        "value": "Actual PV power (15min avg)"
                       }
                     ]
                   },
@@ -1024,6 +1053,40 @@
                       {
                         "id": "displayName",
                         "value": "Forecasted PV power"
+                      },
+                      {
+                        "id": "custom.lineStyle",
+                        "value": {
+                          "dash": [
+                            10,
+                            5
+                          ],
+                          "fill": "dash"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "scope": "series",
+                      "options": "pvPower1h"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "light-green",
+                          "mode": "fixed"
+                        }
+                      },
+                      {
+                        "id": "custom.lineWidth",
+                        "value": 1
+                      },
+                      {
+                        "id": "displayName",
+                        "value": "Actual PW power (1h avg)"
                       }
                     ]
                   }
@@ -1360,7 +1423,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -1370,6 +1433,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -2545,7 +2609,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -2555,6 +2619,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -3094,7 +3160,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -3104,6 +3170,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },

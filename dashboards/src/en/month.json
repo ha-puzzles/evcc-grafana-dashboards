@@ -5,8 +5,8 @@
     "name": "adz6thx",
     "namespace": "default",
     "uid": "w8uCYfU0CcsyA7GvP0oLMPZAE7cle5e6dgrgVPgL9DAX",
-    "resourceVersion": "1782154881211012",
-    "generation": 47,
+    "resourceVersion": "1784928745054990",
+    "generation": 50,
     "creationTimestamp": "2026-04-04T16:45:40Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "34"
@@ -14,9 +14,9 @@
     "annotations": {
       "grafana.app/createdBy": "user:u000000001",
       "grafana.app/folder": "afc1n53if7rwgc",
-      "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
+      "grafana.app/saved-from-ui": "Grafana v13.1.0 (b309c9bb3b)",
       "grafana.app/updatedBy": "user:u000000001",
-      "grafana.app/updatedTimestamp": "2026-06-22T19:01:21Z"
+      "grafana.app/updatedTimestamp": "2026-07-24T21:32:25Z"
     }
   },
   "spec": {
@@ -72,7 +72,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(batterySocMaxDaily[1d])",
+                        "expr": "avg(max_over_time(batterySocMaxDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "maxBattery",
@@ -95,7 +95,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(batterySocMinDaily[1d])",
+                        "expr": "avg(min_over_time(batterySocMinDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "minBattery",
@@ -114,7 +114,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -124,6 +124,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -380,7 +381,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -591,7 +592,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -661,7 +662,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "1 - ( range_sum(avg(gridEnergyImportDaily[1d])) / (range_sum(avg(homeEnergyDaily[1d])) + range_sum(sum(loadpointEnergyDaily[1d]))) )",
+                        "expr": "1 - ( range_sum(avg(max_over_time(gridEnergyImportDaily[1d]))) / (range_sum(avg(max_over_time(homeEnergyDaily[1d]))) + range_sum(sum(max_over_time(loadpointEnergyDaily[1d])))) )",
                         "format": "time_series",
                         "legendFormat": "autonomy",
                         "range": true
@@ -683,7 +684,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "(range_sum(avg(pvEnergyDaily[1d])) - range_sum(avg(gridEnergyExportDaily[1d]))) / range_sum(avg(pvEnergyDaily[1d]))",
+                        "expr": "(range_sum(avg(max_over_time(pvEnergyDaily[1d]))) - range_sum(avg(max_over_time(gridEnergyExportDaily[1d])))) / range_sum(avg(max_over_time(pvEnergyDaily[1d])))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "selfSufficiency",
@@ -706,7 +707,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_avg(avg(greenShareHomeDaily[1d]))",
+                        "expr": "range_avg(avg(max_over_time(greenShareHomeDaily[1d])))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "greenShare",
@@ -725,7 +726,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "barShape": "rounded",
@@ -881,7 +882,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(energyPriceMaxDaily[1d]) * 100",
+                        "expr": "avg(max_over_time(energyPriceMaxDaily[1d])) * 100",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "energyPriceMax",
@@ -904,7 +905,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(energyPriceAvgDaily[1d]) * 100",
+                        "expr": "avg(max_over_time(energyPriceAvgDaily[1d])) * 100",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "energyPriceAvg",
@@ -927,7 +928,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(energyPriceBoughtDaily[1d])",
+                        "expr": "avg(max_over_time(energyPriceBoughtDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "__auto",
@@ -950,7 +951,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(gridEnergyImportDaily[1d])/1000",
+                        "expr": "avg(max_over_time(gridEnergyImportDaily[1d])) / 1000",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "__auto",
@@ -992,7 +993,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(energyPriceMinDaily[1d]) * 100",
+                        "expr": "avg(max_over_time(energyPriceMinDaily[1d])) * 100",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "energyPriceMin",
@@ -1011,7 +1012,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -1021,6 +1022,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -1195,7 +1198,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(energyPriceBoughtDaily[1d])",
+                        "expr": "avg(max_over_time(energyPriceBoughtDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "energyPriceBought",
@@ -1218,7 +1221,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(energyPriceSoldDaily[1d]) * (-1)",
+                        "expr": "avg(max_over_time(energyPriceSoldDaily[1d]) * (-1))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "energyPriceSold",
@@ -1237,7 +1240,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -1247,6 +1250,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -1407,7 +1412,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "range_sum(avg(gridEnergyImportDaily[1d]))/1000",
+                        "expr": "range_sum(avg(max_over_time(gridEnergyImportDaily[1d])))/1000",
                         "format": "time_series",
                         "instant": false,
                         "interval": "1d",
@@ -1431,7 +1436,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_avg(avg(energyPriceAvgDaily[1d])) * 100",
+                        "expr": "range_avg(avg(max_over_time(energyPriceAvgDaily[1d]))) * 100",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "averagePrice",
@@ -1511,7 +1516,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(energyPriceBoughtDaily[1d])) * (-1)",
+                        "expr": "range_sum(avg(max_over_time(energyPriceBoughtDaily[1d]))) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "purchased",
@@ -1553,7 +1558,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(energyPriceSoldDaily[1d]))",
+                        "expr": "range_sum(avg(max_over_time(energyPriceSoldDaily[1d])))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "sold",
@@ -1591,7 +1596,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1792,7 +1797,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sort_by_label(\n    (sum by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0)\n, \"title\") != 0",
+                        "expr": "sort_by_label(\n    (sum by (title) (max_over_time(consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0))\n    +\n    (sum by (title) (max_over_time(extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0))\n    +\n    (sum by (title) (max_over_time(auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0))\n, \"title\") != 0",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "{{title}}",
@@ -1815,7 +1820,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0)\n  +\n  (sum(avg by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0)\n  + \n  (sum(avg by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0)\n)",
+                        "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (max_over_time(consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0))\n  +\n  (sum(avg by (title) (max_over_time(extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0))\n  + \n  (sum(avg by (title) (max_over_time(auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0))\n)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "otherEnergy",
@@ -1834,7 +1839,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -1844,6 +1849,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -1960,7 +1967,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sort_by_label(\n    (sum by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0)\n    +\n    (sum by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0)\n, \"title\") != 0",
+                        "expr": "sort_by_label(\n    (sum by (title) (max_over_time(consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) default 0))\n    +\n    (sum by (title) (max_over_time(extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) default 0))\n    +\n    (sum by (title) (max_over_time(auxEnergyDaily{title !~ \"$auxBlocklist\"}[1d]) default 0))\n, \"title\") != 0",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "__auto",
@@ -1983,7 +1990,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0)\n  +\n  (sum(avg by (title) (extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0)\n  + \n  (sum(avg by (title) (auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0)\n)",
+                        "expr": "avg(homeEnergyDaily[1d]) \n- \n(\n  (sum(avg by (title) (max_over_time(consumerEnergyDaily{title !~ \"$consumerBlocklist\"}[1d]) != 0) default 0))\n  +\n  (sum(avg by (title) (max_over_time(extEnergyDaily{title !~ \"$extBlocklist\"}[1d]) != 0) default 0))\n  + \n  (sum(avg by (title) (max_over_time(auxEnergyDaily{title !~ \"$auxBlocklist\"} < 0[1d]) != 0) default 0))\n)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "otherEnergy",
@@ -2002,11 +2009,12 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "legend": {
                   "displayMode": "table",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true,
                   "values": [
@@ -2094,7 +2102,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(batteryEnergyChargedDaily[1d]) - avg(batteryEnergyDischargedDaily[1d])",
+                        "expr": "avg(max_over_time(batteryEnergyChargedDaily[1d])) - avg(max_over_time(batteryEnergyDischargedDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "batteryEnergy",
@@ -2117,7 +2125,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d])",
+                        "expr": "avg(max_over_time(homeEnergyDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "homeEnergy",
@@ -2140,7 +2148,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (loadpoint)(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d])",
+                        "expr": "avg by (loadpoint)(max_over_time(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "{{loadpoint}}",
@@ -2159,7 +2167,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -2169,6 +2177,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -2338,7 +2348,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(pvEnergyDaily[1d])",
+                        "expr": "avg(max_over_time(pvEnergyDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "pvEnergy",
@@ -2362,7 +2372,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(gridEnergyImportDaily[1d])",
+                        "expr": "avg(max_over_time(gridEnergyImportDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "gridEnergyImport",
@@ -2386,7 +2396,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d]) * (-1)",
+                        "expr": "avg(max_over_time(homeEnergyDaily[1d])) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "homeEnergy",
@@ -2410,7 +2420,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (loadpoint)(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d]) * (-1)",
+                        "expr": "avg by (loadpoint)(max_over_time(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d])) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "{{loadpoint}}",
@@ -2434,7 +2444,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(gridEnergyExportDaily[1d]) * (-1)",
+                        "expr": "avg(max_over_time(gridEnergyExportDaily[1d])) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "gridEnergyExport",
@@ -2457,7 +2467,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "annotations": {
@@ -2467,6 +2477,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -2680,7 +2692,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(pvEnergyDaily[1d]))",
+                        "expr": "range_sum(avg(max_over_time(pvEnergyDaily[1d])))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "pvEnergy",
@@ -2704,7 +2716,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(gridEnergyImportDaily[1d]))",
+                        "expr": "range_sum(avg(max_over_time(gridEnergyImportDaily[1d])))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "gridEnergyImport",
@@ -2728,7 +2740,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(gridEnergyExportDaily[1d])) * (-1)",
+                        "expr": "range_sum(avg(max_over_time(gridEnergyExportDaily[1d]))) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "gridEnergyExport",
@@ -2752,7 +2764,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(homeEnergyDaily[1d])) * (-1)",
+                        "expr": "range_sum(avg(max_over_time(homeEnergyDaily[1d]))) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "homeEnergy",
@@ -2776,7 +2788,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(batteryEnergyDischargedDaily[1d])) * (-1)",
+                        "expr": "range_sum(avg(max_over_time(batteryEnergyDischargedDaily[1d]))) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "batteryEnergyDischarged",
@@ -2800,7 +2812,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg(batteryEnergyChargedDaily[1d]))",
+                        "expr": "range_sum(avg(max_over_time(batteryEnergyChargedDaily[1d])))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "batteryEnergyCharged",
@@ -2824,7 +2836,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "range_sum(avg by (loadpoint)(loadpointEnergyDaily[1d])) * (-1)",
+                        "expr": "range_sum(avg by (loadpoint)(max_over_time(loadpointEnergyDaily[1d]))) * (-1)",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "{{loadpoint}}",
@@ -2895,7 +2907,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -2905,6 +2917,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -2926,7 +2939,7 @@
               "fieldConfig": {
                 "defaults": {
                   "unit": "watth",
-                  "decimals": 0,
+                  "decimals": 2,
                   "thresholds": {
                     "mode": "absolute",
                     "steps": [
@@ -3165,7 +3178,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(batteryEnergyChargedDaily[1d]) - avg(batteryEnergyDischargedDaily[1d])",
+                        "expr": "avg(max_over_time(batteryEnergyChargedDaily[1d])) - avg(max_over_time(batteryEnergyDischargedDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "batteryEnergy",
@@ -3188,7 +3201,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(homeEnergyDaily[1d])",
+                        "expr": "avg(max_over_time(homeEnergyDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "homeEnergy",
@@ -3211,7 +3224,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg by (loadpoint)(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d])",
+                        "expr": "avg by (loadpoint)(max_over_time(loadpointEnergyDaily{loadpoint !~ \"$loadpointBlocklist\"}[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "{{loadpoint}}",
@@ -3230,11 +3243,12 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "legend": {
                   "displayMode": "table",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true,
                   "values": [
@@ -3371,7 +3385,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "1 - ( avg(gridEnergyImportDaily[1d]) / (avg(homeEnergyDaily[1d]) + sum(loadpointEnergyDaily[1d])) )",
+                        "expr": "1 - ( avg(max_over_time(gridEnergyImportDaily[1d])) / (avg(max_over_time(homeEnergyDaily[1d])) + sum(max_over_time(loadpointEnergyDaily[1d]))) )",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "autonomy",
@@ -3394,7 +3408,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "(avg(pvEnergyDaily[1d]) - avg(gridEnergyExportDaily[1d])) / avg(pvEnergyDaily[1d])",
+                        "expr": "(avg(max_over_time(pvEnergyDaily[1d])) - avg(max_over_time(gridEnergyExportDaily[1d]))) / avg(max_over_time(pvEnergyDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "selfSufficiency",
@@ -3417,7 +3431,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "avg(greenShareHomeDaily[1d])",
+                        "expr": "avg(max_over_time(greenShareHomeDaily[1d]))",
                         "format": "time_series",
                         "interval": "1d",
                         "legendFormat": "greenShare",
@@ -3436,7 +3450,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.0",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -3446,6 +3460,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
