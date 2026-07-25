@@ -1,38 +1,26 @@
 #!/bin/bash
 
-# Aggregation script for EVCC grafana dashboards. See https://github.com/ha-puzzles/evcc-grafana-dashboards
+################################################################################
+#                                                                              #
+#  EVCC Victoria Metrics Aggregation Script                                    #
+#                                                                              #
+#  This script performs data aggregation for EVCC Grafana dashboards.          #
+#  It processes and consolidates metrics collected from EVCC instances         #
+#  to prepare them for visualization in Grafana.                               #
+#                                                                              #
+#  For more information, dashboard setup instructions, and source code, visit: #
+#    https://github.com/ha-puzzles/evcc-grafana-dashboards                     #
+#                                                                              #
+################################################################################
 
-logError() {
-    local msg="$1"
-    echo "[ERROR]   $msg"
-}
 
-logWarning() {
-    local msg="$1"
-    echo "[WARNING] $msg"
-}
 
-logInfo() {
-    local msg="$1"
-    echo "[INFO]    $msg"
-}
+###############################################################################
+### GLOBAL VARIABLES
+###############################################################################
 
-logDebug() {
-    local msg="$1"
-    if [ "$DEBUG" == "true" ]; then
-        echo "[DEBUG]   $msg"
-    fi
-}
 
-# Source configuration from evcc-influx-aggregate.conf, which needs to be located in the same directory as this script.
-if [ -f "$(dirname $0)/evcc-vm-aggregate.conf" ]; then
-    . "$(dirname $0)/evcc-vm-aggregate.conf"
-else
-    logError "Configuration file $(dirname $0)/evcc-vm-aggregate.conf not found."
-    exit 1
-fi
-
-#arguments
+# Argument parameters
 AGGREGATE_YEAR=0
 AGGREGATE_YESTERDAY=false
 AGGREGATE_TODAY=false
@@ -61,6 +49,35 @@ declare -A EXT_DEVICES
 
 #Array of aux devices
 declare -A AUX_DEVICES
+
+
+
+###############################################################################
+### FUNCTIONS
+###############################################################################
+
+
+logError() {
+    local msg="$1"
+    echo "[ERROR]   $msg"
+}
+
+logWarning() {
+    local msg="$1"
+    echo "[WARNING] $msg"
+}
+
+logInfo() {
+    local msg="$1"
+    echo "[INFO]    $msg"
+}
+
+logDebug() {
+    local msg="$1"
+    if [ "$DEBUG" == "true" ]; then
+        echo "[DEBUG]   $msg"
+    fi
+}
 
 validateNumber() {
     local num="$1"
@@ -270,21 +287,8 @@ aggregateQuery() {
 
     logInfo "  - Calculating $metric"
 
-    # Iterate through each day in the range and delete by label
-    local ts=$starttime
-    while [ $ts -le $endtime ]; do
-        local d_year=$(TZ="$TIMEZONE" date -d @$ts +%Y)
-        local d_month_padded=$(TZ="$TIMEZONE" date -d @$ts +%m)
-        local d_day_padded=$(TZ="$TIMEZONE" date -d @$ts +%d)
-        local d_month_str="${d_year}-${d_month_padded}"
-        local d_day_str="${d_year}-${d_month_padded}-${d_day_padded}"
-        logDebug "Deleting series for metric $metric with labels year=\"$d_year\", month=\"$d_month_str\", day=\"$d_day_str\""
-        curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
-            -d "match[]=${metric}{year=\"${d_year}\",month=\"${d_month_str}\",day=\"${d_day_str}\"}" > /dev/null
-        ts=$(( ts + 86400 ))
-    done
-
     logDebug "Executing aggregation: $query"
+    local last_deleted_date=""
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
         -d "start=${starttime}" \
@@ -304,6 +308,15 @@ aggregateQuery() {
             local day=$(TZ="$TIMEZONE" date -d @$ts_int +%d)
             local month_str="${year}-${month}"
             local date_str="${year}-${month}-${day}"
+
+            # Delete existing data for this day before inserting to make sure that there is just one aggregation per day (only once per day)
+            if [ "$last_deleted_date" != "$date_str" ]; then
+                logDebug "Deleting series for metric $metric with labels year=\"$year\", month=\"$month_str\", day=\"$date_str\""
+                curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
+                    -d "match[]=${metric}{year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"}" > /dev/null
+                last_deleted_date="$date_str"
+            fi
+
             local line="${metric}{year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
             logDebug "Inserting line: $line"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
@@ -321,21 +334,8 @@ aggregateQueryByTag() {
 
     logInfo "  - Calculating $metric"
 
-    # Iterate through each day in the range and delete by label
-    local ts=$starttime
-    while [ $ts -le $endtime ]; do
-        local d_year=$(TZ="$TIMEZONE" date -d @$ts +%Y)
-        local d_month_padded=$(TZ="$TIMEZONE" date -d @$ts +%m)
-        local d_day_padded=$(TZ="$TIMEZONE" date -d @$ts +%d)
-        local d_month_str="${d_year}-${d_month_padded}"
-        local d_day_str="${d_year}-${d_month_padded}-${d_day_padded}"
-        logDebug "Deleting series for metric $metric with labels year=\"$d_year\", month=\"$d_month_str\", day=\"$d_day_str\""
-        curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
-            -d "match[]=${metric}{year=\"${d_year}\",month=\"${d_month_str}\",day=\"${d_day_str}\"}" > /dev/null
-        ts=$(( ts + 86400 ))
-    done
-
     logDebug "Executing aggregation: $query"
+    local last_deleted_date=""
     curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
         -d "start=${starttime}" \
@@ -355,6 +355,15 @@ aggregateQueryByTag() {
             local day=$(TZ="$TIMEZONE" date -d @$ts_int +%d)
             local month_str="${year}-${month}"
             local date_str="${year}-${month}-${day}"
+
+            # Delete existing data for this day before inserting to make sure that there is just one aggregation per day (only once per day)
+            if [ "$last_deleted_date" != "$date_str" ]; then
+                logDebug "Deleting series for metric $metric with labels year=\"$year\", month=\"$month_str\", day=\"$date_str\""
+                curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
+                    -d "match[]=${metric}{year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"}" > /dev/null
+                last_deleted_date="$date_str"
+            fi
+
             local line="${metric}{${tag}=\"${tagValue}\",year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
             logDebug "Inserting line: $line"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
@@ -367,33 +376,64 @@ aggregate() {
 
     logDebug "Aggregating from $(date -d @$starttime) ($starttime) to $(date -d @$endtime) ($endtime)"
 
+    # pvEnergyDaily
     aggregateQuery "sum(integrate(((pvPower_value{id=\"\"}) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)/3600)" "pvEnergyDaily" "$starttime" "$endtime"
+    # homeEnergyDaily
     aggregateQuery "sum(integrate(((homePower_value) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)/ 3600)" "homeEnergyDaily" "$starttime" "$endtime"
+    # gridEnergyImportDaily
     aggregateQuery "integrate(((gridPower_value > 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "gridEnergyImportDaily" "$starttime" "$endtime"
+    # gridEnergyExportDaily
     aggregateQuery "integrate(((gridPower_value < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / -3600" "gridEnergyExportDaily" "$starttime" "$endtime"
+    # batteryEnergyDischargedDaily
     aggregateQuery "integrate(((batteryPower_value{id=\"\"} > 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600" "batteryEnergyDischargedDaily" "$starttime" "$endtime"
+    # batteryEnergyChargedDaily
     aggregateQuery "integrate(((batteryPower_value{id=\"\"} < 0) default 0) [1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / -3600" "batteryEnergyChargedDaily" "$starttime" "$endtime"
+    # loadpointEnergyDaily
     aggregateQueryByTag "sum by (loadpoint)(integrate(((chargePower_value{loadpoint!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "loadpoint" "loadpointEnergyDaily" "$starttime" "$endtime"
+    # auxEnergyDaily
     aggregateQueryByTag "sum by (title)(integrate(((auxPower_value{title!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "title" "auxEnergyDaily" "$starttime" "$endtime"
+    # extEnergyDaily
     aggregateQueryByTag "sum by (title)(integrate(((extPower_value{title!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "title" "extEnergyDaily" "$starttime" "$endtime"
+    # consumerEnergyDaily
     aggregateQueryByTag "sum by (title)(integrate(((consumersPower_value{title!=\"\"}) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "title" "consumerEnergyDaily" "$starttime" "$endtime"
+    # energyPriceBoughtDaily
     aggregateQuery "sum_over_time(( keep_last_value(avg(tariffGrid_value[1h:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL)) * integrate((avg(gridPower_value > 0) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceBoughtDaily" "$starttime" "$endtime"
+    # energyPriceSoldDaily
     aggregateQuery "sum_over_time(( keep_last_value(tariffFeedIn_value[30d:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL) * integrate((avg(gridPower_value < 0) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000)[1d:$TARIFF_PRICE_INTERVAL] offset -1d) * (-1)" "energyPriceSoldDaily" "$starttime" "$endtime"
+    # energyPriceMaxDaily
     aggregateQuery "max_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceMaxDaily" "$starttime" "$endtime"
+    # energyPriceMinDaily
     aggregateQuery "min_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceMinDaily" "$starttime" "$endtime"
+    # energyPriceAvgDaily
     aggregateQuery "avg_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceAvgDaily" "$starttime" "$endtime"
+    # greenShareHomeDaily
     aggregateQuery "avg_over_time(avg(greenShareHome_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "greenShareHomeDaily" "$starttime" "$endtime"
+    # batterySocMaxDaily
     aggregateQuery "max_over_time(avg(batterySoc_value)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)" "batterySocMaxDaily" "$starttime" "$endtime"
-    # > 0 as read errors may return 0, which is extremely unlikely for a home battery.
+    # batterySocMinDaily (> 0 as read errors may return 0, which is extremely unlikely for a home battery)
     aggregateQuery "min_over_time(avg(batterySoc_value > 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)" "batterySocMinDaily" "$starttime" "$endtime"
 }
+
+
 
 ###############################################################################
 ### MAIN
 ###############################################################################
 
+
+# Source configuration from evcc-influx-aggregate.conf, which needs to be located in the same directory as this script.
+if [ -f "$(dirname $0)/evcc-vm-aggregate.conf" ]; then
+    . "$(dirname $0)/evcc-vm-aggregate.conf"
+else
+    logError "Configuration file $(dirname $0)/evcc-vm-aggregate.conf not found."
+    exit 1
+fi
+
+
 start_time=$(date +%s)
 
+
+# Crontab may not have /usr/local/bin in PATH, so we add it here if it exists.
 if [ -d "/usr/local/bin" ]; then
     export PATH="$PATH:/usr/local/bin"
 fi
@@ -425,8 +465,8 @@ elif [ "$AGGREGATE_MONTH_YEAR" -ne 0 ]; then
     logInfo "Aggregating month $AGGREGATE_MONTH_YEAR-$(printf "%02d" $AGGREGATE_MONTH_MONTH)"
     aggregate "$starttime" "$endtime"
 elif [ "$AGGREGATE_DAY_YEAR" -ne 0 ]; then
-    starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-01 00:00:00" +%s)
-    endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-${AGGREGATE_DAY_DAY} 23:59:59" +%s)
+    starttime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-$(printf "%02d" $AGGREGATE_DAY_DAY) 00:00:00" +%s)
+    endtime=$(TZ="$TIMEZONE" date -d "$AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-$(printf "%02d" $AGGREGATE_DAY_DAY) 23:59:59" +%s)
     logInfo "Aggregating day $AGGREGATE_DAY_YEAR-$(printf "%02d" $AGGREGATE_DAY_MONTH)-$(printf "%02d" $AGGREGATE_DAY_DAY)"
     aggregate "$starttime" "$endtime"
 elif [ "$AGGREGATE_FROM_YEAR" -ne 0 ]; then
