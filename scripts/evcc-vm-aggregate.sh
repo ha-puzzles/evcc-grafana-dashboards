@@ -293,18 +293,19 @@ aggregateQuery() {
             .data.result[0].values[]
             | [
                 (.[0] | tonumber),
-                (.[1] | tonumber),
-                (.[0] | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%Y") | tonumber),
-                (.[0] | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%m") | tonumber),
-                (.[0] | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%d") | tonumber)
+                (.[1] | tonumber)
             ]
             | @csv
-        ' | while IFS=',' read -r timestamp value year month day; do
-            month_padded=$(printf "%02d" "$month")
-            day_padded=$(printf "%02d" "$day")
-            month_str="${year}-${month_padded}"
-            date_str="${year}-${month_padded}-${day_padded}"
-            line="${metric}{year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
+        ' | while IFS=',' read -r timestamp value; do
+            # Calculate timezone-aware date for THIS specific timestamp (handles DST correctly)
+            local ts_int=${timestamp%.*}
+            local year=$(TZ="$TIMEZONE" date -d @$ts_int +%Y)
+            local month=$(TZ="$TIMEZONE" date -d @$ts_int +%m)
+            local day=$(TZ="$TIMEZONE" date -d @$ts_int +%d)
+            local month_str="${year}-${month}"
+            local date_str="${year}-${month}-${day}"
+            local line="${metric}{year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
+            logDebug "Inserting line: $line"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
         done
 }
@@ -343,16 +344,18 @@ aggregateQueryByTag() {
             (.data.result[] | .metric[$tag_name] as $tag_value | .values[] | 
             (.[0] | tonumber) as $timestamp |
             (.[1] | tonumber) as $value |
-            ($timestamp | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%Y") | tonumber) as $y |
-            ($timestamp | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%m") | tonumber) as $m |
-            ($timestamp | . + ($ENV.TZ_OFFSET | tonumber) | strftime("%d") | tonumber) as $d |
-            [$tag_value, $timestamp, $value, $y, $m, $d]) | @csv
-        ' | while IFS=',' read -r tagValue timestamp value year month day; do
-            month_padded=$(printf "%02d" "$month")
-            day_padded=$(printf "%02d" "$day")
-            month_str="${year}-${month_padded}"
-            date_str="${year}-${month_padded}-${day_padded}"
-            line="${metric}{$tag=${tagValue},year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
+            [$tag_value, $timestamp, $value]) | @csv
+        ' | while IFS=',' read -r tagValue timestamp value; do
+            # Remove quotes from tagValue if present
+            tagValue="${tagValue//\"/}"
+            # Calculate timezone-aware date for THIS specific timestamp (handles DST correctly)
+            local ts_int=${timestamp%.*}
+            local year=$(TZ="$TIMEZONE" date -d @$ts_int +%Y)
+            local month=$(TZ="$TIMEZONE" date -d @$ts_int +%m)
+            local day=$(TZ="$TIMEZONE" date -d @$ts_int +%d)
+            local month_str="${year}-${month}"
+            local date_str="${year}-${month}-${day}"
+            local line="${metric}{${tag}=\"${tagValue}\",year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
             logDebug "Inserting line: $line"
             echo "$line" | curl -s --data-binary @- "http://${VM_HOST}:${VM_PORT}/api/v1/import/prometheus" > /dev/null
         done
@@ -403,17 +406,6 @@ if [ "$TIMEZONE" == "" ]; then
     logError "Timezone is not set. Please set the script variable TIMEZONE to your timezone."
     exit 1
 fi
-
-# Calculate timezone offset in seconds for jq
-export TZ_OFFSET=$(TZ="$TIMEZONE" date +%z | awk '{
-    sign = substr($0,1,1)
-    h = substr($0,2,2) + 0
-    m = substr($0,4,2) + 0
-    offset = (h * 3600) + (m * 60)
-    if (sign == "-") offset = -offset
-    print offset
-}')
-logDebug "Timezone offset: $TZ_OFFSET seconds"
 
 parseArguments $@
 
