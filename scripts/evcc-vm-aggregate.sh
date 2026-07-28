@@ -266,7 +266,7 @@ checkDependencies() {
 
     # Checking if required commands are available
     local missing=0
-    for dep in curl jq; do
+    for dep in curl jq mktemp; do
         if ! command -v $dep > /dev/null 2>&1; then
             logError "This script requires the '$dep' command. Please install '$dep'."
             missing=1
@@ -289,7 +289,10 @@ aggregateQuery() {
 
     logDebug "Executing aggregation: $query"
     local last_deleted_date=""
-    curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
+    local jq_output
+    local jq_err
+    jq_err=$(mktemp)
+    jq_output=$(curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
         -d "start=${starttime}" \
         -d "end=${endtime}" \
@@ -300,7 +303,28 @@ aggregateQuery() {
                 (.[1] | tonumber)
             ]
             | @csv
-        ' | while IFS=',' read -r timestamp value; do
+        ' 2>"$jq_err")
+
+    local jq_err_content
+    jq_err_content=$(cat "$jq_err")
+    rm -f "$jq_err"
+
+    if [ -n "$jq_err_content" ]; then
+        if echo "$jq_err_content" | grep -q "Cannot iterate over null"; then
+            logInfo "    No data returned for $metric (query result is null)."
+            return
+        else
+            logError "jq error for $metric: $jq_err_content"
+            return
+        fi
+    fi
+
+    if [ -z "$jq_output" ]; then
+        logInfo "    No data returned for $metric (query result is empty)."
+        return
+    fi
+
+    echo "$jq_output" | while IFS=',' read -r timestamp value; do
             # Calculate timezone-aware date for THIS specific timestamp (handles DST correctly)
             local ts_int=${timestamp%.*}
             local year=$(TZ="$TIMEZONE" date -d @$ts_int +%Y)
@@ -336,7 +360,10 @@ aggregateQueryByTag() {
 
     logDebug "Executing aggregation: $query"
     local last_deleted_date=""
-    curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
+    local jq_output
+    local jq_err
+    jq_err=$(mktemp)
+    jq_output=$(curl -s "http://${VM_HOST}:${VM_PORT}/api/v1/query_range" \
         -d "query=${encoded_query}" \
         -d "start=${starttime}" \
         -d "end=${endtime}" \
@@ -345,7 +372,28 @@ aggregateQueryByTag() {
             (.[0] | tonumber) as $timestamp |
             (.[1] | tonumber) as $value |
             [$tag_value, $timestamp, $value]) | @csv
-        ' | while IFS=',' read -r tagValue timestamp value; do
+        ' 2>"$jq_err")
+
+    local jq_err_content
+    jq_err_content=$(cat "$jq_err")
+    rm -f "$jq_err"
+
+    if [ -n "$jq_err_content" ]; then
+        if echo "$jq_err_content" | grep -q "Cannot iterate over null"; then
+            logInfo "    No data returned for $metric (query result is null)."
+            return
+        else
+            logError "jq error for $metric: $jq_err_content"
+            return
+        fi
+    fi
+
+    if [ -z "$jq_output" ]; then
+        logInfo "    No data returned for $metric (query result is empty)."
+        return
+    fi
+
+    echo "$jq_output" | while IFS=',' read -r tagValue timestamp value; do
             # Remove quotes from tagValue if present
             tagValue="${tagValue//\"/}"
             # Calculate timezone-aware date for THIS specific timestamp (handles DST correctly)
