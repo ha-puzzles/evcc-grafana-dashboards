@@ -343,20 +343,35 @@ writeDailyPriceAggregation() {
     query="SELECT integral(\"subquery\") / 3600000 FROM (SELECT mean(\"value\") AS \"subquery\" FROM \"${sourceMeasurement}\" WHERE ${timeCondition} ${additionalWhere} GROUP BY time(${ENERGY_SAMPLE_INTERVAL}) fill(0)) WHERE ${timeCondition} GROUP BY time(${TARIFF_PRICE_INTERVAL}) fill(0) tz('$TIMEZONE')"
     logDebug "Query statement: $query"
     row=0
-    while read -r value; do
-        if [ "$value" != "" ]; then
-            if [ "${prices[$row]}" == "" ]; then
-                logDebug "Price for index $row is empty. Using last known price $lastPrice."
-                totalPrice=$(echo "$totalPrice + $value * $lastPrice" | bc)
-            else
-                totalPrice=$(echo "$totalPrice + $value * ${prices[$row]}" | bc)
-                lastPrice=${prices[$row]}
+    
+while read -r value; do
+       if [ "$value" != "" ]; then
+            # Check, whether value is a number (integer or float). If no -> skip
+            if ! [[ "$value" =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
+                row=$((row+1))
+                continue
             fi
+
+            # Get current price and check format
+            currentPrice="${prices[$row]}"
+            if [ "$currentPrice" == "" ] || ! [[ "$currentPrice" =~ ^-?[0-9]+(\.[0-9]+)?$ ]]; then
+                logDebug "Price for index $row is empty or invalid. Using last known price $lastPrice."
+                currentPrice="$lastPrice"
+            else
+                lastPrice="$currentPrice"
+            fi
+            
+            # Check last price
+            [[ -z "$currentPrice" ]] && currentPrice=0
+
+            # Both values are actual numbers
+            totalPrice=$(echo "$totalPrice + ($value * $currentPrice)" | bc)
             row=$((row+1))
         fi
     done < <(influx -host "$INFLUX_HOST" -port $INFLUX_PORT -database $INFLUX_EVCC_DB -username "$INFLUX_EVCC_USER" -password "$INFLUX_EVCC_PASSWORD" -precision rfc3339 -execute "$query" | tail -n +4 | awk '{print $2}')
     logDebug "Total daily price: ${totalPrice}€"
 
+    [[ -z "$totalPrice" || "$totalPrice" == "" ]] && totalPrice=0
 
     if [ "$additionalTags" != "" ]; then
         insertStatement="INSERT ${targetMeasurement},year=${fYear},month=${fMonth},day=${fDay},${additionalTags} value=${totalPrice} ${timestamp}"
