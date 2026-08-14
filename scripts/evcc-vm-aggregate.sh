@@ -403,13 +403,14 @@ aggregateQueryByTag() {
             local day=$(TZ="$TIMEZONE" date -d @$ts_int +%d)
             local month_str="${year}-${month}"
             local date_str="${year}-${month}-${day}"
+            local delete_key="${tagValue}::${date_str}"
 
-            # Delete existing data for this day before inserting to make sure that there is just one aggregation per day (only once per day)
-            if [ "$last_deleted_date" != "$date_str" ]; then
-                logDebug "Deleting series for metric $metric with labels year=\"$year\", month=\"$month_str\", day=\"$date_str\""
+            # Delete existing data for this tag+day before inserting to make sure that there is just one aggregation per day (only once per tag per day)
+            if [ "$last_deleted_date" != "$delete_key" ]; then
+                logDebug "Deleting series for metric $metric with labels ${tag}=\"$tagValue\", year=\"$year\", month=\"$month_str\", day=\"$date_str\""
                 curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" \
-                    -d "match[]=${metric}{year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"}" > /dev/null
-                last_deleted_date="$date_str"
+                    -d "match[]=${metric}{${tag}=\"${tagValue}\",year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"}" > /dev/null
+                last_deleted_date="$delete_key"
             fi
 
             local line="${metric}{${tag}=\"${tagValue}\",year=\"${year}\",month=\"${month_str}\",day=\"${date_str}\"} ${value} ${timestamp}"
