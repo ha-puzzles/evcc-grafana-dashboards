@@ -87,3 +87,21 @@ Delete all aggregated data from the Victoria Metrics database:
 ```bash
 evcc-vm-aggregate.sh --delete-aggregations
 ```
+## Additional daily statistics
+
+The script also produces the following daily aggregates. Like the other daily metrics, they carry `year`, `month` and `day` labels. Monthly and yearly statistics are calculated from daily values rather than stored separately.
+
+| Metric | Meaning | Additional label |
+| --- | --- | --- |
+| `vehicleOdometerMaxDaily` | Maximum daily vehicle odometer reading | `vehicle` |
+| `vehicleEnergyDaily` | Daily vehicle charging energy in Wh | `vehicle` |
+| `potentialHomeDailyPrice` | Hypothetical home energy cost at the grid tariff | — |
+| `potentialLoadpointDailyPrice` | Hypothetical charging cost at the grid tariff | `loadpoint` |
+| `energyDischargeDailyPrice` | Battery discharge valued at the grid tariff | — |
+| `energyChargeDailyPrice` | Signed battery charging valuation at the feed-in tariff | — |
+| `vehicleChargeDailyPrice` | Vehicle charging cost using the charging tariff | `vehicle` |
+| `potentialVehicleChargeDailyPrice` | Hypothetical vehicle charging cost at the grid tariff | `vehicle` |
+
+Costs are in the currency used by the tariffs. Battery charging valuation retains the legacy Influx sign: negative charging power at a positive feed-in tariff produces a negative value. Vehicle charging prices retain the legacy average across loadpoints; simultaneous charging at different tariffs is therefore only approximated.
+
+Every metric written by `aggregate()` must also be included in `AGGREGATED_METRICS`, which is used by `--delete-aggregations`.

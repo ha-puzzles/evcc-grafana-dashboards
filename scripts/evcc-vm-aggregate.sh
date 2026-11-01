@@ -70,6 +70,14 @@ AGGREGATED_METRICS=(
     "greenShareHomeDaily"
     "batterySocMaxDaily"
     "batterySocMinDaily"
+    "vehicleOdometerMaxDaily"
+    "vehicleEnergyDaily"
+    "potentialHomeDailyPrice"
+    "potentialLoadpointDailyPrice"
+    "energyDischargeDailyPrice"
+    "energyChargeDailyPrice"
+    "vehicleChargeDailyPrice"
+    "potentialVehicleChargeDailyPrice"
 )
 
 
@@ -463,6 +471,23 @@ aggregate() {
     aggregateQuery "avg_over_time(avg(tariffGrid_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyPriceAvgDaily" "$starttime" "$endtime"
     # greenShareHomeDaily
     aggregateQuery "avg_over_time(avg(greenShareHome_value offset -$TARIFF_PRICE_INTERVAL)[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "greenShareHomeDaily" "$starttime" "$endtime"
+    # vehicleOdometerMaxDaily
+    aggregateQueryByTag "max by (vehicle)(max_over_time(vehicleOdometer_value{vehicle!=\"\"}[1d] offset -1d))" "vehicle" "vehicleOdometerMaxDaily" "$starttime" "$endtime"
+    # vehicleEnergyDaily
+    aggregateQueryByTag "sum by (vehicle)(integrate(((chargePower_value{vehicle!=\"\"} > 0) default 0)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d) / 3600)" "vehicle" "vehicleEnergyDaily" "$starttime" "$endtime"
+    # potentialHomeDailyPrice
+    aggregateQuery "sum_over_time((integrate(((sum(homePower_value)) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000 * keep_last_value(avg(tariffGrid_value[1h:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL)))[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "potentialHomeDailyPrice" "$starttime" "$endtime"
+    # potentialLoadpointDailyPrice
+    aggregateQueryByTag "sum_over_time((integrate(((sum by (loadpoint)(chargePower_value{loadpoint!=\"\"})) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000 * on() group_left keep_last_value(avg(tariffGrid_value[1h:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL)))[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "loadpoint" "potentialLoadpointDailyPrice" "$starttime" "$endtime"
+    # energyDischargeDailyPrice
+    aggregateQuery "sum_over_time((integrate(((avg(batteryPower_value{id=\"\"} >= 0)) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000 * keep_last_value(avg(tariffGrid_value[1h:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL)))[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyDischargeDailyPrice" "$starttime" "$endtime"
+    # energyChargeDailyPrice
+    aggregateQuery "sum_over_time((integrate(((avg(batteryPower_value{id=\"\"} <= 0)) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000 * keep_last_value(avg(tariffFeedIn_value[30d:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL)))[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "energyChargeDailyPrice" "$starttime" "$endtime"
+    # vehicleChargeDailyPrice
+    aggregateQueryByTag "sum_over_time((integrate(((sum by (vehicle)(chargePower_value{vehicle!=\"\"})) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000 * on() group_left keep_last_value(avg(tariffPriceLoadpoints_value[$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL)))[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "vehicle" "vehicleChargeDailyPrice" "$starttime" "$endtime"
+    # potentialVehicleChargeDailyPrice
+    aggregateQueryByTag "sum_over_time((integrate(((sum by (vehicle)(chargePower_value{vehicle!=\"\"})) default 0)[$TARIFF_PRICE_INTERVAL:${ENERGY_SAMPLE_INTERVAL}] offset -$TARIFF_PRICE_INTERVAL) / 3600000 * on() group_left keep_last_value(avg(tariffGrid_value[1h:$TARIFF_PRICE_INTERVAL] offset -$TARIFF_PRICE_INTERVAL)))[1d:$TARIFF_PRICE_INTERVAL] offset -1d)" "vehicle" "potentialVehicleChargeDailyPrice" "$starttime" "$endtime"
+
     # batterySocMaxDaily
     aggregateQuery "max_over_time(avg(batterySoc_value)[1d:${ENERGY_SAMPLE_INTERVAL}] offset -1d)" "batterySocMaxDaily" "$starttime" "$endtime"
     # batterySocMinDaily (> 0 as read errors may return 0, which is extremely unlikely for a home battery)
