@@ -50,6 +50,28 @@ declare -A EXT_DEVICES
 #Array of aux devices
 declare -A AUX_DEVICES
 
+# All metrics written by aggregate(). Keep in sync when adding new aggregations, as --delete-aggregations relies on this list.
+AGGREGATED_METRICS=(
+    "pvEnergyDaily"
+    "homeEnergyDaily"
+    "gridEnergyImportDaily"
+    "gridEnergyExportDaily"
+    "batteryEnergyDischargedDaily"
+    "batteryEnergyChargedDaily"
+    "loadpointEnergyDaily"
+    "auxEnergyDaily"
+    "extEnergyDaily"
+    "consumerEnergyDaily"
+    "energyPriceBoughtDaily"
+    "energyPriceSoldDaily"
+    "energyPriceMaxDaily"
+    "energyPriceMinDaily"
+    "energyPriceAvgDaily"
+    "greenShareHomeDaily"
+    "batterySocMaxDaily"
+    "batterySocMinDaily"
+)
+
 
 
 ###############################################################################
@@ -221,7 +243,7 @@ printUsage() {
 deleteMetric() {
     local metric=$1
     logInfo "  - Deleting $metric"
-    curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" -d "match[]=${metric}"
+    curl -s -X POST "http://${VM_HOST}:${VM_PORT}/api/v1/admin/tsdb/delete_series" -d "match[]=${metric}" > /dev/null
 }
 
 
@@ -237,29 +259,13 @@ deleteAggregations() {
         sleep 1
         logInfo "Deleting all aggregated metrics in 1 seconds."
         sleep 1
-        deleteMetric "pvEnergyDaily"
-        deleteMetric "homeEnergyDaily"
-        deleteMetric "gridEnergyImportDaily"
-        deleteMetric "gridEnergyExportDaily"
-        deleteMetric "batteryEnergyDischargedDaily"
-        deleteMetric "batteryEnergyChargedDaily"
-        deleteMetric "loadpointEnergyDaily"
-        deleteMetric "auxEnergyDaily"
-        deleteMetric "extEnergyDaily"
-        deleteMetric "consumerEnergyDaily"
-        deleteMetric "energyPriceBoughtDaily"
-        deleteMetric "energyPriceSoldDaily"
-        deleteMetric "energyPriceMaxDaily"
-        deleteMetric "energyPriceMinDaily"
-        deleteMetric "energyPriceAvgDaily"
-        deleteMetric "greenShareHomeDaily"
-        deleteMetric "batterySocMaxDaily"
-        deleteMetric "batterySocMinDaily"
+        for metric in "${AGGREGATED_METRICS[@]}"; do
+            deleteMetric "$metric"
+        done
+        logInfo "All aggregations deleted."
     else
         logInfo "Deletion of aggregated metrics aborted."
     fi
-
-    logInfo "All aggregations deleted."
 }
 
 checkDependencies() {

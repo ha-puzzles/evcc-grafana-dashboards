@@ -82,6 +82,9 @@ sudo docker-compose pull && sudo docker-compose up -d
 
 ## Installation using Debian package
 
+> [!NOTE]
+> Installing Victoria Metrics from the Debian repositories will likely give you an outdated version. Use Docker or the official binaries to install a newer version.
+
 1. Install Victoria Metrics using `apt`:
    ```bash
    sudo apt update && sudo apt install victoria-metrics
