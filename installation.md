@@ -16,7 +16,7 @@ For detailed instructions, see [vm-installation.md](./vm-installation.md).
 
 ### Grafana
 
-Grafana can be easily installed using your Linux distribution's package manager.
+Grafana can be easily installed using docker or your Linux distribution's package manager.
 
 Be sure to use the open source version ('Grafana OSS').
 
