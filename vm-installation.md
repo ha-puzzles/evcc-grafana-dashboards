@@ -19,7 +19,7 @@ Important for the use with the EVCC Grafana Dashboards is the proper configurati
    mkdir -p ~/docker/victoria-metrics
    cd ~/docker/victoria-metrics
    ```
-1. Create a `docker-compose.yml` file in this directory with the following content:
+1. Create a `docker-compose.yml` file in this directory with the following content (note the `retentionPeriod` parameter, which is important for our use case):
    ```yaml
    services:
       # VictoriaMetrics instance, a single process responsible for
