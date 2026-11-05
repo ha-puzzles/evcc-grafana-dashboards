@@ -28,6 +28,10 @@ else
     exit 1
 fi
 
+# Use the configured time zone for all date calculations as well, so that they match the tz() of the InfluxDB queries
+# even if the system time zone is different (e.g. UTC).
+export TZ="$TIMEZONE"
+
 #arguments
 AGGREGATE_YEAR=0
 AGGREGATE_YESTERDAY=false
