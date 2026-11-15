@@ -5,15 +5,17 @@ This guide describes how to migrate from Influx 1.8 (with or without the old das
 ## Step overview
 
 Recommended migration with prior testing:
-1. Install Victoria Metrics.
-1. Migrate data from Influx 1.8 to Victoria Metrics.
-1. Install the new Victoria Metrics-based dashboards alongside the old dashboards.
-1. Install and run the aggregation script.
-1. Test the new dashboards.
-1. After successful testing, reconfigure EVCC to write data to Victoria Metrics.
-1. Re-import data from Influx 1.8 to Victoria Metrics so that any data written since step 2 is also available in Victoria Metrics.
-1. Run the aggregation script again.
-1. Delete the old dashboards and library panels.
+- Test new dashboards:
+   1. Install Victoria Metrics.
+   1. Migrate data from Influx 1.8 to Victoria Metrics.
+   1. Install the new Victoria Metrics-based dashboards alongside the old dashboards.
+   1. Install and run the aggregation script.
+   1. Test the new dashboards.
+- Do the switch:
+   1. After successful testing, reconfigure EVCC to write data to Victoria Metrics.
+   1. Re-import data from Influx 1.8 to Victoria Metrics so that any data written since step 2 is also available in Victoria Metrics.
+   1. Run the aggregation script again.
+   1. Delete the old dashboards and library panels.
 
 Optimistic migration:
 1. Install Victoria Metrics.
@@ -22,6 +24,8 @@ Optimistic migration:
 1. Install the new Victoria Metrics-based dashboards.
 1. Install and run the aggregation script.
 1. Delete the old dashboards and library panels.
+
+See also the note below about Telegraf, which allows you to run the old Influx based dashboards and the new Victoria Metrics based dashboards in parallel.
 
 ## Installing Victoria Metrics
 
@@ -57,6 +61,24 @@ For installation details, see [vm-installation.md](./vm-installation.md)
       ```
       Adjust `<user>` and `<password>` as needed.
 
+## Connect EVCC to Victoria Metrics
+
+See also the [EVCC documentation](https://docs.evcc.io/en/reference/configuration/influx/#victoriametrics).
+
+1. In EVCC open 'More > Configuration'
+2. Under Integrations configure the InfluxDB integration (yes! This is correct also for Victoria Metrics)
+3. Enter these values:
+   - URL: `http://<hostname>:8428`
+   - Organization: `evcc`
+   - Bucket: `evcc`
+   - Leave the API Token empty. 
+4. Save the changes and then restart EVCC.
+
+> [!TIP]
+> Want to validate the VictoriaMetrics dashboards before switching EVCC from InfluxDB? You can run both databases in parallel by placing Telegraf between EVCC and the databases: configure EVCC's InfluxDB integration to send data to Telegraf's InfluxDB listener, then configure Telegraf to forward the metrics to both your existing InfluxDB instance and VictoriaMetrics.
+>
+> See Telegraf's [InfluxDB listener](https://docs.influxdata.com/telegraf/v1/input-plugins/influxdb_listener/), [InfluxDB output plugin](https://docs.influxdata.com/telegraf/v1/output-plugins/influxdb/), and [example for routing metrics to multiple outputs](https://docs.influxdata.com/telegraf/v1/examples/route-metrics/). VictoriaMetrics documents [how to configure Telegraf to write using the InfluxDB protocol](https://docs.victoriametrics.com/victoriametrics/integrations/influxdb/).
+
 ## Grafana setup
 1. In Grafana, go to 'Administration > Plugins and data > Plugins', search for the 'VictoriaMetrics' plugin, and install it.
 
@@ -73,6 +95,18 @@ For installation details, see [vm-installation.md](./vm-installation.md)
 > [!NOTE]
 > Metrics imported from Influx are now found under `<Influx Measurement Name>_<Value>`, where `<Value>` is usually 'value' for most measurements. For example, if you previously queried the value 'value' from the measurement 'pvPower', you will now find it under the metric 'pvPower_value'.
 
-## Importing the new dashboards
+### Import the dashboards
 
-TODO (possibly further in installation.md)
+1. In Grafana, open **Dashboards** → **New** → **Import**.
+2. Upload a dashboard JSON file from one of these folders:
+   - English dashboards: [`dashboards/src/en`](./dashboards/src/en/)
+   - Localized dashboards: [`dashboards/translations/<language>`](./dashboards/translations/)
+3. Select the VictoriaMetrics data source when prompted, then click **Import**.
+4. Fill out or adapt the parameters of the dashboard.
+5. Repeat for each dashboard you want to use.
+
+Open an imported dashboard and verify that it displays data for the selected time range.
+
+## EVCC Grafana aggregation script
+
+The dashboards require an aggregation script that regularly aggregates the data. See the [README.md in the scripts folder](./scripts/README.md) for more information on how to configure and install this.

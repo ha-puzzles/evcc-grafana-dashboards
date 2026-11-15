@@ -3,10 +3,11 @@
 There are several ways to install Victoria Metrics:
 
 - Docker image (recommended).
-- Debian package (note: the Web UI may not work with this method; if you don't need it, this may be the best option).
+- Debian package (note: the Victoria Metrics web UI may not work with this method).
 - Installation via binaries.
 
-Important for the use with the EVCC Grafana Dashboards is the proper configuration of the retentionPeriod parameter. The documentation below takes care about this. If you have already installed Victoria Metrics, consult the Victoria Metrics documentation on how to set this parameter properly depending on your installation scenario.Í
+> [!IMPORTANT]
+> Important for the use with the EVCC Grafana Dashboards is the proper configuration of the `retentionPeriod` parameter. The documentation below takes care about this. If you have already installed Victoria Metrics, consult the Victoria Metrics documentation on how to set this parameter properly depending on your installation scenario.
 
 ## Installation using Docker and Docker Compose
 
