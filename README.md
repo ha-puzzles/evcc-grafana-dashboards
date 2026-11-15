@@ -5,11 +5,13 @@
 
 ![Banner Picture](./img/banner_picture.png)
 
-A collection of EVCC dashboards for Grafana using Victoria Metrics:
+A collection of EVCC dashboards for Grafana with Victoria Metrics as database:
 - Real-time dashboards for desktop and mobile
 - Detailed real-time statistics
 - Monthly and yearly statistics
 - Comprehensive all-time statistics, including financial calculations for PV system amortization and rough estimates of savings from electric vehicles
+
+See the [screenshots of all dashboards](./dashboards.md) for more details.
 
 Please carefully review the next section, which lists the prerequisites, before you begin.
 
