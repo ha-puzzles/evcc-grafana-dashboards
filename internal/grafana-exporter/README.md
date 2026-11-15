@@ -8,6 +8,7 @@ A Bash script to export the EVCC dashboards using the Grafana V2 API. Exported d
 - Configurable via environment variables, `.env` file, or command-line arguments
 - Exports multiple dashboards in a single run
 - Outputs properly formatted JSON files
+- Prepares V2 external exports with data source selectors on import
 
 ## Requirements
 
@@ -114,7 +115,7 @@ The script exports the following dashboards by default:
 | adsmz7v   | today.json          | Today overview     |
 | adz6thx   | month.json          | Monthly overview   |
 
-To modify the list of dashboards, edit the `DASHBOARDS` associative array in the script:
+Define the `DASHBOARDS` associative array in your `.env` file:
 
 ```bash
 declare -A DASHBOARDS=(
@@ -125,7 +126,11 @@ declare -A DASHBOARDS=(
 
 ## Output Format
 
-Exported dashboards are saved as formatted JSON files using the Grafana V2 API response format. These files can be imported directly into another Grafana instance.
+Exported dashboards use the Grafana V2 resource format. The exporter removes instance metadata and replaces concrete data source references with `grafana.app/export-label` labels, matching Grafana's V2 external export mechanism. On import, Grafana offers a data source selector for each distinct source. Two sources of the same plugin type remain separate inputs.
+
+Data source variable references and built-in Grafana/expression sources are preserved. Query variable options and current selections are cleared so they can be refreshed on the destination. The companion `external-export.jq` file must be kept next to the script. Import requires a Grafana version supporting this V2 format and the relevant data source plugins.
+
+Library panels are rejected because their definitions are stored separately; inline them before exporting. The exporter leaves any existing output file intact if fetching or transforming its replacement fails.
 
 ## Troubleshooting
 

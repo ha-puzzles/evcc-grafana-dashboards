@@ -28,10 +28,6 @@ CURL_OPTS="${CURL_OPTS:--s --fail --show-error}"
 #       ["adsmz7v"]="today.json"
 #       ["adz6thx"]="month.json"
 #   )
-if ! declare -p DASHBOARDS &>/dev/null; then
-    error "DASHBOARDS not defined. Please define it in your .env file."
-    exit 1
-fi
 
 
 # =============================================================================
@@ -85,7 +81,14 @@ export_dashboard() {
         -H "Accept: application/json" \
         -H "Content-Type: application/json" \
         "${api_url}"); then
-        echo "${http_response}" | jq '.' > "${output_file}"
+        local temporary_file
+        temporary_file=$(mktemp "${output_file}.XXXXXX")
+        if ! printf '%s\n' "${http_response}" | jq -f "${SCRIPT_DIR}/external-export.jq" > "${temporary_file}"; then
+            rm -f "${temporary_file}"
+            error "  Failed to prepare external export for '${uid}'"
+            return 1
+        fi
+        mv "${temporary_file}" "${output_file}"
         log "  Successfully exported: ${filename}"
     else
         error "  Failed to export dashboard '${uid}' (HTTP error)"
@@ -115,6 +118,11 @@ done
 # =============================================================================
 
 # Check dependencies
+if ! declare -p DASHBOARDS &>/dev/null; then
+    error "DASHBOARDS not defined. Please define it in your .env file."
+    exit 1
+fi
+
 for cmd in curl jq; do
     if ! command -v "${cmd}" &>/dev/null; then
         error "Required command '${cmd}' not found. Please install it."
@@ -135,7 +143,7 @@ echo ""
 failed=0
 for uid in "${!DASHBOARDS[@]}"; do
     if ! export_dashboard "${uid}" "${DASHBOARDS[${uid}]}"; then
-        ((failed++))
+        failed=$((failed + 1))
     fi
 done
 
