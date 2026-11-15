@@ -5,8 +5,8 @@
     "name": "ad5ks8d",
     "namespace": "default",
     "uid": "b4469cc3-afd6-4a4c-b8ca-d4dd3bdcb0b2",
-    "resourceVersion": "1782154992744988",
-    "generation": 17,
+    "resourceVersion": "1785495846722996",
+    "generation": 19,
     "creationTimestamp": "2026-06-07T17:09:16Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "1021005353353216"
@@ -14,9 +14,9 @@
     "annotations": {
       "grafana.app/createdBy": "user:u000000001",
       "grafana.app/folder": "afc1n53if7rwgc",
-      "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
+      "grafana.app/saved-from-ui": "Grafana v13.1.1 (a9cee6e172)",
       "grafana.app/updatedBy": "user:u000000001",
-      "grafana.app/updatedTimestamp": "2026-06-22T19:03:12Z"
+      "grafana.app/updatedTimestamp": "2026-07-31T11:04:06Z"
     }
   },
   "spec": {
@@ -208,7 +208,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -218,6 +218,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -633,14 +635,14 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barShape": "rounded",
                 "barWidthFactor": 0.5,
                 "effects": {
                   "barGlow": false,
-                  "centerGlow": true,
+                  "centerGlow": false,
                   "gradient": false
                 },
                 "endpointMarker": "point",
@@ -889,7 +891,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -901,6 +903,8 @@
                     "lastNotNull"
                   ],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -1196,7 +1200,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1452,7 +1456,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barShape": "rounded",
@@ -1962,7 +1966,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -1972,6 +1976,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -2453,7 +2459,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -2463,6 +2469,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -2763,14 +2770,14 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barShape": "rounded",
                 "barWidthFactor": 0.5,
                 "effects": {
                   "barGlow": false,
-                  "centerGlow": true,
+                  "centerGlow": false,
                   "gradient": false
                 },
                 "endpointMarker": "point",
@@ -2959,7 +2966,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0,
@@ -2969,6 +2976,7 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": false
                 },
@@ -3107,7 +3115,7 @@
               "x": 0,
               "y": 19,
               "width": 24,
-              "height": 4,
+              "height": 5,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-79"
@@ -3118,7 +3126,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 23,
+              "y": 24,
               "width": 24,
               "height": 4,
               "element": {
@@ -3131,9 +3139,9 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 27,
+              "y": 28,
               "width": 24,
-              "height": 4,
+              "height": 5,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-64"
@@ -3144,7 +3152,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 31,
+              "y": 33,
               "width": 24,
               "height": 9,
               "element": {
@@ -3157,7 +3165,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 40,
+              "y": 42,
               "width": 24,
               "height": 1,
               "element": {
@@ -3170,7 +3178,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 41,
+              "y": 43,
               "width": 24,
               "height": 2,
               "element": {

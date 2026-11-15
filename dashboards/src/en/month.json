@@ -5,8 +5,8 @@
     "name": "adz6thx",
     "namespace": "default",
     "uid": "w8uCYfU0CcsyA7GvP0oLMPZAE7cle5e6dgrgVPgL9DAX",
-    "resourceVersion": "1784928745054990",
-    "generation": 50,
+    "resourceVersion": "1789342328020012",
+    "generation": 54,
     "creationTimestamp": "2026-04-04T16:45:40Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "34"
@@ -14,9 +14,9 @@
     "annotations": {
       "grafana.app/createdBy": "user:u000000001",
       "grafana.app/folder": "afc1n53if7rwgc",
-      "grafana.app/saved-from-ui": "Grafana v13.1.0 (b309c9bb3b)",
+      "grafana.app/saved-from-ui": "Grafana v13.1.1 (a9cee6e172)",
       "grafana.app/updatedBy": "user:u000000001",
-      "grafana.app/updatedTimestamp": "2026-07-24T21:32:25Z"
+      "grafana.app/updatedTimestamp": "2026-09-13T23:32:07Z"
     }
   },
   "spec": {
@@ -592,7 +592,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -726,7 +726,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barShape": "rounded",
@@ -1012,7 +1012,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -1166,6 +1166,18 @@
                           "fixedColor": "blue",
                           "mode": "fixed"
                         }
+                      },
+                      {
+                        "id": "custom.showPoints",
+                        "value": "always"
+                      },
+                      {
+                        "id": "custom.pointSize",
+                        "value": 10
+                      },
+                      {
+                        "id": "custom.lineWidth",
+                        "value": 1
                       }
                     ]
                   }
@@ -1231,6 +1243,25 @@
                     "refId": "energyPriceSold",
                     "hidden": false
                   }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "__expr__",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "__expr__"
+                      },
+                      "spec": {
+                        "expression": "$energyPriceBought + $energyPriceSold",
+                        "type": "math"
+                      }
+                    },
+                    "refId": "total",
+                    "hidden": false
+                  }
                 }
               ],
               "transformations": [],
@@ -1240,7 +1271,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -1315,7 +1346,7 @@
                     "spanNulls": false,
                     "stacking": {
                       "group": "A",
-                      "mode": "normal"
+                      "mode": "none"
                     },
                     "thresholdsStyle": {
                       "mode": "off"
@@ -1340,6 +1371,13 @@
                       {
                         "id": "displayName",
                         "value": "Purchased"
+                      },
+                      {
+                        "id": "custom.stacking",
+                        "value": {
+                          "group": "A",
+                          "mode": "normal"
+                        }
                       }
                     ]
                   },
@@ -1360,25 +1398,44 @@
                       {
                         "id": "displayName",
                         "value": "Sold"
+                      },
+                      {
+                        "id": "custom.stacking",
+                        "value": {
+                          "group": "A",
+                          "mode": "normal"
+                        }
                       }
                     ]
                   },
                   {
                     "matcher": {
                       "id": "byName",
+                      "scope": "series",
                       "options": "total"
                     },
                     "properties": [
                       {
                         "id": "displayName",
-                        "value": "Bilanz"
+                        "value": "Total"
                       },
                       {
                         "id": "color",
                         "value": {
-                          "fixedColor": "blue",
+                          "fixedColor": "text",
                           "mode": "fixed"
                         }
+                      },
+                      {
+                        "id": "custom.stacking",
+                        "value": {
+                          "group": "B",
+                          "mode": "normal"
+                        }
+                      },
+                      {
+                        "id": "custom.fillOpacity",
+                        "value": 19
                       }
                     ]
                   }
@@ -1596,7 +1653,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1839,7 +1896,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -2009,7 +2066,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "legend": {
@@ -2167,7 +2224,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -2315,7 +2372,7 @@
                       },
                       {
                         "id": "displayName",
-                        "value": "Battery delta consumption"
+                        "value": "Battery self consumption"
                       }
                     ]
                   }
@@ -2467,7 +2524,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -2907,7 +2964,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -3243,7 +3300,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "piechart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "legend": {
@@ -3351,7 +3408,7 @@
                       },
                       {
                         "id": "displayName",
-                        "value": "Battery delta consumption"
+                        "value": "Battery self consumption"
                       }
                     ]
                   }
@@ -3450,7 +3507,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0.2,

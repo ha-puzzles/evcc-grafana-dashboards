@@ -5,8 +5,8 @@
     "name": "adsmz7v",
     "namespace": "default",
     "uid": "iu2QTVwFtLooO0AaM835pXF4NbhjI3RL3zTf0vDl05sX",
-    "resourceVersion": "1783088360279980",
-    "generation": 120,
+    "resourceVersion": "1786899687220019",
+    "generation": 127,
     "creationTimestamp": "2026-02-01T10:44:35Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "24"
@@ -14,9 +14,9 @@
     "annotations": {
       "grafana.app/createdBy": "user:u000000001",
       "grafana.app/folder": "afc1n53if7rwgc",
-      "grafana.app/saved-from-ui": "Grafana v13.1.0 (b309c9bb3b)",
+      "grafana.app/saved-from-ui": "Grafana v13.1.1 (a9cee6e172)",
       "grafana.app/updatedBy": "user:u000000001",
-      "grafana.app/updatedTimestamp": "2026-07-03T14:19:20Z"
+      "grafana.app/updatedTimestamp": "2026-08-16T17:01:27Z"
     }
   },
   "spec": {
@@ -195,7 +195,7 @@
                       }
                     },
                     "refId": "forecast",
-                    "hidden": false
+                    "hidden": true
                   }
                 }
               ],
@@ -208,7 +208,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -464,7 +464,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(((pvPower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]) / 3600",
+                        "expr": "integrate(((pvPower_value{id=\"\"} < $peakPowerLimit) default 0)[$__range:$energySampleInterval]) / 3600",
                         "format": "time_series",
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
@@ -487,7 +487,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n  ((gridPower_value > 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600",
+                        "expr": "integrate(\n  ((gridPower_value > 0 <$peakPowerLimit) default 0) [$__range:$energySampleInterval]\n) / 3600",
                         "format": "time_series",
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
@@ -510,7 +510,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n  ((gridPower_value < 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / -3600",
+                        "expr": "integrate(\n  ((gridPower_value < 0 <$peakPowerLimit) default 0) [$__range:$energySampleInterval]\n) / -3600",
                         "format": "time_series",
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
@@ -533,7 +533,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(((homePower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]) / 3600",
+                        "expr": "integrate(((homePower_value{id=\"\"} < $peakPowerLimit) default 0)[$__range:$energySampleInterval]) / 3600",
                         "format": "time_series",
                         "interval": "$energySampleInterval",
                         "legendFormat": "__auto",
@@ -556,7 +556,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(integrate((avg by (loadpoint)(chargePower_value{loadpoint!=\"\"}) default 0)[1d:$energySampleInterval]) / 3600)",
+                        "expr": "sum(integrate((avg by (loadpoint)(chargePower_value{loadpoint!=\"\"}) default 0)[$__range:$energySampleInterval]) / 3600)",
                         "format": "time_series",
                         "legendFormat": "__auto",
                         "range": true
@@ -634,14 +634,14 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barShape": "rounded",
                 "barWidthFactor": 0.5,
                 "effects": {
                   "barGlow": false,
-                  "centerGlow": true,
+                  "centerGlow": false,
                   "gradient": false
                 },
                 "endpointMarker": "point",
@@ -890,7 +890,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -1199,7 +1199,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -1455,7 +1455,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barShape": "rounded",
@@ -1965,7 +1965,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -2211,7 +2211,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n    ((pvPower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n) / 3600000",
+                        "expr": "integrate(\n    ((pvPower_value{id=\"\"} < $peakPowerLimit) default 0)[$__range:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "pvEnergy",
                         "range": true
@@ -2233,7 +2233,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n  ((gridPower_value > 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
+                        "expr": "integrate(\n  ((gridPower_value > 0 <$peakPowerLimit) default 0) [$__range:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "gridEnergyImport",
                         "range": true
@@ -2255,7 +2255,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n  ((gridPower_value < 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
+                        "expr": "integrate(\n  ((gridPower_value < 0 <$peakPowerLimit) default 0) [$__range:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "gridEnergyExport",
                         "range": true
@@ -2277,7 +2277,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n    ((homePower_value{id=\"\"} < $peakPowerLimit) default 0)[1d:$energySampleInterval]\n) / -3600000",
+                        "expr": "integrate(\n    ((homePower_value{id=\"\"} < $peakPowerLimit) default 0)[$__range:$energySampleInterval]\n) / -3600000",
                         "format": "time_series",
                         "legendFormat": "homeEnergy",
                         "range": true
@@ -2299,7 +2299,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n  ((batteryPower_value {id=\"\"} > 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
+                        "expr": "integrate(\n  ((batteryPower_value {id=\"\"} > 0 <$peakPowerLimit) default 0) [$__range:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "batDischargeEnergy",
                         "range": true
@@ -2321,7 +2321,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "integrate(\n  ((batteryPower_value {id=\"\"} < 0 <$peakPowerLimit) default 0) [1d:$energySampleInterval]\n) / 3600000",
+                        "expr": "integrate(\n  ((batteryPower_value {id=\"\"} < 0 <$peakPowerLimit) default 0) [$__range:$energySampleInterval]\n) / 3600000",
                         "format": "time_series",
                         "legendFormat": "batChargeEnergy",
                         "range": true
@@ -2458,7 +2458,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -2772,7 +2772,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0,
@@ -2934,14 +2934,14 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "gauge",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barShape": "rounded",
                 "barWidthFactor": 0.5,
                 "effects": {
                   "barGlow": false,
-                  "centerGlow": true,
+                  "centerGlow": false,
                   "gradient": false
                 },
                 "endpointMarker": "point",
@@ -3100,7 +3100,7 @@
               "x": 19,
               "y": 0,
               "width": 5,
-              "height": 4,
+              "height": 5,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-79"
@@ -3111,7 +3111,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 19,
-              "y": 4,
+              "y": 5,
               "width": 5,
               "height": 4,
               "element": {
@@ -3124,9 +3124,9 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 19,
-              "y": 8,
+              "y": 9,
               "width": 5,
-              "height": 4,
+              "height": 5,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-64"
@@ -3137,9 +3137,9 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 19,
-              "y": 12,
+              "y": 14,
               "width": 5,
-              "height": 10,
+              "height": 9,
               "element": {
                 "kind": "ElementReference",
                 "name": "panel-77"
@@ -3163,7 +3163,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 19,
-              "y": 22,
+              "y": 23,
               "width": 5,
               "height": 1,
               "element": {
@@ -3176,7 +3176,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 19,
-              "y": 23,
+              "y": 24,
               "width": 5,
               "height": 2,
               "element": {
