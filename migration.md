@@ -35,6 +35,9 @@ For installation details, see [vm-installation.md](./vm-installation.md)
 
 ## Migration
 
+> [!IMPORTANT]
+> Before you start the migration make sure that you have properly set the `retentionPeriod` parameter as described in the [Victoria Metrics installation](./vm-installation.md) guide.
+
 1. In earlier versions of Influx, the measurement `batteryControllable` was written. This did not contain valid numbers as a metric and must be deleted before migration.
    ```bash
    influx -database evcc -execute 'drop measurement batteryControllable'
@@ -63,6 +66,11 @@ For installation details, see [vm-installation.md](./vm-installation.md)
 
 ## Connect EVCC to Victoria Metrics
 
+> [!TIP]
+> Want to validate the VictoriaMetrics dashboards before switching EVCC from InfluxDB? You can run both databases in parallel by placing Telegraf between EVCC and the databases: configure EVCC's InfluxDB integration to send data to Telegraf's InfluxDB listener, then configure Telegraf to forward the metrics to both your existing InfluxDB instance and VictoriaMetrics.
+>
+> See Telegraf's [InfluxDB listener](https://docs.influxdata.com/telegraf/v1/input-plugins/influxdb_listener/), [InfluxDB output plugin](https://docs.influxdata.com/telegraf/v1/output-plugins/influxdb/), and [example for routing metrics to multiple outputs](https://docs.influxdata.com/telegraf/v1/examples/route-metrics/). VictoriaMetrics documents [how to configure Telegraf to write using the InfluxDB protocol](https://docs.victoriametrics.com/victoriametrics/integrations/influxdb/).
+
 See also the [EVCC documentation](https://docs.evcc.io/en/reference/configuration/influx/#victoriametrics).
 
 1. In EVCC open 'More > Configuration'
@@ -73,11 +81,6 @@ See also the [EVCC documentation](https://docs.evcc.io/en/reference/configuratio
    - Bucket: `evcc`
    - Leave the API Token empty. 
 4. Save the changes and then restart EVCC.
-
-> [!TIP]
-> Want to validate the VictoriaMetrics dashboards before switching EVCC from InfluxDB? You can run both databases in parallel by placing Telegraf between EVCC and the databases: configure EVCC's InfluxDB integration to send data to Telegraf's InfluxDB listener, then configure Telegraf to forward the metrics to both your existing InfluxDB instance and VictoriaMetrics.
->
-> See Telegraf's [InfluxDB listener](https://docs.influxdata.com/telegraf/v1/input-plugins/influxdb_listener/), [InfluxDB output plugin](https://docs.influxdata.com/telegraf/v1/output-plugins/influxdb/), and [example for routing metrics to multiple outputs](https://docs.influxdata.com/telegraf/v1/examples/route-metrics/). VictoriaMetrics documents [how to configure Telegraf to write using the InfluxDB protocol](https://docs.victoriametrics.com/victoriametrics/integrations/influxdb/).
 
 ## Grafana setup
 1. In Grafana, go to 'Administration > Plugins and data > Plugins', search for the 'VictoriaMetrics' plugin, and install it.
