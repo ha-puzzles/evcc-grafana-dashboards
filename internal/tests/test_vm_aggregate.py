@@ -238,6 +238,23 @@ class AggregationTests(unittest.TestCase):
             self.assertEqual(result.stdout.strip(), expected)
         self.assertNotEqual(run('validateDate 2025 02 29', check=False).returncode, 0)
 
+    def test_completion_time_is_visible_without_debug_and_only_on_success(self):
+        setup = '''
+            cat(){ command cat "$@" 2>/dev/null || echo Europe/Berlin; }
+            aggregateRange(){ SECONDS=$((started_seconds+DURATION)); echo sample; return RESULT; }
+        '''
+        for duration, expected in [(0, '00h 00m 00s'), (59, '00h 00m 59s'),
+                                   (60, '00h 01m 00s'), (3599, '00h 59m 59s'),
+                                   (3600, '01h 00m 00s'), (3661, '01h 01m 01s'),
+                                   (90061, '25h 01m 01s')]:
+            for flags in ('', '--dry-run'):
+                result = run(setup.replace('RESULT', '0').replace('DURATION', str(duration)) + 'main --day 2025 1 1 ' + flags)
+                self.assertEqual(result.stdout, 'sample\n')
+                self.assertIn(f'[INFO]    Aggregation finished in {expected}.', result.stderr)
+        result = run(setup.replace('RESULT', '1').replace('DURATION', '125') + 'main --day 2025 1 1 --dry-run', check=False)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn('Aggregation finished', result.stderr)
+
     def test_soc_raw_filters_keep_short_extrema(self):
         raw = {"metric":{"__name__":"batterySoc_value","id":""},
                "timestamps":[0, 100, 101, 102, 103, 104, 105, 106, 1000],
