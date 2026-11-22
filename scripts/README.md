@@ -134,6 +134,4 @@ energy and cost values cover only elapsed complete sample intervals.
 
 Battery aggregates require `HOME_BATTERY="true"`. Grid tariff minimum, maximum
 and average require `DYNAMIC_TARIFF="true"`. Aggregates with no source data are
-omitted; costs with missing tariffs for nonzero energy are also omitted. See the
-[aggregation script documentation](./scripts/README.md) for integration rules,
-forecast coverage checks and publication behavior.
+omitted; costs with missing tariffs for nonzero energy are also omitted.
