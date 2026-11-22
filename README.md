@@ -29,11 +29,6 @@ The following requirements must be met for these dashboards to work:
 
 ## Dashboard installation
 
-Run the aggregation script directly as `./scripts/evcc-vm-aggregate.py` after
-setting its executable permission with `chmod +x scripts/evcc-vm-aggregate.py`.
-Its shebang selects Python automatically; see the [aggregation instructions](./scripts/README.md)
-for configuration and scheduling.
-
 ### New installation
 For detailed installation steps, see [installation.md](./installation.md).
 
