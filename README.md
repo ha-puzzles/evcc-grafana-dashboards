@@ -24,10 +24,15 @@ The following requirements must be met for these dashboards to work:
 - Victoria Metrics [configured as a database in EVCC](https://docs.evcc.io/docs/reference/configuration/influx#victoriametrics)
 - Grafana (version 13.3 or higher recommended)
 - Basic Linux knowledge or willingness to learn
-- Ability to regularly run a Bash shell script via crontab (HAOS users, see [FAQ](#faq))
+- Python 3.9+ with an IANA timezone database and the ability to schedule the aggregation script (for example via crontab) (HAOS users, see [FAQ](#faq))
 - Willingness to learn a bit about Grafana
 
 ## Dashboard installation
+
+Run the aggregation script directly as `./scripts/evcc-vm-aggregate.py` after
+setting its executable permission with `chmod +x scripts/evcc-vm-aggregate.py`.
+Its shebang selects Python automatically; see the [aggregation instructions](./scripts/README.md)
+for configuration and scheduling.
 
 ### New installation
 For detailed installation steps, see [installation.md](./installation.md).
@@ -61,3 +66,4 @@ Did you follow the upgrade steps, especially deleting the library panels, before
 
 - Did you run the aggregation for all relevant time periods? See [scripts](./scripts/).
 - Were the correct data sources selected during import? If not, you can change them later in the affected panels.
+

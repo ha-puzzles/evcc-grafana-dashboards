@@ -606,6 +606,9 @@ aggregateRange() {
 
 
 main() {
+    logWarning "DEPRECATION NOTICE: This script is deprecated and will be removed in a future release. Please use the new Python-based aggregation script instead."
+    
+    local started_seconds=$SECONDS
     local config_dir
     config_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd) || return 1
     if [[ -f "$config_dir/evcc-vm-aggregate.conf" ]]; then
@@ -654,7 +657,9 @@ main() {
     fi
     trap '[[ -z "$DAY_OUTPUT" ]] || rm -f "$DAY_OUTPUT"' EXIT
     aggregateRange "$first" "$final" || { logError "Aggregation failed; stopping."; return 1; }
-    logDebug "Aggregation finished."
+    local elapsed_seconds=$((SECONDS-started_seconds)) elapsed_text
+    printf -v elapsed_text '%02dh %02dm %02ds' "$((elapsed_seconds/3600))" "$((elapsed_seconds%3600/60))" "$((elapsed_seconds%60))"
+    logInfo "Aggregation finished in $elapsed_text."
 }
 
 # Allow tests to source the query builders without running a live aggregation.
