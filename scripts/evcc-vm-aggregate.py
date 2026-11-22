@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """EVCC daily aggregation; Python >=3.9, standard library only.
-
-Date calculations publish by default; use --dry-run to preview samples without writes.
 """
 import argparse
 import base64
@@ -496,17 +494,11 @@ def delete_aggregations(client):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(
-        description='Calculate and optionally publish daily EVCC aggregates in VictoriaMetrics.',
+        description='Calculate and publish daily EVCC aggregates in VictoriaMetrics.',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''Choose one date selector, --detect, or --delete-aggregations.
 Date calculations publish by default. Use --dry-run to calculate without writes.
 Dates use TIMEZONE from the configuration.
-Date ranges include both endpoints. Years must be between 1970 and 2100.
-Today uses the cutoff at run start and integrates complete sample intervals;
-future days are skipped. Dry runs print Prometheus samples to stdout;
-logs go to stderr. Default publication replaces existing aggregates only after a day's
-calculations succeed. Deletion and import are separate, non-atomic requests.
-Do not overlap publishing runs for the same dates, including Bash cron jobs.
 
 Examples:
   %(prog)s --dry-run --day 2025 3 30
@@ -593,10 +585,6 @@ Examples:
             profile = client.profile()
             profile['elapsed_seconds'] = time.perf_counter() - started
             args.profile.write_text(json.dumps(profile, indent=2))
-    if not (args.detect or args.delete_aggregations):
-        hours, remainder = divmod(int(time.perf_counter() - started), 3600)
-        minutes, seconds = divmod(remainder, 60)
-        print(f'[INFO] Aggregation finished in {hours:02d}h {minutes:02d}m {seconds:02d}s.', file=sys.stderr)
     if debug:
         print(f'[DEBUG] {client.requests} HTTP requests, {time.perf_counter() - started:.3f}s', file=sys.stderr)
 

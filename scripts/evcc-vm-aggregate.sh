@@ -606,6 +606,8 @@ aggregateRange() {
 
 
 main() {
+    logWarning "DEPRECATION NOTICE: This script is deprecated and will be removed in a future release. Please use the new Python-based aggregation script instead."
+    
     local started_seconds=$SECONDS
     local config_dir
     config_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd) || return 1
