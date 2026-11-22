@@ -31,6 +31,69 @@ def matrix(values, labels=None):
 
 
 class AggregationTests(unittest.TestCase):
+    def test_daily_solar_forecast_energy(self):
+        result = run('''
+            TIMEZONE=Europe/Berlin; SAMPLE_SECONDS=3600; TARIFF_SECONDS=3600
+            DRY_RUN=true; HOME_BATTERY=false; DYNAMIC_TARIFF=false
+            eval "$(declare -f aggregateEnergy | sed '1s/aggregateEnergy/realAggregateEnergy/')"
+            aggregateEnergy(){
+                [[ "$1" == pvEnergyForecastDaily ]] || return 0
+                realAggregateEnergy "$@"
+            }
+            aggregateCost(){ :; }; aggregateStatistic(){ :; }; tariffMatrix(){ echo null; }
+            queryVM(){
+                [[ "$*" == *tariffSolar_value* && "$*" == *"last_over_time(tariffSolar_value[24h] offset 1ms)"* ]] || return 1
+                jq -n --argjson start "$DAY_START" --argjson stop "$SAMPLE_END" '
+                    {status:"success",data:{resultType:"matrix",result:[
+                        {metric:{},values:[range($start+3600;$stop+1;3600) | [.,"1000"]]}]}}'
+            }
+            [[ " ${AGGREGATED_METRICS[*]} " == *" pvEnergyForecastDaily "* ]] || exit 1
+            for day in 2025-03-29 2025-03-30 2025-10-26; do
+                aggregateDay "$day" || exit 1
+            done
+        ''')
+        lines = result.stdout.splitlines()
+        self.assertEqual(len(lines), 3)
+        for line, day, energy in zip(lines,
+                                     ['2025-03-29', '2025-03-30', '2025-10-26'],
+                                     [23000, 22000, 24000]):
+            self.assertTrue(line.startswith('pvEnergyForecastDaily{'))
+            self.assertIn(f'day="{day}"', line)
+            self.assertEqual(float(line.split()[-2]), energy)
+
+    def test_sparse_forecast_uses_held_values_and_preserves_zero(self):
+        # Simulate a gauge updated at minute 0 (600 W) and minute 15 (0 W).
+        # Validate that the actual query requests held samples, not raw bin means.
+        with tempfile.TemporaryDirectory() as temp:
+            out = Path(temp)/"out"
+            result = run(f'''DAY_START=0; SAMPLE_END=1800; SAMPLE_SECONDS=60; TARIFF_SECONDS=900
+                PEAK_POWER_LIMIT=25000; DAY_DATE=2025-01-01; DAY_OUTPUT={out}
+                queryVM(){{
+                    [[ "$*" == *"last_over_time(tariffSolar_value[24h] offset 1ms)"* ]] || return 1
+                    [[ "$*" == *"start=60"* && "$*" == *"end=1800"* && "$*" == *"step=60"* ]] || return 1
+                    jq -n '{{status:"success",data:{{result:[{{metric:{{}},values:
+                        [range(60;1801;60) | [.,(if .<=900 then "600" else "0" end)]]}}]}}}}'
+                }}
+                aggregateEnergy pvEnergyForecastDaily tariffSolar_value forecast "" 1
+            ''')
+            self.assertEqual(result.returncode, 0)
+            # Same trapezoidal endpoint convention as other energy metrics.
+            self.assertEqual(float(out.read_text().split()[-2]), 145)
+
+    def test_unknown_forecast_intervals_are_not_integrated_as_zero(self):
+        for values in [[], [[60,"600"],[180,"600"]]]:
+            with tempfile.TemporaryDirectory() as temp:
+                f, out = Path(temp)/"matrix", Path(temp)/"out"
+                f.write_text(json.dumps(matrix(values)))
+                result = run(f'''DAY_START=0; SAMPLE_END=180; SAMPLE_SECONDS=60
+                    DAY_DATE=2025-01-01; DAY_OUTPUT={out}; DAY_METRICS=()
+                    powerMatrix(){{ cat {f}; }}
+                    aggregateEnergy pvEnergyForecastDaily tariffSolar_value forecast "" 1
+                    [[ ${{#DAY_METRICS[@]}} == 0 ]]
+                ''')
+                self.assertFalse(out.exists())
+                self.assertIn("missing, invalid or stale", result.stderr)
+
     def test_local_calendar_days(self):
         result = run('''
             TIMEZONE=Europe/Berlin; SAMPLE_SECONDS=60; TARIFF_SECONDS=900; DRY_RUN=true

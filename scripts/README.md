@@ -94,6 +94,7 @@ The script also produces the following daily aggregates. Like the other daily me
 
 | Metric | Meaning | Additional label |
 | --- | --- | --- |
+| `pvEnergyForecastDaily` | Daily forecast solar energy in Wh, integrated from `tariffSolar_value` (W) | — |
 | `vehicleOdometerMaxDaily` | Maximum daily vehicle odometer reading | `vehicle` |
 | `vehicleEnergyDaily` | Daily vehicle charging energy in Wh | `vehicle` |
 | `potentialHomeDailyPrice` | Hypothetical home energy cost at the grid tariff | — |
@@ -106,6 +107,21 @@ The script also produces the following daily aggregates. Like the other daily me
 Costs are in the currency used by the tariffs. Battery charging valuation retains the legacy Influx sign: negative charging power at a positive feed-in tariff produces a negative value. Vehicle charging prices retain the legacy average across loadpoints; simultaneous charging at different tariffs is therefore only approximated.
 
 Every metric written by `aggregateDay()` must also be included in `AGGREGATED_METRICS`, which is used by `--delete-aggregations`.
+
+The solar forecast uses the same trapezoidal integration and positive power limits
+as measured PV energy, but treats `tariffSolar_value` as a sparse held gauge.
+At each sample boundary, the latest raw value strictly before the boundary is
+carried forward for up to 24 hours, including across midnight. Zero is a valid
+forecast. Negative values and values at or above `PEAK_POWER_LIMIT` are rejected
+after selecting the latest update, so an invalid update cannot revive an older
+valid value. Missing, invalid or expired intervals cause the daily forecast to
+be omitted with a warning; any previous aggregate is retained. They are never
+filled with synthetic zero power. This differs from measured meter data.
+It integrates the forecast power recorded throughout the day, rather than a fixed forecast issued at a particular time. For today, it
+covers only elapsed complete sample intervals, not the remaining day's forecast.
+If no usable forecast samples exist, no forecast aggregate is written. After
+upgrading from the zero-filled forecast implementation, recalculate previously
+aggregated dates (for example October and November) to replace understated values.
 
 ## Daily boundaries and calculation
 

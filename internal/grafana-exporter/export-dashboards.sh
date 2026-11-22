@@ -27,6 +27,8 @@ CURL_OPTS="${CURL_OPTS:--s --fail --show-error}"
 #       ["adddvtj"]="today-details.json"
 #       ["adsmz7v"]="today.json"
 #       ["adz6thx"]="month.json"
+#       ["adrf8bj"]="year.json"
+#       ["evcc-all-time-vm"]="all-time.json"
 #   )
 
 

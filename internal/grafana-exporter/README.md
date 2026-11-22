@@ -114,6 +114,8 @@ The script exports the following dashboards by default:
 | adddvtj   | today-details.json  | Detailed view      |
 | adsmz7v   | today.json          | Today overview     |
 | adz6thx   | month.json          | Monthly overview   |
+| adrf8bj   | year.json           | Yearly overview    |
+| evcc-all-time-vm | all-time.json | All-time overview |
 
 Define the `DASHBOARDS` associative array in your `.env` file:
 
