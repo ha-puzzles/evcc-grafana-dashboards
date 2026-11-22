@@ -54,6 +54,7 @@ declare -A AUX_DEVICES
 # All metrics written by aggregateDay(). Keep in sync when adding new aggregations, as --delete-aggregations relies on this list.
 AGGREGATED_METRICS=(
     "pvEnergyDaily"
+    "pvEnergyForecastDaily"
     "homeEnergyDaily"
     "gridEnergyImportDaily"
     "gridEnergyExportDaily"
@@ -335,7 +336,14 @@ powerMean() {
 
 powerMatrix() {
     local selector="$1" mode="$2" tag="$3" expression
-    expression=$(powerMean "$selector" "$mode" "$tag") || return 1
+    if [[ "$mode" == forecast ]]; then
+        # Forecasts are sparse, held gauges, not frequently polled meters.
+        # Select the latest raw value BEFORE filtering: an invalid update must
+        # not resurrect an older valid one. Bound carry-forward to 24 hours.
+        expression="avg((last_over_time($selector[24h] offset 1ms) >= 0) < $PEAK_POWER_LIMIT)"
+    else
+        expression=$(powerMean "$selector" "$mode" "$tag") || return 1
+    fi
     queryVM /api/v1/query_range --get --data-urlencode "query=$expression" \
         --data-urlencode "start=$((DAY_START+SAMPLE_SECONDS))" \
         --data-urlencode "end=$SAMPLE_END" --data-urlencode "step=$SAMPLE_SECONDS"
@@ -451,6 +459,18 @@ aggregateEnergy() {
     local metric="$1" selector="$2" mode="$3" tag="$4" sign="$5" response
     logDebug "  - Calculating $metric"
     response=$(powerMatrix "$selector" "$mode" "$tag") || return 1
+    if [[ "$mode" == forecast ]]; then
+        # Unlike meter integration, unknown forecast intervals are not zero.
+        # Require a value at every bin; omit incomplete days rather than publish
+        # an artificially low total. The prior aggregate is retained as usual.
+        if ! jq -e --argjson start "$DAY_START" --argjson stop "$SAMPLE_END" --argjson step "$SAMPLE_SECONDS" '
+            (.data.result | length) == 1 and
+            ([.data.result[0].values[][0]] == [range($start+$step;$stop+1;$step)])
+        ' <<< "$response" >/dev/null; then
+            logWarning "$DAY_DATE: $metric omitted: missing, invalid or stale forecast intervals; existing values retained."
+            return 0
+        fi
+    fi
     response=$(reducePower "$response" null "$sign") || return 1
     stageResult "$metric" "$tag" "$response"
 }
@@ -519,6 +539,7 @@ aggregateDay() {
     logInfo "Aggregating $DAY_DATE"
 
     aggregateEnergy pvEnergyDaily 'pvPower_value{id=""}' positive "" 1 || return 1
+    aggregateEnergy pvEnergyForecastDaily tariffSolar_value forecast "" 1 || return 1
     aggregateEnergy homeEnergyDaily homePower_value positive "" 1 || return 1
     aggregateEnergy gridEnergyImportDaily gridPower_value positive "" 1 || return 1
     aggregateEnergy gridEnergyExportDaily gridPower_value negative "" -1 || return 1
