@@ -636,7 +636,7 @@
             "version": "13.1.1",
             "spec": {
               "options": {
-                "barRadius": 0,
+                "barRadius": 0.2,
                 "barWidth": 0.8,
                 "fullHighlight": false,
                 "groupWidth": 0.9,
@@ -683,7 +683,7 @@
                     "axisCenteredZero": false,
                     "axisColorMode": "text",
                     "axisLabel": "",
-                    "axisPlacement": "auto",
+                    "axisPlacement": "hidden",
                     "fillOpacity": 80,
                     "gradientMode": "none",
                     "hideFrom": {
@@ -7400,6 +7400,43 @@
           "transparent": true
         }
       },
+      "panel-38": {
+        "kind": "Panel",
+        "spec": {
+          "id": 38,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "text",
+            "version": "13.1.1",
+            "spec": {
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "# PV system health\n\nThese values show the average of top N months. In the long term this should help you to see long-term trends, like declining power productions over multiple years. Note that the averaging on top N should flatten out other effects like just variying weather conditions. But these still have an impact here. \n\nSo the values here just may be able to give you an indication of possible appearing problem like aging or failures of panels.",
+                "mode": "markdown"
+              },
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
       "panel-5": {
         "kind": "Panel",
         "spec": {
@@ -7557,7 +7594,7 @@
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
                     "fillOpacity": 80,
-                    "gradientMode": "opacity",
+                    "gradientMode": "none",
                     "hideFrom": {
                       "legend": false,
                       "tooltip": false,
@@ -7599,6 +7636,10 @@
                           "fixedColor": "dark-yellow",
                           "mode": "fixed"
                         }
+                      },
+                      {
+                        "id": "custom.fillOpacity",
+                        "value": 0
                       }
                     ]
                   },
@@ -7618,6 +7659,10 @@
                           "fixedColor": "yellow",
                           "mode": "fixed"
                         }
+                      },
+                      {
+                        "id": "custom.fillOpacity",
+                        "value": 0
                       }
                     ]
                   },
@@ -8141,7 +8186,7 @@
                       "spec": {
                         "x": 4,
                         "y": 0,
-                        "width": 8,
+                        "width": 5,
                         "height": 12,
                         "element": {
                           "kind": "ElementReference",
@@ -8152,9 +8197,9 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
+                        "x": 9,
                         "y": 0,
-                        "width": 12,
+                        "width": 15,
                         "height": 12,
                         "element": {
                           "kind": "ElementReference",
@@ -8180,7 +8225,7 @@
                       "spec": {
                         "x": 4,
                         "y": 12,
-                        "width": 8,
+                        "width": 5,
                         "height": 10,
                         "element": {
                           "kind": "ElementReference",
@@ -8191,9 +8236,9 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
+                        "x": 9,
                         "y": 12,
-                        "width": 12,
+                        "width": 15,
                         "height": 10,
                         "element": {
                           "kind": "ElementReference",
@@ -8219,7 +8264,7 @@
                       "spec": {
                         "x": 4,
                         "y": 22,
-                        "width": 8,
+                        "width": 5,
                         "height": 10,
                         "element": {
                           "kind": "ElementReference",
@@ -8230,9 +8275,9 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
+                        "x": 9,
                         "y": 22,
-                        "width": 12,
+                        "width": 15,
                         "height": 10,
                         "element": {
                           "kind": "ElementReference",
@@ -8245,7 +8290,7 @@
                       "spec": {
                         "x": 4,
                         "y": 32,
-                        "width": 8,
+                        "width": 5,
                         "height": 10,
                         "element": {
                           "kind": "ElementReference",
@@ -8256,9 +8301,9 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 12,
+                        "x": 9,
                         "y": 32,
-                        "width": 12,
+                        "width": 15,
                         "height": 10,
                         "element": {
                           "kind": "ElementReference",
@@ -8406,8 +8451,21 @@
                       "spec": {
                         "x": 0,
                         "y": 0,
-                        "width": 24,
-                        "height": 10,
+                        "width": 12,
+                        "height": 13,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-38"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 0,
+                        "width": 12,
+                        "height": 13,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-36"
@@ -8418,9 +8476,9 @@
                       "kind": "GridLayoutItem",
                       "spec": {
                         "x": 0,
-                        "y": 10,
+                        "y": 13,
                         "width": 24,
-                        "height": 10,
+                        "height": 13,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-34"
@@ -8489,7 +8547,7 @@
           "multi": false,
           "includeAll": false,
           "label": "PV investment (€)",
-          "hide": "dontHide",
+          "hide": "inControlsMenu",
           "skipUrlSync": false,
           "description": "",
           "allowCustomValue": true,
@@ -8515,7 +8573,7 @@
           "multi": false,
           "includeAll": false,
           "label": "Battery investment (€)",
-          "hide": "dontHide",
+          "hide": "inControlsMenu",
           "skipUrlSync": false,
           "description": "",
           "allowCustomValue": true,
@@ -8541,7 +8599,7 @@
           "multi": false,
           "includeAll": false,
           "label": "Annual running costs (€)",
-          "hide": "dontHide",
+          "hide": "inControlsMenu",
           "skipUrlSync": false,
           "description": "",
           "allowCustomValue": true,
@@ -8567,7 +8625,7 @@
           "multi": false,
           "includeAll": false,
           "label": "Combustion consumption (l/100 km)",
-          "hide": "dontHide",
+          "hide": "inControlsMenu",
           "skipUrlSync": false,
           "description": "",
           "allowCustomValue": true,
@@ -8593,7 +8651,7 @@
           "multi": false,
           "includeAll": false,
           "label": "Fuel price (€/l)",
-          "hide": "dontHide",
+          "hide": "inControlsMenu",
           "skipUrlSync": false,
           "description": "",
           "allowCustomValue": true,
@@ -8680,7 +8738,7 @@
             "value": ""
           },
           "label": "Vehicle",
-          "hide": "dontHide",
+          "hide": "inControlsMenu",
           "refresh": "onTimeRangeChanged",
           "skipUrlSync": false,
           "query": {

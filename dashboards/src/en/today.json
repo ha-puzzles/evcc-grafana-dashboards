@@ -180,7 +180,7 @@
                       }
                     },
                     "refId": "forecast",
-                    "hidden": true
+                    "hidden": false
                   }
                 }
               ],
@@ -3150,10 +3150,10 @@
               "x": 19,
               "y": 22,
               "width": 5,
-              "height": 1,
+              "height": 2,
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-78"
+                "name": "panel-73"
               }
             }
           },
@@ -3161,12 +3161,12 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 19,
-              "y": 23,
+              "y": 24,
               "width": 5,
-              "height": 2,
+              "height": 1,
               "element": {
                 "kind": "ElementReference",
-                "name": "panel-73"
+                "name": "panel-78"
               }
             }
           }
@@ -3174,6 +3174,20 @@
       }
     },
     "links": [
+      {
+        "title": "Dashboards",
+        "type": "dashboards",
+        "icon": "external link",
+        "tooltip": "",
+        "url": "",
+        "tags": [
+          "EVCC"
+        ],
+        "asDropdown": true,
+        "targetBlank": false,
+        "includeVars": false,
+        "keepTime": false
+      },
       {
         "title": "Today",
         "type": "link",
@@ -3206,20 +3220,6 @@
         "url": "/d/adsmz7v?orgId=1&from=now-2d%2Fd&to=now-2d%2Fd",
         "tags": [],
         "asDropdown": false,
-        "targetBlank": false,
-        "includeVars": false,
-        "keepTime": false
-      },
-      {
-        "title": "Dashboards",
-        "type": "dashboards",
-        "icon": "external link",
-        "tooltip": "",
-        "url": "",
-        "tags": [
-          "EVCC"
-        ],
-        "asDropdown": true,
         "targetBlank": false,
         "includeVars": false,
         "keepTime": false

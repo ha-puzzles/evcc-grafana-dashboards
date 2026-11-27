@@ -123,7 +123,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -283,7 +283,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -424,7 +424,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -548,7 +548,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -558,6 +558,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -704,7 +706,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -714,6 +716,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -912,7 +916,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -1408,7 +1412,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -2594,7 +2598,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -3145,7 +3149,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "barchart",
-            "version": "13.1.0",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "barRadius": 0.2,
@@ -4742,7 +4746,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "stat",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "colorMode": "value",
@@ -4901,7 +4905,7 @@
           "vizConfig": {
             "kind": "VizConfig",
             "group": "timeseries",
-            "version": "13.0.2",
+            "version": "13.1.1",
             "spec": {
               "options": {
                 "annotations": {
@@ -4911,6 +4915,8 @@
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
+                  "enableFacetedFilter": false,
+                  "overflow": "ellipsis",
                   "placement": "bottom",
                   "showLegend": true
                 },
@@ -5463,6 +5469,20 @@
     },
     "links": [
       {
+        "title": "Dashboards",
+        "type": "dashboards",
+        "icon": "external link",
+        "tooltip": "",
+        "url": "",
+        "tags": [
+          "EVCC"
+        ],
+        "asDropdown": true,
+        "targetBlank": false,
+        "includeVars": false,
+        "keepTime": false
+      },
+      {
         "title": "Today",
         "type": "link",
         "icon": "dashboard",
@@ -5494,20 +5514,6 @@
         "url": "/d/adddvtj?orgId=1&from=now-2d%2Fd&to=now-2d%2Fd&timezone=browser",
         "tags": [],
         "asDropdown": false,
-        "targetBlank": false,
-        "includeVars": false,
-        "keepTime": false
-      },
-      {
-        "title": "Dashboards",
-        "type": "dashboards",
-        "icon": "external link",
-        "tooltip": "",
-        "url": "",
-        "tags": [
-          "EVCC"
-        ],
-        "asDropdown": true,
         "targetBlank": false,
         "includeVars": false,
         "keepTime": false
@@ -5624,7 +5630,7 @@
             "value": ""
           },
           "label": "Ladepunkt",
-          "hide": "dontHide",
+          "hide": "hideVariable",
           "refresh": "onDashboardLoad",
           "skipUrlSync": false,
           "query": {
@@ -5642,7 +5648,7 @@
           },
           "regex": "",
           "regexApplyTo": "value",
-          "sort": "disabled",
+          "sort": "alphabeticalAsc",
           "definition": "label_values(loadpoint)",
           "options": [],
           "multi": true,
