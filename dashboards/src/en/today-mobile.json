@@ -3177,6 +3177,20 @@
     },
     "links": [
       {
+        "title": "",
+        "type": "dashboards",
+        "icon": "external link",
+        "tooltip": "",
+        "url": "",
+        "tags": [
+          "EVCC"
+        ],
+        "asDropdown": true,
+        "targetBlank": false,
+        "includeVars": false,
+        "keepTime": false
+      },
+      {
         "title": "Today",
         "type": "link",
         "icon": "dashboard",
@@ -3211,21 +3225,6 @@
         "targetBlank": false,
         "includeVars": false,
         "keepTime": false
-      },
-      {
-        "title": "Dashboards",
-        "type": "dashboards",
-        "icon": "external link",
-        "tooltip": "",
-        "url": "",
-        "tags": [
-          "EVCC"
-        ],
-        "asDropdown": false,
-        "targetBlank": false,
-        "includeVars": false,
-        "keepTime": false,
-        "placement": "inControlsMenu"
       },
       {
         "title": "EVCC",

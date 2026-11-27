@@ -3488,7 +3488,7 @@
                 "barRadius": 0.2,
                 "barWidth": 0.9,
                 "fullHighlight": false,
-                "groupWidth": 0.8,
+                "groupWidth": 0.7,
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
@@ -4083,6 +4083,20 @@
     },
     "links": [
       {
+        "title": "Dashboards",
+        "type": "dashboards",
+        "icon": "external link",
+        "tooltip": "",
+        "url": "",
+        "tags": [
+          "EVCC"
+        ],
+        "asDropdown": true,
+        "targetBlank": false,
+        "includeVars": false,
+        "keepTime": false
+      },
+      {
         "title": "Current month",
         "type": "link",
         "icon": "dashboard",
@@ -4114,20 +4128,6 @@
         "url": "/d/adz6thx/evcc3a-month?from=now-2M%2FM&to=now-2M%2FM",
         "tags": [],
         "asDropdown": false,
-        "targetBlank": false,
-        "includeVars": false,
-        "keepTime": false
-      },
-      {
-        "title": "Dashboards",
-        "type": "dashboards",
-        "icon": "external link",
-        "tooltip": "",
-        "url": "",
-        "tags": [
-          "EVCC"
-        ],
-        "asDropdown": true,
         "targetBlank": false,
         "includeVars": false,
         "keepTime": false

@@ -5930,6 +5930,20 @@
     },
     "links": [
       {
+        "title": "Dashboards",
+        "type": "dashboards",
+        "icon": "external link",
+        "tooltip": "",
+        "url": "",
+        "tags": [
+          "EVCC"
+        ],
+        "asDropdown": true,
+        "targetBlank": false,
+        "includeVars": false,
+        "keepTime": false
+      },
+      {
         "title": "Current year",
         "type": "link",
         "icon": "dashboard",
@@ -5961,20 +5975,6 @@
         "url": "/d/adrf8bj?orgId=1&from=now-2y%2Fy&to=now-2y%2Fy",
         "tags": [],
         "asDropdown": false,
-        "targetBlank": false,
-        "includeVars": false,
-        "keepTime": false
-      },
-      {
-        "title": "Dashboards",
-        "type": "dashboards",
-        "icon": "external link",
-        "tooltip": "",
-        "url": "",
-        "tags": [
-          "EVCC"
-        ],
-        "asDropdown": true,
         "targetBlank": false,
         "includeVars": false,
         "keepTime": false
